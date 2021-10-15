@@ -1,5 +1,6 @@
 .DS_Store
 .idea
+*.iml
 .pytest_cache
 pyvenv.cfg
 pytex.py
