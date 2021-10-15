@@ -1,0 +1,15 @@
+
+
+test: 15: "a + 2 * 3 + 4 or not 5"
+
+tree1:
+node1:BinOp TK.OR(BINOP, 'or', V=)
+    node2:BinOp TK.ADD(BINOP, '+', V=)
+        node3:BinOp TK.ADD(BINOP, '+', V=)
+            node:4:Ident TK.IDNT(IDENTIFIER, 'a', V=)
+            node5:BinOp TK.MUL(BINOP, '*', V=)
+                node:6:Int TK.INT(LITERAL, '2', V=2)
+                node:7:Int TK.INT(LITERAL, '3', V=3)
+        node:8:Int TK.INT(LITERAL, '4', V=4)
+    node9:UnaryOp TK.NOT(UNARY, 'not', V=)
+        node:10:Int TK.INT(LITERAL, '5', V=5)

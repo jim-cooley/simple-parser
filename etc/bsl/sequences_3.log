@@ -1,0 +1,12 @@
+
+
+test: 3: "a | b | c | d"
+
+tree1:
+node1:Seq TK.PIPE(LIST, '|', V=)
+    node:2:Ident TK.IDNT(IDENTIFIER, 'a', V=)
+    node3:Seq TK.PIPE(LIST, '|', V=)
+        node:4:Ident TK.IDNT(IDENTIFIER, 'b', V=)
+        node5:Seq TK.PIPE(LIST, '|', V=)
+            node:6:Ident TK.IDNT(IDENTIFIER, 'c', V=)
+            node:7:Ident TK.IDNT(IDENTIFIER, 'd', V=)

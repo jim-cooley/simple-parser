@@ -1,0 +1,16 @@
+
+
+test: 4: "a; b; c"
+
+tree1:
+node:1:Ident TK.IDNT(IDENTIFIER, 'a', V=)
+
+tree2:
+
+tree3:
+node:1:Ident TK.IDNT(IDENTIFIER, 'b', V=)
+
+tree4:
+
+tree5:
+node:1:Ident TK.IDNT(IDENTIFIER, 'c', V=)

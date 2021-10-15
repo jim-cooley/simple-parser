@@ -1,0 +1,7 @@
+
+
+test: 3: "+1"
+
+tree1:
+node1:UnaryOp TK.PLUS(UNARY, '+', V=)
+    node:2:Int TK.INT(LITERAL, '1', V=1)

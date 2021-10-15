@@ -1,0 +1,13 @@
+
+
+test: 3: "a = b.c(x,y,z)"
+
+tree1:
+node1:BinOp TK.ASSIGN(BINOP, '=', V=)
+    node:2:Ident TK.IDNT(IDENTIFIER, 'a', V=)
+    node3:PropRef [TK.IDNT(IDENTIFIER, 'b', V=)]
+        node4:FnCall TK.IDNT(IDENTIFIER, 'c', V=)]
+            node5:Seq TK.PARAMETER_LIST(LIST, '(', V=)
+                node:6:Ident TK.IDNT(IDENTIFIER, 'x', V=)
+                node:7:Ident TK.IDNT(IDENTIFIER, 'y', V=)
+                node:8:Ident TK.IDNT(IDENTIFIER, 'z', V=)

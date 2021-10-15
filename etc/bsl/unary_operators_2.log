@@ -1,0 +1,7 @@
+
+
+test: 2: "- 3"
+
+tree1:
+node1:UnaryOp TK.NEG(UNARY, '-', V=)
+    node:2:Int TK.INT(LITERAL, '3', V=3)

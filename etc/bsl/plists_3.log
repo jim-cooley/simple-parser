@@ -1,0 +1,9 @@
+
+
+test: 3: "close.delay(1d)"
+
+tree1:
+node1:PropRef [TK.IDNT(SERIES, 'close', V=)]
+    node2:FnCall TK.IDNT(IDENTIFIER, 'delay', V=)]
+        node3:Seq TK.PARAMETER_LIST(LIST, '(', V=)
+            node:4:Dur TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)

@@ -1,0 +1,6 @@
+
+
+test: 3: "1h"
+
+tree1:
+node:1:Dur TK.DUR(LITERAL, '1h', V=1:00:00)

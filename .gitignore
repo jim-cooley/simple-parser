@@ -1,0 +1,10 @@
+.DS_Store
+.idea
+.pytest_cache
+pyvenv.cfg
+pytex.py
+__pycache__
+include/
+bin/
+lib/
+*.log

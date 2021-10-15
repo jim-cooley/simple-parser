@@ -1,0 +1,15 @@
+
+
+test: 12: "a(x, y).b.c(1, 2)"
+
+tree1:
+node1:BinOp TK.DOT(BINOP, '.', V=)
+    node2:FnCall TK.IDNT(IDENTIFIER, 'a', V=)]
+        node3:Seq TK.PARAMETER_LIST(LIST, '(', V=)
+            node:4:Ident TK.IDNT(IDENTIFIER, 'x', V=)
+            node:5:Ident TK.IDNT(IDENTIFIER, 'y', V=)
+    node6:PropRef [TK.IDNT(IDENTIFIER, 'b', V=)]
+        node7:FnCall TK.IDNT(IDENTIFIER, 'c', V=)]
+            node8:Seq TK.PARAMETER_LIST(LIST, '(', V=)
+                node:9:Int TK.INT(LITERAL, '1', V=1)
+                node:10:Int TK.INT(LITERAL, '2', V=2)

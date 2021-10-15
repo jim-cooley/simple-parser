@@ -1,0 +1,45 @@
+logpath="./etc/log"
+bslpath="./etc/bsl"
+
+echo "" > "./suite.log"
+declare -i pass=0
+declare -i total=0
+declare -i no_baseline=0
+for test in ./etc/log/*; do
+    total=$((total + 1))
+    baseline="$bslpath"/"$(basename $test)"
+#   printf "$(basename $test):\n"
+    if [ -f "$baseline" ]; then
+        result="fail"
+        diff "$baseline" "$test" >> ./suite.log && result="pass"
+        grep -i "exception" "$test" && result="fail (exception)"
+        if [ "$result" == "pass" ]; then
+            pass=$((pass + 1))
+        fi
+        printf "$(basename $test):  $result\n"
+        printf "$(basename $test):\t$result\n" >> ./suite.log
+    else
+        reason="no baseline"
+        grep -i "exception" "$test" && reason="exception"
+        if [ "$reason" == "no baseline" ]; then
+            no_baseline=$((no_baseline + 1))
+        fi
+        printf "$(basename $test):\tfail: $reason\n"
+        printf "$(basename $test):\tfail: $reason\n" >> ./suite.log
+    fi
+done
+printf "\n\nresults summary:\n" >> ./suite.log
+printf "================================\n" >> ./suite.log
+printf "  pass:        $pass\n" >> ./suite.log
+printf "  fail:        $((total-pass-no_baseline))\n" >> ./suite.log
+printf "  no baseline: $no_baseline\n" >> ./suite.log
+printf "  total:       $total\n" >> ./suite.log
+printf "================================\n\n" >> ./suite.log
+printf "\n\nresults summary:\n"
+printf "================================\n"
+printf "  pass:        $pass\n"
+printf "  fail:        $((total-pass-no_baseline))\n"
+printf "  no baseline: $no_baseline\n"
+printf "  total:       $total\n"
+printf "================================\n\n"
+printf "\n\n"

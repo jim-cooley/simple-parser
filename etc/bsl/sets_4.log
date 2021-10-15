@@ -1,0 +1,13 @@
+
+
+test: 4: "any:{a, b, c}"
+
+tree1:
+node1:BinOp TK.COLN(BINOP, ':', V=)
+    node:2:Ident TK.ANY(KEYWORD, 'any', V=)
+    node3:Set TK.SET(SET, '{', V=)
+        node:4:Ident TK.IDNT(IDENTIFIER, 'a', V=)
+        node:5:Ident TK.IDNT(IDENTIFIER, 'b', V=)
+        node:6:Ident TK.IDNT(IDENTIFIER, 'c', V=)
+
+tree2:

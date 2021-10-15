@@ -1,0 +1,6 @@
+
+
+test: 1: "a"
+
+tree1:
+node:1:Ident TK.IDNT(IDENTIFIER, 'a', V=)

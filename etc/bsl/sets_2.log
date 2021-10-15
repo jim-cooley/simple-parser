@@ -1,0 +1,9 @@
+
+
+test: 2: "{a}"
+
+tree1:
+node1:Set TK.SET(SET, '{', V=)
+    node:2:Ident TK.IDNT(IDENTIFIER, 'a', V=)
+
+tree2:

@@ -1,0 +1,11 @@
+
+
+test: 7: "a.b(1, 2, z)"
+
+tree1:
+node1:PropRef [TK.IDNT(IDENTIFIER, 'a', V=)]
+    node2:FnCall TK.IDNT(IDENTIFIER, 'b', V=)]
+        node3:Seq TK.PARAMETER_LIST(LIST, '(', V=)
+            node:4:Int TK.INT(LITERAL, '1', V=1)
+            node:5:Int TK.INT(LITERAL, '2', V=2)
+            node:6:Ident TK.IDNT(IDENTIFIER, 'z', V=)

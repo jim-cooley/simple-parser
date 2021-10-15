@@ -1,0 +1,11 @@
+
+
+test: 1: "a().b.c"
+
+tree1:
+node1:BinOp TK.DOT(BINOP, '.', V=)
+    node2:FnCall TK.IDNT(IDENTIFIER, 'a', V=)]
+        node3:Seq TK.PARAMETER_LIST(LIST, '(', V=)
+              Empty
+    node4:PropRef [TK.IDNT(IDENTIFIER, 'b', V=)]
+        node:5:Ident TK.IDNT(IDENTIFIER, 'c', V=)

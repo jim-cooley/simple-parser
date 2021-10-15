@@ -1,0 +1,6 @@
+
+
+test: 13: "1.5M"
+
+tree1:
+node:1:Dur TK.DUR(LITERAL, '1.5M', V=45 days, 0:00:00)

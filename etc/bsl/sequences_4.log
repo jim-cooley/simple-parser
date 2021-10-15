@@ -1,0 +1,10 @@
+
+
+test: 4: "a() | b"
+
+tree1:
+node1:Seq TK.PIPE(LIST, '|', V=)
+    node2:FnCall TK.IDNT(IDENTIFIER, 'a', V=)]
+        node3:Seq TK.PARAMETER_LIST(LIST, '(', V=)
+              Empty
+    node:4:Ident TK.IDNT(IDENTIFIER, 'b', V=)
