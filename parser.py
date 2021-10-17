@@ -110,9 +110,10 @@ class Parser(object):
     def check(self, ex_tid):
         return False if self.token.id == TK.EOF else self.token.id == ex_tid
 
+    # skip over the expected current token.
     def expect(self, ex_tid):
         if self.token.id == ex_tid:
-            return self.token
+            return self.advance()
         self._expected(expected=f'{ex_tid.name}', found=f'{self.token.id.name}')
 
     def expect_next(self, ex_tid=None):
@@ -130,12 +131,6 @@ class Parser(object):
             self.advance()
             return True
         return False
-
-    # skip over the expected current token.
-    def skip(self, ex_tid):
-        if self.token.id == ex_tid:
-            return self.advance()
-        self._expected(expected=f'{ex_tid.name}', found=f'{self.token.id.name}')
 
     # -----------------------------------
     # Recursive Descent Parser States
@@ -162,13 +157,13 @@ class Parser(object):
         elif token.id == TK.QUOT:
             node = Str(token)
         elif token.id == TK.LBRC:
-            self.skip(TK.LBRC)
+            self.expect(TK.LBRC)
             node = Set(token, Seq(token, self.sequence(TK.COMA)))
-            self.skip(TK.RBRC)
+            self.expect(TK.RBRC)
         elif token.id == TK.LPRN:
             self.advance()
             node = self.expression()
-            self.skip(TK.RPRN)
+            self.expect(TK.RPRN)
             return node
         elif token.t_class in _IDENTIFIER_TYPES or token.id == TK.IDNT:
             return self.identifier()
@@ -268,12 +263,12 @@ class Parser(object):
         """( EXPR ',' ... )"""
         seq = []
         token = self.peek()
-        self.skip(TK.LPRN)
+        self.expect(TK.LPRN)
         token.t_class = TCL.LIST
         token.id = TK.PARAMETER_LIST
         if self.peek().id != TK.RPRN:
             seq = self.sequence(TK.COMA)
-        self.skip(TK.RPRN)
+        self.expect(TK.RPRN)
         return Seq(token, seq)
 
     def sequence(self, sep, node=None):
@@ -284,7 +279,7 @@ class Parser(object):
             seq.append(node)
             if self.peek().id != sep:
                 break
-            self.skip(sep)
+            self.expect(sep)
         return seq
 
     def parse(self):
