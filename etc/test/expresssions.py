@@ -15,5 +15,10 @@ expressions_tests = [
     "a + 2 * 3 + 4 not 5",
     "a + 2 * 3 + 4 or not 5",
     "a = 2 * 3 + 4",
-    "a = 2 * 3 + 4 not 5"
+    "a = 2 * 3 + 4 not 5",
+    "a * b + c",
+    "a * -b * c",
+    "a - -b + c",
+    "a * -b - c",
+    "a * -b --c",
 ]

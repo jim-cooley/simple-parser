@@ -1,7 +1,6 @@
 # character class definitions:
 from dataclasses import dataclass
 
-
 # Token is both a Token from Parsing, as well as a 'Symbol' in the AST that is created & Symbol Table
 from enum import IntEnum, auto, unique
 
@@ -19,10 +18,10 @@ class Token:
             self.line = 0
             self.offset = offset
 
-    def __init__(self, tkid, tcl=None, tlx="", val="", loc=None, prop=None):
-        self.id: TK = tkid
+    def __init__(self, tid, tcl=None, lex="", val=None, loc=None, prop=None):
+        self.id: TK = tid
         self.t_class: TCL = TCL(tcl) if tcl is not None else TCL.NONE
-        self.lexeme = tlx
+        self.lexeme = lex
         self.value = val
         self.location = loc
         self.properties = {} if not prop else prop
@@ -33,10 +32,16 @@ class Token:
     def format(self):
         _tn = f'.{self.id.name}(' if hasattr(self.id, "name") else f'({self.id}, '
         _tcl = f'{self.t_class.name}' if hasattr(self.t_class, "name") else 'TCL({self.t_type})'
-        _tv = f'{self.value}'
+        _tv = 'None' if self.value is None else  f'{self.value}'
         _tl = f'\'{self.lexeme}\''
         _tloc = f'line:{self.location.line+1}, pos:{self.location.offset-1}'
         return f'TK{_tn}{_tcl}, {_tl}, V={_tv})'
+
+    def map(self, tk_map):
+        if self.id in tk_map:
+            self.id = tk_map[self.id]
+        return self
+
 
     @staticmethod
     def format_token(tk):
@@ -145,6 +150,7 @@ class TK(IntEnum):
     NEG = auto()     # unary - (negate)
     MUL = auto()     # *
     DIV = auto()     # /
+    POW = auto()     # ^
     ISEQ = auto()    # ==
     ASSIGN = auto()  # =
     APPLY = auto()   # >>
@@ -155,13 +161,16 @@ class TK(IntEnum):
     PIPE = auto()
 
     # logical operators
-    ALL = auto()
-    AND = auto()
-    ANY = auto()
+    ALL = auto()    # all:
+    ANY = auto()    # any:
+    NONEOF = auto() # none:
     IN = auto()
+    AND = auto()
     OR = auto()
     NONE = auto()
     NOT = auto()
+    TRUE = auto()
+    FALSE = auto()
 
     # keywords, reserved words, intrinsics
     BUY = auto()

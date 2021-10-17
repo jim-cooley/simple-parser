@@ -1,0 +1,76 @@
+
+
+# old, left for reference
+expression :=   literal
+                | unary
+                | binary
+                | grouping
+                | assignment
+                | fn_call
+                | flow
+                | expression ';' expression
+
+# new precedence influenced states
+
+expression :=   flow_expression
+
+flow_expression := logical_expression [ '|' logical_expression ]*
+
+logical_expression := equality [[ 'and' | 'or' ] equality ]*
+
+equality := comparison [[ '!=' | '==' ] comparison ]*
+
+comparison := term [[ '>' | '>=' | '<' | '<=' | 'in' ] term ]*
+
+term := factor [[ '-' | '+' ] factor ]*
+
+factor := unary [[ '/' | '*' ] factpr ]*
+
+unary := [ '-' | '!' | 'not' ] unary 
+         | primary
+
+primary :=  number | datetime | duration | set | STRING | 'true' | 'false' | 'none'
+            | '(' expression ')'
+
+
+
+
+grouping := '(' expression ')'
+
+assignment := identifier '=' expression
+
+flow := expression [ '|' expression ]*
+
+fn_call := scoped_identifier parameter_list
+
+parameter_list := '(' [ expression [ ',' expression ]* ]* ')'
+
+identifier := [a-zA-Z_]+ [0-9]* [a-zA-Z_]*
+
+unary := [ '-' | '!' | 'not' ] expression
+
+binary := expression operator expression
+
+operator := '==' | '!=' | '<' | '<=' | '>' | '>=' | 'and' | 'or'
+            | '+' | '-' | '*' | '/' | '^' |
+            | '>>' 
+
+set := '{' [ expression [, epxression]* ]*  '}'
+
+number := integer | float
+
+integer :=  [0-9]+
+
+float := [$]* [0-9]+ . [0-9]+    # [0-9]* . [0-9]+ might be valid also.
+
+datetime := <date value> | <time value> | <datetime value>  # precision to milliseconds allowed
+
+duration := number [ 'h' | 'm' | 's' | 'd' | 'mo' | 'M' | 'y' ]
+
+
+#==========
+Assciativity:
+
+left_associative: -, +, >, >=, <, <=, ==, !=
+right_associative: =, unary-, unary+
+

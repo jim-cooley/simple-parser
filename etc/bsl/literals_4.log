@@ -1,6 +1,0 @@
-
-
-test: 4: ""abced""
-
-tree1:
-node:1:Str TK.QUOT(LITERAL, 'abced', V=abced)

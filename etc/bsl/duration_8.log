@@ -1,6 +1,0 @@
-
-
-test: 8: "1.5s"
-
-tree1:
-node:1:Dur TK.DUR(LITERAL, '1.5s', V=0:00:01.500000)

@@ -12,4 +12,10 @@ literals_tests = [
     "$1.00",
     "10%",
     "10.5%",
+    "True",
+    "true",
+    "False",
+    "false",
+    "None",
+    "none",
 ]

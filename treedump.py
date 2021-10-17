@@ -28,6 +28,9 @@ class DumpTree(NodeVisitor):
         self.visit(node.right)
         self.dedent()
 
+    def visit_Bool(self, node):
+        self.visit_value('Bool', node)
+
     def visit_DateDiff(self, node):
         self.visit_value('DateDiff', node)
 
@@ -67,9 +70,9 @@ class DumpTree(NodeVisitor):
 
     def visit_PropRef(self, node):
         if type(node).__name__ == 'Ident':
-            s = '{}node{}:{} [{}("{}.{}")]'.format(self._indent, self._ncount, 'PropRef', _.Token.format_tid(node.identifier), node.identifier.value, node.member.value)
+            s = '{}node{}:{} [{}("{}.{}")]'.format(self._indent, self._ncount, 'PropRef', _.Token.format_tid(node.token), node.token.value, node.member.value)
         else:
-            s = '{}node{}:{} [{}]'.format(self._indent, self._ncount, 'PropRef', node.identifier.format())
+            s = '{}node{}:{} [{}]'.format(self._indent, self._ncount, 'PropRef', node.token.format())
         self._body.append(s)
         node._num = self._ncount
         self._ncount += 1
@@ -89,7 +92,8 @@ class DumpTree(NodeVisitor):
         self._body.append(s)
         node._num = self._ncount
         self._ncount += 1
-        self.visit_sequence(node.members.sequence)
+        if node.members is not None:
+            self.visit_sequence(node.members.sequence)
 
     def visit_Str(self, node):
         self.visit_value('Str', node)
@@ -103,14 +107,10 @@ class DumpTree(NodeVisitor):
 # helpers
     def visit_sequence(self, slist):
         self.indent()
-        if len(slist) == 0:
-            self._body.append(f'{self._indent}  Empty')
-        else:
+        if len(slist) != 0:
             for n in slist:
                 if n is not None:
                     self.visit(n)
-                else:
-                    self._body.append('{}{}'.format(self._indent, 'None'))
         self.dedent()
 
     def visit_value(self, label, node):

@@ -4,6 +4,7 @@ from etc.test.duration import duration_tests
 from etc.test.errors import errors_tests
 from etc.test.expresssions import expressions_tests
 from etc.test.functions import functions_tests
+from etc.test.grouping import grouping_tests
 from etc.test.identifiers import identifiers_tests
 from etc.test.indexed_parameters import indexed_parameters_tests
 from etc.test.indexing import indexing_tests
@@ -16,6 +17,7 @@ from etc.test.regression import regression_tests
 from etc.test.sequences import sequences_tests
 from etc.test.set_operations import set_operations_tests
 from etc.test.set_parameters import set_parameters_tests
+from etc.test.set_unary import set_unary_tests
 from etc.test.sets import sets_tests
 from etc.test.statements import statements_tests
 from etc.test.time import time_tests
@@ -30,6 +32,7 @@ test_data = {
     'errors': errors_tests,
     'expressions': expressions_tests,
     'functions': functions_tests,
+    'grouping': grouping_tests,
     'identifiers': identifiers_tests,
     'indexing': indexing_tests,
     'indexed_expressions': indexed_parameters_tests,
@@ -42,6 +45,7 @@ test_data = {
     'sets': sets_tests,
     'set_operations': set_operations_tests,
     'set_parameters': set_parameters_tests,
+    'set_unary': set_unary_tests,
     'statements': statements_tests,
     'time': time_tests,
     'unary_operators': unary_operators_tests,

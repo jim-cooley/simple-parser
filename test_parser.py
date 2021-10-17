@@ -1,5 +1,8 @@
-from etc.test.test_data import test_data, skip_tests
+#!./bin/python3
+import sys
+
 from parser import Parser
+from etc.test.test_setup import test_data, skip_tests
 from treedump import DumpTree
 
 # sma(20)       open.sma(20)
@@ -13,7 +16,7 @@ from treedump import DumpTree
 # s{}  - make into signal
 # {} -> signal  {} | signal
 
-_LOG_DIRECTORY = "./etc/log"
+_LOG_DIRECTORY = "./etc/test/log"
 _test_suite = True       # False is useful for debugging, interactive.  True for test suites
 
 
@@ -98,13 +101,19 @@ def _dump_tree(tree, log=None):
 
 # this is only for execution under debugger or via command-line
 if __name__ == '__main__':
+    args = sys.argv[1:]
 
     # short-circuit
     _test_suite = True
     if not _test_suite:
         _run_suites([
-            'duration',
+            'regression',
         ])
+
+    # test suite
     else:
-        _run_full_pass()
+        if len(args) > 0:
+            _run_suites(args)
+        else:
+            _run_full_pass()
 

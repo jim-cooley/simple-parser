@@ -1,11 +1,24 @@
-logpath="./etc/log"
-bslpath="./etc/bsl"
+#!/usr/local/bin/bash
+logpath="./etc/test/log"
+bslpath="./etc/test/bsl"
+
+suite=$1
 
 echo "" > "./suite.log"
 declare -i pass=0
 declare -i total=0
 declare -i no_baseline=0
-for test in ./etc/log/*; do
+
+printf "\n\n================================\n"
+printf "running tests\n"
+printf "================================\n"
+
+./test_parser.py $suite
+
+printf "\n\n================================\n"
+printf "verifying results\n"
+printf "================================\n"
+for test in $logpath/$suite*; do
     total=$((total + 1))
     baseline="$bslpath"/"$(basename $test)"
 #   printf "$(basename $test):\n"

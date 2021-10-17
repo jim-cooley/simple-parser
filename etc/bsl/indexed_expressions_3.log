@@ -1,8 +1,0 @@
-
-
-test: 3: "(a).(b)"
-
-tree1:
-node1:BinOp TK.DOT(BINOP, '.', V=)
-    node:2:Ident TK.IDNT(IDENTIFIER, 'a', V=)
-    node:3:Ident TK.IDNT(IDENTIFIER, 'b', V=)

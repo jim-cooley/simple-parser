@@ -1,6 +1,0 @@
-
-
-test: 10: "$1"
-
-tree1:
-node:1:Float TK.FLOT(LITERAL, '1', V=1.0)

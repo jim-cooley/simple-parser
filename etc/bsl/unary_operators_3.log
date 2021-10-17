@@ -1,7 +1,0 @@
-
-
-test: 3: "not b"
-
-tree1:
-node1:UnaryOp TK.NOT(UNARY, 'not', V=)
-    node:2:Ident TK.IDNT(IDENTIFIER, 'b', V=)
