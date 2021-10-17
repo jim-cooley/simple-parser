@@ -202,7 +202,10 @@ class Parser(object):
         elif token.id == TK.LPRN:
             self.advance()
             node = self.expression()
-            self.expect(TK.RPRN)
+            if self.match([TK.COMA]):
+                node = self.plist(node)
+            else:
+                self.expect(TK.RPRN)
             return node
         elif token.t_class in _IDENTIFIER_TYPES or token.id == TK.IDNT:
             return self.identifier()
@@ -231,16 +234,17 @@ class Parser(object):
             node = Ident(tk)
         return node
 
-    def plist(self):
+    def plist(self, node=None):
         """( EXPR ',' ... )"""
-        seq = []
-        token = self.peek()
-        self.expect(TK.LPRN)
+        seq = [] if node is None else [node]
+        self.match([TK.LPRN])
+        token = copy(self.peek())
+        if token.id != TK.RPRN:
+            seq = self.sequence(TK.COMA, node)
+        self.expect(TK.RPRN)
         token.t_class = TCL.LIST
         token.id = TK.PARAMETER_LIST
-        if self.peek().id != TK.RPRN:
-            seq = self.sequence(TK.COMA)
-        self.expect(TK.RPRN)
+        token.lexeme = '('  # fixup token.
         return Seq(token, seq)
 
     def sequence(self, sep, node=None):

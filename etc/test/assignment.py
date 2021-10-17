@@ -3,4 +3,7 @@ assignment_tests = [
     "a = b = c",
     "a = 2 * 3",
     "a = b.c(x,y,z)",
+    "(a = 5)",
+    "{a = 5}",
+    ":(a = 5)",
 ]
