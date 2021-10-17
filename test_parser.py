@@ -1,5 +1,6 @@
 #!./bin/python3
 import sys
+import traceback
 
 from parser import Parser
 from etc.test.test_setup import test_data, skip_tests
@@ -43,7 +44,10 @@ def _run_protected_test(log, name, test):
         tree = parser.parse()
         _dump_tree(tree, log)
     except Exception as e:
-        _t_print(log, f'FAIL: \'{name}\' failed with Exception {e}')
+        trace = traceback.format_exc()
+        _t_print(log, f'FAIL: \'{name}\' failed with Exception {e}\n')
+        if trace is not None:
+            print(f'{trace}')
 
 
 def _run_unprotected_test(log, name, test):
@@ -107,7 +111,7 @@ if __name__ == '__main__':
     _test_suite = True
     if not _test_suite:
         _run_suites([
-            'regression',
+            'set_operations',
         ])
 
     # test suite

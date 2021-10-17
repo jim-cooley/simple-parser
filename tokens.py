@@ -37,11 +37,16 @@ class Token:
         _tloc = f'line:{self.location.line+1}, pos:{self.location.offset-1}'
         return f'TK{_tn}{_tcl}, {_tl}, V={_tv})'
 
-    def map(self, tk_map):
+    def _map(self, tk_map):
         if self.id in tk_map:
             self.id = tk_map[self.id]
         return self
 
+    def map2binop(self):
+        return self._map(_tk2binop)
+
+    def map2unop(self):
+        return self._map(_tk2unop)
 
     @staticmethod
     def format_token(tk):
@@ -87,52 +92,58 @@ class TCL(IntEnum):
 @unique
 class TK(IntEnum):
     WHT = (ST_MAX + 1)  # 32    - numbers only provided to facilitate debugging.
-    IDNT = auto()   # 33
-    INT = auto()    # 34
-    FLOT = auto()   # 35
-    STR = auto()    # 36
-    USCR = auto()   # 37
-    SEMI = auto()   # 38
-    COMA = auto()   # 39
-    DOT = auto()    # 40
-    COLN = auto()   # 41
-    MNUS = auto()   # 42
-    PLUS = auto()   # 43
-    STAR = auto()   # 44
-    SLSH = auto()   # 45
-    BSLH = auto()   # 46
-    PCT = auto()    # 47
-    EXPN = auto()   # 48
-    EQLS = auto()   # 49
-    LBS = auto()    # 50
-    QUOT = auto()   # 51
-    EXCL = auto()   # 52
-    QSTN = auto()   # 53
-    AMPS = auto()   # 54
-    DLRS = auto()   # 55
-    ATS = auto()    # 56
-    BAR = auto()    # 57
-    GTR = auto()    # 58
-    LESS = auto()   # 59
-    LBRC = auto()   # 60
-    RBRC = auto()   # 61
-    LPRN = auto()   # 62
-    RPRN = auto()   # 63
-    LBRK = auto()   # 64
-    RBRK = auto()   # 65
-    TLDE = auto()   # 66
-    RBAR = auto()  # >| 67
-    LBAR = auto()  # <| 68
-    GTR2 = auto()  # >> 69
-    GTE = auto()   # >= 70
-    LSS2 = auto()  # << 71
-    LTE = auto()   # <= 72
-    NEQ = auto()   # != 73
-    EQEQ = auto()  # == 74
-    BAR2 = auto()  # || 75
-    AMP2 = auto()  # && 76
-    TIME = auto()  # h:m:s  77
-    DUR = auto()   # 1s, 1m, 1d, 1w, 1m, 1y 78
+    IDNT = auto()   #
+    INT = auto()    #
+    FLOT = auto()   #
+    STR = auto()    #
+    USCR = auto()   # _
+    SEMI = auto()   # ;
+    COMA = auto()   # ,
+    DOT = auto()    # .
+    COLN = auto()   # :
+    CLN2 = auto()   # ::
+    CCEQ = auto()   # :=
+    CCMN = auto()   # :-
+    MNUS = auto()   # -
+    PLUS = auto()   # +
+    STAR = auto()   # *
+    SLSH = auto()   # /
+    BSLH = auto()   # \
+    PCT = auto()    # %
+    EXPN = auto()   # ^
+    EQLS = auto()   # =
+    LBS = auto()    # #
+    QUOT = auto()   # ", '
+    EXCL = auto()   # !
+    QSTN = auto()   # ?
+    AMPS = auto()   # &
+    DLRS = auto()   # $
+    ATS = auto()    # @
+    BAR = auto()    # |
+    BAR2 = auto()   # ||
+    GTR = auto()    # >
+    LESS = auto()   # <
+    LBRC = auto()   # {
+    RBRC = auto()   # }
+    LPRN = auto()   # (
+    RPRN = auto()   # )
+    LBRK = auto()   # [
+    RBRK = auto()   # ]
+    TLDE = auto()   # ~
+    RBAR = auto()  # >|
+    LBAR = auto()  # <|
+    GTR2 = auto()  # >>
+    GTE = auto()   # >=
+    EQGT = auto()  # =>
+    RARR = auto()  # ->
+    LARR = auto()  # <-
+    LSS2 = auto()  # <<
+    LTE = auto()   # <=
+    NEQ = auto()   # !=
+    EQEQ = auto()  # ==
+    AMP2 = auto()  # &&
+    TIME = auto()  # h:m:s
+    DUR = auto()   # 1s, 1m, 1d, 1w, 1m, 1y
 
     # specialized tokens:
     INVALID = 124
@@ -156,6 +167,7 @@ class TK(IntEnum):
     APPLY = auto()   # >>
     FALL_BELOW = auto()  # <|
     RISE_ABOVE = auto()  # >|
+    RAISE = auto()   # =>
     PARAMETER_LIST = auto() # parameter-list
     SET = auto()
     PIPE = auto()
@@ -180,3 +192,46 @@ class TK(IntEnum):
     LAST = 299  # last reserved token id
 
 
+# token conversion tables, could be array lookups rather than hashtable, but this is easier to maintain and not large.
+_tk2binop = {
+    TK.BAR: TK.PIPE,
+    TK.STAR: TK.MUL,
+    TK.SLSH: TK.DIV,
+    TK.PLUS: TK.ADD,
+    TK.MNUS: TK.SUB,
+    TK.EQLS: TK.ASSIGN,
+    TK.GTR2: TK.APPLY,
+    TK.LSS2: TK.LSS2,
+    TK.LBAR: TK.FALL_BELOW,
+    TK.RBAR: TK.RISE_ABOVE,
+    TK.AMPS: TK.AND,
+    TK.EXPN: TK.POW,
+    TK.COLN: TK.COLN,
+    TK.EXCL: TK.NOT,
+    TK.AND: TK.AND,
+    TK.OR: TK.OR,
+    TK.DOT: TK.DOT,
+    TK.LTE: TK.LTE,
+    TK.GTE: TK.GTE,
+    TK.EQGT: TK.RAISE,
+    TK.LESS: TK.LESS,
+    TK.GTR: TK.GTR,
+    TK.NEQ: TK.NEQ,
+    TK.EQEQ: TK.ISEQ,  # ==
+}
+_tk2unop = {
+    TK.PLUS: TK.PLUS,  # unary +
+    TK.MNUS: TK.NEG,  # unary -
+    TK.NOT: TK.NOT,
+    TK.EXCL: TK.NOT,  # !
+}
+
+# token sets for the parser
+_ADDITION_TOKENS = [TK.PLUS, TK.MNUS]
+_COMPARISON_TOKENS = [TK.LESS, TK.LTE, TK.GTR, TK.GTE, TK.IN, TK.LBAR, TK.RBAR]
+_FLOW_TOKENS = [TK.BAR, TK.GTR2, TK.SEMI, TK.EQGT]
+_EQUALITY_TEST_TOKENS = [TK.EQEQ, TK.NEQ]
+_LOGIC_TOKENS = [TK.AND, TK.OR, TK.AMPS, TK.CLN2]
+_MULTIPLICATION_TOKENS = [TK.SLSH, TK.STAR, TK.EXPN, TK.DOT]
+_UNARY_TOKENS = [TK.PLUS, TK.MNUS, TK.NOT, TK.EXCL]
+_IDENTIFIER_TYPES = [TCL.KEYWORD, TCL.SERIES, TCL.IDENTIFIER]

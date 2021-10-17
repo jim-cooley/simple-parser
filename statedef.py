@@ -2,6 +2,7 @@ from enum import Enum, unique, IntEnum, auto
 
 from tokens import TK
 
+
 # character class definitions: these need to be coordinated with column order in the state table
 @unique
 class CL(IntEnum):
@@ -43,6 +44,7 @@ class CL(IntEnum):
     NEWLN = 35
     WHITE = 36
     MAX = 37
+
 
 cClass = [
     #   0        1        2       3        4        5        6        7        8        9              0123456789
@@ -94,12 +96,14 @@ class ST(IntEnum):
     SQT2 = auto()   # py-style single-quote disambiguator 2 (entry)
     SQT3 = auto()   # py-style single-quote disambiguator 3 (exit)
     SQT4 = auto()   # py-style single-quote disambiguator 4 (exit)
-    GTR2 = auto()   # > disambiguation
-    LSS2 = auto()   # < disambiguation
-    EQLS = auto()   # = disambiguation
-    EXCL = auto()   # ! disambiguation
-    TIME = auto()   # parse time hh:mm:ss...
+    GTR2 = auto()   # > disambiguation (>, >=, >>)
+    LSS2 = auto()   # < disambiguation (<, <=, <<)
+    EQLS = auto()   # = disambiguation (=, ==, =>)
+    EXCL = auto()   # ! disambiguation (!, !=)
+    COLN = auto()   # : disambiguation (:, ::, :=, :-)
+    BAR = auto()    # | disambiguation (|, ||, |=)
     MNUS = auto()   # - disambiguation
+    TIME = auto()   # parse time hh:mm:ss...
     MAX = 31  # states > here are token ids
 
 
@@ -110,9 +114,9 @@ tkState = [
     #   0        1        2        3        4        5        6        7        8        9        10       1        2        3        4        5        6        7        8        9        20       1        2        3        4        5        6        7        8        9        30       1        2        3        4        5        6        7        8        9        40
     # CL.EOF,  CL.NONE, CL.LETR, CL.DIGT, CL.USCR, CL.SEMI, CL.COMA, CL.DOT,  CL.COLN, CL.MNUS, CL.PLUS, CL.STAR, CL.SLSH, CL.BSLH, CL.PCT,  CL.EXPN, CL.EQLS, CL.LBS,  CL.SQOT, CL.DQOT, CL.EXCL, CL.QSTN, CL.AMPS, CL.DLRS, CL.ATS,  CL.BAR,  CL.GTR,  CL.LESS, CL.LBRC, CL.RBRC, CL.LPRN, CL.RPRN, CL.LBRK, CL.RBRK, CL.TLDE, CL.NEWLN,CL.WHITE,
 # 0: ST.MAIN  - main scanning loop
-    [-TK.EOF,  TK.BAD,  ST.IDNT, ST.INT,  ST.IDNT, TK.SEMI, TK.COMA, TK.DOT,  TK.COLN, ST.MNUS, TK.PLUS, TK.STAR, ST.SLSH, TK.BSLH, TK.PCT,  TK.EXPN, ST.EQLS,-ST.SCMT,-ST.SQT1,-ST.DQOT, ST.EXCL, TK.QSTN, TK.AMPS,-ST.FLOT, TK.ATS,  TK.BAR,  ST.GTR2, ST.LSS2, TK.LBRC, TK.RBRC, TK.LPRN, TK.RPRN, TK.LBRK, TK.RBRK, TK.BAD, ST.WHT, ST.WHT],
+    [-TK.EOF,  TK.BAD,  ST.IDNT, ST.INT,  ST.IDNT, TK.SEMI, TK.COMA, TK.DOT,  ST.COLN, ST.MNUS, TK.PLUS, TK.STAR, ST.SLSH, TK.BSLH, TK.PCT,  TK.EXPN, ST.EQLS,-ST.SCMT,-ST.SQT1,-ST.DQOT, ST.EXCL, TK.QSTN, TK.AMPS,-ST.FLOT, TK.ATS,  TK.BAR,  ST.GTR2, ST.LSS2, TK.LBRC, TK.RBRC, TK.LPRN, TK.RPRN, TK.LBRK, TK.RBRK, TK.BAD, ST.WHT, ST.WHT],
 # 1: ST.IDENT - extract identifiers
-    [-TK.IDNT,-TK.IDNT, ST.IDNT, ST.IDNT, ST.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT, ST.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT],
+    [-TK.IDNT,-TK.IDNT, ST.IDNT, ST.IDNT, ST.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT],
 # 2: ST.INT   - extract integers
     [-TK.INT, -TK.INT,  TK.DUR,  ST.INT, -TK.INT, -TK.INT, -TK.INT,  ST.FLOT, ST.TIME,-TK.INT, -TK.INT, -TK.INT, -TK.INT, -TK.INT,  TK.PCT, -TK.INT, -TK.INT, -TK.INT, -TK.INT, -TK.INT, -TK.INT, -TK.INT, -TK.INT, -TK.INT, -TK.INT, -TK.INT, -TK.INT, -TK.INT, -TK.INT, -TK.INT, -TK.INT, -TK.INT, -TK.INT, -TK.INT, -TK.INT, -TK.INT, -TK.INT],
 # 3: ST.FLOT - extract floats (& currency)
@@ -146,12 +150,16 @@ tkState = [
 # 17: ST.LSS2- < disambiguation
     [-TK.LESS,-TK.LESS,-TK.LESS,-TK.LESS,-TK.LESS,-TK.LESS,-TK.LESS,-TK.LESS,-TK.LESS,-TK.LESS,-TK.LESS,-TK.LESS,-TK.LESS,-TK.LESS,-TK.LESS,-TK.LESS, TK.LTE, -TK.LESS,-TK.LESS,-TK.LESS,-TK.LESS,-TK.LESS,-TK.LESS,-TK.LESS,-TK.LESS, TK.LBAR,-TK.LESS, TK.LSS2,-TK.LESS,-TK.LESS,-TK.LESS,-TK.LESS,-TK.LESS,-TK.LESS,-TK.LESS,-TK.LESS,-TK.LESS],
 # 18: ST.EQLS- = disambiguation
-    [-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS, TK.EQEQ,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS, TK.GTE,  TK.LTE, -TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS],
-# 19: ST.NEQ- ! disambiguation
+    [-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS, TK.EQEQ,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS, TK.EQGT,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS,-TK.EQLS],
+# 19: ST.EXCL- ! disambiguation
     [-TK.EXCL,-TK.EXCL,-TK.EXCL,-TK.EXCL,-TK.EXCL,-TK.EXCL,-TK.EXCL,-TK.EXCL,-TK.EXCL,-TK.EXCL,-TK.EXCL,-TK.EXCL,-TK.EXCL,-TK.EXCL,-TK.EXCL,-TK.EXCL, TK.NEQ, -TK.EXCL,-TK.EXCL,-TK.EXCL, TK.EXCL,-TK.EXCL,-TK.EXCL,-TK.EXCL,-TK.EXCL,-TK.EXCL,-TK.EXCL,-TK.EXCL,-TK.EXCL,-TK.EXCL,-TK.EXCL,-TK.EXCL,-TK.EXCL,-TK.EXCL,-TK.EXCL,-TK.EXCL,-TK.EXCL],
-# 20: ST.TIME - extract time values
+# 20: ST.COLN- : disambiguation
+    [-TK.COLN,-TK.COLN,-TK.COLN,-TK.COLN,-TK.COLN,-TK.COLN,-TK.COLN,-TK.COLN, TK.CLN2, TK.CCMN,-TK.COLN,-TK.COLN,-TK.COLN,-TK.COLN,-TK.COLN,-TK.COLN, TK.CCEQ, -TK.COLN,-TK.COLN,-TK.COLN, TK.COLN,-TK.COLN,-TK.COLN,-TK.COLN,-TK.COLN,-TK.COLN,-TK.COLN,-TK.COLN,-TK.COLN,-TK.COLN,-TK.COLN,-TK.COLN,-TK.COLN,-TK.COLN,-TK.COLN,-TK.COLN,-TK.COLN],
+# 11: ST.BAR-  | disambiguation
+    [-TK.BAR, -TK.BAR, -TK.BAR, -TK.BAR, -TK.BAR, -TK.BAR, -TK.BAR, -TK.BAR, -TK.BAR, -TK.BAR, -TK.BAR, -TK.BAR, -TK.BAR, -TK.BAR, -TK.BAR, -TK.BAR,  TK.BAR, -TK.BAR, -TK.BAR, -TK.BAR,  TK.BAR, -TK.BAR, -TK.BAR, -TK.BAR, -TK.BAR,  TK.BAR2, -TK.BAR, -TK.BAR, -TK.BAR, -TK.BAR, -TK.BAR, -TK.BAR, -TK.BAR, -TK.BAR, -TK.BAR, -TK.BAR, -TK.BAR],
+# 22: ST.MNUS- - disambiguation
+    [-TK.MNUS,-TK.MNUS,-TK.MNUS, ST.INT, -TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS, TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS, TK.RARR,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS],
+# 23: ST.TIME - extract time values
     [-TK.TIME,-TK.TIME, TK.TIME, ST.TIME,-TK.TIME, -TK.TIME,-TK.TIME,ST.TIME,ST.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME],
-# 21: ST.MNUS- - disambiguation
-    [-TK.MNUS,-TK.MNUS,-TK.MNUS, ST.INT, -TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS, TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS],
 ]
 

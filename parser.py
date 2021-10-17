@@ -1,69 +1,11 @@
 from copy import copy
-from tokens import TK, TCL
+from tokens import TK, TCL, _ADDITION_TOKENS, _COMPARISON_TOKENS, _FLOW_TOKENS, \
+    _EQUALITY_TEST_TOKENS, _LOGIC_TOKENS, _MULTIPLICATION_TOKENS, _UNARY_TOKENS, _IDENTIFIER_TYPES
 from lexer import Lexer
 from symbols import SymbolTable
 from tree import UnaryOp, BinOp, Ident, FnCall, PropRef, PropCall, Seq
 from literals import Duration, Float, Int, Percent, Set, Str, Time, Bool
 from treedump import DumpTree
-
-# token conversion tables, could be array lookups rather than hashtable, but this is easier to maintain and not large.
-_tk2binop = {
-    TK.BAR: TK.PIPE,
-    TK.STAR: TK.MUL,
-    TK.SLSH: TK.DIV,
-    TK.PLUS: TK.ADD,
-    TK.MNUS: TK.SUB,
-    TK.EQLS: TK.ASSIGN,
-    TK.GTR2: TK.APPLY,
-    TK.LSS2: TK.LSS2,
-    TK.LBAR: TK.FALL_BELOW,
-    TK.RBAR: TK.RISE_ABOVE,
-    TK.AMPS: TK.AND,
-    TK.EXPN: TK.POW,
-    TK.COLN: TK.COLN,
-    TK.EXCL: TK.NOT,
-    TK.AND: TK.AND,
-    TK.OR: TK.OR,
-    TK.DOT: TK.DOT,
-    TK.LTE: TK.LTE,
-    TK.GTE: TK.GTE,
-    TK.LESS: TK.LESS,
-    TK.GTR: TK.GTR,
-    TK.NEQ: TK.NEQ,
-    TK.EQEQ: TK.ISEQ,  # ==
-}
-
-_tk2unop = {
-    TK.PLUS: TK.PLUS,  # unary +
-    TK.MNUS: TK.NEG,  # unary -
-    TK.NOT: TK.NOT,
-    TK.EXCL: TK.NOT,  # !
-}
-
-_ASSOCIATIVE_OPERATORS = [
-    TK.PLUS, TK.MNUS, TK.EQLS, TK.AMPS, TK.EXPN, TK.BAR, TK.AND, TK.OR, TK.DOT, TK.COLN, TK.EQLS
-]
-
-_BINARY_TOKENS = [
-    TK.STAR, TK.SLSH, TK.GTR2, TK.LSS2, TK.LBAR, TK.RBAR,
-    TK.NEQ, TK.EQEQ, TK.LTE, TK.GTE, TK.LESS, TK.GTR
-]
-
-_ADDITION_TOKENS = [TK.PLUS, TK.MNUS]
-
-_COMPARISON_TOKENS = [TK.LESS, TK.LTE, TK.GTR, TK.GTE, TK.IN, TK.LBAR, TK.RBAR]
-
-_FLOW_TOKENS = [TK.BAR, TK.GTR2, TK.SEMI, TK.COLN]
-
-_EQUALITY_TEST_TOKENS = [TK.EQEQ, TK.NEQ]
-
-_LOGIC_TOKENS = [TK.AND, TK.OR, TK.AMPS]
-
-_MULTIPLICATION_TOKENS = [TK.SLSH, TK.STAR, TK.EXPN, TK.DOT]
-
-_UNARY_TOKENS = [TK.PLUS, TK.MNUS, TK.NOT, TK.EXCL]
-
-_IDENTIFIER_TYPES = [TCL.KEYWORD, TCL.SERIES, TCL.IDENTIFIER]
 
 
 class Parser(object):
@@ -149,30 +91,40 @@ class Parser(object):
         return self.flow()
 
     def flow(self):
-        node = self.assignment()
+        node = self.set_parameters()
         op = copy(self.token)  # need a copy or we modify the _lexer's token with op.map()
-        if op.id in _FLOW_TOKENS:
-            seq = Seq(op.map(_tk2binop), [node])
-            while self.match(_FLOW_TOKENS):
-                node = self.logic_expr()
+        while op.id in _FLOW_TOKENS:
+            sep = op.id
+            seq = Seq(op.map2binop(), [node])
+            while self.match([sep]):
+                node = self.set_parameters()
                 seq.append(node)
             node = seq
+            op = copy(self.token)
+        return node
+
+    def set_parameters(self):
+        node = self.assignment()
+        op = self.token
+        while self.match([TK.COLN]):
+            node = BinOp(node, op.map2binop(), self.assignment())
+            op = self.token
         return node
 
     def assignment(self):
         node = self.logic_expr()
         op = self.token
-        while self.match([TK.EQLS]):
+        while self.match([TK.EQLS, TK.ASSIGN]):
             if node.token.t_class not in _IDENTIFIER_TYPES:
                 self._expected(expected='IDENTIFIER', found=f'{node.token.id.name}')
-            node = BinOp(left=node, op=op.map(_tk2binop), right=self.logic_expr())
+            node = BinOp(left=node, op=op.map2binop(), right=self.assignment())
         return node
 
     def logic_expr(self):
         node = self.equality()
         op = self.token
         while self.match(_LOGIC_TOKENS):
-            node = BinOp(node, op.map(_tk2binop), self.equality())
+            node = BinOp(node, op.map2binop(), self.equality())
             op = self.token
         return node
 
@@ -180,7 +132,7 @@ class Parser(object):
         node = self.comparison()
         op = self.token
         while self.match(_EQUALITY_TEST_TOKENS):
-            node = BinOp(node, op.map(_tk2binop), self.comparison())
+            node = BinOp(node, op.map2binop(), self.comparison())
             op = self.token
         return node
 
@@ -188,7 +140,7 @@ class Parser(object):
         node = self.term()
         op = self.token
         while self.match(_COMPARISON_TOKENS):
-            node = BinOp(node, op.map(_tk2binop), self.term())
+            node = BinOp(node, op.map2binop(), self.term())
             op = self.token
         return node
 
@@ -196,7 +148,7 @@ class Parser(object):
         node = self.factor()
         op = self.token
         while self.match(_ADDITION_TOKENS):
-            node = BinOp(node, op.map(_tk2binop), self.factor())
+            node = BinOp(node, op.map2binop(), self.factor())
             op = self.token
         return node
 
@@ -204,14 +156,14 @@ class Parser(object):
         node = self.unary()
         op = self.token
         while self.match(_MULTIPLICATION_TOKENS):
-            node = BinOp(node, op.map(_tk2binop), self.unary())
+            node = BinOp(node, op.map2binop(), self.unary())
             op = self.token
         return node
 
     def unary(self):
         op = self.peek()
         if self.match(_UNARY_TOKENS):
-            return UnaryOp(op.map(_tk2unop), self.unary())
+            return UnaryOp(op.map2unop(), self.unary())
         node = self.prime()
         if node is not None and node.token.id in [TK.ANY, TK.ALL, TK.NONEOF]:
             node = UnaryOp(node.token, self.unary())
@@ -242,6 +194,7 @@ class Parser(object):
             self.expect(TK.LBRC)
             node = Set(token, Seq(token, self.sequence(TK.COMA)))
             self.expect(TK.RBRC)
+            return node
         elif token.id == TK.LPRN:
             self.advance()
             node = self.expression()
@@ -258,6 +211,9 @@ class Parser(object):
     # Helpers
     # -----------------------------------
     def identifier(self):
+        """
+        identifier | identifier ( plist ) | identifier . identifier
+        """
         tk = self._symbol_table.find_add_symbol(self.peek())
         token = self.advance()
         if token.id == TK.DOT:

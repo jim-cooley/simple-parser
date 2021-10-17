@@ -7,6 +7,8 @@ sequences_tests = [
     "a | b >> c | d",
     "a | b | c >> d",
     "a >> b | c | d",
+    "a | b | c => d",
+    "a | b => c | d",
     "a() | b",
     "a(x) | b",
     "a(x,y) | b",
