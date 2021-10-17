@@ -17,7 +17,7 @@ start=$(date +%s)
 ./test_parser.py $suite
 end=$(date +%s)
 
-printf "$(($end - $start)) seconds\n\n"
+printf "\n\n$((end - start)) seconds\n\n"
 
 printf "\n\n================================\n"
 printf "verifying results\n"
@@ -61,6 +61,6 @@ printf "  total:       $total\n"
 printf "================================\n\n"
 
 end=$(date +%s)
-printf "$(($end - $start)) seconds\n\n"
+printf "$((end - start)) seconds\n\n"
 
 printf "\n\n"
