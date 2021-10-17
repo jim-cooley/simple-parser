@@ -102,8 +102,9 @@ class ST(IntEnum):
     EXCL = auto()   # ! disambiguation (!, !=)
     COLN = auto()   # : disambiguation (:, ::, :=, :-)
     BAR = auto()    # | disambiguation (|, ||, |=)
-    MNUS = auto()   # - disambiguation
-    PLUS = auto()   # + disambiguation
+    MNUS = auto()   # - disambiguation (-, -=, --)
+    PLUS = auto()   # + disambiguation (+, +=, ++)
+    DOT = auto()    # . disambiguation (., ..)
     TIME = auto()   # parse time hh:mm:ss...
     MAX = 31  # states > here are token ids
 
@@ -115,7 +116,7 @@ tkState = [
     #   0        1        2        3        4        5        6        7        8        9        10       1        2        3        4        5        6        7        8        9        20       1        2        3        4        5        6        7        8        9        30       1        2        3        4        5        6        7        8        9        40
     # CL.EOF,  CL.NONE, CL.LETR, CL.DIGT, CL.USCR, CL.SEMI, CL.COMA, CL.DOT,  CL.COLN, CL.MNUS, CL.PLUS, CL.STAR, CL.SLSH, CL.BSLH, CL.PCT,  CL.EXPN, CL.EQLS, CL.LBS,  CL.SQOT, CL.DQOT, CL.EXCL, CL.QSTN, CL.AMPS, CL.DLRS, CL.ATS,  CL.BAR,  CL.GTR,  CL.LESS, CL.LBRC, CL.RBRC, CL.LPRN, CL.RPRN, CL.LBRK, CL.RBRK, CL.TLDE, CL.NEWLN,CL.WHITE,
 # 0: ST.MAIN  - main scanning loop
-    [-TK.EOF,  TK.BAD,  ST.IDNT, ST.INT,  ST.IDNT, TK.SEMI, TK.COMA, TK.DOT,  ST.COLN, ST.MNUS, ST.PLUS, TK.STAR, ST.SLSH, TK.BSLH, TK.PCT,  TK.EXPN, ST.EQLS,-ST.SCMT,-ST.SQT1,-ST.DQOT, ST.EXCL, TK.QSTN, TK.AMPS,-ST.FLOT, TK.ATS,  TK.BAR,  ST.GTR2, ST.LSS2, TK.LBRC, TK.RBRC, TK.LPRN, TK.RPRN, TK.LBRK, TK.RBRK, TK.BAD, ST.WHT, ST.WHT],
+    [-TK.EOF,  TK.BAD,  ST.IDNT, ST.INT,  ST.IDNT, TK.SEMI, TK.COMA, ST.DOT,  ST.COLN, ST.MNUS, ST.PLUS, TK.STAR, ST.SLSH, TK.BSLH, TK.PCT,  TK.EXPN, ST.EQLS,-ST.SCMT,-ST.SQT1,-ST.DQOT, ST.EXCL, TK.QSTN, TK.AMPS,-ST.FLOT, TK.ATS,  TK.BAR,  ST.GTR2, ST.LSS2, TK.LBRC, TK.RBRC, TK.LPRN, TK.RPRN, TK.LBRK, TK.RBRK, TK.BAD, ST.WHT, ST.WHT],
 # 1: ST.IDENT - extract identifiers
     [-TK.IDNT,-TK.IDNT, ST.IDNT, ST.IDNT, ST.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT],
 # 2: ST.INT   - extract integers
@@ -162,7 +163,9 @@ tkState = [
     [-TK.MNUS,-TK.MNUS,-TK.MNUS, ST.INT, -TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS, TK.MNU2,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS, TK.MNEQ,-TK.MNUS,-TK.MNUS,-TK.MNUS, TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS, TK.RARR,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS,-TK.MNUS],
 # 23: ST.PLUS- + disambiguation
     [-TK.PLUS,-TK.PLUS,-TK.PLUS,-TK.PLUS,-TK.PLUS,-TK.PLUS,-TK.PLUS,-TK.PLUS,-TK.PLUS,-TK.PLUS, TK.PLU2,-TK.PLUS,-TK.PLUS,-TK.PLUS,-TK.PLUS,-TK.PLUS, TK.PLEQ,-TK.PLUS,-TK.PLUS,-TK.PLUS, TK.PLUS,-TK.PLUS,-TK.PLUS,-TK.PLUS,-TK.PLUS, TK.RARR,-TK.PLUS,-TK.PLUS,-TK.PLUS,-TK.PLUS,-TK.PLUS,-TK.PLUS,-TK.PLUS,-TK.PLUS,-TK.PLUS,-TK.PLUS,-TK.PLUS],
-# 24: ST.TIME - extract time values
+# 24: ST.DOT- . disambiguation
+    [-TK.DOT, -TK.DOT, -TK.DOT, -TK.DOT, -TK.DOT, -TK.DOT, -TK.DOT,  TK.DOT2,-TK.DOT, -TK.DOT, -TK.DOT, -TK.DOT, -TK.DOT, -TK.DOT, -TK.DOT, -TK.DOT, -TK.DOT,-TK.DOT, -TK.DOT, -TK.DOT,  TK.DOT, -TK.DOT, -TK.DOT, -TK.DOT, -TK.DOT,  -TK.DOT, -TK.DOT, -TK.DOT, -TK.DOT, -TK.DOT, -TK.DOT, -TK.DOT, -TK.DOT, -TK.DOT, -TK.DOT, -TK.DOT, -TK.DOT],
+# 25: ST.TIME - extract time values
     [-TK.TIME,-TK.TIME, TK.TIME, ST.TIME,-TK.TIME, -TK.TIME,-TK.TIME,ST.TIME,ST.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME],
 ]
 
