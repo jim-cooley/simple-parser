@@ -95,22 +95,27 @@ class Parser(object):
         text = f"{carrot}\n{message} at position: {loc.line + 1}:{loc.offset}"
         print(text)
 
+    # return current token with provision for fetching if there are none.
+    # after the first token, self.token works fine for peek.
+    def peek(self):
+        if self.token is None:
+            self._lexer.advance()
+        return self.token
+
     # returns current token and advances (!!! UNDONE: needs to be fixed !!!)
     def advance(self):
         return self._lexer.advance()
-
-    # new advance.  maintains a 1 token lookahead.
-    def advance2(self):
-        tk = self.peek()
-        if tk.id != TK.EOF:
-            self._lexer.advance()
-        return tk
 
     # if current token matches
     def check(self, ex_tid):
         return False if self.token.id == TK.EOF else self.token.id == ex_tid
 
-    def check_next(self, ex_tid=None):
+    def expect(self, ex_tid):
+        if self.token.id == ex_tid:
+            return self.token
+        self._expected(expected=f'{ex_tid.name}', found=f'{self.token.id.name}')
+
+    def expect_next(self, ex_tid=None):
         token = self.advance()
         if self.token.id == ex_tid:
             return token
@@ -126,20 +131,15 @@ class Parser(object):
             return True
         return False
 
-    # return current token with provision for fetching if there are none.
-    # after the first token, self.token works fine for peek.
-    def peek(self):
-        if self.token is None:
-            self._lexer.advance()
-        return self.token
-
     # skip over the expected current token.
     def skip(self, ex_tid):
         if self.token.id == ex_tid:
             return self.advance()
         self._expected(expected=f'{ex_tid.name}', found=f'{self.token.id.name}')
 
-    # primordial soup
+    # -----------------------------------
+    # Recursive Descent Parser States
+    # -----------------------------------
     def prime(self):
         node = None
         token = self.peek()
@@ -167,7 +167,7 @@ class Parser(object):
             self.skip(TK.RBRC)
         elif token.id == TK.LPRN:
             self.advance()
-            node = self.expr2()
+            node = self.expression()
             self.skip(TK.RPRN)
             return node
         elif token.t_class in _IDENTIFIER_TYPES or token.id == TK.IDNT:
@@ -187,7 +187,7 @@ class Parser(object):
             node = UnaryOp(node.token, self.unary())
         return node
 
-    def factor2(self):
+    def factor(self):
         node = self.unary()
         op = self.token
         while self.match(_MULTIPLICATION_TOKENS):
@@ -195,65 +195,19 @@ class Parser(object):
             op = self.token
         return node
 
-    # fetch new token and see that it matches
-    def factor(self):
-        """factor : (PLUS | MINUS) factor | INTEGER | LPAREN expr RPAREN"""
-        token = self.peek()
-        if token.t_class not in _IDENTIFIER_TYPES and token.id != TK.IDNT:
-            self.advance()
-            if token.id in _UNARY_TOKENS:  # Unary operators
-                token.id = _tk2unop[token.id]
-                node = UnaryOp(token, self.factor())
-            elif token.id == TK.INT:
-                node = Int(token)
-            elif token.id == TK.FLOT:
-                node = Float(token)
-            elif token.id == TK.PCT:
-                node = Percent(token)
-            elif token.id == TK.DUR:
-                node = Duration(token)
-            elif token.id == TK.TIME:
-                node = Time(token)
-            elif token.id == TK.QUOT:
-                node = Str(token)
-            elif token.id == TK.LPRN:
-                node = self.expr()
-                self.skip(TK.RPRN)
-            elif token.id == TK.LBRC:
-                node = Set(token, Seq(token, self.sequence(TK.COMA)))
-            elif token.id == TK.LBRK:
-                node = self.expr()
-                self.skip(TK.RBRK)
-            else:
-                node = None
-        else:
-            node = self.identifier()
-        return node
-
     def term(self):
-        """term : factor ((MUL | DIV) factor)*"""
         node = self.factor()
-        token = self.peek()
-        if token.id in _BINARY_TOKENS:
-            while token.id in _BINARY_TOKENS:
-                self.advance()
-                node = BinOp(left=node, op=token.map(_tk2binop), right=self.factor())
-                token = self.peek()
-        return node
-
-    def term2(self):
-        node = self.factor2()
         op = self.token
         while self.match(_ADDITION_TOKENS):
-            node = BinOp(node, op.map(_tk2binop), self.factor2())
+            node = BinOp(node, op.map(_tk2binop), self.factor())
             op = self.token
         return node
 
     def comparison(self):
-        node = self.term2()
+        node = self.term()
         op = self.token
         while self.match(_COMPARISON_TOKENS):
-            node = BinOp(node, op.map(_tk2binop), self.term2())
+            node = BinOp(node, op.map(_tk2binop), self.term())
             op = self.token
         return node
 
@@ -273,7 +227,7 @@ class Parser(object):
             op = self.token
         return node
 
-    def assignment_expression(self):
+    def assignment(self):
         node = self.logic_expr()
         op = self.token
         while self.match([TK.EQLS]):
@@ -282,8 +236,8 @@ class Parser(object):
             node = BinOp(left=node, op=op.map(_tk2binop), right=self.logic_expr())
         return node
 
-    def flow_expr(self):
-        node = self.assignment_expression()
+    def flow(self):
+        node = self.assignment()
         op = copy(self.token)  # need a copy or we modify the _lexer's token with op.map()
         if op.id in _FLOW_TOKENS:
             seq = Seq(op.map(_tk2binop), [node])
@@ -293,42 +247,14 @@ class Parser(object):
             node = seq
         return node
 
-    # new expr
-    def expr2(self):
-        return self.flow_expr()
-
-    def expr(self):
-        """
-        expr   : term ((PLUS | MINUS) term)*
-        term   : factor ((MUL | DIV) factor)*
-        factor : (PLUS | MINUS) factor | INTEGER | LPAREN expr RPAREN
-        """
-        node = self.term()
-        while self.token.id in _ASSOCIATIVE_OPERATORS:
-            token = self.token
-            if token.id == TK.BAR:
-                self.skip(TK.BAR)
-                token.id = TK.PIPE
-                token.t_class = TCL.LIST
-                node = Seq(token, self.sequence(TK.BAR, node))
-            elif token.id == TK.COLN:
-                token.id = _tk2binop[token.id]
-                self.advance()
-                if self.token.id == TK.LPRN:
-                    node = BinOp(left=node, op=token, right=self.plist())
-                else:
-                    node = BinOp(left=node, op=token, right=self.term())
-            else:
-                self.advance()
-                token.id = _tk2binop[token.id]
-                node = BinOp(left=node, op=token, right=self.term())
-        return node
+    def expression(self):
+        return self.flow()
 
     def identifier(self):
         tk = self._symbol_table.find_add_symbol(self.peek())
         token = self.advance()
         if token.id == TK.DOT:
-            token = self.check_next(TK.IDNT)
+            token = self.expect_next(TK.IDNT)
             node = PropRef(tk, self.identifier())
             if token.id == TK.LPRN:
                 node = PropCall(tk, node.member, self.plist())
@@ -354,7 +280,7 @@ class Parser(object):
         """EXPR <sep> EXPR <sep> ..."""
         seq = [] if node is None else [node]
         while True:
-            node = self.expr2()
+            node = self.expression()
             seq.append(node)
             if self.peek().id != sep:
                 break
@@ -364,7 +290,7 @@ class Parser(object):
     def parse(self):
         self.nodes = []
         while self._lexer.readable():
-            node = self.expr2()
+            node = self.expression()
             self.nodes.append(node)
         return self.nodes
 
