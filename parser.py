@@ -133,8 +133,90 @@ class Parser(object):
         return False
 
     # -----------------------------------
+    # Parser entry point
+    # -----------------------------------
+    def parse(self):
+        self.nodes = []
+        while self._lexer.readable():
+            node = self.expression()
+            self.nodes.append(node)
+        return self.nodes
+
+    # -----------------------------------
     # Recursive Descent Parser States
     # -----------------------------------
+    def expression(self):
+        return self.flow()
+
+    def flow(self):
+        node = self.assignment()
+        op = copy(self.token)  # need a copy or we modify the _lexer's token with op.map()
+        if op.id in _FLOW_TOKENS:
+            seq = Seq(op.map(_tk2binop), [node])
+            while self.match(_FLOW_TOKENS):
+                node = self.logic_expr()
+                seq.append(node)
+            node = seq
+        return node
+
+    def assignment(self):
+        node = self.logic_expr()
+        op = self.token
+        while self.match([TK.EQLS]):
+            if node.token.t_class not in _IDENTIFIER_TYPES:
+                self._expected(expected='IDENTIFIER', found=f'{node.token.id.name}')
+            node = BinOp(left=node, op=op.map(_tk2binop), right=self.logic_expr())
+        return node
+
+    def logic_expr(self):
+        node = self.equality()
+        op = self.token
+        while self.match(_LOGIC_TOKENS):
+            node = BinOp(node, op.map(_tk2binop), self.equality())
+            op = self.token
+        return node
+
+    def equality(self):
+        node = self.comparison()
+        op = self.token
+        while self.match(_EQUALITY_TEST_TOKENS):
+            node = BinOp(node, op.map(_tk2binop), self.comparison())
+            op = self.token
+        return node
+
+    def comparison(self):
+        node = self.term()
+        op = self.token
+        while self.match(_COMPARISON_TOKENS):
+            node = BinOp(node, op.map(_tk2binop), self.term())
+            op = self.token
+        return node
+
+    def term(self):
+        node = self.factor()
+        op = self.token
+        while self.match(_ADDITION_TOKENS):
+            node = BinOp(node, op.map(_tk2binop), self.factor())
+            op = self.token
+        return node
+
+    def factor(self):
+        node = self.unary()
+        op = self.token
+        while self.match(_MULTIPLICATION_TOKENS):
+            node = BinOp(node, op.map(_tk2binop), self.unary())
+            op = self.token
+        return node
+
+    def unary(self):
+        op = self.peek()
+        if self.match(_UNARY_TOKENS):
+            return UnaryOp(op.map(_tk2unop), self.unary())
+        node = self.prime()
+        if node is not None and node.token.id in [TK.ANY, TK.ALL, TK.NONEOF]:
+            node = UnaryOp(node.token, self.unary())
+        return node
+
     def prime(self):
         node = None
         token = self.peek()
@@ -172,79 +254,9 @@ class Parser(object):
         self.advance()
         return node
 
-    # handle unary expressions
-    def unary(self):
-        op = self.peek()
-        if self.match(_UNARY_TOKENS):
-            return UnaryOp(op.map(_tk2unop), self.unary())
-        node = self.prime()
-        if node is not None and node.token.id in [TK.ANY, TK.ALL, TK.NONEOF]:
-            node = UnaryOp(node.token, self.unary())
-        return node
-
-    def factor(self):
-        node = self.unary()
-        op = self.token
-        while self.match(_MULTIPLICATION_TOKENS):
-            node = BinOp(node, op.map(_tk2binop), self.unary())
-            op = self.token
-        return node
-
-    def term(self):
-        node = self.factor()
-        op = self.token
-        while self.match(_ADDITION_TOKENS):
-            node = BinOp(node, op.map(_tk2binop), self.factor())
-            op = self.token
-        return node
-
-    def comparison(self):
-        node = self.term()
-        op = self.token
-        while self.match(_COMPARISON_TOKENS):
-            node = BinOp(node, op.map(_tk2binop), self.term())
-            op = self.token
-        return node
-
-    def equality(self):
-        node = self.comparison()
-        op = self.token
-        while self.match(_EQUALITY_TEST_TOKENS):
-            node = BinOp(node, op.map(_tk2binop), self.comparison())
-            op = self.token
-        return node
-
-    def logic_expr(self):
-        node = self.equality()
-        op = self.token
-        while self.match(_LOGIC_TOKENS):
-            node = BinOp(node, op.map(_tk2binop), self.equality())
-            op = self.token
-        return node
-
-    def assignment(self):
-        node = self.logic_expr()
-        op = self.token
-        while self.match([TK.EQLS]):
-            if node.token.t_class not in _IDENTIFIER_TYPES:
-                self._expected(expected='IDENTIFIER', found=f'{node.token.id.name}')
-            node = BinOp(left=node, op=op.map(_tk2binop), right=self.logic_expr())
-        return node
-
-    def flow(self):
-        node = self.assignment()
-        op = copy(self.token)  # need a copy or we modify the _lexer's token with op.map()
-        if op.id in _FLOW_TOKENS:
-            seq = Seq(op.map(_tk2binop), [node])
-            while self.match(_FLOW_TOKENS):
-                node = self.logic_expr()
-                seq.append(node)
-            node = seq
-        return node
-
-    def expression(self):
-        return self.flow()
-
+    # -----------------------------------
+    # Helpers
+    # -----------------------------------
     def identifier(self):
         tk = self._symbol_table.find_add_symbol(self.peek())
         token = self.advance()
@@ -281,13 +293,6 @@ class Parser(object):
                 break
             self.expect(sep)
         return seq
-
-    def parse(self):
-        self.nodes = []
-        while self._lexer.readable():
-            node = self.expression()
-            self.nodes.append(node)
-        return self.nodes
 
     @staticmethod
     def print_tree(node):
