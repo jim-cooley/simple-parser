@@ -26,6 +26,15 @@ _KEYWORDS = [
     (TK.NONE, TCL.KEYWORD, 'None'),
     (TK.TRUE, TCL.KEYWORD, 'True'),
     (TK.FALSE, TCL.KEYWORD, 'False'),
+    (TK.DEFINE, TCL.KEYWORD, 'def'),
+]
+
+_FUNCTIONS = [
+    (TK.IDNT, TCL.KEYWORD, 'apply'),
+    (TK.IDNT, TCL.KEYWORD, 'columns'),
+    (TK.IDNT, TCL.KEYWORD, 'expr'),
+    (TK.IDNT, TCL.KEYWORD, 'fillempty'),
+    (TK.IDNT, TCL.KEYWORD, 'select')
 ]
 
 TK_TYPES = {

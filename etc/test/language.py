@@ -1,7 +1,8 @@
 language_tests = [
     "close.sma(13) | signal(price, how='>')",
     "any:{ close >| sma(10), close <| sma(20) }:threshold=0.01 | signal >> avg | delay(1d) | buy",
-    "any:{ close >| sma(10), close <| sma(20) }:threshold=0.01 | signal >> avg | delay(1d) => buy",
+    "atr = (high - low) / 2; median = (close - open) /2",
+    "any:{ close >| sma(10), close <| sma(20) }:(threshold=0.01) | signal >> atr | delay(1d) => buy",
     "any:{ cross(close, sma(20), delay=1, threshold=0.01) } | buy",
     "any::{ cross(close, sma(20), delay=1, threshold=0.01) } | buy",
     "pcross(close, sma(13)) | smacd(close, 20, 50) | smacd.close(20,50) | close.smacd(20,50)",

@@ -105,7 +105,11 @@ class TK(IntEnum):
     CCEQ = auto()   # :=
     CCMN = auto()   # :-
     MNUS = auto()   # -
+    MNU2 = auto()   # --
+    MNEQ = auto()   # -=
     PLUS = auto()   # +
+    PLU2 = auto()   # ++
+    PLEQ = auto()   # +=
     STAR = auto()   # *
     SLSH = auto()   # /
     BSLH = auto()   # \
@@ -188,6 +192,7 @@ class TK(IntEnum):
     BUY = auto()
     SELL = auto()
     SIGNAL = auto()
+    DEFINE = auto()
 
     LAST = 299  # last reserved token id
 
@@ -227,11 +232,11 @@ _tk2unop = {
 }
 
 # token sets for the parser
-_ADDITION_TOKENS = [TK.PLUS, TK.MNUS]
+_ADDITION_TOKENS = [TK.PLUS, TK.MNUS, TK.MNEQ, TK.PLEQ]
 _COMPARISON_TOKENS = [TK.LESS, TK.LTE, TK.GTR, TK.GTE, TK.IN, TK.LBAR, TK.RBAR]
 _FLOW_TOKENS = [TK.BAR, TK.GTR2, TK.EQGT]
 _EQUALITY_TEST_TOKENS = [TK.EQEQ, TK.NEQ]
 _LOGIC_TOKENS = [TK.AND, TK.OR, TK.AMPS, TK.CLN2]
 _MULTIPLICATION_TOKENS = [TK.SLSH, TK.STAR, TK.EXPN, TK.DOT]
-_UNARY_TOKENS = [TK.PLUS, TK.MNUS, TK.NOT, TK.EXCL]
+_UNARY_TOKENS = [TK.PLUS, TK.MNUS, TK.NOT, TK.EXCL, TK.MNU2, TK.PLU2]
 _IDENTIFIER_TYPES = [TCL.KEYWORD, TCL.SERIES, TCL.IDENTIFIER]

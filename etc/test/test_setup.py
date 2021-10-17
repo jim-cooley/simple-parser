@@ -21,6 +21,8 @@ from etc.test.set_unary import set_unary_tests
 from etc.test.sets import sets_tests
 from etc.test.statements import statements_tests
 from etc.test.time import time_tests
+from etc.test.trades1 import trades1_tests
+from etc.test.trades2 import trades2_tests
 from etc.test.unary_operators import unary_operators_tests
 
 test_data = {
@@ -48,6 +50,8 @@ test_data = {
     'set_unary': set_unary_tests,
     'statements': statements_tests,
     'time': time_tests,
+    'trades1': trades1_tests,
+    'trades2': trades2_tests,
     'unary_operators': unary_operators_tests,
 }
 
