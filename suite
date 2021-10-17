@@ -13,7 +13,11 @@ printf "\n\n================================\n"
 printf "running tests\n"
 printf "================================\n"
 
+start=$(date +%s)
 ./test_parser.py $suite
+end=$(date +%s)
+
+printf "$(($end - $start)) seconds\n\n"
 
 printf "\n\n================================\n"
 printf "verifying results\n"
@@ -55,4 +59,8 @@ printf "  fail:        $((total-pass-no_baseline))\n"
 printf "  no baseline: $no_baseline\n"
 printf "  total:       $total\n"
 printf "================================\n\n"
+
+end=$(date +%s)
+printf "$(($end - $start)) seconds\n\n"
+
 printf "\n\n"
