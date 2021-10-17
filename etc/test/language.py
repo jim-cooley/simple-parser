@@ -5,7 +5,7 @@ language_tests = [
     "any:{ cross(close, sma(20), delay=1, threshold=0.01) } | buy",
     "any::{ cross(close, sma(20), delay=1, threshold=0.01) } | buy",
     "pcross(close, sma(13)) | smacd(close, 20, 50) | smacd.close(20,50) | close.smacd(20,50)",
-    "any:{ close >|:{threshold=0.01} sma(20) } | avg.delay(1d) | buy",
+    "any:{ close >| sma(20) }::{threshold=0.01} | avg.delay(1d) | buy",
     "(close.sma(20) and close.sma(50)) | diff | sign | signal(how='cross')",
     "{close.sma(20) and close.sma(50)} | diff | sign | signal(how='cross')",
     "open.delay(1d) | buy",
@@ -14,6 +14,6 @@ language_tests = [
     "close >| sma(10) and close <| sma(20) | signal",
     "close >| sma(10) and close <| sma(20) | signal >> open.delay(1d)",
     "close >| sma(10) and close <| sma(20) | signal >> open.delay(1d) | buy",
-    "start: open.delay(1d) | buy; end: open | sell.",
+    "start: open.delay(1d) | buy; end: open | sell",
     "close >| sma(20) | signal | open.delay(1d) | buy; close <| sma(10) | signal | open.delay(1d) | sell",
 ]

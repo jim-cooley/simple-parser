@@ -88,7 +88,11 @@ class Parser(object):
     # Recursive Descent Parser States
     # -----------------------------------
     def expression(self):
-        return self.flow()
+        node = self.flow()
+        op = self.token
+        if op.id == TK.SEMI:
+            self.advance()
+        return node
 
     def flow(self):
         node = self.set_parameters()
