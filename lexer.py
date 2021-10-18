@@ -40,22 +40,10 @@ class Lexer(object):
     def tell(self):
         return self._loc
 
-    def advance(self, skip_white_space=True):
-        tk = self._fetch(skip_white_space)
+    def advance(self, skip_white_space=True, skip_end_of_line=True):
+        tk = self._fetch(skip_white_space, skip_end_of_line)
         print(tk.format())
         return tk
-
-    def _advance(self, skip_white_space=True):
-        tk = self.peek()
-        self._fetch(skip_white_space)
-        print(tk.format())
-        return tk
-
-    def match(self, ex_token):
-        if self.peek() == ex_token:
-            self.advance()
-            return True
-        return False
 
     def peek(self):
         if self.token is None:
@@ -63,12 +51,11 @@ class Lexer(object):
         return self.token
 
     # Parsing protocol
-    def _fetch(self, skip_white_space=True):
+    def _fetch(self, skip_white_space=True, skip_end_of_line=True):
         tk = Token(TK.EOF)
         fetch = False
-        isValidToken = False
 
-        while not isValidToken:
+        while True:
             tk.lexeme = ""
             self._state = _.ST.MAIN
             while self._state <= _.ST.MAX:
@@ -89,8 +76,14 @@ class Lexer(object):
                     fetch = False
                     self.get_char()
             tk.id = TK(cs)
-            if not skip_white_space or tk.id != TK.WHT:
-                break
+            if tk.id == TK.EOL:
+                self._loc.line += 1
+                self._loc.offset = 0
+                if not skip_end_of_line:
+                    break
+            if skip_white_space and tk.id == TK.WHT:
+                continue
+            break
         if tk.id == TK.IDNT:
             tk.t_class = TCL.IDENTIFIER
             tk =self.symbols.find_add_symbol(tk)
@@ -113,8 +106,8 @@ class Lexer(object):
             self._char = chr(self._chid)
         else:
             self._char = chr(self._chid)
-            if self._chid == 13:    # both unix and PC have \r
-                self._loc.line += 1
-                self._loc.offset = 0
+#            if self._chid == 13:    # both unix and PC have \r
+#                self._loc.line += 1
+#                self._loc.offset = 0
             self._loc.offset += 1
         return self._chid

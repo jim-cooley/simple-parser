@@ -1,9 +1,9 @@
 from copy import copy
 from tokens import TK, TCL, _ADDITION_TOKENS, _COMPARISON_TOKENS, _FLOW_TOKENS, \
-    _EQUALITY_TEST_TOKENS, _LOGIC_TOKENS, _MULTIPLICATION_TOKENS, _UNARY_TOKENS, _IDENTIFIER_TYPES
+    _EQUALITY_TEST_TOKENS, _LOGIC_TOKENS, _MULTIPLICATION_TOKENS, _UNARY_TOKENS, _IDENTIFIER_TYPES, Token
 from lexer import Lexer
 from symbols import SymbolTable
-from tree import UnaryOp, BinOp, Ident, FnCall, PropRef, PropCall, Seq
+from tree import UnaryOp, BinOp, Ident, FnCall, PropRef, PropCall, Seq, Command
 from literals import Duration, Float, Int, Percent, Set, Str, Time, Bool
 from treedump import DumpTree
 
@@ -13,6 +13,7 @@ class Parser(object):
         self._symbol_table = (SymbolTable() if lexer is None else lexer.symbols) if symtab is None else symtab
         self._lexer = Lexer(string=str, symtab=self._symbol_table) if lexer is None else lexer
         self._parse_string = str  # which could be none
+        self._skip_end_of_line = True
         self.nodes = []
 
     # syntactic sugar (use self.peek)
@@ -44,9 +45,10 @@ class Parser(object):
             self._lexer.advance()
         return self.token
 
-    # returns current token and advances (!!! UNDONE: needs to be fixed !!!)
-    def advance(self):
-        return self._lexer.advance()
+    # returns current token and advances
+    def advance(self, skip_white_space=True, skip_end_of_line=None):
+        skip_end_of_line = self._skip_end_of_line if skip_end_of_line is None else skip_end_of_line
+        return self._lexer.advance(skip_white_space, skip_end_of_line)
 
     # if current token matches
     def check(self, ex_tid):
@@ -54,6 +56,8 @@ class Parser(object):
 
     # skip over the expected current token.
     def expect(self, ex_tid):
+        while self._skip_end_of_line and self.token.id == TK.EOL:
+            self.advance(skip_end_of_line=self._skip_end_of_line)
         if self.token.id == ex_tid:
             return self.advance()
         self._expected(expected=f'{ex_tid.name}', found=f'{self.token.id.name}')
@@ -81,17 +85,45 @@ class Parser(object):
         self.nodes = []
         while self._lexer.readable():
             node = self.expression()
-            self.nodes.append(node)
+            if type(node).__name__ != "list":
+                self.nodes.append(node)
+            else:
+                self.nodes += node  # a list can be returned
         return self.nodes
 
     # -----------------------------------
     # Recursive Descent Parser States
     # -----------------------------------
-    def expression(self):
-        node = self.flow()
-        op = self.token
-        if op.id == TK.SEMI:
+    def parse_command(self):
+        nodes = []
+        tk = self.peek()
+        if not self.match([TK.EOL]) and tk.id == TK.PCT2:
+            self._skip_end_of_line = False
             self.advance()
+            while tk.id != TK.EOL:
+                nodes.append(
+                    Command(Token(tid=TK.PCT2, tcl=TCL.COMMAND, lex="%%", loc=self._lexer.tell()), self.expression()))
+                tk = self.peek()
+                if tk.id in [TK.EOF, TK.EOL]:
+                    break
+            self._skip_end_of_line = True
+            return nodes
+        self._skip_end_of_line = True
+        return self.flow()
+
+    # -----------------------------------
+    # Recursive Descent Parser States
+    # -----------------------------------
+    def expression(self):
+        op = self.peek()
+        if self.match([TK.DEFINE]):
+            node = UnaryOp(op, self.flow())
+            self.advance()
+        else:
+            node = self.parse_command()
+            op = self.peek()
+            if op.id == TK.SEMI:
+                self.advance()
         return node
 
     def flow(self):
@@ -110,9 +142,10 @@ class Parser(object):
     def set_parameters(self):
         node = self.assignment()
         op = self.token
-        while self.match([TK.COLN]):
-            node = BinOp(node, op.map2binop(), self.assignment())
-            op = self.token
+        if op.id == TK.COLN:
+            while self.match([TK.COLN]):
+                node = BinOp(node, op.map2binop(), self.assignment())
+                op = self.token
         return node
 
     def assignment(self):
@@ -176,6 +209,8 @@ class Parser(object):
     def prime(self):
         node = None
         token = self.peek()
+        if token.id == TK.EOL:
+            return node
         if token.id == TK.FALSE:
             node = Bool(token, False)
         elif token.id == TK.TRUE:

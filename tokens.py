@@ -74,6 +74,7 @@ class Token:
 class TCL(IntEnum):
     NONE = 0
     BINOP = auto()
+    COMMAND = auto()
     DICT = auto()   # k-v pairs
     KEYWORD = auto()
     LIST = auto()   # ordered
@@ -91,64 +92,66 @@ class TCL(IntEnum):
 # tokens
 @unique
 class TK(IntEnum):
-    WHT = (ST_MAX + 1)  # 32    - numbers only provided to facilitate debugging.
-    IDNT = auto()   #
-    INT = auto()    #
-    FLOT = auto()   #
-    STR = auto()    #
-    USCR = auto()   # _
-    SEMI = auto()   # ;
-    COMA = auto()   # ,
-    DOT = auto()    # .
-    DOT2 = auto()   # ..
-    COLN = auto()   # :
-    CLN2 = auto()   # ::
-    CCEQ = auto()   # :=
-    CCMN = auto()   # :-
-    MNUS = auto()   # -
-    MNU2 = auto()   # --
-    MNEQ = auto()   # -=
-    PLUS = auto()   # +
-    PLU2 = auto()   # ++
-    PLEQ = auto()   # +=
-    STAR = auto()   # *
-    SLSH = auto()   # /
-    BSLH = auto()   # \
-    PCT = auto()    # %
-    EXPN = auto()   # ^
-    EQLS = auto()   # =
-    LBS = auto()    # #
-    QUOT = auto()   # ", '
-    EXCL = auto()   # !
-    QSTN = auto()   # ?
+    WHT = (ST_MAX + 1)  #
+    EOL = auto()   # \n
+    AMP2 = auto()  # &&
     AMPS = auto()   # &
-    DLRS = auto()   # $
     ATS = auto()    # @
     BAR = auto()    # |
     BAR2 = auto()   # ||
-    GTR = auto()    # >
-    LESS = auto()   # <
-    LBRC = auto()   # {
-    RBRC = auto()   # }
-    LPRN = auto()   # (
-    RPRN = auto()   # )
-    LBRK = auto()   # [
-    RBRK = auto()   # ]
-    TLDE = auto()   # ~
-    RBAR = auto()  # >|
-    LBAR = auto()  # <|
-    GTR2 = auto()  # >>
-    GTE = auto()   # >=
+    BSLH = auto()   # \
+    CCEQ = auto()   # :=
+    CCMN = auto()   # :-
+    CLN2 = auto()   # ::
+    COLN = auto()   # :
+    COMA = auto()   # ,
+    DLRS = auto()   # $
+    DOT = auto()    # .
+    DOT2 = auto()   # ..
+    DUR = auto()   # 1s, 1m, 1d, 1w, 1m, 1y
+    EQEQ = auto()  # ==
     EQGT = auto()  # =>
-    RARR = auto()  # ->
+    EQLS = auto()   # =
+    EXCL = auto()   # !
+    EXPN = auto()   # ^
+    FLOT = auto()   #
+    GTE = auto()   # >=
+    GTR = auto()    # >
+    GTR2 = auto()  # >>
+    IDNT = auto()   #
+    INT = auto()    #
     LARR = auto()  # <-
+    LBAR = auto()  # <|
+    LBRC = auto()   # {
+    LBRK = auto()   # [
+    LBS = auto()    # #
+    LESS = auto()   # <
+    LPRN = auto()   # (
     LSS2 = auto()  # <<
     LTE = auto()   # <=
+    MNEQ = auto()   # -=
+    MNU2 = auto()   # --
+    MNUS = auto()   # -
     NEQ = auto()   # !=
-    EQEQ = auto()  # ==
-    AMP2 = auto()  # &&
+    PCT = auto()    # %
+    PCT2 = auto()   # %
+    PLEQ = auto()   # +=
+    PLU2 = auto()   # ++
+    PLUS = auto()   # +
+    QSTN = auto()   # ?
+    QUOT = auto()   # ", '
+    RARR = auto()  # ->
+    RBAR = auto()  # >|
+    RBRC = auto()   # }
+    RBRK = auto()   # ]
+    RPRN = auto()   # )
+    SEMI = auto()   # ;
+    SLSH = auto()   # /
+    STAR = auto()   # *
+    STR = auto()    #
     TIME = auto()  # h:m:s
-    DUR = auto()   # 1s, 1m, 1d, 1w, 1m, 1y
+    TLDE = auto()   # ~
+    USCR = auto()   # _
 
     # specialized tokens:
     INVALID = 124
@@ -194,48 +197,51 @@ class TK(IntEnum):
     SELL = auto()
     SIGNAL = auto()
     DEFINE = auto()
+    COMMAND = auto()
 
     LAST = 299  # last reserved token id
 
 
 # token conversion tables, could be array lookups rather than hashtable, but this is easier to maintain and not large.
 _tk2binop = {
-    TK.BAR: TK.PIPE,
-    TK.STAR: TK.MUL,
-    TK.SLSH: TK.DIV,
-    TK.PLUS: TK.ADD,
-    TK.MNUS: TK.SUB,
-    TK.EQLS: TK.ASSIGN,
-    TK.GTR2: TK.APPLY,
-    TK.LSS2: TK.LSS2,
-    TK.LBAR: TK.FALL_BELOW,
-    TK.RBAR: TK.RISE_ABOVE,
     TK.AMPS: TK.AND,
-    TK.EXPN: TK.POW,
-    TK.COLN: TK.COLN,
-    TK.EXCL: TK.NOT,
     TK.AND: TK.AND,
-    TK.OR: TK.OR,
+    TK.BAR: TK.PIPE,
+    TK.COLN: TK.COLN,
     TK.DOT: TK.DOT,
-    TK.LTE: TK.LTE,
-    TK.GTE: TK.GTE,
-    TK.EQGT: TK.RAISE,
-    TK.LESS: TK.LESS,
-    TK.GTR: TK.GTR,
-    TK.NEQ: TK.NEQ,
     TK.EQEQ: TK.ISEQ,  # ==
+    TK.EQGT: TK.RAISE,
+    TK.EQLS: TK.ASSIGN,
+    TK.EXCL: TK.NOT,
+    TK.EXPN: TK.POW,
+    TK.GTE: TK.GTE,
+    TK.GTR2: TK.APPLY,
+    TK.GTR: TK.GTR,
+    TK.LBAR: TK.FALL_BELOW,
+    TK.LESS: TK.LESS,
+    TK.LSS2: TK.LSS2,
+    TK.LTE: TK.LTE,
+    TK.MNUS: TK.SUB,
+    TK.NEQ: TK.NEQ,
+    TK.OR: TK.OR,
+    TK.PCT: TK.PCT,
+    TK.PCT2: TK.COMMAND,
+    TK.PLUS: TK.ADD,
+    TK.RBAR: TK.RISE_ABOVE,
+    TK.SLSH: TK.DIV,
+    TK.STAR: TK.MUL,
 }
 _tk2unop = {
-    TK.PLUS: TK.PLUS,  # unary +
+    TK.EXCL: TK.NOT,  # !
     TK.MNUS: TK.NEG,  # unary -
     TK.NOT: TK.NOT,
-    TK.EXCL: TK.NOT,  # !
+    TK.PLUS: TK.PLUS,  # unary +
 }
 
 # token sets for the parser
 _ADDITION_TOKENS = [TK.PLUS, TK.MNUS, TK.MNEQ, TK.PLEQ]
 _COMPARISON_TOKENS = [TK.LESS, TK.LTE, TK.GTR, TK.GTE, TK.IN, TK.LBAR, TK.RBAR]
-_FLOW_TOKENS = [TK.BAR, TK.GTR2, TK.EQGT]
+_FLOW_TOKENS = [TK.BAR, TK.GTR2, TK.EQGT, TK.PCT2]
 _EQUALITY_TEST_TOKENS = [TK.EQEQ, TK.NEQ]
 _LOGIC_TOKENS = [TK.AND, TK.OR, TK.AMPS, TK.CLN2]
 _MULTIPLICATION_TOKENS = [TK.SLSH, TK.STAR, TK.EXPN, TK.DOT, TK.DOT2]

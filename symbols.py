@@ -26,7 +26,7 @@ _KEYWORDS = [
     (TK.NONE, TCL.KEYWORD, 'None'),
     (TK.TRUE, TCL.KEYWORD, 'True'),
     (TK.FALSE, TCL.KEYWORD, 'False'),
-    (TK.DEFINE, TCL.KEYWORD, 'def'),
+    (TK.DEFINE, TCL.UNARY, 'def'),
 ]
 
 _FUNCTIONS = [

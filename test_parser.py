@@ -1,4 +1,5 @@
 #!./bin/python3
+import os.path
 import sys
 import traceback
 
@@ -25,6 +26,13 @@ def _t_print(f, message):
     print(message)
     if f is not None:
         f.write(f'{message}\n')
+
+
+def _generate_empty_log(name, test, message='', idx=None):
+    fname = f'{name}.log' if idx is None else f'{name}_{idx}.log'
+    label = f'test: "{test}"' if idx is None else f'test: {idx}: "{test}"'
+    with open(f'{_LOG_DIRECTORY}/{fname}', 'w') as log:
+        _t_print(log, message)
 
 
 def _run_single_test(name, test, idx=None):
@@ -58,13 +66,27 @@ def _run_unprotected_test(log, name, test):
 
 def _run_suite(name):
     if name not in test_data:
-        print(f'invalid test suite: {name}')
+        _generate_empty_log(name, name, f'invalid test suite: {name}, skipping.\n\n')
+        return
     print(f'\n\nsuite: {name}')
     cases = test_data[name]
-    idx = 0
-    for test in cases:
-        idx += 1
-        _run_single_test(name, test, idx)
+    if type(cases).__name__ == "list":
+        idx = 0
+        for test in cases:
+            idx += 1
+            _run_single_test(name, test, idx)
+        return
+    elif os.path.isfile(cases):
+        fname = cases
+    elif os.path.isfile(f'./etc/test/{cases}'):
+        fname = f'./etc/test/{cases}'
+    elif os.path.isfile(f'./etc/test/dsl/{cases}'):
+        fname = f'./etc/test/dsl/{cases}'
+    else:
+        raise IOError(f'invalid test suite: {name}, is not a file')
+    with open(fname, 'r') as file:
+        test = file.read()
+        _run_single_test(name, test)
 
 
 def _run_suites(suites):

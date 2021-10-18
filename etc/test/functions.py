@@ -6,4 +6,7 @@ functions_tests = [
     "f(a:5, b:'c', d)",
     "f('a':5, 'b':'c', d)",
     "f(a=5, b='c', d)",
+    "def atr = (high + low) / 2",
+    "def avg_daily_price = (open + close) / 2",
+    "def trade_size = position * 10%",
 ]

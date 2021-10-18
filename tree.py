@@ -25,6 +25,15 @@ class BinOp(AST):
 
 
 @dataclass
+class Command(AST):
+    def __init__(self, token, expr):
+        token.t_class = TCL.COMMAND
+        self.token = token
+        self.op = token.id
+        self.expr = expr
+
+
+@dataclass
 class FnCall(AST):
     def __init__(self, token, plist):
         self.token = token

@@ -41,15 +41,15 @@ class CL(IntEnum):
     LBRK = 32  # [
     RBRK = 33  # ]
     TLDE = 34  # ~
-    NEWLN = 35
-    WHITE = 36
+    NEWLN = 35   # \n
+    WHITE = 36  # \t, ' '
     MAX = 37
 
 
 cClass = [
     #   0        1        2       3        4        5        6        7        8        9              0123456789
     CL.EOF,  CL.NONE, CL.NONE,CL.NONE,  CL.NONE, CL.NONE, CL.NONE, CL.NONE, CL.NONE, CL.WHITE,  # 00  .......\a.\t
-    CL.WHITE,CL.NONE, CL.NONE,CL.WHITE, CL.NONE, CL.NONE, CL.NONE, CL.NONE, CL.NONE, CL.NONE,   # 10  \v.\r\f...... ## \n = \r+\v
+    CL.NEWLN,CL.NONE, CL.NONE,CL.WHITE, CL.NONE, CL.NONE, CL.NONE, CL.NONE, CL.NONE, CL.NONE,   # 10  \v.\r\f...... ## \n = \r+\v
     CL.NONE, CL.NONE, CL.NONE, CL.NONE, CL.NONE, CL.NONE, CL.NONE, CL.NONE, CL.NONE, CL.NONE,   # 20  ..........
     CL.NONE, CL.NONE, CL.WHITE,CL.EXCL, CL.DQOT, CL.LBS,  CL.DLRS, CL.PCT,  CL.AMPS, CL.SQOT,   # 30  .. !"#$%&'
     CL.LPRN, CL.RPRN, CL.STAR, CL.PLUS, CL.COMA, CL.MNUS, CL.DOT,  CL.SLSH, CL.DIGT, CL.DIGT,   # 40  ()*+,-./01
@@ -81,10 +81,10 @@ cClass = [
 @unique
 class ST(IntEnum):
     MAIN = 0
-    IDNT = 1
-    INT = auto()
-    FLOT = auto()
-    WHT = auto()
+    IDNT = 1        # Identifier lexer
+    INT = auto()    # Int / Float lexer
+    FLOT = auto()   # Floating point lexer
+    WHT = auto()    # whitepace consumer
     SCMT = auto()   # single-line comment extractor
     SQOT = auto()   # quoted string (single)
     DQOT = auto()   # quoted string (double)
@@ -105,6 +105,7 @@ class ST(IntEnum):
     MNUS = auto()   # - disambiguation (-, -=, --)
     PLUS = auto()   # + disambiguation (+, +=, ++)
     DOT = auto()    # . disambiguation (., ..)
+    PCT = auto()    # % disambiguation (%, %%)
     TIME = auto()   # parse time hh:mm:ss...
     MAX = 31  # states > here are token ids
 
@@ -116,7 +117,7 @@ tkState = [
     #   0        1        2        3        4        5        6        7        8        9        10       1        2        3        4        5        6        7        8        9        20       1        2        3        4        5        6        7        8        9        30       1        2        3        4        5        6        7        8        9        40
     # CL.EOF,  CL.NONE, CL.LETR, CL.DIGT, CL.USCR, CL.SEMI, CL.COMA, CL.DOT,  CL.COLN, CL.MNUS, CL.PLUS, CL.STAR, CL.SLSH, CL.BSLH, CL.PCT,  CL.EXPN, CL.EQLS, CL.LBS,  CL.SQOT, CL.DQOT, CL.EXCL, CL.QSTN, CL.AMPS, CL.DLRS, CL.ATS,  CL.BAR,  CL.GTR,  CL.LESS, CL.LBRC, CL.RBRC, CL.LPRN, CL.RPRN, CL.LBRK, CL.RBRK, CL.TLDE, CL.NEWLN,CL.WHITE,
 # 0: ST.MAIN  - main scanning loop
-    [-TK.EOF,  TK.BAD,  ST.IDNT, ST.INT,  ST.IDNT, TK.SEMI, TK.COMA, ST.DOT,  ST.COLN, ST.MNUS, ST.PLUS, TK.STAR, ST.SLSH, TK.BSLH, TK.PCT,  TK.EXPN, ST.EQLS,-ST.SCMT,-ST.SQT1,-ST.DQOT, ST.EXCL, TK.QSTN, TK.AMPS,-ST.FLOT, TK.ATS,  TK.BAR,  ST.GTR2, ST.LSS2, TK.LBRC, TK.RBRC, TK.LPRN, TK.RPRN, TK.LBRK, TK.RBRK, TK.BAD, ST.WHT, ST.WHT],
+    [-TK.EOF,  TK.BAD,  ST.IDNT, ST.INT,  ST.IDNT, TK.SEMI, TK.COMA, ST.DOT,  ST.COLN, ST.MNUS, ST.PLUS, TK.STAR, ST.SLSH, TK.BSLH, ST.PCT,  TK.EXPN, ST.EQLS,-ST.SCMT,-ST.SQT1,-ST.DQOT, ST.EXCL, TK.QSTN, TK.AMPS,-ST.FLOT, TK.ATS,  TK.BAR,  ST.GTR2, ST.LSS2, TK.LBRC, TK.RBRC, TK.LPRN, TK.RPRN, TK.LBRK, TK.RBRK, TK.BAD,  TK.EOL, ST.WHT],
 # 1: ST.IDENT - extract identifiers
     [-TK.IDNT,-TK.IDNT, ST.IDNT, ST.IDNT, ST.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT,-TK.IDNT],
 # 2: ST.INT   - extract integers
@@ -124,7 +125,7 @@ tkState = [
 # 3: ST.FLOT - extract floats (& currency)
     [-TK.FLOT, -TK.FLOT,TK.DUR,  ST.FLOT,-TK.FLOT,-TK.FLOT,-TK.FLOT,ST.FLOT,-TK.FLOT,-TK.FLOT,-TK.FLOT,-TK.FLOT,-TK.FLOT,-TK.FLOT, TK.PCT, -TK.FLOT,-TK.FLOT,-TK.FLOT,-TK.FLOT,-TK.FLOT,-TK.FLOT,-TK.FLOT,-TK.FLOT,-TK.FLOT,-TK.FLOT,-TK.FLOT,-TK.FLOT,-TK.FLOT,-TK.FLOT,-TK.FLOT,-TK.FLOT,-TK.FLOT,-TK.FLOT,-TK.FLOT,-TK.FLOT,-TK.FLOT,-TK.FLOT],
 # 4: ST.WHITE - whitespace scanner
-    [-TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT,  ST.WHT,  ST.WHT],
+    [-TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT, -TK.WHT,  ST.WHT],
 # 5: ST.SCMT- skip single-line comments (c- or python-style)
     [-TK.WHT, -ST.SCMT,-ST.SCMT,-ST.SCMT,-ST.SCMT,-ST.SCMT,-ST.SCMT,-ST.SCMT,-ST.SCMT,-ST.SCMT,-ST.SCMT,-ST.SCMT,-ST.SCMT,-ST.SCMT,-ST.SCMT,-ST.SCMT,-ST.SCMT,-ST.SCMT,-ST.SCMT,-ST.SCMT,-ST.SCMT,-ST.SCMT,-ST.SCMT,-ST.SCMT,-ST.SCMT,-ST.SCMT,-ST.SCMT,-ST.SCMT,-ST.SCMT,-ST.SCMT,-ST.SCMT,-ST.SCMT,-ST.SCMT,-ST.SCMT,-ST.SCMT,-ST.WHT, -ST.SCMT],
 # 6: ST.SQOT - single-quoted literal (skip past ")
@@ -165,6 +166,8 @@ tkState = [
     [-TK.PLUS,-TK.PLUS,-TK.PLUS,-TK.PLUS,-TK.PLUS,-TK.PLUS,-TK.PLUS,-TK.PLUS,-TK.PLUS,-TK.PLUS, TK.PLU2,-TK.PLUS,-TK.PLUS,-TK.PLUS,-TK.PLUS,-TK.PLUS, TK.PLEQ,-TK.PLUS,-TK.PLUS,-TK.PLUS, TK.PLUS,-TK.PLUS,-TK.PLUS,-TK.PLUS,-TK.PLUS, TK.RARR,-TK.PLUS,-TK.PLUS,-TK.PLUS,-TK.PLUS,-TK.PLUS,-TK.PLUS,-TK.PLUS,-TK.PLUS,-TK.PLUS,-TK.PLUS,-TK.PLUS],
 # 24: ST.DOT- . disambiguation
     [-TK.DOT, -TK.DOT, -TK.DOT, -TK.DOT, -TK.DOT, -TK.DOT, -TK.DOT,  TK.DOT2,-TK.DOT, -TK.DOT, -TK.DOT, -TK.DOT, -TK.DOT, -TK.DOT, -TK.DOT, -TK.DOT, -TK.DOT,-TK.DOT, -TK.DOT, -TK.DOT,  TK.DOT, -TK.DOT, -TK.DOT, -TK.DOT, -TK.DOT,  -TK.DOT, -TK.DOT, -TK.DOT, -TK.DOT, -TK.DOT, -TK.DOT, -TK.DOT, -TK.DOT, -TK.DOT, -TK.DOT, -TK.DOT, -TK.DOT],
+# 25: ST.PCT- % disambiguation
+    [-TK.PCT, -TK.PCT, -TK.PCT, -TK.PCT, -TK.PCT, -TK.PCT, -TK.PCT, -TK.PCT, -TK.PCT, -TK.PCT, -TK.PCT, -TK.PCT, -TK.PCT, -TK.PCT, TK.PCT2, -TK.PCT, -TK.PCT,-TK.PCT, -TK.PCT, -TK.PCT,  TK.PCT, -TK.PCT, -TK.PCT, -TK.PCT, -TK.PCT,  -TK.PCT, -TK.PCT, -TK.PCT, -TK.PCT, -TK.PCT, -TK.PCT, -TK.PCT, -TK.PCT, -TK.PCT, -TK.PCT, -TK.PCT, -TK.PCT],
 # 25: ST.TIME - extract time values
     [-TK.TIME,-TK.TIME, TK.TIME, ST.TIME,-TK.TIME, -TK.TIME,-TK.TIME,ST.TIME,ST.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME,-TK.TIME],
 ]

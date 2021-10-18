@@ -31,6 +31,9 @@ class DumpTree(NodeVisitor):
     def visit_Bool(self, node):
         self.visit_value('Bool', node)
 
+    def visit_Command(self, node):
+        self.visit_unary_node('Command', node)
+
     def visit_DateDiff(self, node):
         self.visit_value('DateDiff', node)
 

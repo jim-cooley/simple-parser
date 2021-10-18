@@ -19,6 +19,7 @@ from etc.test.set_operations import set_operations_tests
 from etc.test.set_parameters import set_parameters_tests
 from etc.test.set_unary import set_unary_tests
 from etc.test.sets import sets_tests
+from etc.test.shell import shell_tests
 from etc.test.statements import statements_tests
 from etc.test.time import time_tests
 from etc.test.trades1 import trades1_tests
@@ -48,6 +49,9 @@ test_data = {
     'set_operations': set_operations_tests,
     'set_parameters': set_parameters_tests,
     'set_unary': set_unary_tests,
+    'simple': 'simple.dsl',
+    'simpler': 'simpler.dsl',
+    'shell': shell_tests,
     'statements': statements_tests,
     'time': time_tests,
     'trades1': trades1_tests,
