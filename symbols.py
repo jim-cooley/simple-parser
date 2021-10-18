@@ -134,3 +134,6 @@ class SymbolTable:
         for (tid, tt) in tokens.items():
             self.add_symbol(tid, tt, tid)
 
+    def print(self):
+        for k in self._symbolTable.keys():
+            print(f'{k}: {self._symbolTable[k]}')

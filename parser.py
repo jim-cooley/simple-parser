@@ -90,6 +90,7 @@ class Parser(object):
                 self.nodes.append(node)
             else:
                 self.nodes += node  # a list can be returned
+#       self.print_symbol_table()
         return self.nodes
 
     # -----------------------------------
@@ -295,9 +296,13 @@ class Parser(object):
             self.expect(sep)
         return seq
 
+    def print_symbol_table(self):
+        self._symbol_table.print()
+
     @staticmethod
     def print_tree(node):
         dt = DumpTree()
         viz = dt.dump(node)
         for v in viz:
             print(v)
+

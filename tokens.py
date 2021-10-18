@@ -100,11 +100,11 @@ class TK(IntEnum):
     BAR = auto()    # |
     BAR2 = auto()   # ||
     BSLH = auto()   # \
-    CCEQ = auto()   # :=
-    CCMN = auto()   # :-
     CLN2 = auto()   # ::
+    COEQ = auto()   # :=
     COLN = auto()   # :
     COMA = auto()   # ,
+    COMN = auto()   # :-
     DLRS = auto()   # $
     DOT = auto()    # .
     DOT2 = auto()   # ..
@@ -206,7 +206,7 @@ _tk2binop = {
     TK.AMPS: TK.AND,
     TK.AND: TK.AND,
     TK.BAR: TK.PIPE,
-    TK.CCEQ: TK.DEFINE,
+    TK.COEQ: TK.DEFINE,
     TK.CLN2: TK.EVENT,
     TK.COLN: TK.COLN,
     TK.DOT: TK.DOT,
@@ -241,9 +241,9 @@ _tk2unop = {
 
 # token sets for the parser
 _ADDITION_TOKENS = [TK.PLUS, TK.MNUS, TK.MNEQ, TK.PLEQ]
-_ASSIGNMENT_TOKENS = [TK.EQLS, TK.ASSIGN, TK.CCEQ]
+_ASSIGNMENT_TOKENS = [TK.EQLS, TK.ASSIGN]
 _COMPARISON_TOKENS = [TK.LESS, TK.LTE, TK.GTR, TK.GTE, TK.IN, TK.LBAR, TK.RBAR]
-_FLOW_TOKENS = [TK.BAR, TK.GTR2, TK.EQGT, TK.PCT2]
+_FLOW_TOKENS = [TK.BAR, TK.GTR2, TK.EQGT, TK.PCT2, TK.COEQ]
 _EQUALITY_TEST_TOKENS = [TK.EQEQ, TK.NEQ]
 _LOGIC_TOKENS = [TK.AND, TK.OR, TK.AMPS, TK.CLN2]
 _MULTIPLICATION_TOKENS = [TK.SLSH, TK.STAR, TK.EXPN, TK.DOT, TK.DOT2]
