@@ -163,34 +163,33 @@ class TK(IntEnum):
 
     RESERVED = 149  # last reserved token value (below 128 can be used in state machine, 128-255 error & reserved)
 
-    # mathmatical operators
+    # higher-level / derived tokens
     ADD = auto()     # +
-    SUB = auto()     # - (subtract)
-    NEG = auto()     # unary - (negate)
-    MUL = auto()     # *
-    DIV = auto()     # /
-    POW = auto()     # ^
-    ISEQ = auto()    # ==
-    ASSIGN = auto()  # =
-    APPLY = auto()   # >>
-    FALL_BELOW = auto()  # <|
-    RISE_ABOVE = auto()  # >|
-    RAISE = auto()   # =>
-    PARAMETER_LIST = auto() # parameter-list
-    SET = auto()
-    PIPE = auto()
-
-    # logical operators
     ALL = auto()    # all:
-    ANY = auto()    # any:
-    NONEOF = auto() # none:
-    IN = auto()
     AND = auto()
-    OR = auto()
-    NONE = auto()
-    NOT = auto()
-    TRUE = auto()
+    ANY = auto()    # any:
+    APPLY = auto()   # >>
+    ASSIGN = auto()  # =
+    DIV = auto()     # /
+    EVENT = auto()   # from =>
+    FALL_BELOW = auto()  # <|
     FALSE = auto()
+    IN = auto()
+    ISEQ = auto()    # ==
+    MUL = auto()     # *
+    NEG = auto()     # unary - (negate)
+    NONE = auto()
+    NONEOF = auto() # none:
+    NOT = auto()
+    OR = auto()
+    PARAMETER_LIST = auto() # parameter-list
+    PIPE = auto()
+    POW = auto()     # ^
+    RAISE = auto()   # =>
+    RISE_ABOVE = auto()  # >|
+    SET = auto()
+    SUB = auto()     # - (subtract)
+    TRUE = auto()
 
     # keywords, reserved words, intrinsics
     BUY = auto()
@@ -207,6 +206,8 @@ _tk2binop = {
     TK.AMPS: TK.AND,
     TK.AND: TK.AND,
     TK.BAR: TK.PIPE,
+    TK.CCEQ: TK.DEFINE,
+    TK.CLN2: TK.EVENT,
     TK.COLN: TK.COLN,
     TK.DOT: TK.DOT,
     TK.EQEQ: TK.ISEQ,  # ==
@@ -240,6 +241,7 @@ _tk2unop = {
 
 # token sets for the parser
 _ADDITION_TOKENS = [TK.PLUS, TK.MNUS, TK.MNEQ, TK.PLEQ]
+_ASSIGNMENT_TOKENS = [TK.EQLS, TK.ASSIGN, TK.CCEQ]
 _COMPARISON_TOKENS = [TK.LESS, TK.LTE, TK.GTR, TK.GTE, TK.IN, TK.LBAR, TK.RBAR]
 _FLOW_TOKENS = [TK.BAR, TK.GTR2, TK.EQGT, TK.PCT2]
 _EQUALITY_TEST_TOKENS = [TK.EQEQ, TK.NEQ]

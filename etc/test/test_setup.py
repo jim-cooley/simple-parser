@@ -50,6 +50,7 @@ test_data = {
     'set_parameters': set_parameters_tests,
     'set_unary': set_unary_tests,
     'simple': 'simple.dsl',
+    'simple2': 'simple2.dsl',
     'simpler': 'simpler.dsl',
     'shell': shell_tests,
     'statements': statements_tests,

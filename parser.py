@@ -1,6 +1,7 @@
 from copy import copy
 from tokens import TK, TCL, _ADDITION_TOKENS, _COMPARISON_TOKENS, _FLOW_TOKENS, \
-    _EQUALITY_TEST_TOKENS, _LOGIC_TOKENS, _MULTIPLICATION_TOKENS, _UNARY_TOKENS, _IDENTIFIER_TYPES, Token
+    _EQUALITY_TEST_TOKENS, _LOGIC_TOKENS, _MULTIPLICATION_TOKENS, _UNARY_TOKENS, _IDENTIFIER_TYPES, Token, \
+    _ASSIGNMENT_TOKENS
 from lexer import Lexer
 from symbols import SymbolTable
 from tree import UnaryOp, BinOp, Ident, FnCall, PropRef, PropCall, Seq, Command
@@ -101,8 +102,9 @@ class Parser(object):
             self._skip_end_of_line = False
             self.advance()
             while tk.id != TK.EOL:
+                tk = Token(tid=TK.COMMAND, tcl=TCL.COMMAND, lex="%%", loc=self._lexer.tell())
                 nodes.append(
-                    Command(Token(tid=TK.PCT2, tcl=TCL.COMMAND, lex="%%", loc=self._lexer.tell()), self.expression()))
+                    Command(tk, self.expression()))
                 tk = self.peek()
                 if tk.id in [TK.EOF, TK.EOL]:
                     break
@@ -151,7 +153,7 @@ class Parser(object):
     def assignment(self):
         node = self.logic_expr()
         op = self.token
-        while self.match([TK.EQLS, TK.ASSIGN]):
+        while self.match(_ASSIGNMENT_TOKENS):
             if node.token.t_class not in _IDENTIFIER_TYPES:
                 self._expected(expected='IDENTIFIER', found=f'{node.token.id.name}')
             node = BinOp(left=node, op=op.map2binop(), right=self.assignment())
