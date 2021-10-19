@@ -1,13 +1,12 @@
+#!./bin/python3
 # test semantic analysis
 import sys
-import traceback
 from abc import ABC
 
 from fixup import Fixup
 from parser import Parser
 from test.suite_runner import TestSuiteRunner, _dump_tree, _t_print, _log_exception
 from test.test_setup import test_data
-from tree import TreeFilter
 
 _test_suite = True       # False is useful for debugging, interactive.  True for test suites
 _skip_tests = [
@@ -16,13 +15,11 @@ _skip_tests = [
     'simple',
 ]
 
-_LOG_DIRECTORY = "../etc/test/log"
-
 
 class SemanticAnalysisTestRunner(TestSuiteRunner, ABC):
 
     def __init__(self, test_data, skip_tests=None):
-        super().__init__(test_data, skip_tests, prefix='sa_', log_dir=_LOG_DIRECTORY)
+        super().__init__(test_data, skip_tests, prefix='sa_')
 
     def run_unprotected_test(self, log, name, test):
         parser = Parser(str=test)

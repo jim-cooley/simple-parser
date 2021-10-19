@@ -16,7 +16,13 @@ printf "running tests\n"
 printf "================================\n"
 
 start=$(date +%s)
-./test_parser.py $suite
+if [ "$prefx" == "semtex" ]; then
+  ./test_semtex.py $suite
+  prefx="sa_"
+else
+  ./test_parser.py $suite
+  prefx=""
+fi
 end=$(date +%s)
 
 printf "\n\n$((end - start)) seconds\n\n"

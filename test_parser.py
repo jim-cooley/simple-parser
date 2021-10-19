@@ -1,12 +1,8 @@
 #!./bin/python3
-import os.path
 import sys
-import traceback
 from abc import ABC
 
-from fixup import Fixup
 from test.suite_runner import TestSuiteRunner, _t_print, _dump_tree, _log_exception
-from tree import TreeFilter
 from parser import Parser
 from test.test_setup import test_data
 

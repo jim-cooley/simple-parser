@@ -1,1 +1,0 @@
-_LOG_DIRECTORY = "./etc/test/log"
