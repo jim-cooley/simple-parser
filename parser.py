@@ -4,8 +4,8 @@ from tokens import TK, TCL, _ADDITION_TOKENS, _COMPARISON_TOKENS, _FLOW_TOKENS, 
     _ASSIGNMENT_TOKENS
 from lexer import Lexer
 from symbols import SymbolTable
-from tree import UnaryOp, BinOp, Ident, FnCall, PropRef, PropCall, Seq, Command
-from literals import Duration, Float, Int, Percent, Set, Str, Time, Bool
+from tree import UnaryOp, BinOp, Ident, FnCall, PropRef, PropCall, Seq, Command, Index
+from literals import Duration, Float, Int, Percent, Set, Str, Time, Bool, List
 from treedump import DumpTree
 
 
@@ -104,8 +104,8 @@ class Parser(object):
             self.advance()
             while tk.id != TK.EOL:
                 tk = Token(tid=TK.COMMAND, tcl=TCL.COMMAND, lex="%%", loc=self._lexer.tell())
-                nodes.append(
-                    Command(tk, self.expression()))
+                command = Command(tk, self.expression())
+                nodes.append(command)
                 tk = self.peek()
                 if tk.id in [TK.EOF, TK.EOL]:
                     break
@@ -196,7 +196,11 @@ class Parser(object):
         node = self.unary()
         op = self.token
         while self.match(_MULTIPLICATION_TOKENS):
-            node = BinOp(node, op.map2binop(), self.unary())
+            node2 = self.unary()
+            # fixup for lack of 2-state lookahead: 1..2 scans as ['1.', '.', '2'] but scanner can only backup 1 token.
+            if node is not None and op.id == TK.DOT and node.token.id == TK.FLOT:
+                op.id = TK.DOT2
+            node = BinOp(node, op.map2binop(), node2)
             op = self.token
         return node
 
@@ -237,13 +241,18 @@ class Parser(object):
             node = Set(token, Seq(token, self.sequence(TK.COMA)))
             self.expect(TK.RBRC)
             return node
-        elif token.id == TK.LPRN:
+        elif token.id == TK.LPRN:   # should probably be sequence / tuple literal and parse plists via 'identifier'
             self.advance()
             node = self.expression()
             if self.match([TK.COMA]):
                 node = self.plist(node)
             else:
                 self.expect(TK.RPRN)
+            return node
+        elif token.id == TK.LBRK:   # should be list literal and parse indexing via 'identifier'
+            self.expect(TK.LBRK)
+            node = List(token, Seq(token, self.sequence(TK.COMA)))
+            self.expect(TK.RBRK)
             return node
         elif token.t_class in _IDENTIFIER_TYPES or token.id == TK.IDNT:
             return self.identifier()
@@ -266,18 +275,36 @@ class Parser(object):
             node = PropRef(tk, self.identifier())
             if token.id == TK.LPRN:
                 node = PropCall(tk, node.member, self.plist())
+        elif token.id == TK.DOT2:
+            self.advance()
+            node = BinOp(left=Ident(tk), op=token.map2binop(), right=self.expression())
         elif token.id == TK.LPRN:
             node = FnCall(tk, self.plist())
+        elif token.id == TK.LBRK:
+            node = Index(tk, self.idx_list())
         else:
             node = Ident(tk)
         return node
+
+    def idx_list(self, node=None):
+        """( EXPR ',' ... )"""
+        seq = [] if node is None else [node]
+        self.match([TK.LBRK])
+        token = copy(self.peek())
+        if token.id != TK.RBRK:
+            seq = self.sequence(TK.COMA, node)
+        self.expect(TK.RBRK)
+        token.t_class = TCL.LIST
+        token.id = TK.INDEX
+        token.lexeme = '['  # fixup token.
+        return Seq(token, seq)
 
     def plist(self, node=None):
         """( EXPR ',' ... )"""
         seq = [] if node is None else [node]
         self.match([TK.LPRN])
         token = copy(self.peek())
-        if token.id != TK.RPRN:
+        if token.id != TK.RBRK:
             seq = self.sequence(TK.COMA, node)
         self.expect(TK.RPRN)
         token.t_class = TCL.LIST

@@ -47,6 +47,13 @@ class Ident(AST):
 
 
 @dataclass
+class Index(AST):
+    def __init__(self, token, plist):
+        self.token = token
+        self.parameter_list = plist
+
+
+@dataclass
 class Literal(AST):
     def __init__(self, token):
         token.t_class = TCL.LITERAL

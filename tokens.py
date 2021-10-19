@@ -175,7 +175,9 @@ class TK(IntEnum):
     FALL_BELOW = auto()  # <|
     FALSE = auto()
     IN = auto()
+    INDEX = auto()   # indexing expression
     ISEQ = auto()    # ==
+    LIST = auto()
     MUL = auto()     # *
     NEG = auto()     # unary - (negate)
     NONE = auto()
@@ -186,6 +188,7 @@ class TK(IntEnum):
     PIPE = auto()
     POW = auto()     # ^
     RAISE = auto()   # =>
+    RANGE = auto()
     RISE_ABOVE = auto()  # >|
     SET = auto()
     SUB = auto()     # - (subtract)
@@ -210,6 +213,7 @@ _tk2binop = {
     TK.CLN2: TK.EVENT,
     TK.COLN: TK.COLN,
     TK.DOT: TK.DOT,
+    TK.DOT2: TK.RANGE,
     TK.EQEQ: TK.ISEQ,  # ==
     TK.EQGT: TK.RAISE,
     TK.EQLS: TK.ASSIGN,

@@ -1,5 +1,5 @@
 # sample rules file for pyser / qtradr
-%%backtest(period='train5', rules=rules)
+%%backtest [period='train5', rules=rules]
 
 atr := (high + low) / 2
 median_price := (open + close) / 2

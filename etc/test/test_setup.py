@@ -8,11 +8,14 @@ from etc.test.grouping import grouping_tests
 from etc.test.identifiers import identifiers_tests
 from etc.test.indexed_parameters import indexed_parameters_tests
 from etc.test.indexing import indexing_tests
+from etc.test.lists import lists_tests
+from etc.test.property_reference import property_reference_tests
 from etc.test.keywords import keywords_tests
 from etc.test.language import language_tests
 from etc.test.literals import literals_tests
 from etc.test.logical import logical_tests
 from etc.test.plists import plists_tests
+from etc.test.range import range_tests
 from etc.test.regression import regression_tests
 from etc.test.sequences import sequences_tests
 from etc.test.set_operations import set_operations_tests
@@ -41,9 +44,12 @@ test_data = {
     'indexed_expressions': indexed_parameters_tests,
     "keywords": keywords_tests,
     'language': language_tests,
+    'lists': lists_tests,
     'literals': literals_tests,
     'logical': logical_tests,
     'plists': plists_tests,
+    'property_reference': property_reference_tests,
+    'range' : range_tests,
     'sequences': sequences_tests,
     'sets': sets_tests,
     'set_operations': set_operations_tests,

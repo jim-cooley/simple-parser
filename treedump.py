@@ -58,8 +58,25 @@ class DumpTree(NodeVisitor):
     def visit_Ident(self, node):
         self.visit_value('Ident', node)
 
+    def visit_Index(self, node):
+        s = '{}node{}:{} {}]'.format(self._indent, self._ncount, 'Index', node.token.format())
+        self._body.append(s)
+        node._num = self._ncount
+        self._ncount += 1
+        self.indent()
+        self.visit(node.parameter_list)
+        self.dedent()
+
     def visit_Int(self, node):
         self.visit_value('Int', node)
+
+    def visit_List(self, node):
+        s = '{}node{}:{} {}'.format(self._indent, self._ncount, 'List', node.token.format())
+        self._body.append(s)
+        node._num = self._ncount
+        self._ncount += 1
+        if node.members is not None:
+            self.visit_sequence(node.members.sequence)
 
     def visit_Percent(self, node):
         self.visit_value('Percent', node)
