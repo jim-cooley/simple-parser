@@ -2,7 +2,9 @@
 logpath="./etc/test/log"
 bslpath="./etc/test/bsl"
 
-suite=$1
+prefx=$1
+suite=$2
+
 
 echo "" > "./suite.log"
 declare -i pass=0
@@ -22,7 +24,7 @@ printf "\n\n$((end - start)) seconds\n\n"
 printf "\n\n================================\n"
 printf "verifying results\n"
 printf "================================\n"
-for test in $logpath/$suite*; do
+for test in $logpath/$prefx$suite*; do
     total=$((total + 1))
     baseline="$bslpath"/"$(basename $test)"
 #   printf "$(basename $test):\n"

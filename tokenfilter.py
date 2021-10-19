@@ -1,7 +1,8 @@
 from tokens import TK, Token
 
 
-class TokenReader:
+# can operate as a filter on a token stream (allows filtering, fixups pre-parsing)
+class TokenFilter:
     _tokens = []
 
     def __init__(self, tk_reader):

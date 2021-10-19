@@ -2,7 +2,7 @@ from copy import copy
 from tokens import TK, TCL, _ADDITION_TOKENS, _COMPARISON_TOKENS, _FLOW_TOKENS, \
     _EQUALITY_TEST_TOKENS, _LOGIC_TOKENS, _MULTIPLICATION_TOKENS, _UNARY_TOKENS, _IDENTIFIER_TYPES, Token, \
     _ASSIGNMENT_TOKENS
-from tokenreader import TokenReader
+from tokenfilter import TokenFilter
 from lexer import Lexer
 from symbols import SymbolTable
 from tree import UnaryOp, BinOp, Ident, FnCall, PropRef, PropCall, Seq, Command, Index, ParseTree

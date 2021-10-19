@@ -18,6 +18,11 @@ class Fixup(NodeVisitor):
         for n in seq.sequence:
             self.visit(n)
 
+    def visit_Set(self, s):
+        _print_node(s)
+        for n in s.sequence:
+            self.visit(n)
+
     def visit_Node(self, node):
         _print_node(node)
         pass

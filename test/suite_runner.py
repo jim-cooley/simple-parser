@@ -4,15 +4,23 @@ from abc import abstractmethod, ABC
 from treedump import DumpTree
 
 _LOG_DIRECTORY = "./etc/test/log"
+_SCRIPT_SEARCH_PATH = [
+    ".",
+    "./etc/test",
+    "./etc/test/dsl",
+    "../etc/test",
+    "../etc/test/dsl",
+]
 
 
 class TestSuiteRunner(ABC):
 
-    def __init__(self, test_data, skip_tests=None, prefix=''):
+    def __init__(self, test_data, skip_tests=None, prefix='', log_dir=None):
         self.tests = test_data
         self.skip_tests = skip_tests if skip_tests is not None else []
         self.prefix = prefix
         self.interactive = False
+        self.logs_dir = log_dir if log_dir is not None else _LOG_DIRECTORY
 
     @abstractmethod
     def run_unprotected_test(self, log, name, test):
@@ -22,7 +30,7 @@ class TestSuiteRunner(ABC):
         try:
             self.run_unprotected_test(log, name, test)
         except Exception as e:
-            _log_exception(log, e, name)
+            _log_exception(e, log, name)
 
     def run_suites(self, suites):
         for name in suites:
@@ -35,7 +43,7 @@ class TestSuiteRunner(ABC):
 
     def run_suite(self, name):
         if name not in self.tests:
-            _generate_empty_log(name, name, f'invalid test suite: {name}, skipping.\n\n')
+            self._generate_empty_log(name, name, f'invalid test suite: {name}, skipping.\n\n')
             return
         print(f'\n\nsuite: {name}')
         cases = self.tests[name]
@@ -45,27 +53,37 @@ class TestSuiteRunner(ABC):
                 idx += 1
                 self._run_single_test(name, test, idx)
             return
-        elif os.path.isfile(cases):
-            fname = cases
-        elif os.path.isfile(f'./etc/test/{cases}'):
-            fname = f'./etc/test/{cases}'
-        elif os.path.isfile(f'./etc/test/dsl/{cases}'):
-            fname = f'./etc/test/dsl/{cases}'
         else:
-            raise IOError(f'invalid test suite: {name}, is not a file')
-        with open(fname, 'r') as file:
-            test = file.read()
-            self._run_single_test(name, test)
+            fname = _find_test_file(name, _SCRIPT_SEARCH_PATH)
+            with open(fname, 'r') as file:
+                test = file.read()
+                self._run_single_test(name, test)
 
     def _run_single_test(self, name, test, idx=None):
         fname = f'{name}.log' if idx is None else f'{name}_{idx}.log'
         label = f'test: "{test}"' if idx is None else f'test: {idx}: "{test}"'
-        with open(f'{_LOG_DIRECTORY}/{self.prefix}{fname}', 'w') as log:
+        with open(f'{self.logs_dir}/{self.prefix}{fname}', 'w') as log:
             _t_print(log, f'\n\n{label}')
             if not self.interactive:
                 self.run_protected_test(log, name, test)
             else:
                 self.run_unprotected_test(log, name, test)
+
+    def _generate_empty_log(self, name, test, message='', idx=None):
+        fname = f'{name}.log' if idx is None else f'{name}_{idx}.log'
+        label = f'test: "{test}"' if idx is None else f'test: {idx}: "{test}"'
+        with open(f'{self.logs_dir}/{fname}', 'w') as log:
+            _t_print(log, message)
+
+
+def _find_test_file(name, search_paths):
+    for path in search_paths:
+        fname = f'{path}/{name}'
+        if os.path.isfile(fname):
+            return fname
+        if os.path.isfile(f'{fname}.dsl'):
+            return f'{fname}.dsl'
+    raise IOError(f'invalid test suite: {name}, is not a test file')
 
 
 def _log_exception(e, log, name):
@@ -91,10 +109,3 @@ def _t_print(f, message):
     print(message)
     if f is not None:
         f.write(f'{message}\n')
-
-
-def _generate_empty_log(name, test, message='', idx=None):
-    fname = f'{name}.log' if idx is None else f'{name}_{idx}.log'
-    label = f'test: "{test}"' if idx is None else f'test: {idx}: "{test}"'
-    with open(f'{_LOG_DIRECTORY}/{fname}', 'w') as log:
-        _t_print(log, message)

@@ -13,19 +13,22 @@ _test_suite = True       # False is useful for debugging, interactive.  True for
 _skip_tests = [
     'regression',
     'errors',
+    'simple',
 ]
+
+_LOG_DIRECTORY = "../etc/test/log"
 
 
 class SemanticAnalysisTestRunner(TestSuiteRunner, ABC):
 
     def __init__(self, test_data, skip_tests=None):
-        super().__init__(test_data, skip_tests, prefix='sa_')
+        super().__init__(test_data, skip_tests, prefix='sa_', log_dir=_LOG_DIRECTORY)
 
     def run_unprotected_test(self, log, name, test):
         parser = Parser(str=test)
         tree = parser.parse()
-        filter = TreeFilter(tree)
-        tree = filter.filter()
+        fixups = Fixup(tree)
+        tree = fixups.apply()
         _dump_tree(tree, log)
 
 
