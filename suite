@@ -18,10 +18,10 @@ printf "================================\n"
 start=$(date +%s)
 if [ "$prefx" == "semtex" ]; then
   ./test_semtex.py $suite
-  prefx="sa_"
+  prefx="sa"
 else
   ./test_parser.py $suite
-  prefx=""
+  prefx="parser"
 fi
 end=$(date +%s)
 
@@ -30,9 +30,9 @@ printf "\n\n$((end - start)) seconds\n\n"
 printf "\n\n================================\n"
 printf "verifying results\n"
 printf "================================\n"
-for test in $logpath/$prefx$suite*; do
+for test in $logpath/$prefx/$suite*; do
     total=$((total + 1))
-    baseline="$bslpath"/"$(basename $test)"
+    baseline="$bslpath/$prefx"/"$(basename $test)"
 #   printf "$(basename $test):\n"
     if [ -f "$baseline" ]; then
         result="fail"

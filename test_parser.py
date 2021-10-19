@@ -17,7 +17,7 @@ _skip_tests = [
 class ParserTestRunner(TestSuiteRunner, ABC):
 
     def __init__(self, td, skip_tests=None):
-        super().__init__(td, skip_tests)
+        super().__init__(td, skip_tests, log_dir='./etc/test/log/parser')
 
     def run_unprotected_test(self, log, name, test):
         parser = Parser(str=test)
