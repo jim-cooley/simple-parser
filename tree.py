@@ -1,6 +1,8 @@
 # abstract syntax trees:
+from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
+from symbols import SymbolTable
 from tokens import TCL
 
 
@@ -94,12 +96,32 @@ class UnaryOp(AST):
         self.expr = expr
 
 
+@dataclass
+class ParseTree(object):
+    def __init__(self, nodes=None, symbols=None, source=None):
+        self.nodes = nodes if nodes is not None else []
+        self.symbols = symbols if symbols is not None else SymbolTable()
+        self.source = source
+
+
 class NodeVisitor(object):
     def visit(self, node):
         if node is not None:
             method_name = 'visit_' + type(node).__name__
-            visitor = getattr(self, method_name, self.generic_visit)
+            visitor = getattr(self, method_name, None)
+            if visitor is None:
+                method_name = 'visit_Node'
+                visitor = getattr(self, method_name, self.generic_visit)
             return visitor(node)
 
     def generic_visit(self, node):
         raise Exception('No visit_{} method'.format(type(node).__name__))
+
+
+class TreeFilter(ABC):
+    def __init__(self, tree=None):
+        self.tree = tree
+
+    @abstractmethod
+    def apply(self):
+        pass    # must return tree

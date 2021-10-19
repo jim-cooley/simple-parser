@@ -8,67 +8,6 @@ from enum import IntEnum, auto, unique
 CL_MAX = 37 # CL.MAX
 ST_MAX = 31 # ST.MAX
 
-
-@dataclass
-class Token:
-
-    @dataclass
-    class Loc:
-        def __init__(self, line, offset):
-            self.line = 0
-            self.offset = offset
-
-    def __init__(self, tid, tcl=None, lex="", val=None, loc=None, prop=None):
-        self.id: TK = tid
-        self.t_class: TCL = TCL(tcl) if tcl is not None else TCL.NONE
-        self.lexeme = lex
-        self.value = val
-        self.location = loc
-        self.properties = {} if not prop else prop
-
-    def to_string(self):
-        return self.id.name
-
-    def format(self):
-        _tn = f'.{self.id.name}(' if hasattr(self.id, "name") else f'({self.id}, '
-        _tcl = f'{self.t_class.name}' if hasattr(self.t_class, "name") else 'TCL({self.t_type})'
-        _tv = 'None' if self.value is None else  f'{self.value}'
-        _tl = f'\'{self.lexeme}\''
-        _tloc = f'line:{self.location.line+1}, pos:{self.location.offset-1}'
-        return f'TK{_tn}{_tcl}, {_tl}, V={_tv})'
-
-    def _map(self, tk_map):
-        if self.id in tk_map:
-            self.id = tk_map[self.id]
-        return self
-
-    def map2binop(self):
-        return self._map(_tk2binop)
-
-    def map2unop(self):
-        return self._map(_tk2unop)
-
-    @staticmethod
-    def format_token(tk):
-        return tk.format()
-
-    @staticmethod
-    def format_tid(tk):
-        return f'TK.{tk.name}' if hasattr(tk, "name") else f'TK({tk})'
-
-    @staticmethod
-    def format_tt(tt):
-        return f'TT.{tt.name}' if hasattr(tt, "name") else f'TT({tt})'
-
-    # return True if two tokens are equal.  DOES NOT compare properties. Ignores unique ID
-    def is_equal(self, other):
-        if type(other) == type(self):
-            if other.t_class == self.t_class:
-                if other.value == self.value:
-                    return True
-        return False
-
-
 # token class or category
 @unique
 class TCL(IntEnum):
@@ -245,8 +184,8 @@ _tk2unop = {
 }
 
 # token sets for the parser
-_ADDITION_TOKENS = [TK.PLUS, TK.MNUS, TK.MNEQ, TK.PLEQ]
-_ASSIGNMENT_TOKENS = [TK.EQLS, TK.ASSIGN]
+_ADDITION_TOKENS = [TK.PLUS, TK.MNUS]
+_ASSIGNMENT_TOKENS = [TK.EQLS, TK.ASSIGN, TK.MNEQ, TK.PLEQ]
 _COMPARISON_TOKENS = [TK.LESS, TK.LTE, TK.GTR, TK.GTE, TK.IN, TK.LBAR, TK.RBAR]
 _FLOW_TOKENS = [TK.BAR, TK.COEQ, TK.EQGT, TK.GTR2, TK.PCT2, TK.RARR]
 _EQUALITY_TEST_TOKENS = [TK.EQEQ, TK.NEQ]
@@ -254,3 +193,62 @@ _LOGIC_TOKENS = [TK.AND, TK.OR, TK.AMPS, TK.CLN2]
 _MULTIPLICATION_TOKENS = [TK.SLSH, TK.STAR, TK.EXPN, TK.DOT, TK.DOT2]
 _UNARY_TOKENS = [TK.PLUS, TK.MNUS, TK.NOT, TK.EXCL, TK.MNU2, TK.PLU2]
 _IDENTIFIER_TYPES = [TCL.KEYWORD, TCL.SERIES, TCL.IDENTIFIER]
+
+
+@dataclass
+class Token:
+
+    @dataclass
+    class Loc:
+        def __init__(self, line=0, offset=0):
+            self.line = 0
+            self.offset = offset
+
+    def __init__(self, tid, tcl=None, lex="", val=None, loc=None, prop=None):
+        self.id: TK = tid
+        self.t_class: TCL = TCL(tcl) if tcl is not None else TCL.NONE
+        self.lexeme = lex
+        self.value = val
+        self.location = loc
+        self.properties = {} if not prop else prop
+
+    def is_equal(self, other):
+        if type(other) == type(self):
+            if other.t_class == self.t_class:
+                if other.value == self.value:
+                    return True
+        return False
+
+    def to_string(self):
+        return self.id.name
+
+    def format(self):
+        _tn = f'.{self.id.name}(' if hasattr(self.id, "name") else f'({self.id}, '
+        _tcl = f'{self.t_class.name}' if hasattr(self.t_class, "name") else 'TCL({self.t_type})'
+        _tv = 'None' if self.value is None else  f'{self.value}'
+        _tl = f'\'{self.lexeme}\''
+        _tloc = f'line:{self.location.line+1}, pos:{self.location.offset-1}'
+        return f'TK{_tn}{_tcl}, {_tl}, V={_tv})'
+
+    def _map(self, tk_map):
+        if self.id in tk_map:
+            self.id = tk_map[self.id]
+        return self
+
+    def map2binop(self):
+        return self._map(_tk2binop)
+
+    def map2unop(self):
+        return self._map(_tk2unop)
+
+    @staticmethod
+    def format_token(tk):
+        return tk.format()
+
+    @staticmethod
+    def format_tid(tk):
+        return f'TK.{tk.name}' if hasattr(tk, "name") else f'TK({tk})'
+
+    @staticmethod
+    def format_tt(tt):
+        return f'TT.{tt.name}' if hasattr(tt, "name") else f'TT({tt})'

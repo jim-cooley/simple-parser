@@ -1,38 +1,39 @@
-#!./bin/python3
-import os.path
+# test semantic analysis
 import sys
 import traceback
 from abc import ABC
 
 from fixup import Fixup
-from test.suite_runner import TestSuiteRunner, _t_print, _dump_tree, _log_exception
-from tree import TreeFilter
 from parser import Parser
+from test.suite_runner import TestSuiteRunner, _dump_tree, _t_print, _log_exception
 from test.test_setup import test_data
+from tree import TreeFilter
 
 _test_suite = True       # False is useful for debugging, interactive.  True for test suites
 _skip_tests = [
     'regression',
     'errors',
-    'simple'
 ]
 
 
-class ParserTestRunner(TestSuiteRunner, ABC):
+class SemanticAnalysisTestRunner(TestSuiteRunner, ABC):
 
-    def __init__(self, td, skip_tests=None):
-        super().__init__(td, skip_tests)
+    def __init__(self, test_data, skip_tests=None):
+        super().__init__(test_data, skip_tests, prefix='sa_')
 
     def run_unprotected_test(self, log, name, test):
         parser = Parser(str=test)
         tree = parser.parse()
+        filter = TreeFilter(tree)
+        tree = filter.filter()
         _dump_tree(tree, log)
 
 
 # this is only for execution under debugger or via command-line
 if __name__ == '__main__':
     args = sys.argv[1:]
-    runner = ParserTestRunner(test_data, _skip_tests)
+
+    runner = SemanticAnalysisTestRunner(test_data, _skip_tests)
 
     # short-circuit for debugging
     _test_suite = True

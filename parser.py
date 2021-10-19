@@ -2,9 +2,10 @@ from copy import copy
 from tokens import TK, TCL, _ADDITION_TOKENS, _COMPARISON_TOKENS, _FLOW_TOKENS, \
     _EQUALITY_TEST_TOKENS, _LOGIC_TOKENS, _MULTIPLICATION_TOKENS, _UNARY_TOKENS, _IDENTIFIER_TYPES, Token, \
     _ASSIGNMENT_TOKENS
+from tokenreader import TokenReader
 from lexer import Lexer
 from symbols import SymbolTable
-from tree import UnaryOp, BinOp, Ident, FnCall, PropRef, PropCall, Seq, Command, Index
+from tree import UnaryOp, BinOp, Ident, FnCall, PropRef, PropCall, Seq, Command, Index, ParseTree
 from literals import Duration, Float, Int, Percent, Set, Str, Time, Bool, List
 from treedump import DumpTree
 
@@ -13,8 +14,8 @@ class Parser(object):
     def __init__(self, lexer=None, str=None, symtab=None):
         self._symbol_table = (SymbolTable() if lexer is None else lexer.symbols) if symtab is None else symtab
         self._lexer = Lexer(string=str, symtab=self._symbol_table) if lexer is None else lexer
-        self._parse_string = str  # which could be none
         self._skip_end_of_line = True
+        self._parse_string = str  # which could be none
         self.nodes = []
 
     # syntactic sugar (use self.peek)
@@ -47,23 +48,23 @@ class Parser(object):
         return self.token
 
     # returns current token and advances
-    def advance(self, skip_white_space=True, skip_end_of_line=None):
+    def advance(self, skip_end_of_line=None):
         skip_end_of_line = self._skip_end_of_line if skip_end_of_line is None else skip_end_of_line
-        return self._lexer.advance(skip_white_space, skip_end_of_line)
+        return self._lexer.advance(skip_end_of_line)
 
     # if current token matches
     def check(self, ex_tid):
         return False if self.token.id == TK.EOF else self.token.id == ex_tid
 
     # skip over the expected current token.
-    def expect(self, ex_tid):
+    def consume(self, ex_tid):
         while self._skip_end_of_line and self.token.id == TK.EOL:
             self.advance(skip_end_of_line=self._skip_end_of_line)
         if self.token.id == ex_tid:
-            return self.advance()
+            return self.advance(self._skip_end_of_line)
         self._expected(expected=f'{ex_tid.name}', found=f'{self.token.id.name}')
 
-    def expect_next(self, ex_tid=None):
+    def consume_next(self, ex_tid=None):
         token = self.advance()
         if self.token.id == ex_tid:
             return token
@@ -90,11 +91,11 @@ class Parser(object):
                 self.nodes.append(node)
             else:
                 self.nodes += node  # a list can be returned
-#       self.print_symbol_table()
-        return self.nodes
+        tree = ParseTree(nodes=self.nodes, symbols=self._symbol_table, source=self._parse_string)
+        return tree
 
     # -----------------------------------
-    # Recursive Descent Parser States
+    # control language parsing at top
     # -----------------------------------
     def parse_command(self):
         nodes = []
@@ -237,9 +238,9 @@ class Parser(object):
         elif token.id == TK.QUOT:
             node = Str(token)
         elif token.id == TK.LBRC:
-            self.expect(TK.LBRC)
+            self.consume(TK.LBRC)
             node = Set(token, Seq(token, self.sequence(TK.COMA)))
-            self.expect(TK.RBRC)
+            self.consume(TK.RBRC)
             return node
         elif token.id == TK.LPRN:   # should probably be sequence / tuple literal and parse plists via 'identifier'
             self.advance()
@@ -247,12 +248,12 @@ class Parser(object):
             if self.match([TK.COMA]):
                 node = self.plist(node)
             else:
-                self.expect(TK.RPRN)
+                self.consume(TK.RPRN)
             return node
         elif token.id == TK.LBRK:   # should be list literal and parse indexing via 'identifier'
-            self.expect(TK.LBRK)
+            self.consume(TK.LBRK)
             node = List(token, Seq(token, self.sequence(TK.COMA)))
-            self.expect(TK.RBRK)
+            self.consume(TK.RBRK)
             return node
         elif token.t_class in _IDENTIFIER_TYPES or token.id == TK.IDNT:
             return self.identifier()
@@ -271,7 +272,7 @@ class Parser(object):
         tk = self._symbol_table.find_add_symbol(self.peek())
         token = self.advance()
         if token.id == TK.DOT:
-            token = self.expect_next(TK.IDNT)
+            token = self.consume_next(TK.IDNT)
             node = PropRef(tk, self.identifier())
             if token.id == TK.LPRN:
                 node = PropCall(tk, node.member, self.plist())
@@ -293,7 +294,7 @@ class Parser(object):
         token = copy(self.peek())
         if token.id != TK.RBRK:
             seq = self.sequence(TK.COMA, node)
-        self.expect(TK.RBRK)
+        self.consume(TK.RBRK)
         token.t_class = TCL.LIST
         token.id = TK.INDEX
         token.lexeme = '['  # fixup token.
@@ -306,7 +307,7 @@ class Parser(object):
         token = copy(self.peek())
         if token.id != TK.RBRK:
             seq = self.sequence(TK.COMA, node)
-        self.expect(TK.RPRN)
+        self.consume(TK.RPRN)
         token.t_class = TCL.LIST
         token.id = TK.PARAMETER_LIST
         token.lexeme = '('  # fixup token.
@@ -320,7 +321,7 @@ class Parser(object):
             seq.append(node)
             if self.peek().id != sep:
                 break
-            self.expect(sep)
+            self.consume(sep)
         return seq
 
     def print_symbol_table(self):

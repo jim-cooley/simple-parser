@@ -34,6 +34,14 @@ class Lexer(object):
         self.get_char()
         pass
 
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if not self.readable():
+            raise StopIteration
+        return self.advance(skip_white_space=True, skip_end_of_line=False)
+
     def readable(self) -> bool:
         return self._has_more and self._stream.readable()
 
