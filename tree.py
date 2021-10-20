@@ -45,15 +45,6 @@ class Literal(AST):
 
 
 @dataclass
-class PropRef(AST):
-    def __init__(self, token, prop):
-        self.token = token
-        self.member = prop
-        if prop is not None:
-            prop.parent = self
-
-
-@dataclass
 class Seq(AST):
     def __init__(self, token, slist):
         self.token = token
@@ -136,16 +127,21 @@ class Ident(Literal):
 @dataclass
 class Index(FnCall):
     def __init__(self, token, plist):
-        super().__init__(token, plist, Token(tid=TK.INDEX, tcl=TCL.BINOP, lex="[", loc=token.location))
+        super().__init__(token, plist, op=Token(tid=TK.INDEX, tcl=TCL.BINOP, lex="[", loc=token.location))
 
 
 @dataclass
-class PropCall(AST):
+class PropCall(FnCall):
     def __init__(self, token, member, plist):
-        self.token = token
-        self.member = member
-        self.parameter_list = Seq(None, plist)
-        self.parameter_list.parent = self
+        super().__init__(token, plist, op=Token(tid=TK.REF, tcl=TCL.FUNCTION, lex=".(", loc=token.location))
+
+
+@dataclass
+class PropRef(BinOp):
+    def __init__(self, token, prop, op=None):
+#       if type(node).__name__ == 'Ident':
+        op = Token(tid=TK.REF, tcl=TCL.BINOP, lex=".", loc=token.location) if op is None else op
+        super().__init__(left=Ident(token), op=op, right=prop)
 
 
 @dataclass

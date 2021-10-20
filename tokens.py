@@ -130,6 +130,7 @@ class TK(IntEnum):
     POW = auto()  # ^
     RAISE = auto()  # =>
     RANGE = auto()
+    REF = auto()
     RISE_ABOVE = auto()  # >|
     SET = auto()
     SUB = auto()  # - (subtract)

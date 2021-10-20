@@ -70,23 +70,14 @@ class DumpTree(NodeVisitor):
         self.visit_value('Percent', node)
 
     def visit_PropCall(self, node):
-        s = '{}node{}:{} {}.{}]'.format(self._indent, self._ncount, 'PropCall', node.token.format(), node.member.value)
-        self._body.append(s)
-        node._num = self._ncount
-        self._ncount += 1
-        self.visit(node.parameter_list)
+        self.visit_FnCall(node, 'PropCall')
 
     def visit_PropRef(self, node):
-        if type(node).__name__ == 'Ident':
-            s = '{}node{}:{} [{}("{}.{}")]'.format(self._indent, self._ncount, 'PropRef', _.Token.format_tid(node.token), node.token.value, node.member.value)
-        else:
-            s = '{}node{}:{} [{}]'.format(self._indent, self._ncount, 'PropRef', node.token.format())
-        self._body.append(s)
-        node._num = self._ncount
-        self._ncount += 1
-        self.indent()
-        self.visit(node.member)
-        self.dedent()
+#       if type(node).__name__ == 'Ident':
+#           s = '{}node{}:{} [{}("{}.{}")]'.format(self._indent, self._ncount, 'PropRef', _.Token.format_tid(node.token), node.token.value, node.member.value)
+#       else:
+#           s = '{}node{}:{} [{}]'.format(self._indent, self._ncount, 'PropRef', node.token.format())
+        self.visit_BinOp(node, 'PropRef')
 
     def visit_Seq(self, node):
         s = '{}node{}:{} {}'.format(self._indent, self._ncount, 'Seq', node.token.format())
