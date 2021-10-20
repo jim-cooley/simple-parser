@@ -1,0 +1,6 @@
+
+
+test: 8: "1.5s"
+
+tree1:
+    1 : Duration TK.DUR(LITERAL, '1.5s', V=0:00:01.500000)

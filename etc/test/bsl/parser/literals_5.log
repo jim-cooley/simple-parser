@@ -1,0 +1,6 @@
+
+
+test: 5: "'defgh'"
+
+tree1:
+    1 : Str TK.QUOT(LITERAL, 'defgh', V=defgh)

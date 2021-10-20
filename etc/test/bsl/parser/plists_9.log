@@ -1,0 +1,8 @@
+
+
+test: 9: "(a = 5)"
+
+tree1:
+    1 : BinOp TK.ASSIGN(BINOP, '=', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=)
+    3 :     Int TK.INT(LITERAL, '5', V=5)

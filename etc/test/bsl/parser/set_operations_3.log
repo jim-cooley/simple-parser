@@ -1,0 +1,10 @@
+
+
+test: 3: "{a} and {b}"
+
+tree1:
+    1 : BinOp TK.AND(BINOP, 'and', V=)
+    2 :     Set TK.SET(SET, '{', V=[Ident()])
+    3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=)
+    4 :     Set TK.SET(SET, '{', V=[Ident()])
+    5 :         Ident TK.IDNT(IDENTIFIER, 'b', V=)

@@ -1,0 +1,12 @@
+
+
+test: 10: "a | b => c | d"
+
+tree1:
+    1 : List TK.PIPE(LIST, '|', V=[List(), Ident()])
+    2 :     List TK.RAISE(LIST, '=>', V=[List(), Ident()])
+    3 :         List TK.PIPE(LIST, '|', V=[Ident(), Ident()])
+    4 :             Ident TK.IDNT(IDENTIFIER, 'a', V=)
+    5 :             Ident TK.IDNT(IDENTIFIER, 'b', V=)
+    6 :         Ident TK.IDNT(IDENTIFIER, 'c', V=)
+    7 :     Ident TK.IDNT(IDENTIFIER, 'd', V=)

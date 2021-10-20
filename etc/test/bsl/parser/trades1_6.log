@@ -1,0 +1,6 @@
+
+
+test: 6: "trades"
+
+tree1:
+    1 : Ident TK.IDNT(IDENTIFIER, 'trades', V=)

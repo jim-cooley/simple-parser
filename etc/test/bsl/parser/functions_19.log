@@ -1,0 +1,12 @@
+
+
+test: 19: "atr := (high + low) / 2"
+
+tree1:
+    1 : BinOp TK.DEFINE(BINOP, ':=', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'atr', V=)
+    3 :     BinOp TK.DIV(BINOP, '/', V=None)
+    4 :         BinOp TK.ADD(BINOP, '+', V=None)
+    5 :             Ident TK.IDNT(DATASET, 'high', V=)
+    6 :             Ident TK.IDNT(DATASET, 'low', V=)
+    7 :         Int TK.INT(LITERAL, '2', V=2)

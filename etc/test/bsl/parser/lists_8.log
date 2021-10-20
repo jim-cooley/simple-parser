@@ -1,0 +1,13 @@
+
+
+test: 8: "['a':5, 'b':'c', d]"
+
+tree1:
+    1 : List TK.LIST(LIST, '[', V=[BinOp(), BinOp(), Ident()])
+    2 :     BinOp TK.COLN(BINOP, ':', V=None)
+    3 :         Str TK.QUOT(LITERAL, 'a', V=a)
+    4 :         Int TK.INT(LITERAL, '5', V=5)
+    5 :     BinOp TK.COLN(BINOP, ':', V=None)
+    6 :         Str TK.QUOT(LITERAL, 'b', V=b)
+    7 :         Str TK.QUOT(LITERAL, 'c', V=c)
+    8 :     Ident TK.IDNT(IDENTIFIER, 'd', V=)

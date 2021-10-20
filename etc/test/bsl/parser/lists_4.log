@@ -1,0 +1,9 @@
+
+
+test: 4: "['a', 'b', 'c']"
+
+tree1:
+    1 : List TK.LIST(LIST, '[', V=[Str(), Str(), Str()])
+    2 :     Str TK.QUOT(LITERAL, 'a', V=a)
+    3 :     Str TK.QUOT(LITERAL, 'b', V=b)
+    4 :     Str TK.QUOT(LITERAL, 'c', V=c)

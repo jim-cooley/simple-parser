@@ -26,7 +26,7 @@ class SemanticAnalysisTestRunner(TestSuiteRunner, ABC):
         tree = parser.parse()
         fixups = Fixup(tree)
         tree = fixups.apply()
-        _dump_tree(tree, log)
+        #  _dump_tree(tree, log)
 
 
 # this is only for execution under debugger or via command-line

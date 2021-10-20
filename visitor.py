@@ -87,7 +87,10 @@ class TreeFilter(NodeVisitor, ABC):
     def visit_sequence(self, node, label=None):
         self.visit_node(node, label)
         self.indent()
-        for n in node.values():
+        values = node.values()
+        if values is None:
+            return
+        for n in values:
             if n is None:
                 continue
             n.parent = node if self.apply_parent_fixups else n.parent
@@ -115,4 +118,4 @@ class TreeFilter(NodeVisitor, ABC):
     # just for test: use DumpTree for proper printing
     def _print_node(self, node):
         indent = '' if self._depth < 1 else ' '.ljust(self._depth * 4)
-        print(f'{self._ncount:5d} : {indent}{node}: TK.{node.token.id.name}')
+        print(f'{self._ncount:5d} : {indent}{node}: {node.token.format()}')

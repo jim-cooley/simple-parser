@@ -7,6 +7,7 @@ _nodeTypeMappings = {
     'Command': UNARY_NODE,
     'DateDiff': VALUE_NODE,
     'DateTime': VALUE_NODE,
+    'Duration': VALUE_NODE,
     'Float': VALUE_NODE,
     'FnCall': BINARY_NODE,
     'Ident': VALUE_NODE,
@@ -29,30 +30,25 @@ class DumpTree(NodeVisitor):
         super().__init__(_nodeTypeMappings)
         self._ncount = 1
         self._body = []
-        self._indent_level = 0
-        self._indent = ''
+        self._depth = 0
 
     def indent(self):
-        self._indent_level += 1
-        self._indent = ' '.ljust(self._indent_level * 4)
-        return
+        self._depth += 1
 
     def dedent(self):
-        self._indent_level -= 1
-        self._indent = ' '.ljust(self._indent_level * 4)
+        self._depth -= 1
 
     def dump(self, tree):
         self.visit(tree)
         return self._body
 
-    # Duration is reflected as 'Dur' in the test suites, need to change all the baselines for this.
-    def visit_Duration(self, node, label='Dur'):
-        self.visit_value(node, 'Dur')
+    def format_indent(self):
+        return '' if self._depth < 1 else ' '.ljust(self._depth * 4)
 
     # helpers
     def visit_binary_node(self, node, label=None):
-        s = '{}node{}:{} {}'.format(self._indent, self._ncount, label, node.token.format())
-        self._body.append(s)
+        indent = self.format_indent()
+        self._print_node(node, label)
         node._num = self._ncount
         self._ncount += 1
         self.indent()
@@ -61,8 +57,7 @@ class DumpTree(NodeVisitor):
         self.dedent()
 
     def visit_sequence(self, node, label=None):
-        s = '{}node{}:{} {}'.format(self._indent, self._ncount, label, node.token.format())
-        self._body.append(s)
+        self._print_node(node, label)
         node._num = self._ncount
         self._ncount += 1
         if node.value is not None:
@@ -75,8 +70,7 @@ class DumpTree(NodeVisitor):
             self.dedent()
 
     def visit_unary_node(self, node, label=None):
-        s = '{}node{}:{} {}'.format(self._indent, self._ncount, label, node.token.format())
-        self._body.append(s)
+        self._print_node(node, label)
         node._num = self._ncount
         self._ncount += 1
         self.indent()
@@ -84,7 +78,12 @@ class DumpTree(NodeVisitor):
         self.dedent()
 
     def visit_value(self, node, label=None):
-        s = '{}node:{}:{} {}'.format(self._indent, self._ncount, label, node.token.format())
-        self._body.append(s)
+        self._print_node(node, label)
         node._num = self._ncount
         self._ncount += 1
+
+    def _print_node(self, node, label=None):
+        indent = '' if self._depth < 1 else ' '.ljust(self._depth * 4)
+#       print(f'{self._ncount:5d} : {indent}{node}: {node.token.format()}')
+        line = '{:5d} : {}{} {}'.format(self._ncount, indent, label, node.token.format())
+        self._body.append(line)

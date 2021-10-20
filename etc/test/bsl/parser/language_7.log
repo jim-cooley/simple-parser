@@ -1,0 +1,27 @@
+
+
+test: 7: "(close.sma(20) and close.sma(50)) | diff | sign | signal(how='cross')"
+
+tree1:
+    1 : List TK.PIPE(LIST, '|', V=[BinOp(), Ident(), Ident(), FnCall()])
+    2 :     BinOp TK.AND(BINOP, 'and', V=)
+    3 :         PropRef TK.REF(BINOP, '.', V=None)
+    4 :             Ident TK.IDNT(DATASET, 'close', V=)
+    5 :             FnCall TK.FUNCTION(BINOP, '(', V=None)
+    6 :                 Ident TK.IDNT(FUNCTION, 'sma', V=)
+    7 :                 List TK.PARAMETER_LIST(LIST, '(', V=[Int()])
+    8 :                     Int TK.INT(LITERAL, '20', V=20)
+    9 :         PropRef TK.REF(BINOP, '.', V=None)
+   10 :             Ident TK.IDNT(DATASET, 'close', V=)
+   11 :             FnCall TK.FUNCTION(BINOP, '(', V=None)
+   12 :                 Ident TK.IDNT(FUNCTION, 'sma', V=)
+   13 :                 List TK.PARAMETER_LIST(LIST, '(', V=[Int()])
+   14 :                     Int TK.INT(LITERAL, '50', V=50)
+   15 :     Ident TK.IDNT(IDENTIFIER, 'diff', V=)
+   16 :     Ident TK.IDNT(IDENTIFIER, 'sign', V=)
+   17 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
+   18 :         Ident TK.SIGNAL(KEYWORD, 'signal', V=)
+   19 :         List TK.PARAMETER_LIST(LIST, '(', V=[BinOp()])
+   20 :             BinOp TK.ASSIGN(BINOP, '=', V=None)
+   21 :                 Ident TK.IDNT(IDENTIFIER, 'how', V=)
+   22 :                 Str TK.QUOT(LITERAL, 'cross', V=cross)

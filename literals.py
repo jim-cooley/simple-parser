@@ -115,6 +115,8 @@ class Set(List):
         return list(self.value.keys())
 
     def values(self):
+        if self.value is None:
+            return None
         return self.value if type(self.value).__name__ == "list" else list(self.value.values())
 
     def tuples(self):

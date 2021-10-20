@@ -1,0 +1,10 @@
+
+
+test: 14: "[[[[a]]]]"
+
+tree1:
+    1 : List TK.LIST(LIST, '[', V=[List()])
+    2 :     List TK.LIST(LIST, '[', V=[List()])
+    3 :         List TK.LIST(LIST, '[', V=[List()])
+    4 :             List TK.LIST(LIST, '[', V=[Ident()])
+    5 :                 Ident TK.IDNT(IDENTIFIER, 'a', V=)
