@@ -18,8 +18,8 @@ class DumpTree(NodeVisitor):
         self._indent_level -= 1
         self._indent = ' '.ljust(self._indent_level * 4)
 
-    def visit_BinOp(self, node):
-        s = '{}node{}:{} {}'.format(self._indent, self._ncount, 'BinOp',node.token.format())
+    def visit_BinOp(self, node, name='BinOp'):
+        s = '{}node{}:{} {}'.format(self._indent, self._ncount, name, node.token.format())
         self._body.append(s)
         node._num = self._ncount
         self._ncount += 1
@@ -46,26 +46,14 @@ class DumpTree(NodeVisitor):
     def visit_Float(self, node):
         self.visit_value('Float', node)
 
-    def visit_FnCall(self, node):
-        s = '{}node{}:{} {}]'.format(self._indent, self._ncount, 'FnCall', node.token.format())
-        self._body.append(s)
-        node._num = self._ncount
-        self._ncount += 1
-        self.indent()
-        self.visit(node.parameter_list)
-        self.dedent()
+    def visit_FnCall(self, node, name='FnCall'):
+        self.visit_BinOp(node, name)
 
     def visit_Ident(self, node):
         self.visit_value('Ident', node)
 
     def visit_Index(self, node):
-        s = '{}node{}:{} {}]'.format(self._indent, self._ncount, 'Index', node.token.format())
-        self._body.append(s)
-        node._num = self._ncount
-        self._ncount += 1
-        self.indent()
-        self.visit(node.parameter_list)
-        self.dedent()
+        self.visit_FnCall(node, 'Index')
 
     def visit_Int(self, node):
         self.visit_value('Int', node)

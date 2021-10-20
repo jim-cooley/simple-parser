@@ -114,6 +114,7 @@ class TK(IntEnum):
     EVENT = auto()  # from =>
     FALL_BELOW = auto()  # <|
     FALSE = auto()
+    FUNCTION = auto()
     IN = auto()
     INDEX = auto()  # indexing expression
     ISEQ = auto()  # ==
@@ -149,11 +150,11 @@ _tk2binop = {
     TK.AMPS: TK.AND,
     TK.AND: TK.AND,
     TK.BAR: TK.PIPE,
-    TK.COEQ: TK.DEFINE,
     TK.CLN2: TK.EVENT,
+    TK.COEQ: TK.DEFINE,
     TK.COLN: TK.COLN,
-    TK.DOT: TK.DOT,
     TK.DOT2: TK.RANGE,
+    TK.DOT: TK.DOT,
     TK.EQEQ: TK.ISEQ,  # ==
     TK.EQGT: TK.RAISE,
     TK.EQLS: TK.ASSIGN,
@@ -163,14 +164,15 @@ _tk2binop = {
     TK.GTR2: TK.APPLY,
     TK.GTR: TK.GTR,
     TK.LBAR: TK.FALL_BELOW,
+    TK.LBRK: TK.INDEX,
     TK.LESS: TK.LESS,
     TK.LSS2: TK.LSS2,
     TK.LTE: TK.LTE,
     TK.MNUS: TK.SUB,
     TK.NEQ: TK.NEQ,
     TK.OR: TK.OR,
-    TK.PCT: TK.PCT,
     TK.PCT2: TK.COMMAND,
+    TK.PCT: TK.PCT,
     TK.PLUS: TK.ADD,
     TK.RARR: TK.RAISE,
     TK.RBAR: TK.RISE_ABOVE,

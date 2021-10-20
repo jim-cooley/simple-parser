@@ -2,7 +2,7 @@
 from dataclasses import dataclass
 
 from symbols import SymbolTable
-from tokens import TCL, TK
+from tokens import TCL, TK, Token
 
 
 @dataclass
@@ -119,12 +119,10 @@ class Set(Seq):
 
 
 @dataclass
-class FnCall(AST):
-    def __init__(self, token, plist):
-        self.token = token
-        self.parameter_list = plist
-        if plist is not None:
-            plist.parent = self
+class FnCall(BinOp):
+    def __init__(self, token, plist, op=None):
+        op = Token(tid=TK.FUNCTION, tcl=TCL.FUNCTION, lex="(", loc=token.location) if op is None else op
+        super().__init__(left=Ident(token), op=op, right=plist)
 
 
 @dataclass
@@ -136,12 +134,9 @@ class Ident(Literal):
 
 
 @dataclass
-class Index(AST):
+class Index(FnCall):
     def __init__(self, token, plist):
-        self.token = token
-        self.parameter_list = plist
-        if plist is not None:
-            plist.parent = self
+        super().__init__(token, plist, Token(tid=TK.INDEX, tcl=TCL.BINOP, lex="[", loc=token.location))
 
 
 @dataclass
