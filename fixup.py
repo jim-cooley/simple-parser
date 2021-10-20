@@ -2,7 +2,7 @@
 
 from abc import ABC
 
-from visitor import NodeVisitor, TreeFilter, _print_node
+from visitor import TreeFilter
 
 
 # fixups applied:
@@ -12,8 +12,8 @@ class Fixup(TreeFilter, ABC):
     def __init__(self, tree=None):
         super().__init__(tree, apply_parent_fixups=True)
 
-    def visit_Node(self, node):
-        super().visit_Node(node)
+    def visit_node(self, node, label=None):
+        super().visit_node(node, label)
         pass
 
     def apply(self):

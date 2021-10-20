@@ -186,12 +186,15 @@ _tk2unop = {
     TK.NOT: TK.NOT,
     TK.PLUS: TK.PLUS,  # unary +
 }
+_tk2lit = {
+    TK.LBRK: TK.LIST,  # ]
+}
 
 # token sets for the parser
 _ADDITION_TOKENS = [TK.PLUS, TK.MNUS]
-_ASSIGNMENT_TOKENS = [TK.EQLS, TK.ASSIGN, TK.MNEQ, TK.PLEQ]
+_ASSIGNMENT_TOKENS = [TK.COEQ, TK.EQLS, TK.ASSIGN, TK.MNEQ, TK.PLEQ]
 _COMPARISON_TOKENS = [TK.LESS, TK.LTE, TK.GTR, TK.GTE, TK.IN, TK.LBAR, TK.RBAR]
-_FLOW_TOKENS = [TK.BAR, TK.COEQ, TK.EQGT, TK.GTR2, TK.PCT2, TK.RARR]
+_FLOW_TOKENS = [TK.BAR, TK.EQGT, TK.GTR2, TK.PCT2, TK.RARR]
 _EQUALITY_TEST_TOKENS = [TK.EQEQ, TK.NEQ]
 _LOGIC_TOKENS = [TK.AND, TK.OR, TK.AMPS, TK.CLN2]
 _MULTIPLICATION_TOKENS = [TK.SLSH, TK.STAR, TK.EXPN, TK.DOT, TK.DOT2]
@@ -243,6 +246,9 @@ class Token:
 
     def map2unop(self):
         return self._map(_tk2unop)
+
+    def map2litval(self):
+        return self._map(_tk2lit)
 
     @staticmethod
     def format_token(tk):

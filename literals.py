@@ -66,20 +66,26 @@ class Int(Literal):
 
 @dataclass
 class List(Literal):
-    def __init__(self, token, mlist=None):
+    def __init__(self, token, m_list=None):
         super().__init__(token)
-        token.id = TK.LIST
         token.t_class = TCL.LIST
-        token.value = None if mlist is None else mlist
-        self.members = mlist
-        if mlist is not None:
-            mlist.parent = self
+        token.value = None if m_list is None else m_list
+        self.value = m_list
+
+    def __getitem__(self, item):
+        return self.values()[item]
+
+    def values(self):
+        return self.value
+
+    def append(self, o):
+        self.value.append(o)
 
     def format(self):
-        if self.members is None:
-            return '[]]'
+        if self.value is None:
+            return '[]'
         else:
-            return '[' + self.members + ']'
+            return '[' + self.value + ']'
 
 
 @dataclass
@@ -92,16 +98,33 @@ class Percent(Literal):
         return f'{self.value*100} %'
 
 
-"""
 @dataclass
-class Set(Dict):
+class Set(List):
     def __init__(self, token, dict=None):
         super().__init__(token, dict)
-#       token.value = None if dict is None else dict
-#        self.members = dict
-#        if dict is not None:
-#            dict.parent = self
-"""
+        token.id = TK.SET
+        token.t_class = TCL.SET
+        token.value = None if dict is None else dict
+
+    def __getitem__(self, item):
+        if type(item).name == 'int':
+            return self.values()[item]
+        return self.value[item]
+
+    def keys(self):
+        return list(self.value.keys())
+
+    def values(self):
+        return self.value if type(self.value).__name__ == "list" else list(self.value.values())
+
+    def tuples(self):
+        return list(self.value.items())
+
+    def format(self):
+        if self.value is None:
+            return '{}'
+        else:
+            return '{' + self.value + '}'
 
 
 @dataclass

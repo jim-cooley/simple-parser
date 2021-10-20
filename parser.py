@@ -4,8 +4,8 @@ from tokens import TK, TCL, _ADDITION_TOKENS, _COMPARISON_TOKENS, _FLOW_TOKENS, 
     _ASSIGNMENT_TOKENS
 from lexer import Lexer
 from symbols import SymbolTable
-from tree import UnaryOp, BinOp, Ident, FnCall, PropRef, PropCall, Set, Seq, Command, Index, ParseTree
-from literals import Duration, Float, Int, Percent, Str, Time, Bool, List
+from tree import UnaryOp, BinOp, FnCall, PropRef, PropCall, Command, Index, ParseTree, Ident
+from literals import Duration, Float, Int, Percent, Str, Time, Bool, List, Set
 from treedump import DumpTree
 
 
@@ -134,7 +134,7 @@ class Parser(object):
         op = copy(self.token)  # need a copy or we modify the _lexer's token with op.map()
         while op.id in _FLOW_TOKENS:
             sep = op.id
-            seq = Seq(op.map2binop(), [node])
+            seq = List(op.map2binop(), [node])
             while self.match([sep]):
                 node = self.set_parameters()
                 seq.append(node)
@@ -238,7 +238,6 @@ class Parser(object):
             node = Str(token)
         elif token.id == TK.LBRC:
             self.consume(TK.LBRC)
-#           node = Set(token, Seq(token, self.sequence(TK.COMA)))
             node = Set(token, self.sequence(TK.COMA))
             self.consume(TK.RBRC)
             return node
@@ -252,7 +251,7 @@ class Parser(object):
             return node
         elif token.id == TK.LBRK:   # should be list literal and parse indexing via 'identifier'
             self.consume(TK.LBRK)
-            node = List(token, Seq(token, self.sequence(TK.COMA)))
+            node = List(token.map2litval(), self.sequence(TK.COMA))
             self.consume(TK.RBRK)
             return node
         elif token.t_class in _IDENTIFIER_TYPES or token.id == TK.IDNT:
@@ -298,7 +297,7 @@ class Parser(object):
         token.t_class = TCL.LIST
         token.id = TK.INDEX
         token.lexeme = '['  # fixup token.
-        return Seq(token, seq)
+        return List(token, seq)
 
     def plist(self, node=None):
         """( EXPR ',' ... )"""
@@ -311,7 +310,7 @@ class Parser(object):
         token.t_class = TCL.LIST
         token.id = TK.PARAMETER_LIST
         token.lexeme = '('  # fixup token.
-        return Seq(token, seq)
+        return List(token, seq)
 
     def sequence(self, sep, node=None):
         """EXPR <sep> EXPR <sep> ..."""
