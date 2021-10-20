@@ -60,9 +60,10 @@ class TestSuiteRunner(ABC):
                 self._run_single_test(name, test)
 
     def _run_single_test(self, name, test, idx=None):
-        fname = f'{name}.log' if idx is None else f'{name}_{idx}.log'
+        fn = f'{name}.log' if idx is None else f'{name}_{idx}.log'
         label = f'test: "{test}"' if idx is None else f'test: {idx}: "{test}"'
-        with open(f'{self.logs_dir}/{self.prefix}{fname}', 'w') as log:
+        fname = f'{self.logs_dir}/{self.prefix}{fn}'
+        with open(fname, 'w') as log:
             _t_print(log, f'\n\n{label}')
             if not self.interactive:
                 self.run_protected_test(log, name, test)

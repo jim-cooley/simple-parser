@@ -72,6 +72,8 @@ class List(Literal):
         token.t_class = TCL.LIST
         token.value = None if mlist is None else mlist
         self.members = mlist
+        if mlist is not None:
+            mlist.parent = self
 
     def format(self):
         if self.members is None:
@@ -98,6 +100,8 @@ class Set(Literal):
         token.t_class = TCL.SET
         token.value = None if mlist is None else mlist
         self.members = mlist
+        if mlist is not None:
+            mlist.parent = self
 
     def format(self):
         if self.members is None:

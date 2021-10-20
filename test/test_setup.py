@@ -60,6 +60,7 @@ test_data = {
     'simpler': 'simpler.dsl',
     'shell': shell_tests,
     'statements': statements_tests,
+    'system1': 'system1.dsl',
     'time': time_tests,
     'trades1': trades1_tests,
     'trades2': trades2_tests,

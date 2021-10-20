@@ -5,8 +5,9 @@ from dataclasses import dataclass
 from enum import IntEnum, auto, unique
 
 # definitions to synchronize with statedef - note: would create circular references if left there.
-CL_MAX = 37 # CL.MAX
-ST_MAX = 31 # ST.MAX
+CL_MAX = 37  # CL.MAX
+ST_MAX = 31  # ST.MAX
+
 
 # token class or category
 @unique
@@ -14,15 +15,15 @@ class TCL(IntEnum):
     NONE = 0
     BINOP = auto()
     COMMAND = auto()
-    DICT = auto()   # k-v pairs
+    DATASET = auto()  # dataset, panda
+    DICT = auto()  # k-v pairs
+    FUNCTION = auto()
     KEYWORD = auto()
-    LIST = auto()   # ordered
+    LIST = auto()  # ordered
     LITERAL = auto()
     LOGICAL = auto()
     IDENTIFIER = auto()
-    METHOD = auto()
-    SERIES = auto() # dataset, panda
-    SET = auto()    # unordered, set operations
+    SET = auto()  # unordered, set operations
     UNARY = auto()
     WHITE = auto()
     ERROR = auto()
@@ -32,69 +33,69 @@ class TCL(IntEnum):
 @unique
 class TK(IntEnum):
     WHT = (ST_MAX + 1)  #
-    EOL = auto()   # \n
+    EOL = auto()  # \n
     AMP2 = auto()  # &&
-    AMPS = auto()   # &
-    ATS = auto()    # @
-    BAR = auto()    # |
-    BAR2 = auto()   # ||
-    BSLH = auto()   # \
-    CLN2 = auto()   # ::
-    COEQ = auto()   # :=
-    COLN = auto()   # :
-    COMA = auto()   # ,
-    COMN = auto()   # :-
-    DLRS = auto()   # $
-    DOT = auto()    # .
-    DOT2 = auto()   # ..
-    DUR = auto()   # 1s, 1m, 1d, 1w, 1m, 1y
+    AMPS = auto()  # &
+    ATS = auto()  # @
+    BAR = auto()  # |
+    BAR2 = auto()  # ||
+    BSLH = auto()  # \
+    CLN2 = auto()  # ::
+    COEQ = auto()  # :=
+    COLN = auto()  # :
+    COMA = auto()  # ,
+    COMN = auto()  # :-
+    DLRS = auto()  # $
+    DOT = auto()  # .
+    DOT2 = auto()  # ..
+    DUR = auto()  # 1s, 1m, 1d, 1w, 1m, 1y
     EQEQ = auto()  # ==
     EQGT = auto()  # =>
-    EQLS = auto()   # =
-    EXCL = auto()   # !
-    EXPN = auto()   # ^
-    FLOT = auto()   #
-    GTE = auto()   # >=
-    GTR = auto()    # >
+    EQLS = auto()  # =
+    EXCL = auto()  # !
+    EXPN = auto()  # ^
+    FLOT = auto()  #
+    GTE = auto()  # >=
+    GTR = auto()  # >
     GTR2 = auto()  # >>
-    IDNT = auto()   #
-    INT = auto()    #
+    IDNT = auto()  #
+    INT = auto()  #
     LARR = auto()  # <-
     LBAR = auto()  # <|
-    LBRC = auto()   # {
-    LBRK = auto()   # [
-    LBS = auto()    # #
-    LESS = auto()   # <
-    LPRN = auto()   # (
+    LBRC = auto()  # {
+    LBRK = auto()  # [
+    LBS = auto()  # #
+    LESS = auto()  # <
+    LPRN = auto()  # (
     LSS2 = auto()  # <<
-    LTE = auto()   # <=
-    MNEQ = auto()   # -=
-    MNU2 = auto()   # --
-    MNUS = auto()   # -
-    NEQ = auto()   # !=
-    PCT = auto()    # %
-    PCT2 = auto()   # %
-    PLEQ = auto()   # +=
-    PLU2 = auto()   # ++
-    PLUS = auto()   # +
-    QSTN = auto()   # ?
-    QUOT = auto()   # ", '
+    LTE = auto()  # <=
+    MNEQ = auto()  # -=
+    MNU2 = auto()  # --
+    MNUS = auto()  # -
+    NEQ = auto()  # !=
+    PCT = auto()  # %
+    PCT2 = auto()  # %
+    PLEQ = auto()  # +=
+    PLU2 = auto()  # ++
+    PLUS = auto()  # +
+    QSTN = auto()  # ?
+    QUOT = auto()  # ", '
     RARR = auto()  # ->
     RBAR = auto()  # >|
-    RBRC = auto()   # }
-    RBRK = auto()   # ]
-    RPRN = auto()   # )
-    SEMI = auto()   # ;
-    SLSH = auto()   # /
-    STAR = auto()   # *
-    STR = auto()    #
+    RBRC = auto()  # }
+    RBRK = auto()  # ]
+    RPRN = auto()  # )
+    SEMI = auto()  # ;
+    SLSH = auto()  # /
+    STAR = auto()  # *
+    STR = auto()  #
     TIME = auto()  # h:m:s
-    TLDE = auto()   # ~
-    USCR = auto()   # _
+    TLDE = auto()  # ~
+    USCR = auto()  # _
 
     # specialized tokens:
     INVALID = 124
-    BAD = 125       # from lexer
+    BAD = 125  # from lexer
     ERR = 126
     EOF = 127
 
@@ -103,34 +104,34 @@ class TK(IntEnum):
     RESERVED = 149  # last reserved token value (below 128 can be used in state machine, 128-255 error & reserved)
 
     # higher-level / derived tokens
-    ADD = auto()     # +
-    ALL = auto()    # all:
+    ADD = auto()  # +
+    ALL = auto()  # all:
     AND = auto()
-    ANY = auto()    # any:
-    APPLY = auto()   # >>
+    ANY = auto()  # any:
+    APPLY = auto()  # >>
     ASSIGN = auto()  # =
-    DIV = auto()     # /
-    EVENT = auto()   # from =>
+    DIV = auto()  # /
+    EVENT = auto()  # from =>
     FALL_BELOW = auto()  # <|
     FALSE = auto()
     IN = auto()
-    INDEX = auto()   # indexing expression
-    ISEQ = auto()    # ==
+    INDEX = auto()  # indexing expression
+    ISEQ = auto()  # ==
     LIST = auto()
-    MUL = auto()     # *
-    NEG = auto()     # unary - (negate)
+    MUL = auto()  # *
+    NEG = auto()  # unary - (negate)
     NONE = auto()
-    NONEOF = auto() # none:
+    NONEOF = auto()  # none:
     NOT = auto()
     OR = auto()
-    PARAMETER_LIST = auto() # parameter-list
+    PARAMETER_LIST = auto()  # parameter-list
     PIPE = auto()
-    POW = auto()     # ^
-    RAISE = auto()   # =>
+    POW = auto()  # ^
+    RAISE = auto()  # =>
     RANGE = auto()
     RISE_ABOVE = auto()  # >|
     SET = auto()
-    SUB = auto()     # - (subtract)
+    SUB = auto()  # - (subtract)
     TRUE = auto()
 
     # keywords, reserved words, intrinsics
@@ -192,12 +193,11 @@ _EQUALITY_TEST_TOKENS = [TK.EQEQ, TK.NEQ]
 _LOGIC_TOKENS = [TK.AND, TK.OR, TK.AMPS, TK.CLN2]
 _MULTIPLICATION_TOKENS = [TK.SLSH, TK.STAR, TK.EXPN, TK.DOT, TK.DOT2]
 _UNARY_TOKENS = [TK.PLUS, TK.MNUS, TK.NOT, TK.EXCL, TK.MNU2, TK.PLU2]
-_IDENTIFIER_TYPES = [TCL.KEYWORD, TCL.SERIES, TCL.IDENTIFIER]
+_IDENTIFIER_TYPES = [TCL.KEYWORD, TCL.DATASET, TCL.IDENTIFIER]
 
 
 @dataclass
 class Token:
-
     @dataclass
     class Loc:
         def __init__(self, line=0, offset=0):
@@ -225,9 +225,9 @@ class Token:
     def format(self):
         _tn = f'.{self.id.name}(' if hasattr(self.id, "name") else f'({self.id}, '
         _tcl = f'{self.t_class.name}' if hasattr(self.t_class, "name") else 'TCL({self.t_type})'
-        _tv = 'None' if self.value is None else  f'{self.value}'
+        _tv = 'None' if self.value is None else f'{self.value}'
         _tl = f'\'{self.lexeme}\''
-        _tloc = f'line:{self.location.line+1}, pos:{self.location.offset-1}'
+        _tloc = f'line:{self.location.line + 1}, pos:{self.location.offset - 1}'
         return f'TK{_tn}{_tcl}, {_tl}, V={_tv})'
 
     def _map(self, tk_map):

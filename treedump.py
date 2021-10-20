@@ -1,5 +1,5 @@
 import tokens as _
-from tree import NodeVisitor
+from visitor import NodeVisitor
 
 
 class DumpTree(NodeVisitor):
@@ -75,8 +75,8 @@ class DumpTree(NodeVisitor):
         self._body.append(s)
         node._num = self._ncount
         self._ncount += 1
-        if node.members is not None:
-            self.visit_sequence(node.members.sequence)
+        if node.value is not None:
+            self.visit_sequence(node.value.sequence())
 
     def visit_Percent(self, node):
         self.visit_value('Percent', node)
@@ -105,15 +105,15 @@ class DumpTree(NodeVisitor):
         self._body.append(s)
         node._num = self._ncount
         self._ncount += 1
-        self.visit_sequence(node.sequence)
+        self.visit_sequence(node.sequence())
 
     def visit_Set(self, node):
         s = '{}node{}:{} {}'.format(self._indent, self._ncount, 'Set', node.token.format())
         self._body.append(s)
         node._num = self._ncount
         self._ncount += 1
-        if node.members is not None:
-            self.visit_sequence(node.members.sequence)
+        if node.value is not None:
+            self.visit_sequence(node.value.sequence())
 
     def visit_Str(self, node):
         self.visit_value('Str', node)
