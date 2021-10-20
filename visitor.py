@@ -6,13 +6,12 @@ SEQUENCE_NODE = 'sequence'
 UNARY_NODE = 'unary_node'
 VALUE_NODE = 'value'
 
-_defaultNodeMapping = {
+_defaultNodeTypeMappings = {
     'BinOp': BINARY_NODE,
     'Command': UNARY_NODE,
     'FnCall': BINARY_NODE,
     'Index': BINARY_NODE,
     'List': SEQUENCE_NODE,
-    'Node': DEFAULT_NODE,
     'PropCall': BINARY_NODE,
     'PropRef': BINARY_NODE,
     'Set': SEQUENCE_NODE,
@@ -21,8 +20,8 @@ _defaultNodeMapping = {
 
 
 class NodeVisitor(object):
-    def __init__(self, name_mapping=_defaultNodeMapping):
-        self.map2name = name_mapping
+    def __init__(self, mapping=None):
+        self.map2name = _defaultNodeTypeMappings if mapping is None else mapping
 
     def visit(self, node):
         if node is not None:
@@ -37,15 +36,17 @@ class NodeVisitor(object):
     def generic_visit(self, node, label=None):
         raise Exception('No visit_{} method'.format(type(node).__name__))
 
-    def node2name(self, nname):
-        if nname is not None:
-            name = nname if nname not in self.map2name else self.map2name[nname]
-            return name
+    def node2name(self, name):
+        if self.map2name is not None and name is not None:
+            label = name if name not in self.map2name else self.map2name[name]
+            return label
+        return name
 
 
 # a tree filter applies some operation to every node in the tree (pre-order).
 class TreeFilter(NodeVisitor, ABC):
-    def __init__(self, tree=None, apply_parent_fixups=True):
+    def __init__(self, tree=None, mapping=None, apply_parent_fixups=True):
+        super().__init__(mapping)
         self.tree = tree
         self.apply_parent_fixups = apply_parent_fixups
         self._ncount = 0
@@ -96,7 +97,8 @@ class TreeFilter(NodeVisitor, ABC):
     def visit_unary_node(self, node, label=None):
         self.visit_node(node, label)
         self.indent()
-        node.expr.parent = node if self.apply_parent_fixups and node.expr is not None else node.expr.parent
+        if node is not None and node.expr is not None:
+            node.expr.parent = node if self.apply_parent_fixups else node.expr.parent
         self.visit(node.expr)
         self.dedent()
 

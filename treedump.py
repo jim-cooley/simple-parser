@@ -1,7 +1,7 @@
 import tokens as _
 from visitor import NodeVisitor, BINARY_NODE, UNARY_NODE, SEQUENCE_NODE, DEFAULT_NODE, VALUE_NODE
 
-_nodeNameMappings = {
+_nodeTypeMappings = {
     'BinOp': BINARY_NODE,
     'Bool': VALUE_NODE,
     'Command': UNARY_NODE,
@@ -26,7 +26,7 @@ _nodeNameMappings = {
 
 class DumpTree(NodeVisitor):
     def __init__(self):
-        super().__init__(_nodeNameMappings)
+        super().__init__(_nodeTypeMappings)
         self._ncount = 1
         self._body = []
         self._indent_level = 0
@@ -45,12 +45,12 @@ class DumpTree(NodeVisitor):
         self.visit(tree)
         return self._body
 
-    # node processing
+    # Duration is reflected as 'Dur' in the test suites, need to change all the baselines for this.
     def visit_Duration(self, node, label='Dur'):
         self.visit_value(node, 'Dur')
 
     # helpers
-    def visit_binary_node(self, node, label):
+    def visit_binary_node(self, node, label=None):
         s = '{}node{}:{} {}'.format(self._indent, self._ncount, label, node.token.format())
         self._body.append(s)
         node._num = self._ncount
@@ -60,7 +60,7 @@ class DumpTree(NodeVisitor):
         self.visit(node.right)
         self.dedent()
 
-    def visit_sequence(self, node, label):
+    def visit_sequence(self, node, label=None):
         s = '{}node{}:{} {}'.format(self._indent, self._ncount, label, node.token.format())
         self._body.append(s)
         node._num = self._ncount
@@ -74,7 +74,7 @@ class DumpTree(NodeVisitor):
                         self.visit(n)
             self.dedent()
 
-    def visit_unary_node(self, node, label):
+    def visit_unary_node(self, node, label=None):
         s = '{}node{}:{} {}'.format(self._indent, self._ncount, label, node.token.format())
         self._body.append(s)
         node._num = self._ncount
@@ -83,7 +83,7 @@ class DumpTree(NodeVisitor):
         self.visit(node.expr)
         self.dedent()
 
-    def visit_value(self, node, label):
+    def visit_value(self, node, label=None):
         s = '{}node:{}:{} {}'.format(self._indent, self._ncount, label, node.token.format())
         self._body.append(s)
         node._num = self._ncount
