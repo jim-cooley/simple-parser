@@ -71,4 +71,6 @@ printf "================================\n\n"
 end=$(date +%s)
 printf "$((end - start)) seconds\n\n"
 
+grep -i fail ./suite.log
+
 printf "\n\n"

@@ -76,7 +76,6 @@ class UnaryOp(AST):
 class Command(UnaryOp):
     def __init__(self, token, expr):
         super().__init__(token, expr)
-        token.t_class = TCL.COMMAND
 
 
 @dataclass
@@ -139,7 +138,6 @@ class PropCall(FnCall):
 @dataclass
 class PropRef(BinOp):
     def __init__(self, token, prop, op=None):
-#       if type(node).__name__ == 'Ident':
         op = Token(tid=TK.REF, tcl=TCL.BINOP, lex=".", loc=token.location) if op is None else op
         super().__init__(left=Ident(token), op=op, right=prop)
 

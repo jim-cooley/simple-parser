@@ -18,15 +18,8 @@ class DumpTree(NodeVisitor):
         self._indent_level -= 1
         self._indent = ' '.ljust(self._indent_level * 4)
 
-    def visit_BinOp(self, node, name='BinOp'):
-        s = '{}node{}:{} {}'.format(self._indent, self._ncount, name, node.token.format())
-        self._body.append(s)
-        node._num = self._ncount
-        self._ncount += 1
-        self.indent()
-        self.visit(node.left)
-        self.visit(node.right)
-        self.dedent()
+    def visit_BinOp(self, node):
+        self.visit_binary_node(node, 'BinOp')
 
     def visit_Bool(self, node):
         self.visit_value('Bool', node)
@@ -47,13 +40,13 @@ class DumpTree(NodeVisitor):
         self.visit_value('Float', node)
 
     def visit_FnCall(self, node, name='FnCall'):
-        self.visit_BinOp(node, name)
+        self.visit_binary_node(node, name)
 
     def visit_Ident(self, node):
         self.visit_value('Ident', node)
 
     def visit_Index(self, node):
-        self.visit_FnCall(node, 'Index')
+        self.visit_binary_node(node, 'Index')
 
     def visit_Int(self, node):
         self.visit_value('Int', node)
@@ -70,14 +63,10 @@ class DumpTree(NodeVisitor):
         self.visit_value('Percent', node)
 
     def visit_PropCall(self, node):
-        self.visit_FnCall(node, 'PropCall')
+        self.visit_binary_node(node, 'PropCall')
 
     def visit_PropRef(self, node):
-#       if type(node).__name__ == 'Ident':
-#           s = '{}node{}:{} [{}("{}.{}")]'.format(self._indent, self._ncount, 'PropRef', _.Token.format_tid(node.token), node.token.value, node.member.value)
-#       else:
-#           s = '{}node{}:{} [{}]'.format(self._indent, self._ncount, 'PropRef', node.token.format())
-        self.visit_BinOp(node, 'PropRef')
+        self.visit_binary_node(node, 'PropRef')
 
     def visit_Seq(self, node):
         s = '{}node{}:{} {}'.format(self._indent, self._ncount, 'Seq', node.token.format())
@@ -104,6 +93,20 @@ class DumpTree(NodeVisitor):
         self.visit_unary_node('UnaryOp', node)
 
 # helpers
+    def dump(self, tree):
+        self.visit(tree)
+        return self._body
+
+    def visit_binary_node(self, node, label):
+        s = '{}node{}:{} {}'.format(self._indent, self._ncount, label, node.token.format())
+        self._body.append(s)
+        node._num = self._ncount
+        self._ncount += 1
+        self.indent()
+        self.visit(node.left)
+        self.visit(node.right)
+        self.dedent()
+
     def visit_sequence(self, slist):
         self.indent()
         if len(slist) != 0:
@@ -111,12 +114,6 @@ class DumpTree(NodeVisitor):
                 if n is not None:
                     self.visit(n)
         self.dedent()
-
-    def visit_value(self, label, node):
-        s = '{}node:{}:{} {}'.format(self._indent, self._ncount, label, node.token.format())
-        self._body.append(s)
-        node._num = self._ncount
-        self._ncount += 1
 
     def visit_unary_node(self, label, node):
         s = '{}node{}:{} {}'.format(self._indent, self._ncount, label, node.token.format())
@@ -127,6 +124,8 @@ class DumpTree(NodeVisitor):
         self.visit(node.expr)
         self.dedent()
 
-    def dump(self, tree):
-        self.visit(tree)
-        return self._body
+    def visit_value(self, label, node):
+        s = '{}node:{}:{} {}'.format(self._indent, self._ncount, label, node.token.format())
+        self._body.append(s)
+        node._num = self._ncount
+        self._ncount += 1
