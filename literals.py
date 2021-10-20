@@ -92,22 +92,16 @@ class Percent(Literal):
         return f'{self.value*100} %'
 
 
+"""
 @dataclass
-class Set(Literal):
-    def __init__(self, token, mlist=None):
-        super().__init__(token)
-        token.id = TK.SET
-        token.t_class = TCL.SET
-        token.value = None if mlist is None else mlist
-        self.members = mlist
-        if mlist is not None:
-            mlist.parent = self
-
-    def format(self):
-        if self.members is None:
-            return '{}'
-        else:
-            return '{' + self.members + '}'
+class Set(Dict):
+    def __init__(self, token, dict=None):
+        super().__init__(token, dict)
+#       token.value = None if dict is None else dict
+#        self.members = dict
+#        if dict is not None:
+#            dict.parent = self
+"""
 
 
 @dataclass

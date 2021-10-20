@@ -2,11 +2,10 @@ from copy import copy
 from tokens import TK, TCL, _ADDITION_TOKENS, _COMPARISON_TOKENS, _FLOW_TOKENS, \
     _EQUALITY_TEST_TOKENS, _LOGIC_TOKENS, _MULTIPLICATION_TOKENS, _UNARY_TOKENS, _IDENTIFIER_TYPES, Token, \
     _ASSIGNMENT_TOKENS
-from tokenfilter import TokenFilter
 from lexer import Lexer
 from symbols import SymbolTable
-from tree import UnaryOp, BinOp, Ident, FnCall, PropRef, PropCall, Seq, Command, Index, ParseTree
-from literals import Duration, Float, Int, Percent, Set, Str, Time, Bool, List
+from tree import UnaryOp, BinOp, Ident, FnCall, PropRef, PropCall, Set, Seq, Command, Index, ParseTree
+from literals import Duration, Float, Int, Percent, Str, Time, Bool, List
 from treedump import DumpTree
 
 
@@ -239,7 +238,8 @@ class Parser(object):
             node = Str(token)
         elif token.id == TK.LBRC:
             self.consume(TK.LBRC)
-            node = Set(token, Seq(token, self.sequence(TK.COMA)))
+#           node = Set(token, Seq(token, self.sequence(TK.COMA)))
+            node = Set(token, self.sequence(TK.COMA))
             self.consume(TK.RBRC)
             return node
         elif token.id == TK.LPRN:   # should probably be sequence / tuple literal and parse plists via 'identifier'

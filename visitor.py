@@ -32,7 +32,7 @@ class TreeFilter(NodeVisitor, ABC):
 
     def visit_Seq(self, node):
         self.visit_Node(node)
-        for n in node.sequence():
+        for n in node.values():
             if n is None:
                 continue
             n.parent = node
@@ -45,13 +45,12 @@ class TreeFilter(NodeVisitor, ABC):
 
     def visit_Set(self, node):
         self.visit_Node(node)
-        if node.value is not None:
-            if node.value.sequence() is not None:
-                for n in node.value.sequence():
-                    if n is None:
-                        continue
-                    n.parent = node
-                    self.visit(n)
+        if node.values() is not None:
+            for n in node.values():
+                if n is None:
+                    continue
+                n.parent = node
+                self.visit(n)
 
     @abstractmethod
     def visit_Node(self, node):

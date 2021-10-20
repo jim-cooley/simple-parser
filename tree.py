@@ -59,7 +59,10 @@ class Seq(AST):
         self.token = token
         self.value = slist
 
-    def sequence(self):
+    def __getitem__(self, item):
+        return self.values()[item]
+
+    def values(self):
         return self.value
 
     def append(self, o):
@@ -86,7 +89,7 @@ class Command(UnaryOp):
 
 
 @dataclass
-class Dict(Seq):
+class Set(Seq):
     def __init__(self, token, dict=None):
         super().__init__(token, dict)
         token.id = TK.SET
@@ -94,8 +97,19 @@ class Dict(Seq):
         token.value = None if dict is None else dict
         self.value = dict
 
-    def sequence(self):
-        return self.value.values()
+    def __getitem__(self, item):
+        if type(item).name == 'int':
+            return self.values()[item]
+        return self.value[item]
+
+    def keys(self):
+        return list(self.value.keys())
+
+    def values(self):
+        return self.value if type(self.value).__name__ == "list" else list(self.value.values())
+
+    def tuples(self):
+        return list(self.value.items())
 
     def format(self):
         if self.value is None:
