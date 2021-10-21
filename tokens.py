@@ -136,6 +136,7 @@ class TK(IntEnum):
     SET = auto()
     SUB = auto()  # - (subtract)
     TRUE = auto()
+    TUPLE = auto()
 
     # keywords, reserved words, intrinsics
     BUY = auto()
@@ -154,7 +155,7 @@ _tk2binop = {
     TK.BAR: TK.PIPE,
     TK.CLN2: TK.EVENT,
     TK.COEQ: TK.DEFINE,
-    TK.COLN: TK.COLN,
+    TK.COLN: TK.TUPLE,
     TK.DOT2: TK.RANGE,
     TK.DOT: TK.DOT,
     TK.EQEQ: TK.ISEQ,  # ==

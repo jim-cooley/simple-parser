@@ -1,6 +1,6 @@
 #!/usr/local/bin/bash
-logpath="./etc/test/log"
-bslpath="./etc/test/bsl"
+logpath="../etc/test/log"
+bslpath="../etc/test/bsl"
 
 prefx=$1
 suite=$2

@@ -5,6 +5,8 @@ bslpath="./etc/test/bsl"
 prefx=$1
 suite=$2
 
+printf $suite
+
 printf "\n\ncomparing tests\n\n"
 for test in $logpath/$prefx/$suite*; do
     baseline="$bslpath/$prefx"/"$(basename $test)"
