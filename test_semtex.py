@@ -3,7 +3,7 @@
 import sys
 from abc import ABC
 
-from fixup import Fixup
+from fixups import FixupSet2Dictionary
 from parser import Parser
 from test.suite_runner import TestSuiteRunner, _dump_tree, _t_print, _log_exception
 from test.test_setup import test_data
@@ -24,9 +24,9 @@ class SemanticAnalysisTestRunner(TestSuiteRunner, ABC):
     def run_unprotected_test(self, log, name, test):
         parser = Parser(str=test)
         tree = parser.parse()
-        fixups = Fixup(tree)
-        tree = fixups.apply()
-        #  _dump_tree(tree, log)
+        fixup = FixupSet2Dictionary(tree)
+        tree = fixup.apply()
+        _dump_tree(tree, log)
 
 
 # this is only for execution under debugger or via command-line

@@ -1,5 +1,5 @@
 import tokens as _
-from visitor import NodeVisitor, BINARY_NODE, UNARY_NODE, SEQUENCE_NODE, DEFAULT_NODE, VALUE_NODE
+from visitor import NodeVisitor, BINARY_NODE, UNARY_NODE, SEQUENCE_NODE, DEFAULT_NODE, VALUE_NODE, NATIVE_VALUE
 
 _nodeTypeMappings = {
     'BinOp': BINARY_NODE,
@@ -22,6 +22,8 @@ _nodeTypeMappings = {
     'Str': VALUE_NODE,
     'Time': VALUE_NODE,
     'UnaryOp': UNARY_NODE,
+    'int': NATIVE_VALUE,
+    'str': NATIVE_VALUE,
 }
 
 
@@ -46,8 +48,14 @@ class DumpTree(NodeVisitor):
         return '' if self._depth < 1 else ' '.ljust(self._depth * 4)
 
     # helpers
+    def visit_intrinsic(self, value, label=None):
+        self._print_object(value, label)
+        self._ncount += 1
+
+    def visit_tuple(self, node, label=None):
+        self._visit_sequence(node)
+
     def visit_binary_node(self, node, label=None):
-        indent = self.format_indent()
         self._print_node(node, label)
         node._num = self._ncount
         self._ncount += 1
@@ -61,13 +69,15 @@ class DumpTree(NodeVisitor):
         node._num = self._ncount
         self._ncount += 1
         if node.value is not None:
-            self.indent()
-            slist = node.values()
-            if len(slist) != 0:
-                for n in slist:
-                    if n is not None:
-                        self.visit(n)
-            self.dedent()
+            self._visit_sequence(node.values())
+
+    def _visit_sequence(self, li, label=None):
+        self.indent()
+        if len(li) != 0:
+            for n in li:
+                if n is not None:
+                    self.visit(n)
+        self.dedent()
 
     def visit_unary_node(self, node, label=None):
         self._print_node(node, label)
@@ -82,8 +92,12 @@ class DumpTree(NodeVisitor):
         node._num = self._ncount
         self._ncount += 1
 
+    def _print_object(self, obj, label=None):
+        indent = '' if self._depth < 1 else ' '.ljust(self._depth * 4)
+        line = '{:5d} : {}{} {}'.format(self._ncount, indent, label, obj)
+        self._body.append(line)
+
     def _print_node(self, node, label=None):
         indent = '' if self._depth < 1 else ' '.ljust(self._depth * 4)
-#       print(f'{self._ncount:5d} : {indent}{node}: {node.token.format()}')
         line = '{:5d} : {}{} {}'.format(self._ncount, indent, label, node.token.format())
         self._body.append(line)

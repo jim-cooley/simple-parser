@@ -1,0 +1,14 @@
+#!/usr/local/bin/bash
+logpath="./etc/test/log"
+bslpath="./etc/test/bsl"
+
+prefx=$1
+suite=$2
+
+printf "\n\nupdating baselines\n\n"
+printf "================================\n"
+for test in $logpath/$prefx/$suite*; do
+    baseline="$bslpath/$prefx"/"$(basename $test)"
+    printf "$test >> $baseline\n"
+    cp $test $baseline
+done

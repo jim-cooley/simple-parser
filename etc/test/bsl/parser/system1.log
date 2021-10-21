@@ -8,7 +8,7 @@ median_price := (open + close) / 2
 price10a := price.delay(1d)[10:00]
 sma_period := [3,5,10..20,28]
 
-rules = [
+rules = {
     baseline: {
         any:{ close >| sma(10), close >| sma(20), sma(10) >| sma(20) }:(threshold=0.01) | signal >> delay(1d) | atr => buy,
         close <| sma(10) | signal >> delay(1d) | atr -> sell
@@ -29,7 +29,7 @@ rules = [
         { close >| sma(sma_period) } | signal >> atr.delay(1d) => buy,
         close <| sma(sma_period) | signal >> atr.delay(1d) => sell
     }
-]
+}
 
 report := { trades | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price') }
 
@@ -44,7 +44,7 @@ tree1:
     4 :         List TK.INDEX(LIST, '[', V=[BinOp(), BinOp()])
     5 :             BinOp TK.ASSIGN(BINOP, '=', V=None)
     6 :                 Ident TK.IDNT(IDENTIFIER, 'period', V=)
-    7 :                 Str TK.QUOT(LITERAL, 'train5', V=train5)
+    7 :                 Str TK.STR(LITERAL, 'train5', V=train5)
     8 :             BinOp TK.ASSIGN(BINOP, '=', V=None)
     9 :                 Ident TK.IDNT(IDENTIFIER, 'rules', V=)
    10 :                 Ident TK.IDNT(IDENTIFIER, 'rules', V=)
@@ -99,7 +99,7 @@ tree8:
 tree9:
     1 : BinOp TK.ASSIGN(BINOP, '=', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'rules', V=)
-    3 :     List TK.LIST(LIST, '[', V=[BinOp(), BinOp(), BinOp(), BinOp(), Set()])
+    3 :     Set TK.SET(SET, '{', V=[BinOp(), BinOp(), BinOp(), BinOp(), Set()])
     4 :         BinOp TK.COLN(BINOP, ':', V=None)
     5 :             Ident TK.IDNT(IDENTIFIER, 'baseline', V=)
     6 :             Set TK.SET(SET, '{', V=[List(), List()])
@@ -328,11 +328,11 @@ tree11:
     6 :             FnCall TK.FUNCTION(BINOP, '(', V=None)
     7 :                 Ident TK.IDNT(IDENTIFIER, 'select', V=)
     8 :                 List TK.PARAMETER_LIST(LIST, '(', V=[Str(), Str(), Str(), Str(), Str()])
-    9 :                     Str TK.QUOT(LITERAL, 'symbol', V=symbol)
-   10 :                     Str TK.QUOT(LITERAL, 'buy_date', V=buy_date)
-   11 :                     Str TK.QUOT(LITERAL, 'buy_price', V=buy_price)
-   12 :                     Str TK.QUOT(LITERAL, 'sell_date', V=sell_date)
-   13 :                     Str TK.QUOT(LITERAL, 'sell_price', V=sell_price)
+    9 :                     Str TK.STR(LITERAL, 'symbol', V=symbol)
+   10 :                     Str TK.STR(LITERAL, 'buy_date', V=buy_date)
+   11 :                     Str TK.STR(LITERAL, 'buy_price', V=buy_price)
+   12 :                     Str TK.STR(LITERAL, 'sell_date', V=sell_date)
+   13 :                     Str TK.STR(LITERAL, 'sell_price', V=sell_price)
 
 tree12:
 

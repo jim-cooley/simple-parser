@@ -12,4 +12,4 @@ tree1:
     7 :             Float TK.FLOT(LITERAL, '0.05', V=0.05)
     8 :         BinOp TK.ASSIGN(BINOP, '=', V=None)
     9 :             Ident TK.IDNT(IDENTIFIER, 'how', V=)
-   10 :             Str TK.QUOT(LITERAL, 'any', V=any)
+   10 :             Str TK.STR(LITERAL, 'any', V=any)

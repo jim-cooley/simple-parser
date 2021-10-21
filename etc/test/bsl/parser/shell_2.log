@@ -9,7 +9,7 @@ tree1:
     4 :         List TK.PARAMETER_LIST(LIST, '(', V=[BinOp()])
     5 :             BinOp TK.ASSIGN(BINOP, '=', V=None)
     6 :                 Ident TK.IDNT(IDENTIFIER, 'file', V=)
-    7 :                 Str TK.QUOT(LITERAL, './etc/spq500.csv', V=./etc/spq500.csv)
+    7 :                 Str TK.STR(LITERAL, './etc/spq500.csv', V=./etc/spq500.csv)
 
 tree2:
     1 : Command TK.COMMAND(UNARY, '%%', V=None)
@@ -18,12 +18,12 @@ tree2:
     4 :         List TK.PARAMETER_LIST(LIST, '(', V=[BinOp()])
     5 :             BinOp TK.ASSIGN(BINOP, '=', V=None)
     6 :                 Ident TK.IDNT(IDENTIFIER, 'period', V=)
-    7 :                 Str TK.QUOT(LITERAL, 'train5', V=train5)
+    7 :                 Str TK.STR(LITERAL, 'train5', V=train5)
 
 tree3:
     1 : Command TK.COMMAND(UNARY, '%%', V=None)
     2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
     3 :         Ident TK.IDNT(IDENTIFIER, 'report', V=)
     4 :         List TK.PARAMETER_LIST(LIST, '(', V=[Str(), Str()])
-    5 :             Str TK.QUOT(LITERAL, 'trades', V=trades)
-    6 :             Str TK.QUOT(LITERAL, 'stops', V=stops)
+    5 :             Str TK.STR(LITERAL, 'trades', V=trades)
+    6 :             Str TK.STR(LITERAL, 'stops', V=stops)

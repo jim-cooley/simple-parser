@@ -1,4 +1,6 @@
 from copy import copy
+
+from exceptions import _expected
 from tokens import TK, TCL, _ADDITION_TOKENS, _COMPARISON_TOKENS, _FLOW_TOKENS, \
     _EQUALITY_TEST_TOKENS, _LOGIC_TOKENS, _MULTIPLICATION_TOKENS, _UNARY_TOKENS, _IDENTIFIER_TYPES, Token, \
     _ASSIGNMENT_TOKENS
@@ -8,6 +10,8 @@ from tree import UnaryOp, BinOp, FnCall, PropRef, PropCall, Command, Index, Pars
 from literals import Duration, Float, Int, Percent, Str, Time, Bool, List, Set
 from treedump import DumpTree
 
+EMPTY_SET = Set(Token(tid=TK.EMPTY, tcl=TCL.LITERAL, lex="{}", val=None))
+
 
 class Parser(object):
     def __init__(self, lexer=None, str=None, symtab=None):
@@ -16,28 +20,13 @@ class Parser(object):
         self._skip_end_of_line = True
         self._parse_string = str  # which could be none
         self.nodes = []
+        EMPTY_SET.token.value = EMPTY_SET
 
     # syntactic sugar (use self.peek)
     def __getattr__(self, item):
         if item == 'token':
             return self._lexer.token
         pass
-
-    def _error(self, message):
-        loc = self._lexer.tell()
-        loc.offset -= 1
-        error_text = f'Invalid Syntax: {message}.'
-        self._report(error_text, loc)
-        raise Exception(error_text)
-
-    def _expected(self, expected, found):
-        message = f'Expected {expected}, found {found}'
-        self._error(message)
-
-    def _report(self, message, loc):
-        carrot = f'\n\n{self._parse_string}\n{"^".rjust(loc.offset)}\n'
-        text = f"{carrot}\n{message} at position: {loc.line + 1}:{loc.offset}"
-        print(text)
 
     # return current token with provision for fetching if there are none.
     # after the first token, self.token works fine for peek.
@@ -61,13 +50,13 @@ class Parser(object):
             self.advance(skip_end_of_line=self._skip_end_of_line)
         if self.token.id == ex_tid:
             return self.advance(self._skip_end_of_line)
-        self._expected(expected=f'{ex_tid.name}', found=f'{self.token.id.name}')
+        _expected(expected=f'{ex_tid.name}', found=self.token)
 
     def consume_next(self, ex_tid=None):
         token = self.advance()
         if self.token.id == ex_tid:
             return token
-        self._expected(expected=f'{ex_tid.name}', found=f'{self.token.id.name}')
+        _expected(expected=f'{ex_tid.name}', found=self.token)
 
     # match if current token is any of the set.  advance if so.
     def match(self, tk_list):
@@ -236,6 +225,8 @@ class Parser(object):
             node = Time(token)
         elif token.id == TK.QUOT:
             node = Str(token)
+        elif token.id == TK.EMPTY:
+            node = EMPTY_SET
         elif token.id == TK.LBRC:
             self.consume(TK.LBRC)
             node = Set(token, self.sequence(TK.COMA))

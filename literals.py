@@ -75,6 +75,9 @@ class List(Literal):
     def __getitem__(self, item):
         return self.values()[item]
 
+    def is_empty(self):
+        return self.value is not None and len(self.values()) > 0
+
     def values(self):
         return self.value
 
@@ -111,13 +114,18 @@ class Set(List):
             return self.values()[item]
         return self.value[item]
 
+    def is_empty(self):
+        return self.value is not None and len(self.values()) > 0
+
     def keys(self):
         return list(self.value.keys())
 
     def values(self):
         if self.value is None:
             return None
-        return self.value if type(self.value).__name__ == "list" else list(self.value.values())
+        if type(self.value).__name__ == "list":
+            return self.value
+        return self.tuples() # list(self.value.values())
 
     def tuples(self):
         return list(self.value.items())

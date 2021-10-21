@@ -25,4 +25,4 @@ tree1:
    20 :         List TK.PARAMETER_LIST(LIST, '(', V=[BinOp()])
    21 :             BinOp TK.ASSIGN(BINOP, '=', V=None)
    22 :                 Ident TK.IDNT(IDENTIFIER, 'how', V=)
-   23 :                 Str TK.QUOT(LITERAL, 'cross', V=cross)
+   23 :                 Str TK.STR(LITERAL, 'cross', V=cross)

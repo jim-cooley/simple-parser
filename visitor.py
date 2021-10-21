@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 
 BINARY_NODE = 'binary_node'
 DEFAULT_NODE = 'node'
+NATIVE_VALUE = 'intrinsic'
 SEQUENCE_NODE = 'sequence'
 UNARY_NODE = 'unary_node'
 VALUE_NODE = 'value'
@@ -49,19 +50,22 @@ class TreeFilter(NodeVisitor, ABC):
         super().__init__(mapping)
         self.tree = tree
         self.apply_parent_fixups = apply_parent_fixups
-        self._ncount = 0
+        self._count = 0
         self._depth = 0
 
     @abstractmethod
     def apply(self):
-        self._ncount = 0
+        self._count = 0
         pass  # must return tree
 
     @abstractmethod
     def visit_node(self, node, label=None):
-        self._ncount += 1
-        self._print_node(node)
+        node._num = self._count
+        self._count += 1
         pass
+
+    def visit_tuple(self, node, label=None):
+        print(f'{node}')
 
     # helpers
     def visit_binary_node(self, node, label=None):
@@ -75,14 +79,6 @@ class TreeFilter(NodeVisitor, ABC):
         self.visit(node.left)
         self.visit(node.right)
         self.dedent()
-
-    # encountered if 'tree' is actually a 'forest'
-    def visit_list(self, list, label=None):
-        count = 0
-        for n in list:
-            count += 1
-            print(f'tree{count}')
-            self.visit(n)
 
     def visit_sequence(self, node, label=None):
         self.visit_node(node, label)
@@ -114,8 +110,3 @@ class TreeFilter(NodeVisitor, ABC):
 
     def dedent(self):
         self._depth -= 1
-
-    # just for test: use DumpTree for proper printing
-    def _print_node(self, node):
-        indent = '' if self._depth < 1 else ' '.ljust(self._depth * 4)
-        print(f'{self._ncount:5d} : {indent}{node}: {node.token.format()}')

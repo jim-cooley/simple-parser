@@ -49,6 +49,7 @@ class TK(IntEnum):
     DOT = auto()  # .
     DOT2 = auto()  # ..
     DUR = auto()  # 1s, 1m, 1d, 1w, 1m, 1y
+    EMPTY = auto() # ø empty set
     EQEQ = auto()  # ==
     EQGT = auto()  # =>
     EQLS = auto()  # =
@@ -188,6 +189,7 @@ _tk2unop = {
 }
 _tk2lit = {
     TK.LBRK: TK.LIST,  # ]
+    TK.QUOT: TK.STR,
 }
 
 # token sets for the parser

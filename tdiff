@@ -1,0 +1,14 @@
+#!/usr/local/bin/bash
+logpath="./etc/test/log"
+bslpath="./etc/test/bsl"
+
+prefx=$1
+suite=$2
+
+printf "\n\ncomparing tests\n\n"
+for test in $logpath/$prefx/$suite*; do
+    baseline="$bslpath/$prefx"/"$(basename $test)"
+    printf "\ncomparing $baseline, $test\n"
+    diff $baseline $test
+    printf "================================\n"
+done

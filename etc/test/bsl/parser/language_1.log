@@ -16,4 +16,4 @@ tree1:
    11 :             Ident TK.IDNT(IDENTIFIER, 'price', V=)
    12 :             BinOp TK.ASSIGN(BINOP, '=', V=None)
    13 :                 Ident TK.IDNT(IDENTIFIER, 'how', V=)
-   14 :                 Str TK.QUOT(LITERAL, '>', V=>)
+   14 :                 Str TK.STR(LITERAL, '>', V=>)
