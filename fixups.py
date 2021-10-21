@@ -3,12 +3,12 @@
 from abc import ABC
 
 from exceptions import _expect, _expect_cl, _error, _expect_in_cl, _match_set, _contains_set, _contains
-from literals import List
+from literals import List, Set
 from tokens import TK, TCL, _IDENTIFIER_TYPES, Token
 from visitor import TreeFilter, BINARY_NODE, UNARY_NODE, SEQUENCE_NODE
 
 _fixupNodeTypeMappings = {
-    'BinOp': 'convert_coln_plist',
+    'BinOp': 'process_binops',
     'Command': UNARY_NODE,
     'FnCall': BINARY_NODE,
     'Index': BINARY_NODE,
@@ -56,14 +56,13 @@ class FixupSet2Dictionary(TreeFilter, ABC):
             self.visit(n)
 
     def convert_coln_plist(self, node, label=None):
-        if node is None:
-            return
-        if node.token.id == TK.TUPLE:
-            if node.left is not None and node.left.token.id == TK.ASSIGN:
-                node.left = _fixup_coln_plist(node, node.left)
-            if node.right is not None and node.right.token.id == TK.ASSIGN:
-                node.right = _fixup_coln_plist(node, node.right)
-        self.visit_binary_node(node, label)
+        if node is not None:
+            if node.token.id == TK.TUPLE:
+                if node.left is not None and node.left.token.id == TK.ASSIGN:
+                    node.left = _fixup_coln_plist(node, node.left)
+                if node.right is not None and node.right.token.id == TK.ASSIGN:
+                    node.right = _fixup_coln_plist(node, node.right)
+            self.visit_binary_node(node, label)
 
     def convert_tuples(self, node, label=None):
         self.visit_sequence(node, label)
@@ -74,6 +73,22 @@ class FixupSet2Dictionary(TreeFilter, ABC):
                     continue
                 if n.token.id == TK.ASSIGN:
                     n.token.id = TK.TUPLE
+
+    def process_binops(self, node, label=None):
+        if node is not None:
+            tkid = node.token.id
+            if tkid == TK.TUPLE:
+                self.convert_coln_plist(node, label)
+            elif tkid == TK.DEFINE:
+                self.process_definitions(node, label)
+
+    def process_definitions(self, node, label=None):
+        if node is not None:
+            if node.token.id == TK.DEFINE:
+                ident = node.left.token
+                symbol = self.symbols.find_add_symbol(ident)
+                self.symbols.define_symbol(symbol, node)
+            self.visit_binary_node(node, label)
 
     def process_scope(self, node, label=None):
         self.convert_tuples(node, label)

@@ -242,8 +242,12 @@ class Token:
         _tcl = f'{self.t_class.name}' if hasattr(self.t_class, "name") else 'TCL({self.t_type})'
         _tv = 'None' if self.value is None else f'{self.value}'
         _tl = f'\'{self.lexeme}\''
+        if self.properties is not None and len(self.properties.keys()) > 0:
+            _props = f': {self.properties}'
+        else:
+            _props = ''
 #       _tloc = f'line:{self.location.line + 1}, pos:{self.location.offset - 1}'
-        return f'TK{_tn}{_tcl}, {_tl}, V={_tv})'
+        return f'TK{_tn}{_tcl}, {_tl}, V={_tv}){_props}'
 
     def _map(self, tk_map):
         if self.id in tk_map:

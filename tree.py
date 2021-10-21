@@ -17,7 +17,7 @@ class AST(object):
         pass
 
     def __str__(self):
-        if self.__getattr__('format') is not None:
+        if getattr(self, 'format', None) is not None:
             return self.format()
         return self.__repr__()
 
@@ -35,6 +35,9 @@ class BinOp(AST):
             left.parent = self
         if right is not None:
             right.parent = self
+
+    def format(self):
+        return f'BinOp({self.token}: l={self.left}, r={self.right}'
 
 
 @dataclass

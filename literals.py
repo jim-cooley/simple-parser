@@ -88,7 +88,7 @@ class List(Literal):
         if self.value is None:
             return '[]'
         else:
-            return '[' + self.value + ']'
+            return '[' + f'{self.value}' + ']'
 
 
 @dataclass
@@ -104,6 +104,7 @@ class Percent(Literal):
 @dataclass
 class Set(List):
     def __init__(self, token, dict=None):
+        dict = {} if dict is None else dict
         super().__init__(token, dict)
         token.id = TK.SET
         token.t_class = TCL.SET
@@ -113,6 +114,9 @@ class Set(List):
         if type(item).name == 'int':
             return self.values()[item]
         return self.value[item]
+
+    def __setitem__(self, key, value):
+        self.value[key] = value
 
     def is_empty(self):
         return self.value is not None and len(self.values()) > 0
@@ -134,7 +138,7 @@ class Set(List):
         if self.value is None:
             return '{}'
         else:
-            return '{' + self.value + '}'
+            return '{' + f'{self.value}' + '}'
 
 
 @dataclass

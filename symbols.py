@@ -100,6 +100,10 @@ class SymbolTable:
         te.append(token)
         self._symbolTypeTable[token.t_class] = te
 
+    def define_symbol(self, token, expr):
+        self.find_add_symbol(token)
+        self._symbolTable[token.lexeme] = expr
+
     def find_symbol(self, token):
         if token.lexeme in self._symbolTable:
             return self._symbolTable[token.lexeme]
@@ -109,7 +113,7 @@ class SymbolTable:
         symbol = self.find_symbol(token)
         if symbol is None:
             symbol = self.add_symbol(token.id, token.t_class, token.lexeme, token.properties)
-        symbol.location = copy.copy(token.location)
+            symbol.location = copy.copy(token.location)
         return symbol
 
     def find_symbol_by_type(self, token, typ):
