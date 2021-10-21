@@ -5,3 +5,7 @@ test: 1: "%%backtest"
 tree1:
     1 : Command TK.COMMAND(UNARY, '%%', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'backtest', V=)
+
+tree1:
+    1 : Command TK.COMMAND(UNARY, '%%', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'backtest', V=)

@@ -4,3 +4,6 @@ test: 5: "'defgh'"
 
 tree1:
     1 : Str TK.STR(LITERAL, 'defgh', V=defgh)
+
+tree1:
+    1 : Str TK.STR(LITERAL, 'defgh', V=defgh)

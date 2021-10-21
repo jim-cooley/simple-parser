@@ -1,11 +1,11 @@
 from abc import ABC, abstractmethod
 
-BINARY_NODE = 'binary_node'
-DEFAULT_NODE = 'node'
-NATIVE_VALUE = 'intrinsic'
-SEQUENCE_NODE = 'sequence'
-UNARY_NODE = 'unary_node'
-VALUE_NODE = 'value'
+BINARY_NODE = 'visit_binary_node'
+DEFAULT_NODE = 'visit_node'
+NATIVE_VALUE = 'visit_intrinsic'
+SEQUENCE_NODE = 'visit_sequence'
+UNARY_NODE = 'visit_unary_node'
+VALUE_NODE = 'visit_value'
 
 _defaultNodeTypeMappings = {
     'BinOp': BINARY_NODE,
@@ -27,10 +27,10 @@ class NodeVisitor(object):
     def visit(self, node):
         if node is not None:
             label = type(node).__name__
-            method_name = f'visit_{self.node2name(label)}'
+            method_name = f'{self.node2name(label)}'
             visitor = getattr(self, method_name, None)
             if visitor is None:
-                method_name = 'visit_node'
+                method_name = DEFAULT_NODE
                 visitor = getattr(self, method_name, self.generic_visit)
             return visitor(node, label)
 
@@ -54,7 +54,7 @@ class TreeFilter(NodeVisitor, ABC):
         self._depth = 0
 
     @abstractmethod
-    def apply(self):
+    def apply(self, tree=None):
         self._count = 0
         pass  # must return tree
 

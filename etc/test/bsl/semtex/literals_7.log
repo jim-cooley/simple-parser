@@ -4,3 +4,6 @@ test: 7: "1.0"
 
 tree1:
     1 : Float TK.FLOT(LITERAL, '1.0', V=1.0)
+
+tree1:
+    1 : Float TK.FLOT(LITERAL, '1.0', V=1.0)

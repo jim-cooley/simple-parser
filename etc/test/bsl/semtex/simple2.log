@@ -164,3 +164,148 @@ tree15:
 tree16:
 
 tree17:
+
+tree1:
+    1 : Command TK.COMMAND(UNARY, '%%', V=None)
+    2 :     Index TK.INDEX(BINOP, '[', V=None)
+    3 :         Ident TK.IDNT(IDENTIFIER, 'backtest', V=)
+    4 :         List TK.INDEX(LIST, '[', V=[BinOp(), BinOp()])
+    5 :             BinOp TK.TUPLE(BINOP, '=', V=None)
+    6 :                 Ident TK.IDNT(IDENTIFIER, 'period', V=)
+    7 :                 Str TK.STR(LITERAL, 'train5', V=train5)
+    8 :             BinOp TK.TUPLE(BINOP, '=', V=None)
+    9 :                 Ident TK.IDNT(IDENTIFIER, 'rules', V=)
+   10 :                 Ident TK.IDNT(IDENTIFIER, 'rules', V=)
+
+tree2:
+
+tree3:
+    1 : BinOp TK.DEFINE(BINOP, ':=', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'atr', V=)
+    3 :     BinOp TK.DIV(BINOP, '/', V=None)
+    4 :         BinOp TK.ADD(BINOP, '+', V=None)
+    5 :             Ident TK.IDNT(DATASET, 'high', V=)
+    6 :             Ident TK.IDNT(DATASET, 'low', V=)
+    7 :         Int TK.INT(LITERAL, '2', V=2)
+
+tree4:
+    1 : BinOp TK.DEFINE(BINOP, ':=', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'median_price', V=)
+    3 :     BinOp TK.DIV(BINOP, '/', V=None)
+    4 :         BinOp TK.ADD(BINOP, '+', V=None)
+    5 :             Ident TK.IDNT(DATASET, 'open', V=)
+    6 :             Ident TK.IDNT(DATASET, 'close', V=)
+    7 :         Int TK.INT(LITERAL, '2', V=2)
+
+tree5:
+    1 : BinOp TK.DEFINE(BINOP, ':=', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'trade_size', V=)
+    3 :     BinOp TK.MUL(BINOP, '*', V=None)
+    4 :         Ident TK.IDNT(IDENTIFIER, 'position', V=)
+    5 :         Percent TK.PCT(LITERAL, '10%', V=0.1)
+
+tree6:
+
+tree7:
+
+tree8:
+    1 : UnaryOp TK.DEFINE(UNARY, 'def', V=)
+    2 :     BinOp TK.ASSIGN(BINOP, '=', V=None)
+    3 :         Ident TK.BUY(KEYWORD, 'buy', V=)
+    4 :         Set TK.SET(SET, '{', V=[BinOp()])
+    5 :             BinOp TK.PLEQ(BINOP, '+=', V=None)
+    6 :                 Ident TK.IDNT(IDENTIFIER, 'position', V=)
+    7 :                 Ident TK.IDNT(IDENTIFIER, 'trade_size', V=)
+
+tree9:
+    1 : UnaryOp TK.DEFINE(UNARY, 'def', V=)
+    2 :     BinOp TK.ASSIGN(BINOP, '=', V=None)
+    3 :         Ident TK.SELL(KEYWORD, 'sell', V=)
+    4 :         Set TK.SET(SET, '{', V=[BinOp()])
+    5 :             BinOp TK.MNEQ(BINOP, '-=', V=None)
+    6 :                 Ident TK.IDNT(IDENTIFIER, 'position', V=)
+    7 :                 Ident TK.IDNT(IDENTIFIER, 'trade_size', V=)
+
+tree10:
+    1 : List TK.RAISE(LIST, '=>', V=[Ident(), Set()])
+    2 :     Ident TK.IDNT(IDENTIFIER, 'rules', V=)
+    3 :     Set TK.SET(SET, '{', V=[List(), List()])
+    4 :         List TK.RAISE(LIST, '=>', V=[List(), Ident()])
+    5 :             List TK.PIPE(LIST, '|', V=[List(), Ident()])
+    6 :                 List TK.APPLY(LIST, '>>', V=[List(), FnCall()])
+    7 :                     List TK.PIPE(LIST, '|', V=[BinOp(), Ident()])
+    8 :                         BinOp TK.TUPLE(BINOP, ':', V=None)
+    9 :                             BinOp TK.TUPLE(BINOP, ':', V=None)
+   10 :                                 UnaryOp TK.ANY(UNARY, 'any', V=)
+   11 :                                 Set TK.SET(SET, '{', V=[BinOp(), BinOp()])
+   12 :                                     BinOp TK.RISE_ABOVE(BINOP, '>|', V=None)
+   13 :                                         Ident TK.IDNT(DATASET, 'close', V=)
+   14 :                                         FnCall TK.FUNCTION(BINOP, '(', V=None)
+   15 :                                             Ident TK.IDNT(FUNCTION, 'sma', V=)
+   16 :                                             List TK.PARAMETER_LIST(LIST, '(', V=[Int()])
+   17 :                                                 Int TK.INT(LITERAL, '10', V=10)
+   18 :                                     BinOp TK.RISE_ABOVE(BINOP, '>|', V=None)
+   19 :                                         Ident TK.IDNT(DATASET, 'close', V=)
+   20 :                                         FnCall TK.FUNCTION(BINOP, '(', V=None)
+   21 :                                             Ident TK.IDNT(FUNCTION, 'sma', V=)
+   22 :                                             List TK.PARAMETER_LIST(LIST, '(', V=[Int()])
+   23 :                                                 Int TK.INT(LITERAL, '20', V=20)
+   24 :                             List TK.PARAMETER_LIST(LIST, '(', V=[BinOp()])
+   25 :                                 BinOp TK.TUPLE(BINOP, '=', V=None)
+   26 :                                     Ident TK.IDNT(IDENTIFIER, 'threshold', V=)
+   27 :                                     Float TK.FLOT(LITERAL, '0.01', V=0.01)
+   28 :                         Ident TK.SIGNAL(KEYWORD, 'signal', V=)
+   29 :                     FnCall TK.FUNCTION(BINOP, '(', V=None)
+   30 :                         Ident TK.IDNT(IDENTIFIER, 'delay', V=)
+   31 :                         List TK.PARAMETER_LIST(LIST, '(', V=[Duration()])
+   32 :                             Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
+   33 :                 Ident TK.IDNT(IDENTIFIER, 'atr', V=)
+   34 :             Ident TK.BUY(KEYWORD, 'buy', V=)
+   35 :         List TK.RAISE(LIST, '->', V=[List(), Ident()])
+   36 :             List TK.PIPE(LIST, '|', V=[List(), Ident()])
+   37 :                 List TK.APPLY(LIST, '>>', V=[List(), FnCall()])
+   38 :                     List TK.PIPE(LIST, '|', V=[BinOp(), Ident()])
+   39 :                         BinOp TK.FALL_BELOW(BINOP, '<|', V=None)
+   40 :                             Ident TK.IDNT(DATASET, 'close', V=)
+   41 :                             FnCall TK.FUNCTION(BINOP, '(', V=None)
+   42 :                                 Ident TK.IDNT(FUNCTION, 'sma', V=)
+   43 :                                 List TK.PARAMETER_LIST(LIST, '(', V=[Int()])
+   44 :                                     Int TK.INT(LITERAL, '10', V=10)
+   45 :                         Ident TK.SIGNAL(KEYWORD, 'signal', V=)
+   46 :                     FnCall TK.FUNCTION(BINOP, '(', V=None)
+   47 :                         Ident TK.IDNT(IDENTIFIER, 'delay', V=)
+   48 :                         List TK.PARAMETER_LIST(LIST, '(', V=[Duration()])
+   49 :                             Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
+   50 :                 Ident TK.IDNT(IDENTIFIER, 'atr', V=)
+   51 :             Ident TK.SELL(KEYWORD, 'sell', V=)
+
+tree11:
+
+tree12:
+    1 : BinOp TK.DEFINE(BINOP, ':=', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'report', V=)
+    3 :     Set TK.SET(SET, '{', V=[List()])
+    4 :         List TK.PIPE(LIST, '|', V=[Ident(), FnCall()])
+    5 :             Ident TK.IDNT(IDENTIFIER, 'trades', V=)
+    6 :             FnCall TK.FUNCTION(BINOP, '(', V=None)
+    7 :                 Ident TK.IDNT(IDENTIFIER, 'select', V=)
+    8 :                 List TK.PARAMETER_LIST(LIST, '(', V=[Str(), Str(), Str(), Str(), Str()])
+    9 :                     Str TK.STR(LITERAL, 'symbol', V=symbol)
+   10 :                     Str TK.STR(LITERAL, 'buy_date', V=buy_date)
+   11 :                     Str TK.STR(LITERAL, 'buy_price', V=buy_price)
+   12 :                     Str TK.STR(LITERAL, 'sell_date', V=sell_date)
+   13 :                     Str TK.STR(LITERAL, 'sell_price', V=sell_price)
+
+tree13:
+
+tree14:
+    1 : List TK.COMMAND(LIST, '%%', V=[None, Ident()])
+    2 :     Ident TK.IDNT(IDENTIFIER, 'report', V=)
+
+tree15:
+    1 : Set TK.SET(SET, '{', V=[Ident()])
+    2 :     Ident TK.IDNT(IDENTIFIER, 'report', V=)
+
+tree16:
+
+tree17:

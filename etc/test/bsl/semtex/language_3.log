@@ -19,3 +19,21 @@ tree2:
     5 :             Ident TK.IDNT(DATASET, 'close', V=)
     6 :             Ident TK.IDNT(DATASET, 'open', V=)
     7 :         Int TK.INT(LITERAL, '2', V=2)
+
+tree1:
+    1 : BinOp TK.ASSIGN(BINOP, '=', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'atr', V=)
+    3 :     BinOp TK.DIV(BINOP, '/', V=None)
+    4 :         BinOp TK.SUB(BINOP, '-', V=None)
+    5 :             Ident TK.IDNT(DATASET, 'high', V=)
+    6 :             Ident TK.IDNT(DATASET, 'low', V=)
+    7 :         Int TK.INT(LITERAL, '2', V=2)
+
+tree2:
+    1 : BinOp TK.ASSIGN(BINOP, '=', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'median', V=)
+    3 :     BinOp TK.DIV(BINOP, '/', V=None)
+    4 :         BinOp TK.SUB(BINOP, '-', V=None)
+    5 :             Ident TK.IDNT(DATASET, 'close', V=)
+    6 :             Ident TK.IDNT(DATASET, 'open', V=)
+    7 :         Int TK.INT(LITERAL, '2', V=2)

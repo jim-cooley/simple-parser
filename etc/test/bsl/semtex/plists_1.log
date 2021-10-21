@@ -7,3 +7,9 @@ tree1:
     2 :     Ident TK.IDNT(FUNCTION, 'sma', V=)
     3 :     List TK.PARAMETER_LIST(LIST, '(', V=[Int()])
     4 :         Int TK.INT(LITERAL, '10', V=10)
+
+tree1:
+    1 : FnCall TK.FUNCTION(BINOP, '(', V=None)
+    2 :     Ident TK.IDNT(FUNCTION, 'sma', V=)
+    3 :     List TK.PARAMETER_LIST(LIST, '(', V=[Int()])
+    4 :         Int TK.INT(LITERAL, '10', V=10)

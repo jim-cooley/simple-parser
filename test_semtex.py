@@ -24,6 +24,7 @@ class SemanticAnalysisTestRunner(TestSuiteRunner, ABC):
     def run_unprotected_test(self, log, name, test):
         parser = Parser(str=test)
         tree = parser.parse()
+        _dump_tree(tree, log)
         fixup = FixupSet2Dictionary(tree)
         tree = fixup.apply()
         _dump_tree(tree, log)

@@ -8,3 +8,10 @@ tree1:
     3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=)
     4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=)
     5 :     Ident TK.IDNT(IDENTIFIER, 'c', V=)
+
+tree1:
+    1 : BinOp TK.ADD(BINOP, '+', V=None)
+    2 :     BinOp TK.MUL(BINOP, '*', V=None)
+    3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=)
+    4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=)
+    5 :     Ident TK.IDNT(IDENTIFIER, 'c', V=)

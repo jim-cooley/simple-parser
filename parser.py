@@ -320,7 +320,7 @@ class Parser(object):
     @staticmethod
     def print_tree(node):
         dt = DumpTree()
-        viz = dt.dump(node)
+        viz = dt.apply(node)
         for v in viz:
             print(v)
 

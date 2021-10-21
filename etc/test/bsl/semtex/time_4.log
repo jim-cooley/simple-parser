@@ -4,3 +4,6 @@ test: 4: "11:00:30"
 
 tree1:
     1 : Time TK.TIME(LITERAL, '11:00:30', V=11:00:30)
+
+tree1:
+    1 : Time TK.TIME(LITERAL, '11:00:30', V=11:00:30)

@@ -11,3 +11,13 @@ tree1:
     6 :             Ident TK.IDNT(FUNCTION, 'sma', V=)
     7 :             List TK.PARAMETER_LIST(LIST, '(', V=[Int()])
     8 :                 Int TK.INT(LITERAL, '20', V=20)
+
+tree1:
+    1 : PropRef TK.REF(BINOP, '.', V=None)
+    2 :     Ident TK.IDNT(DATASET, 'close', V=)
+    3 :     PropRef TK.REF(BINOP, '.', V=None)
+    4 :         Ident TK.IDNT(IDENTIFIER, 'weekly', V=)
+    5 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
+    6 :             Ident TK.IDNT(FUNCTION, 'sma', V=)
+    7 :             List TK.PARAMETER_LIST(LIST, '(', V=[Int()])
+    8 :                 Int TK.INT(LITERAL, '20', V=20)

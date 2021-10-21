@@ -8,3 +8,10 @@ tree1:
     3 :     BinOp TK.ADD(BINOP, '+', V=None)
     4 :         Int TK.INT(LITERAL, '2', V=2)
     5 :         Int TK.INT(LITERAL, '1', V=1)
+
+tree1:
+    1 : BinOp TK.MUL(BINOP, '*', V=None)
+    2 :     Int TK.INT(LITERAL, '3', V=3)
+    3 :     BinOp TK.ADD(BINOP, '+', V=None)
+    4 :         Int TK.INT(LITERAL, '2', V=2)
+    5 :         Int TK.INT(LITERAL, '1', V=1)

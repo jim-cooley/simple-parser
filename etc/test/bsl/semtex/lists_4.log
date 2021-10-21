@@ -7,3 +7,9 @@ tree1:
     2 :     Str TK.STR(LITERAL, 'a', V=a)
     3 :     Str TK.STR(LITERAL, 'b', V=b)
     4 :     Str TK.STR(LITERAL, 'c', V=c)
+
+tree1:
+    1 : List TK.LIST(LIST, '[', V=[Str(), Str(), Str()])
+    2 :     Str TK.STR(LITERAL, 'a', V=a)
+    3 :     Str TK.STR(LITERAL, 'b', V=b)
+    4 :     Str TK.STR(LITERAL, 'c', V=c)

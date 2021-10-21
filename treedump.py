@@ -1,5 +1,6 @@
 import tokens as _
-from visitor import NodeVisitor, BINARY_NODE, UNARY_NODE, SEQUENCE_NODE, DEFAULT_NODE, VALUE_NODE, NATIVE_VALUE
+from visitor import NodeVisitor, BINARY_NODE, UNARY_NODE, SEQUENCE_NODE, DEFAULT_NODE, VALUE_NODE, NATIVE_VALUE, \
+    TreeFilter
 
 _nodeTypeMappings = {
     'BinOp': BINARY_NODE,
@@ -40,7 +41,7 @@ class DumpTree(NodeVisitor):
     def dedent(self):
         self._depth -= 1
 
-    def dump(self, tree):
+    def apply(self, tree=None):
         self.visit(tree)
         return self._body
 

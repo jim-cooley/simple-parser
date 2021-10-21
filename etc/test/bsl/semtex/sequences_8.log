@@ -9,3 +9,11 @@ tree1:
     4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=)
     5 :     Ident TK.IDNT(IDENTIFIER, 'c', V=)
     6 :     Ident TK.IDNT(IDENTIFIER, 'd', V=)
+
+tree1:
+    1 : List TK.PIPE(LIST, '|', V=[List(), Ident(), Ident()])
+    2 :     List TK.APPLY(LIST, '>>', V=[Ident(), Ident()])
+    3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=)
+    4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=)
+    5 :     Ident TK.IDNT(IDENTIFIER, 'c', V=)
+    6 :     Ident TK.IDNT(IDENTIFIER, 'd', V=)

@@ -7,3 +7,9 @@ tree1:
     2 :     Set TK.SET(SET, '{', V=[Ident(), Ident()])
     3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=)
     4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=)
+
+tree1:
+    1 : UnaryOp TK.NOT(UNARY, 'not', V=)
+    2 :     Set TK.SET(SET, '{', V=[Ident(), Ident()])
+    3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=)
+    4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=)

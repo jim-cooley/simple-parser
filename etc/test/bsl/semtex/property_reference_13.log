@@ -14,3 +14,16 @@ tree1:
     9 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
    10 :             Ident TK.IDNT(IDENTIFIER, 'd', V=)
    11 :             List TK.PARAMETER_LIST(LIST, '(', V=[None])
+
+tree1:
+    1 : BinOp TK.DOT(BINOP, '.', V=None)
+    2 :     PropRef TK.REF(BINOP, '.', V=None)
+    3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=)
+    4 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
+    5 :             Ident TK.IDNT(IDENTIFIER, 'b', V=)
+    6 :             List TK.PARAMETER_LIST(LIST, '(', V=[None])
+    7 :     PropRef TK.REF(BINOP, '.', V=None)
+    8 :         Ident TK.IDNT(IDENTIFIER, 'c', V=)
+    9 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
+   10 :             Ident TK.IDNT(IDENTIFIER, 'd', V=)
+   11 :             List TK.PARAMETER_LIST(LIST, '(', V=[None])

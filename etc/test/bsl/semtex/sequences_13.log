@@ -10,3 +10,12 @@ tree1:
     5 :             Ident TK.IDNT(IDENTIFIER, 'x', V=)
     6 :             Ident TK.IDNT(IDENTIFIER, 'y', V=)
     7 :     Ident TK.IDNT(IDENTIFIER, 'b', V=)
+
+tree1:
+    1 : List TK.PIPE(LIST, '|', V=[FnCall(), Ident()])
+    2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
+    3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=)
+    4 :         List TK.PARAMETER_LIST(LIST, '(', V=[Ident(), Ident()])
+    5 :             Ident TK.IDNT(IDENTIFIER, 'x', V=)
+    6 :             Ident TK.IDNT(IDENTIFIER, 'y', V=)
+    7 :     Ident TK.IDNT(IDENTIFIER, 'b', V=)

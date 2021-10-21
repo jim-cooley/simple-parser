@@ -7,3 +7,9 @@ tree1:
 
 tree2:
     1 : Set TK.SET(SET, '{', V=[None])
+
+tree1:
+    1 : Ident TK.IDNT(IDENTIFIER, 'a', V=)
+
+tree2:
+    1 : Set TK.SET(SET, '{', V=[None])

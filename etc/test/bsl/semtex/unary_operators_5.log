@@ -5,3 +5,7 @@ test: 5: "++a"
 tree1:
     1 : UnaryOp TK.PLU2(UNARY, '++', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=)
+
+tree1:
+    1 : UnaryOp TK.PLU2(UNARY, '++', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=)

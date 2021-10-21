@@ -5,3 +5,7 @@ test: 4: "! b"
 tree1:
     1 : UnaryOp TK.NOT(UNARY, '!', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'b', V=)
+
+tree1:
+    1 : UnaryOp TK.NOT(UNARY, '!', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'b', V=)

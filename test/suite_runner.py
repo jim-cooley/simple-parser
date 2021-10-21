@@ -100,7 +100,7 @@ def _dump_tree(tree, log=None):
         idx += 1
         _t_print(log, f'\ntree{idx}:')
         dt = DumpTree()
-        viz = dt.dump(t)
+        viz = dt.apply(t)
         for v in viz:
             _t_print(log, v)
 
