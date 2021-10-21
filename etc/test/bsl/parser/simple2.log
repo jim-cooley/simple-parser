@@ -154,13 +154,16 @@ tree12:
 tree13:
 
 tree14:
-    1 : List TK.COMMAND(LIST, '%%', V=[None, Ident()])
-    2 :     Ident TK.IDNT(IDENTIFIER, 'report', V=None)
 
 tree15:
-    1 : Set TK.SET(SET, '{', V=[Ident()])
+    1 : Command TK.COMMAND(UNARY, '%%', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'report', V=None)
 
 tree16:
+    1 : Command TK.COMMAND(UNARY, '%%', V=None)
+    2 :     Set TK.SET(SET, '{', V=[Ident()])
+    3 :         Ident TK.IDNT(IDENTIFIER, 'report', V=None)
 
 tree17:
+
+tree18:

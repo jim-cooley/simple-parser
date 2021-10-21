@@ -1,10 +1,11 @@
 # sample rules file for pyser / qtradr
 
+%%yahoo (file='spq500.csv', 2y)
+%%backtest (rules, period='train')
+
 periods = {
     'train': today-2y..today
 }
-%%yahoo -f 'spq500.csv' -p 'train'
-%%backtest [period='train5', rules=rules]
 
 atr := (high + low) / 2
 median_price := (open + close) / 2
