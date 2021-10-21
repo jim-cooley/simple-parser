@@ -4,6 +4,7 @@ import sys
 from abc import ABC
 
 from fixups import FixupSet2Dictionary
+from interpreter import Interpreter
 from parser import Parser
 from test.suite_runner import TestSuiteRunner, _dump_tree, _t_print, _log_exception
 from test.test_setup import test_data
@@ -28,7 +29,9 @@ class SemanticAnalysisTestRunner(TestSuiteRunner, ABC):
         fixup = FixupSet2Dictionary(tree)
         tree = fixup.apply()
         _dump_tree(tree, log)
-        fixup.print_symbols()
+        interp = Interpreter(tree)
+        tree = interp.interpret()
+        _dump_tree(tree, log)
 
 
 # this is only for execution under debugger or via command-line

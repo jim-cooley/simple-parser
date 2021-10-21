@@ -4,39 +4,8 @@
 from copy import copy
 from dataclasses import dataclass
 
-from tokens import TCL, TK, Token
+from tokens import Token
 from tree import AST
-
-_KEYWORDS = [
-    (TK.BUY, TCL.KEYWORD, "buy"),
-    (TK.SELL, TCL.KEYWORD, "sell"),
-    (TK.SIGNAL, TCL.KEYWORD, "signal"),
-    (TK.IDNT, TCL.DATASET, "open"),
-    (TK.IDNT, TCL.DATASET, "close"),
-    (TK.IDNT, TCL.DATASET, "high"),
-    (TK.IDNT, TCL.DATASET, "low"),
-    (TK.IDNT, TCL.FUNCTION, "sma"),
-    (TK.IDNT, TCL.FUNCTION, "ema"),
-    (TK.AND, TCL.LOGICAL, 'and'),
-    (TK.OR, TCL.LOGICAL, 'or'),
-    (TK.NOT, TCL.UNARY, 'not'),
-    (TK.IN, TCL.BINOP, 'in'),
-    (TK.ANY, TCL.KEYWORD, 'any'),
-    (TK.ALL, TCL.KEYWORD, 'all'),
-    (TK.NONEOF, TCL.KEYWORD, 'none'),
-    (TK.TRUE, TCL.KEYWORD, 'true'),
-    (TK.FALSE, TCL.KEYWORD, 'false'),
-    (TK.NONE, TCL.KEYWORD, 'None'),
-    (TK.TRUE, TCL.KEYWORD, 'True'),
-    (TK.FALSE, TCL.KEYWORD, 'False'),
-    (TK.DEFINE, TCL.UNARY, 'def'),
-
-    (TK.FUNCTION, TCL.KEYWORD, 'apply'),
-    (TK.FUNCTION, TCL.KEYWORD, 'columns'),
-    (TK.FUNCTION, TCL.KEYWORD, 'expr'),
-    (TK.FUNCTION, TCL.KEYWORD, 'fillempty'),
-    (TK.FUNCTION, TCL.KEYWORD, 'select')
-]
 
 
 @dataclass
@@ -87,19 +56,3 @@ class Scope(AST):
             print(f'{spaces}{k}: {self._symbols[k]}')
 
 
-@dataclass
-class Keywords(Scope):
-    def __init__(self):
-        super().__init__()
-        self.load_keywords()
-
-    # Keywords are r/o
-    def __setitem__(self, key, value):
-        return
-
-    def define(self, token, expr):
-        return
-
-    def load_keywords(self, keywords=_KEYWORDS):
-        for (tkid, typ, val) in keywords:
-            self._add_symbol(tkid, typ, val)

@@ -2,7 +2,8 @@ from copy import copy
 from dataclasses import dataclass
 
 from exceptions import _expected
-from scope import Scope, load_keywords
+from scope import Scope
+from keywords import Keywords
 from tokens import TK, TCL, _ADDITION_TOKENS, _COMPARISON_TOKENS, _FLOW_TOKENS, \
     _EQUALITY_TEST_TOKENS, _LOGIC_TOKENS, _MULTIPLICATION_TOKENS, _UNARY_TOKENS, _IDENTIFIER_TYPES, Token, \
     _ASSIGNMENT_TOKENS
@@ -18,15 +19,14 @@ EMPTY_SET = Set(Token(tid=TK.EMPTY, tcl=TCL.LITERAL, lex="{}", val=None))
 class ParseTree(object):
     def __init__(self, nodes=None, keywords=None, source=None):
         self.nodes = nodes if nodes is not None else []
-        self.keywords = keywords if keywords is not None else Scope()
+        self.keywords = keywords if keywords is not None else Keywords()
         self.globals = Scope(keywords)
         self.source = source
-        load_keywords(self.globals)
 
 
 class Parser(object):
     def __init__(self, str=None):
-        self.keywords = load_keywords(Scope())
+        self.keywords = Keywords()
         self._lexer = Lexer(string=str, keywords=self.keywords)
         self._skip_end_of_line = True
         self._parse_string = str  # which could be none

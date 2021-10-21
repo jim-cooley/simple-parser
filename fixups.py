@@ -31,8 +31,7 @@ _fixupNodeTypeMappings = {
 class FixupSet2Dictionary(TreeFilter, ABC):
     def __init__(self, tree=None, print=False):
         super().__init__(tree, mapping=_fixupNodeTypeMappings, apply_parent_fixups=True)
-        self._node_map = {}
-        self._print_nodes=print
+        self._print_nodes = False
         self.global_symbols = self.tree.keywords
         self.current_scope = None
         self.symbols = self.global_symbols

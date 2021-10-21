@@ -111,6 +111,9 @@ class TK(IntEnum):
     ANY = auto()  # any:
     APPLY = auto()  # >>
     ASSIGN = auto()  # =
+    BUY = auto()
+    COMMAND = auto()
+    DEFINE = auto()
     DIV = auto()  # /
     EVENT = auto()  # from =>
     FALL_BELOW = auto()  # <|
@@ -125,6 +128,7 @@ class TK(IntEnum):
     NONE = auto()
     NONEOF = auto()  # none:
     NOT = auto()
+    NOW = auto()
     OR = auto()
     PARAMETER_LIST = auto()  # parameter-list
     PIPE = auto()
@@ -133,17 +137,13 @@ class TK(IntEnum):
     RANGE = auto()
     REF = auto()
     RISE_ABOVE = auto()  # >|
+    SELL = auto()
     SET = auto()
+    SIGNAL = auto()
     SUB = auto()  # - (subtract)
+    TODAY = auto()
     TRUE = auto()
     TUPLE = auto()
-
-    # keywords, reserved words, intrinsics
-    BUY = auto()
-    SELL = auto()
-    SIGNAL = auto()
-    DEFINE = auto()
-    COMMAND = auto()
 
     LAST = 299  # last reserved token id
 
@@ -194,28 +194,30 @@ _tk2lit = {
 }
 # token type mapping
 _tk2type = {
-    TK.WHT: TCL.NONE,
-    TK.INT: TCL.LITERAL,
-    TK.FLOT: TCL.LITERAL,
-    TK.STR: TCL.LITERAL,
-    TK.MNUS: TCL.UNARY,
-    TK.PLUS: TCL.UNARY,
-    TK.STAR: TCL.BINOP,
-    TK.SLSH: TCL.BINOP,
-    TK.PCT: TCL.UNARY,
-    TK.EXPN: TCL.BINOP,
-    TK.EQLS: TCL.BINOP,
     TK.DLRS: TCL.UNARY,
-    TK.GTR: TCL.LOGICAL,
-    TK.LESS: TCL.LOGICAL,
-    TK.RBAR: TCL.BINOP,
-    TK.LBAR: TCL.BINOP,
-    TK.GTE: TCL.LOGICAL,
-    TK.LTE: TCL.LOGICAL,
-    TK.NEQ: TCL.LOGICAL,
-    TK.EXCL: TCL.LOGICAL,
-    TK.TIME: TCL.LITERAL,
     TK.DUR: TCL.LITERAL,
+    TK.EQLS: TCL.BINOP,
+    TK.EXCL: TCL.LOGICAL,
+    TK.EXPN: TCL.BINOP,
+    TK.FLOT: TCL.LITERAL,
+    TK.GTE: TCL.LOGICAL,
+    TK.GTR: TCL.LOGICAL,
+    TK.INT: TCL.LITERAL,
+    TK.LBAR: TCL.BINOP,
+    TK.LESS: TCL.LOGICAL,
+    TK.LTE: TCL.LOGICAL,
+    TK.MNUS: TCL.UNARY,
+    TK.NEQ: TCL.LOGICAL,
+    TK.NOW: TCL.FUNCTION,
+    TK.PCT: TCL.UNARY,
+    TK.PLUS: TCL.UNARY,
+    TK.RBAR: TCL.BINOP,
+    TK.SLSH: TCL.BINOP,
+    TK.STAR: TCL.BINOP,
+    TK.STR: TCL.LITERAL,
+    TK.TODAY: TCL.FUNCTION,
+    TK.TIME: TCL.LITERAL,
+    TK.WHT: TCL.NONE,
 }
 # token sets for the parser
 _ADDITION_TOKENS = [TK.PLUS, TK.MNUS]

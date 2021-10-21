@@ -1,4 +1,9 @@
 # sample rules file for pyser / qtradr
+
+periods = {
+    'train': today-2y..today
+}
+%%yahoo -f 'spq500.csv' -p 'train'
 %%backtest [period='train5', rules=rules]
 
 atr := (high + low) / 2
