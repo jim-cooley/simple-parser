@@ -1,0 +1,17 @@
+
+
+test: 13: "report := ( trades | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price') )"
+
+tree1:
+    1 : BinOp TK.DEFINE(BINOP, ':=', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'report', V=)
+    3 :     List TK.PIPE(LIST, '|', V=[Ident(), FnCall()])
+    4 :         Ident TK.IDNT(IDENTIFIER, 'trades', V=)
+    5 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
+    6 :             Ident TK.IDNT(IDENTIFIER, 'select', V=)
+    7 :             List TK.PARAMETER_LIST(LIST, '(', V=[Str(), Str(), Str(), Str(), Str()])
+    8 :                 Str TK.STR(LITERAL, 'symbol', V=symbol)
+    9 :                 Str TK.STR(LITERAL, 'buy_date', V=buy_date)
+   10 :                 Str TK.STR(LITERAL, 'buy_price', V=buy_price)
+   11 :                 Str TK.STR(LITERAL, 'sell_date', V=sell_date)
+   12 :                 Str TK.STR(LITERAL, 'sell_price', V=sell_price)

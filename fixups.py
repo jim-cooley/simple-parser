@@ -2,7 +2,7 @@
 
 from abc import ABC
 
-from exceptions import _expect, _expect_cl, _error, _expect_in_cl, _match_set, _contains_set
+from exceptions import _expect, _expect_cl, _error, _expect_in_cl, _match_set, _contains_set, _contains
 from tokens import TK, TCL, _IDENTIFIER_TYPES
 from visitor import TreeFilter, BINARY_NODE, UNARY_NODE, SEQUENCE_NODE
 
@@ -20,7 +20,7 @@ _fixupNodeTypeMappings = {
 
 
 # fixups applied:
-# sets with k:v pairs become dictionaries
+# sets with TK.ASSIGN -> TK.TUPLE
 # constant expression elimination
 # empty sets?
 #
@@ -49,25 +49,11 @@ class FixupSet2Dictionary(TreeFilter, ABC):
         self.visit_sequence(node, label)
         values = node.values()
         if values is not None:
-            d = {}
-            k = 0
-            if _contains_set(values, [TK.COLN, TK.ASSIGN]):
-                for n in values:
-                    if n is None:
-                        continue
-                    if _match_set(n, [TK.COLN, TK.ASSIGN]):
-                        ident = _expect_in_cl(n.left, _IDENTIFIER_TYPES + [TCL.LITERAL])
-                        key = ident.value
-                        if key is not None:
-                            if key not in d:
-                                d[key] = n.right
-                                continue
-                            else:
-                                _error(f'Duplicate Key: {key}', ident.token.location)
-                    else:
-                        d[f'%%key{k}:'] = n
-                        k += 1
-                node.value = d if len(d) > 0 else node.value
+            for n in values:
+                if n is None:
+                    continue
+                if n.token.id == TK.ASSIGN:
+                    n.token.id = TK.TUPLE
 
     # just for test: use DumpTree for proper printing
     def _print_node(self, node):

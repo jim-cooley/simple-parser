@@ -1,0 +1,8 @@
+
+
+test: 8: "a += 1"
+
+tree1:
+    1 : BinOp TK.PLEQ(BINOP, '+=', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=)
+    3 :     Int TK.INT(LITERAL, '1', V=1)

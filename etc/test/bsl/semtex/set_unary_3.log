@@ -1,0 +1,11 @@
+
+
+test: 3: "all:{a, b, c}"
+
+tree1:
+    1 : BinOp TK.TUPLE(BINOP, ':', V=None)
+    2 :     UnaryOp TK.ALL(UNARY, 'all', V=)
+    3 :     Set TK.SET(SET, '{', V=[Ident(), Ident(), Ident()])
+    4 :         Ident TK.IDNT(IDENTIFIER, 'a', V=)
+    5 :         Ident TK.IDNT(IDENTIFIER, 'b', V=)
+    6 :         Ident TK.IDNT(IDENTIFIER, 'c', V=)

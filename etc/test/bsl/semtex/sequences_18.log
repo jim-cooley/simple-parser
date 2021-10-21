@@ -1,0 +1,13 @@
+
+
+test: 18: "open.b(1d) | c"
+
+tree1:
+    1 : List TK.PIPE(LIST, '|', V=[PropRef(), Ident()])
+    2 :     PropRef TK.REF(BINOP, '.', V=None)
+    3 :         Ident TK.IDNT(DATASET, 'open', V=)
+    4 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
+    5 :             Ident TK.IDNT(IDENTIFIER, 'b', V=)
+    6 :             List TK.PARAMETER_LIST(LIST, '(', V=[Duration()])
+    7 :                 Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
+    8 :     Ident TK.IDNT(IDENTIFIER, 'c', V=)

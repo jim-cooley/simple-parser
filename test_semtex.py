@@ -19,7 +19,7 @@ _skip_tests = [
 class SemanticAnalysisTestRunner(TestSuiteRunner, ABC):
 
     def __init__(self, test_data, skip_tests=None):
-        super().__init__(test_data, skip_tests, log_dir='./etc/test/log/sa')
+        super().__init__(test_data, skip_tests, log_dir='./etc/test/log/semtex')
 
     def run_unprotected_test(self, log, name, test):
         parser = Parser(str=test)

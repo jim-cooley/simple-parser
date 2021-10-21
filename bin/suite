@@ -18,7 +18,6 @@ printf "================================\n"
 start=$(date +%s)
 if [ "$prefx" == "semtex" ]; then
   ./test_semtex.py $suite
-  prefx="sa"
 else
   ./test_parser.py $suite
   prefx="parser"

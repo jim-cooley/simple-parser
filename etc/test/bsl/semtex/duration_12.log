@@ -1,0 +1,6 @@
+
+
+test: 12: "1.25w"
+
+tree1:
+    1 : Duration TK.DUR(LITERAL, '1.25w', V=8 days, 18:00:00)

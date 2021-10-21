@@ -1,0 +1,8 @@
+
+
+test: 5: "a | n"
+
+tree1:
+    1 : List TK.PIPE(LIST, '|', V=[Ident(), Ident()])
+    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=)
+    3 :     Ident TK.IDNT(IDENTIFIER, 'n', V=)

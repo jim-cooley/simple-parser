@@ -1,0 +1,7 @@
+
+
+test: 7: "---2"
+
+tree1:
+    1 : UnaryOp TK.MNU2(UNARY, '--', V=None)
+    2 :     Int TK.INT(LITERAL, '-2', V=-2)

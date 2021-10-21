@@ -1,0 +1,15 @@
+
+
+test: 10: "start: open.delay(1d) | buy"
+
+tree1:
+    1 : List TK.PIPE(LIST, '|', V=[BinOp(), Ident()])
+    2 :     BinOp TK.TUPLE(BINOP, ':', V=None)
+    3 :         Ident TK.IDNT(IDENTIFIER, 'start', V=)
+    4 :         PropRef TK.REF(BINOP, '.', V=None)
+    5 :             Ident TK.IDNT(DATASET, 'open', V=)
+    6 :             FnCall TK.FUNCTION(BINOP, '(', V=None)
+    7 :                 Ident TK.IDNT(IDENTIFIER, 'delay', V=)
+    8 :                 List TK.PARAMETER_LIST(LIST, '(', V=[Duration()])
+    9 :                     Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
+   10 :     Ident TK.BUY(KEYWORD, 'buy', V=)
