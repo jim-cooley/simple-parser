@@ -4,6 +4,6 @@ test: 4: "a[b]"
 
 tree1:
     1 : Index TK.INDEX(BINOP, '[', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=None)
     3 :     List TK.INDEX(LIST, '[', V=[Ident()])
-    4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=)
+    4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=None)

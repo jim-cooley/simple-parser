@@ -12,15 +12,19 @@ expression :=   literal
 
 # new precedence influenced states
 
-expression :=   equality
+expression :=   flow_expression
 
-equality := comparison [ [ '!=' | '==' ] comparison ]*
+flow_expression := logical_expression [ '|' logical_expression ]*
 
-comparison := term [ [ '>' | '>=' | '<' | '<=' ] term ]*
+logical_expression := equality [[ 'and' | 'or' ] equality ]*
 
-term := factor [ [ '-' | '+' ] factor ]*
+equality := comparison [[ '!=' | '==' ] comparison ]*
 
-factor := unary [ [ '/' | '*' ] factpr ]*
+comparison := term [[ '>' | '>=' | '<' | '<=' | 'in' ] term ]*
+
+term := factor [[ '-' | '+' ] factor ]*
+
+factor := unary [[ '/' | '*' ] factpr ]*
 
 unary := [ '-' | '!' | 'not' ] unary 
          | primary

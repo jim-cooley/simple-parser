@@ -192,7 +192,31 @@ _tk2lit = {
     TK.LBRK: TK.LIST,  # ]
     TK.QUOT: TK.STR,
 }
-
+# token type mapping
+_tk2type = {
+    TK.WHT: TCL.NONE,
+    TK.INT: TCL.LITERAL,
+    TK.FLOT: TCL.LITERAL,
+    TK.STR: TCL.LITERAL,
+    TK.MNUS: TCL.UNARY,
+    TK.PLUS: TCL.UNARY,
+    TK.STAR: TCL.BINOP,
+    TK.SLSH: TCL.BINOP,
+    TK.PCT: TCL.UNARY,
+    TK.EXPN: TCL.BINOP,
+    TK.EQLS: TCL.BINOP,
+    TK.DLRS: TCL.UNARY,
+    TK.GTR: TCL.LOGICAL,
+    TK.LESS: TCL.LOGICAL,
+    TK.RBAR: TCL.BINOP,
+    TK.LBAR: TCL.BINOP,
+    TK.GTE: TCL.LOGICAL,
+    TK.LTE: TCL.LOGICAL,
+    TK.NEQ: TCL.LOGICAL,
+    TK.EXCL: TCL.LOGICAL,
+    TK.TIME: TCL.LITERAL,
+    TK.DUR: TCL.LITERAL,
+}
 # token sets for the parser
 _ADDITION_TOKENS = [TK.PLUS, TK.MNUS]
 _ASSIGNMENT_TOKENS = [TK.COEQ, TK.EQLS, TK.ASSIGN, TK.MNEQ, TK.PLEQ]
@@ -254,6 +278,11 @@ class Token:
             self.id = tk_map[self.id]
         return self
 
+    def _map_cl(self, tcl_map):
+        if self.id in tcl_map:
+            self.t_class = tcl_map[self.id]
+        return self
+
     def map2binop(self):
         return self._map(_tk2binop)
 
@@ -262,6 +291,9 @@ class Token:
 
     def map2litval(self):
         return self._map(_tk2lit)
+
+    def map2tclass(self):
+        return self._map_cl(_tk2type)
 
     @staticmethod
     def format_token(tk):

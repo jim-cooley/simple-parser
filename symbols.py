@@ -1,7 +1,7 @@
 # token / symbol types
 import copy
 from dataclasses import dataclass
-from tokens import TCL, TK, Token
+from tokens import TCL, TK, Token, _tk2type
 
 _KEYWORDS = [
     (TK.BUY, TCL.KEYWORD, "buy"),
@@ -36,31 +36,6 @@ _FUNCTIONS = [
     (TK.IDNT, TCL.KEYWORD, 'fillempty'),
     (TK.IDNT, TCL.KEYWORD, 'select')
 ]
-
-TK_TYPES = {
-    TK.WHT: TCL.NONE,
-    TK.INT: TCL.LITERAL,
-    TK.FLOT: TCL.LITERAL,
-    TK.STR: TCL.LITERAL,
-    TK.MNUS: TCL.UNARY,
-    TK.PLUS: TCL.UNARY,
-    TK.STAR: TCL.BINOP,
-    TK.SLSH: TCL.BINOP,
-    TK.PCT: TCL.UNARY,
-    TK.EXPN: TCL.BINOP,
-    TK.EQLS: TCL.BINOP,
-    TK.DLRS: TCL.UNARY,
-    TK.GTR: TCL.LOGICAL,
-    TK.LESS: TCL.LOGICAL,
-    TK.RBAR: TCL.BINOP,
-    TK.LBAR: TCL.BINOP,
-    TK.GTE: TCL.LOGICAL,
-    TK.LTE: TCL.LOGICAL,
-    TK.NEQ: TCL.LOGICAL,
-    TK.EXCL: TCL.LOGICAL,
-    TK.TIME: TCL.LITERAL,
-    TK.DUR: TCL.LITERAL,
-}
 
 
 @dataclass
@@ -133,7 +108,7 @@ class SymbolTable:
             self.add_symbol(tkid, typ, val)
 
     # this is for type classification for non-identifiers.  the set is small, we insert the tid into the sym table.
-    def register_token_types(self, tokens=TK_TYPES):
+    def register_token_types(self, tokens=_tk2type):
         for (tid, tt) in tokens.items():
             self.add_symbol(tid, tt, tid)
 

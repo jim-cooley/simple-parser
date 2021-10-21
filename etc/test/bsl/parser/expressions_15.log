@@ -3,13 +3,13 @@
 test: 15: "a + 2 * 3 + 4 or not 5"
 
 tree1:
-    1 : BinOp TK.OR(BINOP, 'or', V=)
+    1 : BinOp TK.OR(BINOP, 'or', V=None)
     2 :     BinOp TK.ADD(BINOP, '+', V=None)
     3 :         BinOp TK.ADD(BINOP, '+', V=None)
-    4 :             Ident TK.IDNT(IDENTIFIER, 'a', V=)
+    4 :             Ident TK.IDNT(IDENTIFIER, 'a', V=None)
     5 :             BinOp TK.MUL(BINOP, '*', V=None)
     6 :                 Int TK.INT(LITERAL, '2', V=2)
     7 :                 Int TK.INT(LITERAL, '3', V=3)
     8 :         Int TK.INT(LITERAL, '4', V=4)
-    9 :     UnaryOp TK.NOT(UNARY, 'not', V=)
+    9 :     UnaryOp TK.NOT(UNARY, 'not', V=None)
    10 :         Int TK.INT(LITERAL, '5', V=5)

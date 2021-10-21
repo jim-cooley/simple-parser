@@ -5,7 +5,7 @@ test: 1: "{a}:threshold=0.05"
 tree1:
     1 : BinOp TK.TUPLE(BINOP, ':', V=None)
     2 :     Set TK.SET(SET, '{', V=[Ident()])
-    3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=)
+    3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=None)
     4 :     BinOp TK.ASSIGN(BINOP, '=', V=None)
-    5 :         Ident TK.IDNT(IDENTIFIER, 'threshold', V=)
+    5 :         Ident TK.IDNT(IDENTIFIER, 'threshold', V=None)
     6 :         Float TK.FLOT(LITERAL, '0.05', V=0.05)

@@ -5,8 +5,8 @@ test: 3: "a().b.c"
 tree1:
     1 : BinOp TK.DOT(BINOP, '.', V=None)
     2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
-    3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=)
+    3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=None)
     4 :         List TK.PARAMETER_LIST(LIST, '(', V=[None])
     5 :     PropRef TK.REF(BINOP, '.', V=None)
-    6 :         Ident TK.IDNT(IDENTIFIER, 'b', V=)
-    7 :         Ident TK.IDNT(IDENTIFIER, 'c', V=)
+    6 :         Ident TK.IDNT(IDENTIFIER, 'b', V=None)
+    7 :         Ident TK.IDNT(IDENTIFIER, 'c', V=None)

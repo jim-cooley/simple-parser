@@ -3,4 +3,4 @@
 test: 2: "abcdefghijklmnopqrstuvwxyz"
 
 tree1:
-    1 : Ident TK.IDNT(IDENTIFIER, 'abcdefghijklmnopqrstuvwxyz', V=)
+    1 : Ident TK.IDNT(IDENTIFIER, 'abcdefghijklmnopqrstuvwxyz', V=None)

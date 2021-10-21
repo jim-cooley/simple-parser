@@ -4,12 +4,12 @@ test: 12: "report := { trades | select('symbol', 'buy_date', 'buy_price', 'sell_
 
 tree1:
     1 : BinOp TK.DEFINE(BINOP, ':=', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'report', V=)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'report', V=None)
     3 :     Set TK.SET(SET, '{', V=[List()])
     4 :         List TK.PIPE(LIST, '|', V=[Ident(), FnCall()])
-    5 :             Ident TK.IDNT(IDENTIFIER, 'trades', V=)
+    5 :             Ident TK.IDNT(IDENTIFIER, 'trades', V=None)
     6 :             FnCall TK.FUNCTION(BINOP, '(', V=None)
-    7 :                 Ident TK.IDNT(IDENTIFIER, 'select', V=)
+    7 :                 Ident TK.FUNCTION(KEYWORD, 'select', V=None)
     8 :                 List TK.PARAMETER_LIST(LIST, '(', V=[Str(), Str(), Str(), Str(), Str()])
     9 :                     Str TK.STR(LITERAL, 'symbol', V=symbol)
    10 :                     Str TK.STR(LITERAL, 'buy_date', V=buy_date)

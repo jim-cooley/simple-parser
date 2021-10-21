@@ -3,4 +3,4 @@
 test: 1: "(a)"
 
 tree1:
-    1 : Ident TK.IDNT(IDENTIFIER, 'a', V=)
+    1 : Ident TK.IDNT(IDENTIFIER, 'a', V=None)

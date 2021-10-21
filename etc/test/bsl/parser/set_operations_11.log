@@ -4,5 +4,5 @@ test: 11: "{a, b}"
 
 tree1:
     1 : Set TK.SET(SET, '{', V=[Ident(), Ident()])
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=)
-    3 :     Ident TK.IDNT(IDENTIFIER, 'b', V=)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=None)
+    3 :     Ident TK.IDNT(IDENTIFIER, 'b', V=None)

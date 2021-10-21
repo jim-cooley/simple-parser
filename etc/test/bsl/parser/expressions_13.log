@@ -4,12 +4,12 @@ test: 13: "a = b.c(x,y,z)"
 
 tree1:
     1 : BinOp TK.ASSIGN(BINOP, '=', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=None)
     3 :     PropRef TK.REF(BINOP, '.', V=None)
-    4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=)
+    4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=None)
     5 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
-    6 :             Ident TK.IDNT(IDENTIFIER, 'c', V=)
+    6 :             Ident TK.IDNT(IDENTIFIER, 'c', V=None)
     7 :             List TK.PARAMETER_LIST(LIST, '(', V=[Ident(), Ident(), Ident()])
-    8 :                 Ident TK.IDNT(IDENTIFIER, 'x', V=)
-    9 :                 Ident TK.IDNT(IDENTIFIER, 'y', V=)
-   10 :                 Ident TK.IDNT(IDENTIFIER, 'z', V=)
+    8 :                 Ident TK.IDNT(IDENTIFIER, 'x', V=None)
+    9 :                 Ident TK.IDNT(IDENTIFIER, 'y', V=None)
+   10 :                 Ident TK.IDNT(IDENTIFIER, 'z', V=None)

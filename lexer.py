@@ -2,9 +2,7 @@ from dataclasses import dataclass
 
 import copy
 import string
-from io import RawIOBase, BytesIO
-from typing import Optional, List
-from symbols import SymbolTable
+from io import BytesIO
 
 import statedef as _
 from tokens import TK, TCL, Token
@@ -17,18 +15,14 @@ class Lexer(object):
     _chid: int = None
     _cline: string = None
     token: Token = None
-    symbols: SymbolTable
 
-    def __init__(self, stream=None, string=None, symtab=None):
-        if string is not None:
-            stream = BytesIO(bytes(string, 'ascii', errors='ignore'))
-        if stream is None:
-            raise SyntaxError  # must pass stream or string
+    def __init__(self, string, keywords=None):
+        stream = BytesIO(bytes(string, 'ascii', errors='ignore'))
         self._stream = stream
         self._state = _.ST.MAIN
         self._has_more = True
         self._loc = Token.Loc(0, 0)
-        self.symbols = symtab
+        self.keywords = keywords
         if not self._stream.readable():
             raise IOError
         self.get_char()
@@ -94,9 +88,9 @@ class Lexer(object):
             break
         if tk.id == TK.IDNT:
             tk.t_class = TCL.IDENTIFIER
-            tk =self.symbols.find_add_symbol(tk)
+            tk = self.keywords.find(tk, tk)
         else:
-            tk.t_class = self.symbols.get_tokentype(tk)
+            tk.map2tclass()
         self.token = tk
         if tk.id == TK.EOF:
             self._has_more = False
@@ -107,15 +101,15 @@ class Lexer(object):
 
     # fetch discards via overwriting
     def get_char(self):
-#       self._cline = self.readline() if self._cline is None else self._cline
+        #       self._cline = self.readline() if self._cline is None else self._cline
         self._chid = self._get_next_char()
         if self._chid == 0:
             self._chid = _.CL.EOF
             self._char = chr(self._chid)
         else:
             self._char = chr(self._chid)
-#            if self._chid == 13:    # both unix and PC have \r
-#                self._loc.line += 1
-#                self._loc.offset = 0
+            #            if self._chid == 13:    # both unix and PC have \r
+            #                self._loc.line += 1
+            #                self._loc.offset = 0
             self._loc.offset += 1
         return self._chid

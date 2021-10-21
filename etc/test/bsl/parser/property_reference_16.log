@@ -4,10 +4,10 @@ test: 16: "a.b(1, 2, z)"
 
 tree1:
     1 : PropRef TK.REF(BINOP, '.', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=None)
     3 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
-    4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=)
+    4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=None)
     5 :         List TK.PARAMETER_LIST(LIST, '(', V=[Int(), Int(), Ident()])
     6 :             Int TK.INT(LITERAL, '1', V=1)
     7 :             Int TK.INT(LITERAL, '2', V=2)
-    8 :             Ident TK.IDNT(IDENTIFIER, 'z', V=)
+    8 :             Ident TK.IDNT(IDENTIFIER, 'z', V=None)

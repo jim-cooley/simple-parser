@@ -4,10 +4,10 @@ test: 22: "a * -b --c"
 
 tree1:
     1 : BinOp TK.MUL(BINOP, '*', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=None)
     3 :     UnaryOp TK.NEG(UNARY, '-', V=None)
-    4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=)
+    4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=None)
 
 tree2:
     1 : UnaryOp TK.MNU2(UNARY, '--', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'c', V=)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'c', V=None)

@@ -3,5 +3,5 @@
 test: 3: "not a"
 
 tree1:
-    1 : UnaryOp TK.NOT(UNARY, 'not', V=)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=)
+    1 : UnaryOp TK.NOT(UNARY, 'not', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=None)

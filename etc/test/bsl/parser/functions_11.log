@@ -3,10 +3,10 @@
 test: 11: "a{x, y, z}"
 
 tree1:
-    1 : Ident TK.IDNT(IDENTIFIER, 'a', V=)
+    1 : Ident TK.IDNT(IDENTIFIER, 'a', V=None)
 
 tree2:
     1 : Set TK.SET(SET, '{', V=[Ident(), Ident(), Ident()])
-    2 :     Ident TK.IDNT(IDENTIFIER, 'x', V=)
-    3 :     Ident TK.IDNT(IDENTIFIER, 'y', V=)
-    4 :     Ident TK.IDNT(IDENTIFIER, 'z', V=)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'x', V=None)
+    3 :     Ident TK.IDNT(IDENTIFIER, 'y', V=None)
+    4 :     Ident TK.IDNT(IDENTIFIER, 'z', V=None)

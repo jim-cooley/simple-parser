@@ -4,8 +4,8 @@ test: 4: "none:{a, b, c}"
 
 tree1:
     1 : BinOp TK.TUPLE(BINOP, ':', V=None)
-    2 :     UnaryOp TK.NONEOF(UNARY, 'none', V=)
+    2 :     UnaryOp TK.NONEOF(UNARY, 'none', V=None)
     3 :     Set TK.SET(SET, '{', V=[Ident(), Ident(), Ident()])
-    4 :         Ident TK.IDNT(IDENTIFIER, 'a', V=)
-    5 :         Ident TK.IDNT(IDENTIFIER, 'b', V=)
-    6 :         Ident TK.IDNT(IDENTIFIER, 'c', V=)
+    4 :         Ident TK.IDNT(IDENTIFIER, 'a', V=None)
+    5 :         Ident TK.IDNT(IDENTIFIER, 'b', V=None)
+    6 :         Ident TK.IDNT(IDENTIFIER, 'c', V=None)

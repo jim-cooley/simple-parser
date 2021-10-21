@@ -33,7 +33,7 @@ class FixupSet2Dictionary(TreeFilter, ABC):
         super().__init__(tree, mapping=_fixupNodeTypeMappings, apply_parent_fixups=True)
         self._node_map = {}
         self._print_nodes=print
-        self.global_symbols = self.tree.globals
+        self.global_symbols = self.tree.keywords
         self.current_scope = None
         self.symbols = self.global_symbols
 

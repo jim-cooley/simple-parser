@@ -5,9 +5,9 @@ test: 16: "a.b(1) | c"
 tree1:
     1 : List TK.PIPE(LIST, '|', V=[PropRef(), Ident()])
     2 :     PropRef TK.REF(BINOP, '.', V=None)
-    3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=)
+    3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=None)
     4 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
-    5 :             Ident TK.IDNT(IDENTIFIER, 'b', V=)
+    5 :             Ident TK.IDNT(IDENTIFIER, 'b', V=None)
     6 :             List TK.PARAMETER_LIST(LIST, '(', V=[Int()])
     7 :                 Int TK.INT(LITERAL, '1', V=1)
-    8 :     Ident TK.IDNT(IDENTIFIER, 'c', V=)
+    8 :     Ident TK.IDNT(IDENTIFIER, 'c', V=None)

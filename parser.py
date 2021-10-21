@@ -7,7 +7,6 @@ from tokens import TK, TCL, _ADDITION_TOKENS, _COMPARISON_TOKENS, _FLOW_TOKENS, 
     _EQUALITY_TEST_TOKENS, _LOGIC_TOKENS, _MULTIPLICATION_TOKENS, _UNARY_TOKENS, _IDENTIFIER_TYPES, Token, \
     _ASSIGNMENT_TOKENS
 from lexer import Lexer
-from symbols import SymbolTable
 from tree import UnaryOp, BinOp, FnCall, PropRef, PropCall, Command, Index, Ident
 from literals import Duration, Float, Int, Percent, Str, Time, Bool, List, Set
 from treedump import DumpTree
@@ -17,18 +16,18 @@ EMPTY_SET = Set(Token(tid=TK.EMPTY, tcl=TCL.LITERAL, lex="{}", val=None))
 
 @dataclass
 class ParseTree(object):
-    def __init__(self, nodes=None, symbols=None, globals=None, source=None):
+    def __init__(self, nodes=None, keywords=None, source=None):
         self.nodes = nodes if nodes is not None else []
-        self.symbols = symbols if symbols is not None else SymbolTable()
-        self.globals = globals if globals is not None else Scope()
+        self.keywords = keywords if keywords is not None else Scope()
+        self.globals = Scope(keywords)
         self.source = source
         load_keywords(self.globals)
 
 
 class Parser(object):
-    def __init__(self, lexer=None, str=None, symtab=None):
-        self._symbol_table = (SymbolTable() if lexer is None else lexer.symbols) if symtab is None else symtab
-        self._lexer = Lexer(string=str, symtab=self._symbol_table) if lexer is None else lexer
+    def __init__(self, str=None):
+        self.keywords = load_keywords(Scope())
+        self._lexer = Lexer(string=str, keywords=self.keywords)
         self._skip_end_of_line = True
         self._parse_string = str  # which could be none
         self.nodes = []
@@ -91,7 +90,7 @@ class Parser(object):
                 self.nodes.append(node)
             else:
                 self.nodes += node  # a list can be returned
-        tree = ParseTree(nodes=self.nodes, symbols=self._symbol_table, source=self._parse_string)
+        tree = ParseTree(nodes=self.nodes, keywords=self.keywords, source=self._parse_string)
         return tree
 
     # -----------------------------------
@@ -271,7 +270,7 @@ class Parser(object):
         """
         identifier | identifier ( plist ) | identifier . identifier
         """
-        tk = self._symbol_table.find_add_symbol(self.peek())
+        tk = self.peek()
         token = self.advance()
         if token.id == TK.DOT:
             token = self.consume_next(TK.IDNT)

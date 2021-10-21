@@ -30,6 +30,7 @@ _KEYWORDS = [
     (TK.TRUE, TCL.KEYWORD, 'True'),
     (TK.FALSE, TCL.KEYWORD, 'False'),
     (TK.DEFINE, TCL.UNARY, 'def'),
+
     (TK.FUNCTION, TCL.KEYWORD, 'apply'),
     (TK.FUNCTION, TCL.KEYWORD, 'columns'),
     (TK.FUNCTION, TCL.KEYWORD, 'expr'),
@@ -47,7 +48,7 @@ class Scope(AST):
         self.parent = parent
 
     def __getitem__(self, key):
-        return self._find(key)
+        return self.find(key)
 
     def __setitem__(self, key, value):
         self.define(key, value)
@@ -64,13 +65,13 @@ class Scope(AST):
     def contains(self, token):
         return token.lexeme in self._symbols
 
-    def _find(self, token):
+    def find(self, token, default=None):
         if token.lexeme in self._symbols:
             return self._symbols[token.lexeme]
-        return None
+        return default
 
     def _find_add(self, token, value):
-        symbol = self._find(token)
+        symbol = self.find(token)
         if symbol is None:
             symbol = copy(token)
             self._symbols[token.lexeme] = value
@@ -86,6 +87,19 @@ class Scope(AST):
             print(f'{spaces}{k}: {self._symbols[k]}')
 
 
-def load_keywords(table, keywords=_KEYWORDS):
-    for (tkid, typ, val) in keywords:
-        table._add_symbol(tkid, typ, val)
+@dataclass
+class Keywords(Scope):
+    def __init__(self):
+        super().__init__()
+        self.load_keywords()
+
+    # Keywords are r/o
+    def __setitem__(self, key, value):
+        return
+
+    def define(self, token, expr):
+        return
+
+    def load_keywords(self, keywords=_KEYWORDS):
+        for (tkid, typ, val) in keywords:
+            self._add_symbol(tkid, typ, val)
