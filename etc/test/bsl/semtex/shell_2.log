@@ -29,7 +29,7 @@ tree3:
     6 :             Str TK.STR(LITERAL, 'stops', V=stops)
 
 tree1:
-    1 : Command TK.COMMAND(UNARY, '%%', V=None)
+    1 : Command TK.COMMAND(UNARY, '%%load_quotes', V=load_quotes)
     2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
     3 :         Ident TK.IDNT(IDENTIFIER, 'load_quotes', V=)
     4 :         List TK.PARAMETER_LIST(LIST, '(', V=[BinOp()])
@@ -38,7 +38,7 @@ tree1:
     7 :                 Str TK.STR(LITERAL, './etc/spq500.csv', V=./etc/spq500.csv)
 
 tree2:
-    1 : Command TK.COMMAND(UNARY, '%%', V=None)
+    1 : Command TK.COMMAND(UNARY, '%%backtest', V=backtest)
     2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
     3 :         Ident TK.IDNT(IDENTIFIER, 'backtest', V=)
     4 :         List TK.PARAMETER_LIST(LIST, '(', V=[BinOp()])
@@ -47,7 +47,7 @@ tree2:
     7 :                 Str TK.STR(LITERAL, 'train5', V=train5)
 
 tree3:
-    1 : Command TK.COMMAND(UNARY, '%%', V=None)
+    1 : Command TK.COMMAND(UNARY, '%%report', V=report)
     2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
     3 :         Ident TK.IDNT(IDENTIFIER, 'report', V=)
     4 :         List TK.PARAMETER_LIST(LIST, '(', V=[Str(), Str()])

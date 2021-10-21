@@ -1,7 +1,6 @@
 # abstract syntax trees:
 from dataclasses import dataclass
 
-from symbols import SymbolTable
 from tokens import TCL, TK, Token
 
 
@@ -14,7 +13,6 @@ class AST(object):
             return self.token.properties
         elif item == 'value':
             return self.token.value
-        pass
 
     def __str__(self):
         if getattr(self, 'format', None) is not None:
@@ -37,7 +35,9 @@ class BinOp(AST):
             right.parent = self
 
     def format(self):
-        return f'BinOp({self.token}: l={self.left}, r={self.right}'
+        left = "None" if self.left is None else f'{self.left}'
+        right = 'None' if self.right is None else f'{self.right}'
+        return f'BinOp({self.token}: l={left}, r={right}'
 
 
 @dataclass
@@ -101,11 +101,3 @@ class PropRef(BinOp):
     def __init__(self, token, prop, op=None):
         op = Token(tid=TK.REF, tcl=TCL.BINOP, lex=".", loc=token.location) if op is None else op
         super().__init__(left=Ident(token), op=op, right=prop)
-
-
-@dataclass
-class ParseTree(object):
-    def __init__(self, nodes=None, symbols=None, source=None):
-        self.nodes = nodes if nodes is not None else []
-        self.symbols = symbols if symbols is not None else SymbolTable()
-        self.source = source

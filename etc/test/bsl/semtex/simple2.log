@@ -166,7 +166,7 @@ tree16:
 tree17:
 
 tree1:
-    1 : Command TK.COMMAND(UNARY, '%%', V=None)
+    1 : Command TK.COMMAND(UNARY, '%%backtest', V=backtest)
     2 :     Index TK.INDEX(BINOP, '[', V=None)
     3 :         Ident TK.IDNT(IDENTIFIER, 'backtest', V=)
     4 :         List TK.INDEX(LIST, '[', V=[BinOp(), BinOp()])

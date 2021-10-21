@@ -98,7 +98,7 @@ class Percent(Literal):
         token.value = float(token.lexeme.replace("%",""))/100
 
     def format(self, fmt=None):
-        return f'{self.value*100} %'
+        return '' if self.value is None else f'{self.value*100} %'
 
 
 @dataclass
@@ -148,6 +148,11 @@ class Str(Literal):
         token.value = token.lexeme
 
     def format(self, fmt=None):
+        if self.value is None:
+            if self.token.value is not None:
+                return self.token.value
+            elif self.token.lexeme is not None:
+                return self.token.lexeme
         return self.value
 
 

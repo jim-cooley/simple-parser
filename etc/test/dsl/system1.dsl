@@ -7,19 +7,19 @@ price10a := price.delay(1d)[10:00]
 sma_period := [3,5,10..20,28]
 
 rules := {
-    baseline: {
+    baseline = {
         any:{ close >| sma(10), close >| sma(20), sma(10) >| sma(20) }:(threshold=0.01) | signal >> delay(1d) | atr => buy,
         close <| sma(10) | signal >> delay(1d) | atr -> sell
     },
-    scenario1: {
+    scenario1 = {
         { close >| sma(20) } | signal >> atr.delay(1d) => buy,
         close <| sma(10) | signal >> atr.delay(1d) => sell
     },
-    scenario2: {
+    scenario2 = {
         { close >| sma(10) }:(threshold=0.01) | signal >> atr.delay(1d) => buy,
         close <| sma(10) | signal >> atr.delay(1d) => sell
     },
-    scenario3: {
+    scenario3 = {
         { sma(10) >| sma(20) } | signal >> atr.delay(1d) => buy,
         close <| sma(10) | signal >> atr.delay(1d) => sell
     },

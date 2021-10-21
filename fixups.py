@@ -2,21 +2,20 @@
 
 from abc import ABC
 
-from exceptions import _expect, _expect_cl, _error, _expect_in_cl, _match_set, _contains_set, _contains
-from literals import List, Set
-from tokens import TK, TCL, _IDENTIFIER_TYPES, Token
+from literals import List
+from tokens import TK, TCL, Token
 from visitor import TreeFilter, BINARY_NODE, UNARY_NODE, SEQUENCE_NODE
 
 _fixupNodeTypeMappings = {
     'BinOp': 'process_binops',
-    'Command': UNARY_NODE,
+    'Command': 'process_command',
     'FnCall': BINARY_NODE,
     'Index': BINARY_NODE,
     'list': 'visit_list',
     'List': 'convert_tuples',
     'PropCall': BINARY_NODE,
     'PropRef': BINARY_NODE,
-    'Set': 'process_scope',
+    'Set': 'convert_tuples',
     'UnaryOp': UNARY_NODE,
 }
 
@@ -34,7 +33,7 @@ class FixupSet2Dictionary(TreeFilter, ABC):
         super().__init__(tree, mapping=_fixupNodeTypeMappings, apply_parent_fixups=True)
         self._node_map = {}
         self._print_nodes=print
-        self.global_symbols = self.tree.symbols
+        self.global_symbols = self.tree.globals
         self.current_scope = None
         self.symbols = self.global_symbols
 
@@ -79,26 +78,22 @@ class FixupSet2Dictionary(TreeFilter, ABC):
             tkid = node.token.id
             if tkid == TK.TUPLE:
                 self.convert_coln_plist(node, label)
-            elif tkid == TK.DEFINE:
-                self.process_definitions(node, label)
 
-    def process_definitions(self, node, label=None):
-        if node is not None:
-            if node.token.id == TK.DEFINE:
-                ident = node.left.token
-                symbol = self.symbols.find_add_symbol(ident)
-                self.symbols.define_symbol(symbol, node)
-            self.visit_binary_node(node, label)
-
-    def process_scope(self, node, label=None):
-        self.convert_tuples(node, label)
+    def process_command(self, node, label=None):
+        op = node.expr
+        if op is not None:
+            if op.token.t_class == TCL.BINOP:
+                command = op.left.token.lexeme
+                expr = op.right
+                print(f'command: {node.token.lexeme}{command}: {expr}')
+                node.token.lexeme = f'%%{command}'
+                node.token.value = command
+        self.visit_unary_node(node, label)
 
     def print_symbols(self):
         if self.global_symbols is not None:
             print(f'\n\nsymbol table:')
             self.global_symbols.print(indent=1)
-            print(f'\nsymbols by type:')
-            self.global_symbols.print_types(indent=1)
 
     # just for test: use DumpTree for proper printing
     def _print_node(self, node):
@@ -109,6 +104,7 @@ class FixupSet2Dictionary(TreeFilter, ABC):
                 parent = node.parent
                 id = f'{parent._num + 1}' if parent._num is not None else ' '
             print(f'{self._count:5d} : {indent}{node}: {node.token.format()}, parent:{id}')
+
 
 # fixup helpers:
 def _fixup_coln_plist(node, target):

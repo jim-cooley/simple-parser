@@ -1,16 +1,28 @@
 from copy import copy
+from dataclasses import dataclass
 
 from exceptions import _expected
+from scope import Scope, load_keywords
 from tokens import TK, TCL, _ADDITION_TOKENS, _COMPARISON_TOKENS, _FLOW_TOKENS, \
     _EQUALITY_TEST_TOKENS, _LOGIC_TOKENS, _MULTIPLICATION_TOKENS, _UNARY_TOKENS, _IDENTIFIER_TYPES, Token, \
     _ASSIGNMENT_TOKENS
 from lexer import Lexer
 from symbols import SymbolTable
-from tree import UnaryOp, BinOp, FnCall, PropRef, PropCall, Command, Index, ParseTree, Ident
+from tree import UnaryOp, BinOp, FnCall, PropRef, PropCall, Command, Index, Ident
 from literals import Duration, Float, Int, Percent, Str, Time, Bool, List, Set
 from treedump import DumpTree
 
 EMPTY_SET = Set(Token(tid=TK.EMPTY, tcl=TCL.LITERAL, lex="{}", val=None))
+
+
+@dataclass
+class ParseTree(object):
+    def __init__(self, nodes=None, symbols=None, globals=None, source=None):
+        self.nodes = nodes if nodes is not None else []
+        self.symbols = symbols if symbols is not None else SymbolTable()
+        self.globals = globals if globals is not None else Scope()
+        self.source = source
+        load_keywords(self.globals)
 
 
 class Parser(object):
@@ -323,4 +335,3 @@ class Parser(object):
         viz = dt.apply(node)
         for v in viz:
             print(v)
-
