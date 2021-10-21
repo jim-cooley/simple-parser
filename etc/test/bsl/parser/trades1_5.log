@@ -3,7 +3,7 @@
 test: 5: "buy: position += trade_size"
 
 tree1:
-    1 : BinOp TK.COLN(BINOP, ':', V=None)
+    1 : BinOp TK.TUPLE(BINOP, ':', V=None)
     2 :     Ident TK.BUY(KEYWORD, 'buy', V=)
     3 :     BinOp TK.PLEQ(BINOP, '+=', V=None)
     4 :         Ident TK.IDNT(IDENTIFIER, 'position', V=)

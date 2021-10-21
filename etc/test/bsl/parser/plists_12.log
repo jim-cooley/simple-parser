@@ -3,7 +3,7 @@
 test: 12: ":(a = 5, b='a')"
 
 tree1:
-    1 : BinOp TK.COLN(BINOP, ':', V=None)
+    1 : BinOp TK.TUPLE(BINOP, ':', V=None)
     2 :     List TK.PARAMETER_LIST(LIST, '(', V=[BinOp(), BinOp()])
     3 :         BinOp TK.ASSIGN(BINOP, '=', V=None)
     4 :             Ident TK.IDNT(IDENTIFIER, 'a', V=)
