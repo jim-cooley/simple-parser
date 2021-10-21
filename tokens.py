@@ -221,6 +221,12 @@ class Token:
         self.location = loc
         self.properties = {} if not prop else prop
 
+    def __repr__(self):
+        return self.format()
+
+    def __str__(self):
+        return self.format()
+
     def is_equal(self, other):
         if type(other) == type(self):
             if other.t_class == self.t_class:
@@ -236,7 +242,7 @@ class Token:
         _tcl = f'{self.t_class.name}' if hasattr(self.t_class, "name") else 'TCL({self.t_type})'
         _tv = 'None' if self.value is None else f'{self.value}'
         _tl = f'\'{self.lexeme}\''
-        _tloc = f'line:{self.location.line + 1}, pos:{self.location.offset - 1}'
+#       _tloc = f'line:{self.location.line + 1}, pos:{self.location.offset - 1}'
         return f'TK{_tn}{_tcl}, {_tl}, V={_tv})'
 
     def _map(self, tk_map):

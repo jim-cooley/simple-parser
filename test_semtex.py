@@ -28,6 +28,7 @@ class SemanticAnalysisTestRunner(TestSuiteRunner, ABC):
         fixup = FixupSet2Dictionary(tree)
         tree = fixup.apply()
         _dump_tree(tree, log)
+        fixup.print_symbols()
 
 
 # this is only for execution under debugger or via command-line

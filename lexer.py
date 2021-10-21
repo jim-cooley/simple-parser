@@ -19,9 +19,9 @@ class Lexer(object):
     token: Token = None
     symbols: SymbolTable
 
-    def __init__(self, stream=None, string=None, symtab: SymbolTable =None):
+    def __init__(self, stream=None, string=None, symtab=None):
         if string is not None:
-            stream = BytesIO(bytes(string, 'ascii'))
+            stream = BytesIO(bytes(string, 'ascii', errors='ignore'))
         if stream is None:
             raise SyntaxError  # must pass stream or string
         self._stream = stream

@@ -16,7 +16,7 @@ _fixupNodeTypeMappings = {
     'List': 'convert_tuples',
     'PropCall': BINARY_NODE,
     'PropRef': BINARY_NODE,
-    'Set': 'convert_tuples',
+    'Set': 'process_scope',
     'UnaryOp': UNARY_NODE,
 }
 
@@ -25,8 +25,8 @@ _fixupNodeTypeMappings = {
 # sets with TK.ASSIGN -> TK.TUPLE
 # parameter lists with TK.ASSIGN -> TK.TUPLE
 # :<assignment> -> :<parameter_list>(<assign>)
+# symbol scoping
 # constant expression elimination
-# empty sets?
 #
 
 class FixupSet2Dictionary(TreeFilter, ABC):
@@ -34,6 +34,9 @@ class FixupSet2Dictionary(TreeFilter, ABC):
         super().__init__(tree, mapping=_fixupNodeTypeMappings, apply_parent_fixups=True)
         self._node_map = {}
         self._print_nodes=print
+        self.global_symbols = self.tree.symbols
+        self.current_scope = None
+        self.symbols = self.global_symbols
 
     def apply(self, tree=None):
         self.visit(self.tree.nodes)
@@ -72,6 +75,16 @@ class FixupSet2Dictionary(TreeFilter, ABC):
                 if n.token.id == TK.ASSIGN:
                     n.token.id = TK.TUPLE
 
+    def process_scope(self, node, label=None):
+        self.convert_tuples(node, label)
+
+    def print_symbols(self):
+        if self.global_symbols is not None:
+            print(f'\n\nsymbol table:')
+            self.global_symbols.print(indent=1)
+            print(f'\nsymbols by type:')
+            self.global_symbols.print_types(indent=1)
+
     # just for test: use DumpTree for proper printing
     def _print_node(self, node):
         if self._print_nodes:
@@ -81,7 +94,6 @@ class FixupSet2Dictionary(TreeFilter, ABC):
                 parent = node.parent
                 id = f'{parent._num + 1}' if parent._num is not None else ' '
             print(f'{self._count:5d} : {indent}{node}: {node.token.format()}, parent:{id}')
-
 
 # fixup helpers:
 def _fixup_coln_plist(node, target):

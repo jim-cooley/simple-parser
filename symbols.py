@@ -70,7 +70,6 @@ class SymbolTable:
         self._symbolTypeTable = {}      # find all tokens of given type
         self._symbolId = TK.LAST
         self.register_keywords()
-        self.register_token_types()
 
     def next_token_id(self):
         self._symbolId += 1
@@ -134,6 +133,20 @@ class SymbolTable:
         for (tid, tt) in tokens.items():
             self.add_symbol(tid, tt, tid)
 
-    def print(self):
-        for k in self._symbolTable.keys():
-            print(f'{k}: {self._symbolTable[k]}')
+    def print(self, indent=0):
+        _print_table(self._symbolTable, indent)
+
+    def print_types(self, indent=0):
+        for k in self._symbolTypeTable.keys():
+            _print_tcl_list(k, self._symbolTypeTable[k], indent)
+
+
+def _print_tcl_list(tcl, table, indent):
+    spaces = '' if indent < 1 else ' '.ljust(indent * 4)
+    print(f'{spaces}TCL.{TCL(tcl).name}: {table}')
+
+
+def _print_table(table, indent):
+    spaces = '' if indent < 1 else ' '.ljust(indent * 4)
+    for k in table.keys():
+        print(f'{spaces}{k}: {table[k]}')
