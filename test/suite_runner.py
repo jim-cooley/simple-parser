@@ -6,10 +6,9 @@ from treedump import DumpTree
 _LOG_DIRECTORY = "./etc/test/log"
 _SCRIPT_SEARCH_PATH = [
     ".",
+    "./test/cases",
     "./etc/test",
-    "./etc/test/dsl",
     "../etc/test",
-    "../etc/test/dsl",
 ]
 
 
@@ -57,6 +56,7 @@ class TestSuiteRunner(ABC):
             fname = _find_test_file(name, _SCRIPT_SEARCH_PATH)
             tt = os.path.splitext(fname)[1]
             with open(fname, 'r') as file:
+                print(f'{fname}')
                 test = file.read()
                 if tt == '.t':
                     for line in test.splitlines():

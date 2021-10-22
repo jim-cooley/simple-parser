@@ -1,12 +1,12 @@
 
 
-test: 4: "a; b; c"
+test: 4: "a ; b ; c"
 
-tree1:  "a; b; c"
+tree1:  "a ; b ; c"
     1 : Ident TK.IDNT(IDENTIFIER, 'a', V=None)
 
-tree2:  "a; b; c"
+tree2:  "a ; b ; c"
     1 : Ident TK.IDNT(IDENTIFIER, 'b', V=None)
 
-tree3:  "a; b; c"
+tree3:  "a ; b ; c"
     1 : Ident TK.IDNT(IDENTIFIER, 'c', V=None)
