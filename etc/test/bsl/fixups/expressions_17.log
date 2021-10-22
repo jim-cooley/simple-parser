@@ -25,5 +25,4 @@ tree1:(post)  "a = 2 * 3 + 4 not 5"
     7 :         Int TK.INT(LITERAL, '4', V=4)
 
 tree2:(post)  "a = 2 * 3 + 4 not 5"
-    1 : UnaryOp TK.NOT(UNARY, 'not', V=None)
-    2 :     Int TK.INT(LITERAL, '5', V=5)
+    1 : Int TK.INT(LITERAL, '5', V=False)

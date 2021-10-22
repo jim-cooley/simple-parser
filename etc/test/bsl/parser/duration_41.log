@@ -4,4 +4,4 @@ test: 41: "+1.5M"
 
 tree1:  "+1.5M"
     1 : UnaryOp TK.POS(UNARY, '+', V=None)
-    2 :     Duration TK.DUR(LITERAL, '1.5M', V=45 days, 0:00:00)
+    2 :     Duration TK.DUR(LITERAL, '1.5M', V=42 days, 0:00:00)

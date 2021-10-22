@@ -82,3 +82,25 @@ def decrement_literal(node):
         node.value -= td
         return node
     _runtime_error("Unsupported type for Decrement operator", loc=token.location)
+
+
+def not_literal(node):
+    token = node.token
+    tid = token.id
+    if tid in [TK.BOOL, TK.TRUE, TK.FALSE]:
+        v = not node.value
+        node.value = v
+        token.id = TK.BOOL
+        return node
+    elif tid in [TK.INT, TK.FLOT, TK.PCT]:
+        v = node.value
+        node.value = not (v != 0)
+        return node
+    elif tid == TK.EMPTY:
+        return True
+    elif tid == TK.STR:
+        v = node.value
+        return not (v is None or len(v) == 0)
+    # UNDONE: check for zero values in Time and TimeDelta
+    else:
+        return False

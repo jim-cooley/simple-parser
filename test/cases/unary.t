@@ -1,6 +1,10 @@
 + 2
 - 3
 not b
+not False
+not True
+not 0
+not 1
 ! b
 ++a
 --2

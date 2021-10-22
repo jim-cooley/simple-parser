@@ -1,8 +1,7 @@
 
 
-test: 10: "----a"
+test: 10: "--2"
 
-tree1:  "----a"
+tree1:  "--2"
     1 : UnaryOp TK.DECREMENT(UNARY, '--', V=None)
-    2 :     UnaryOp TK.DECREMENT(UNARY, '--', V=None)
-    3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)
+    2 :     Int TK.INT(LITERAL, '2', V=2)

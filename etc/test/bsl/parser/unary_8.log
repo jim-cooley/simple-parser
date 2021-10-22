@@ -1,8 +1,7 @@
 
 
-test: 8: "---a"
+test: 8: "! b"
 
-tree1:  "---a"
-    1 : UnaryOp TK.DECREMENT(UNARY, '--', V=None)
-    2 :     UnaryOp TK.NEG(UNARY, '-', V=None)
-    3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)
+tree1:  "! b"
+    1 : UnaryOp TK.NOT(UNARY, '!', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'b', V=b)

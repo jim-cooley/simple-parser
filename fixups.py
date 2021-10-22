@@ -2,7 +2,7 @@
 
 from abc import ABC
 
-from evaluate import negate_literal, increment_literal, decrement_literal
+from evaluate import negate_literal, increment_literal, decrement_literal, not_literal
 from literals import List
 from modifytree import TreeModifier
 from scope import Scope
@@ -120,6 +120,9 @@ class Fixups(TreeModifier, ABC):
                 return _lift(node, expr)
             elif node.op == TK.DECREMENT:
                 decrement_literal(expr)
+                return _lift(node, expr)
+            elif node.op == TK.NOT:
+                not_literal(expr)
                 return _lift(node, expr)
         return node
 

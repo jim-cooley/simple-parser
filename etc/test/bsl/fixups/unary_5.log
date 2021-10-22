@@ -1,11 +1,10 @@
 
 
-test: 5: "++a"
+test: 5: "not True"
 
-tree1:  "++a"
-    1 : UnaryOp TK.INCREMENT(UNARY, '++', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
+tree1:  "not True"
+    1 : UnaryOp TK.NOT(UNARY, 'not', V=None)
+    2 :     Bool TK.TRUE(LITERAL, 'True', V=True)
 
-tree1:(post)  "++a"
-    1 : UnaryOp TK.INCREMENT(UNARY, '++', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
+tree1:(post)  "not True"
+    1 : Bool TK.BOOL(LITERAL, 'True', V=False)
