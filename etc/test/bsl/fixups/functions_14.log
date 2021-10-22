@@ -4,7 +4,7 @@ test: 14: "f('a':5, 'b':'c', d)"
 
 tree1:  "f('a':5, 'b':'c', d)"
     1 : FnCall TK.FUNCTION(BINOP, '(', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'f', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'f', V=f)
     3 :     List TK.PARAMETER_LIST(LIST, '(', V=[BinOp(), BinOp(), Ident()])
     4 :         BinOp TK.TUPLE(BINOP, ':', V=None)
     5 :             Str TK.STR(LITERAL, 'a', V=a)
@@ -12,11 +12,11 @@ tree1:  "f('a':5, 'b':'c', d)"
     7 :         BinOp TK.TUPLE(BINOP, ':', V=None)
     8 :             Str TK.STR(LITERAL, 'b', V=b)
     9 :             Str TK.STR(LITERAL, 'c', V=c)
-   10 :         Ident TK.IDNT(IDENTIFIER, 'd', V=None)
+   10 :         Ident TK.IDNT(IDENTIFIER, 'd', V=d)
 
 tree1:(post)  "f('a':5, 'b':'c', d)"
     1 : FnCall TK.FUNCTION(BINOP, '(', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'f', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'f', V=f)
     3 :     List TK.PARAMETER_LIST(LIST, '(', V=[BinOp(), BinOp(), Ident()])
     4 :         BinOp TK.TUPLE(BINOP, ':', V=None)
     5 :             Str TK.STR(LITERAL, 'a', V=a)
@@ -24,4 +24,4 @@ tree1:(post)  "f('a':5, 'b':'c', d)"
     7 :         BinOp TK.TUPLE(BINOP, ':', V=None)
     8 :             Str TK.STR(LITERAL, 'b', V=b)
     9 :             Str TK.STR(LITERAL, 'c', V=c)
-   10 :         Ident TK.IDNT(IDENTIFIER, 'd', V=None)
+   10 :         Ident TK.IDNT(IDENTIFIER, 'd', V=d)

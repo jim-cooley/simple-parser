@@ -4,5 +4,5 @@ test: 1: "a >> b"
 
 tree1:  "a >> b"
     1 : List TK.APPLY(LIST, '>>', V=[Ident(), Ident()])
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=None)
-    3 :     Ident TK.IDNT(IDENTIFIER, 'b', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
+    3 :     Ident TK.IDNT(IDENTIFIER, 'b', V=b)

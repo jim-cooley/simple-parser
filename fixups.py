@@ -2,10 +2,12 @@
 
 from abc import ABC
 
+from evaluate import negate_literal, increment_literal, decrement_literal
 from literals import List
+from modifytree import TreeModifier
 from scope import Scope
 from tokens import TK, TCL, Token
-from visitor import TreeFilter, BINARY_NODE, UNARY_NODE, SEQUENCE_NODE
+from visitor import BINARY_NODE
 
 _fixupNodeTypeMappings = {
     'BinOp': 'process_binops',
@@ -17,7 +19,7 @@ _fixupNodeTypeMappings = {
     'PropCall': BINARY_NODE,
     'PropRef': BINARY_NODE,
     'Set': 'convert_tuples',
-    'UnaryOp': UNARY_NODE,
+    'UnaryOp': 'process_unops',
 }
 
 
@@ -29,7 +31,7 @@ _fixupNodeTypeMappings = {
 # constant expression elimination
 #
 
-class Fixups(TreeFilter, ABC):
+class Fixups(TreeModifier, ABC):
     keywords = None
     global_symbols = None
     symbols = None
@@ -43,18 +45,22 @@ class Fixups(TreeFilter, ABC):
         self.visit(self.tree.nodes)
         return self.tree
 
+    # overridden:
     def visit_node(self, node, label=None):
         super().visit_node(node, label)
         self._print_node(node)
+        return node
 
     # encountered if 'tree' is actually a 'forest'
     def visit_list(self, list, label=None):
-        count = 0
-        for n in list:
-            count += 1
+        for idx in range(0, len(list)):
+            n = list[idx]
+            if n is None:
+                continue
             if self._print_nodes:
-                print(f'\ntree:{count}')
-            self.visit(n)
+                print(f'\ntree:{idx+1}')
+            list[idx] = self.visit(n)
+        return list
 
     def convert_coln_plist(self, node, label=None):
         if node is not None:
@@ -63,10 +69,11 @@ class Fixups(TreeFilter, ABC):
                     node.left = _fixup_coln_plist(node, node.left)
                 if node.right is not None and node.right.token.id == TK.ASSIGN:
                     node.right = _fixup_coln_plist(node, node.right)
-            self.visit_binary_node(node, label)
+            return self.visit_binary_node(node, label)
+        return node
 
     def convert_tuples(self, node, label=None):
-        self.visit_sequence(node, label)
+        rnode = self.visit_sequence(node, label)
         values = node.values()
         if values is not None:
             for n in values:
@@ -74,12 +81,15 @@ class Fixups(TreeFilter, ABC):
                     continue
                 if n.token.id == TK.ASSIGN:
                     n.token.id = TK.TUPLE
+        return rnode
 
     def process_binops(self, node, label=None):
+        rnode = self.visit_binary_node(node, label)
         if node is not None:
             tkid = node.token.id
             if tkid == TK.TUPLE:
-                self.convert_coln_plist(node, label)
+                return self.convert_coln_plist(node, label)
+        return rnode
 
     def process_command(self, node, label=None):
         op = node.expr
@@ -90,7 +100,28 @@ class Fixups(TreeFilter, ABC):
                 print(f'command: {node.token.lexeme}{command}: {expr}')
                 node.token.lexeme = f'%%{command}'
                 node.token.value = command
-        self.visit_unary_node(node, label)
+        return self.visit_unary_node(node, label)
+
+    def process_unops(self, node, label=None):
+        if node is None:
+            return None
+        node.expr = self.visit(node.expr)
+        expr = node.expr
+        if expr is None:
+            return node
+        if expr.token.t_class == TCL.LITERAL:
+            if node.op == TK.NEG:
+                negate_literal(expr)
+                return _lift(node, expr)
+            elif node.op == TK.POS:
+                return _lift(node, expr)
+            elif node.op == TK.INCREMENT:
+                increment_literal(expr)
+                return _lift(node, expr)
+            elif node.op == TK.DECREMENT:
+                decrement_literal(expr)
+                return _lift(node, expr)
+        return node
 
     def print_symbols(self):
         if self.global_symbols is not None:
@@ -112,6 +143,12 @@ class Fixups(TreeFilter, ABC):
                 parent = node.parent
                 id = f'{parent._num + 1}' if parent._num is not None else ' '
             print(f'{self._count:5d} : {indent}{node}: {node.token.format()}, parent:{id}')
+
+
+def _lift(node, child):
+    parent = node.parent
+    child.parent = parent
+    return child
 
 
 # fixup helpers:

@@ -4,10 +4,10 @@ test: 5: "a | n"
 
 tree1:  "a | n"
     1 : List TK.PIPE(LIST, '|', V=[Ident(), Ident()])
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=None)
-    3 :     Ident TK.IDNT(IDENTIFIER, 'n', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
+    3 :     Ident TK.IDNT(IDENTIFIER, 'n', V=n)
 
 tree1:(post)  "a | n"
     1 : List TK.PIPE(LIST, '|', V=[Ident(), Ident()])
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=None)
-    3 :     Ident TK.IDNT(IDENTIFIER, 'n', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
+    3 :     Ident TK.IDNT(IDENTIFIER, 'n', V=n)

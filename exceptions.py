@@ -73,6 +73,13 @@ def _error(message, loc):
     raise Exception(error_text)
 
 
+def _runtime_error(message, loc):
+    loc.offset -= 1
+    error_text = f'Runtime Error: {message}.'
+    _report(error_text, loc)
+    raise Exception(error_text)
+
+
 def _report(message, loc):
 # carrot = f'\n\n{self._parse_string}\n{"^".rjust(loc.offset)}\n'
 # text = f"{carrot}\n{message} at position: {loc.line + 1}:{loc.offset}"

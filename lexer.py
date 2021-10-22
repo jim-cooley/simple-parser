@@ -16,8 +16,9 @@ class Lexer(object):
     _cline: string = None
     token: Token = None
 
-    def __init__(self, string, keywords=None):
+    def __init__(self, string, keywords=None, print=True):
         stream = BytesIO(bytes(string, 'ascii', errors='ignore'))
+        self._verbose=print
         self._stream = stream
         self._state = _.ST.MAIN
         self._has_more = True
@@ -44,7 +45,8 @@ class Lexer(object):
 
     def advance(self, skip_white_space=True, skip_end_of_line=True):
         tk = self._fetch(skip_white_space, skip_end_of_line)
-        print(tk.format())
+        if self._verbose:
+            print(tk.format())
         return tk
 
     def peek(self):

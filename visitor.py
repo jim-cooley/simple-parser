@@ -46,6 +46,7 @@ class NodeVisitor(object):
 
 # a tree filter applies some operation to every node in the tree (pre-order).
 class TreeFilter(NodeVisitor, ABC):
+
     def __init__(self, mapping=None, apply_parent_fixups=True):
         super().__init__(mapping)
         self.tree = None
@@ -62,7 +63,6 @@ class TreeFilter(NodeVisitor, ABC):
     def visit_node(self, node, label=None):
         node._num = self._count
         self._count += 1
-        pass
 
     def visit_tuple(self, node, label=None):
         print(f'{node}')
@@ -85,8 +85,9 @@ class TreeFilter(NodeVisitor, ABC):
         self.indent()
         values = node.values()
         if values is None:
-            return
-        for n in values:
+            return node
+        for idx in range(0, len(values)):
+            n = values[idx]
             if n is None:
                 continue
             n.parent = node if self.apply_parent_fixups else n.parent
@@ -102,7 +103,7 @@ class TreeFilter(NodeVisitor, ABC):
         self.dedent()
 
     def visit_value(self, node, label=None):
-        self.visit_node(node, label)
+        return self.visit_node(node, label)
 
     def indent(self):
         self._depth += 1

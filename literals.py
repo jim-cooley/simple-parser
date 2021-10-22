@@ -1,6 +1,7 @@
 import re
 from dataclasses import dataclass
 from datetime import datetime, time, timedelta
+from enum import Enum
 
 from tokens import TCL, TK
 from tree import Literal
@@ -10,11 +11,21 @@ Type Helpers
 '''
 
 
+class DUR(Enum):
+    DAY = 'dy'
+    WEEK = 'wk'
+    MONTH = 'mo'
+    YEAR = 'yr'
+    HOUR = 'hr'
+    MINUTE = 'min'
+    SECOND = 's'
+
+
 @dataclass
 class Bool(Literal):
     def __init__(self, token, value=None):
-        super().__init__(token)
         token.value = value if value is not None else _parse_bool_value(token.lexeme)
+        super().__init__(token)
 
     def format(self):
         tk = self.token
@@ -24,8 +35,8 @@ class Bool(Literal):
 @dataclass
 class DateTime(Literal):
     def __init__(self, token):
-        super().__init__(token)
         token.value = _parse_date_value(token.lexeme)
+        super().__init__(token)
 
     def format(self):
         return f'{self.value}'
@@ -34,11 +45,14 @@ class DateTime(Literal):
 @dataclass
 class Duration(Literal):
     def __init__(self, token):
+        token.value, self.units = _parse_duration(token.lexeme)
         super().__init__(token)
-        token.value = _parse_duration(token.lexeme)
 
     def total_seconds(self):
         return self.value.total_seconds()
+
+    def units(self):
+        return self.units
 
     def format(self, fmt=None):
         return f'{self.value}'
@@ -47,8 +61,8 @@ class Duration(Literal):
 @dataclass
 class Float(Literal):
     def __init__(self, token):
-        super().__init__(token)
         token.value = float(token.lexeme)
+        super().__init__(token)
 
     def format(self, fmt=None):
         return f'{self.value}'
@@ -57,8 +71,8 @@ class Float(Literal):
 @dataclass
 class Int(Literal):
     def __init__(self, token):
-        super().__init__(token)
         token.value = int(token.lexeme)
+        super().__init__(token)
 
     def format(self, fmt=None):
         return f'{self.value}'
@@ -88,14 +102,19 @@ class List(Literal):
         if self.value is None:
             return '[]'
         else:
-            return '[' + f'{self.value}' + ']'
+            fstr = ''
+            max = (len(self.value)-1)
+            for idx in range(0, len(self.value)):
+                fstr += f'{self.value[idx]}'
+                fstr += ',' if idx < max else ''
+            return '[' + f'{fstr}' + ']'
 
 
 @dataclass
 class Percent(Literal):
     def __init__(self, token):
-        super().__init__(token)
         token.value = float(token.lexeme.replace("%",""))/100
+        super().__init__(token)
 
     def format(self, fmt=None):
         return '' if self.value is None else f'{self.value*100} %'
@@ -105,10 +124,10 @@ class Percent(Literal):
 class Set(List):
     def __init__(self, token, dict=None):
         dict = {} if dict is None else dict
+        token.value = None if dict is None else dict
         super().__init__(token, dict)
         token.id = TK.SET
         token.t_class = TCL.SET
-        token.value = None if dict is None else dict
 
     def __getitem__(self, item):
         if type(item).name == 'int':
@@ -138,14 +157,19 @@ class Set(List):
         if self.value is None:
             return '{}'
         else:
-            return '{' + f'{self.value}' + '}'
+            fstr = ''
+            max = (len(self.value)-1)
+            for idx in range(0, len(self.value)):
+                fstr += f'{self.value[idx]}'
+                fstr += ',' if idx < max else ''
+            return '{' + f'{fstr}' + '}'
 
 
 @dataclass
 class Str(Literal):
     def __init__(self, token):
-        super().__init__(token)
         token.value = token.lexeme
+        super().__init__(token)
 
     def format(self, fmt=None):
         if self.value is None:
@@ -159,8 +183,8 @@ class Str(Literal):
 @dataclass
 class Time(Literal):
     def __init__(self, token):
-        super().__init__(token)
         token.value = _parse_time_value(token.lexeme)
+        super().__init__(token)
 
     def format(self, fmt=None):
         fmt = "%H:%M:%S" if fmt is None else fmt
@@ -213,21 +237,40 @@ def _parse_date_value(lex):
 def _parse_duration(lex):
     p = re.compile("[0-9.]+")
     digits = p.match(lex).group()
-    units = lex.replace(digits, "").strip().lower()
+    units = _parse_duration_units(lex.replace(digits, "").strip())
     n = float(digits)
     dur = None
-    if units in ("d", "dy", "day", "days"):
+    if units == DUR.DAY:
         dur = timedelta(days=n)
-    elif units in ("w", "wk", "week"):
+    elif units == DUR.WEEK:
         dur = timedelta(days=7*n)
-    elif units in ("m", "mo", "mos", "month", "months"):
-        dur = timedelta(days=30*n)
-    elif units in ("y", "yr", "yrs", "year", "years"):
+    elif units == DUR.MONTH:
+        dur = timedelta(days=28*n)
+    elif units == DUR.YEAR:
         dur = timedelta(days=365*n)
-    elif units in ("h", "hr", "hours"):
+    elif units == DUR.HOUR:
         dur = timedelta(hours=n)
-    elif units in ("min", "mins", "minutes"):
+    elif units == DUR.MINUTE:
         dur = timedelta(minutes=n)
-    elif units in ("s", "sec", "seconds"):
+    elif units == DUR.SECOND:
         dur = timedelta(seconds=n)
+    return dur, units
+
+
+def _parse_duration_units(units):
+    dur = DUR.DAY
+    if units in ("d", "dy", "day", "days"):
+        dur = DUR.DAY
+    elif units in ("w", "wk", "week"):
+        dur = DUR.WEEK
+    elif units in ("M", "mo", "mos", "month", "months"):
+        dur = DUR.MONTH
+    elif units in ("y", "yr", "yrs", "year", "years"):
+        dur = DUR.YEAR
+    elif units in ("h", "hr", "hours"):
+        dur = DUR.HOUR
+    elif units in ("m", "min", "mins", "minutes"):
+        dur = DUR.MINUTE
+    elif units in ("s", "sec", "seconds"):
+        dur = DUR.SECOND
     return dur

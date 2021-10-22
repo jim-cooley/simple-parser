@@ -15,6 +15,7 @@ test_data = {
     'indexing': 'indexing.t',
     'keywords': 'keywords.t',
     'language': 'language.t',
+    'lifting': 'lifting.t',
     'lists': 'lists.t',
     'literals': 'literals.t',
     'logical': 'logical.t',

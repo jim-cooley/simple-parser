@@ -10,4 +10,4 @@ tree1:  "{'a':5, 'b':'c', d}"
     5 :     BinOp TK.TUPLE(BINOP, ':', V=None)
     6 :         Str TK.STR(LITERAL, 'b', V=b)
     7 :         Str TK.STR(LITERAL, 'c', V=c)
-    8 :     Ident TK.IDNT(IDENTIFIER, 'd', V=None)
+    8 :     Ident TK.IDNT(IDENTIFIER, 'd', V=d)

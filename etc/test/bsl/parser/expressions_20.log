@@ -5,7 +5,7 @@ test: 20: "a - -b + c"
 tree1:  "a - -b + c"
     1 : BinOp TK.ADD(BINOP, '+', V=None)
     2 :     BinOp TK.SUB(BINOP, '-', V=None)
-    3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=None)
+    3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)
     4 :         UnaryOp TK.NEG(UNARY, '-', V=None)
-    5 :             Ident TK.IDNT(IDENTIFIER, 'b', V=None)
-    6 :     Ident TK.IDNT(IDENTIFIER, 'c', V=None)
+    5 :             Ident TK.IDNT(IDENTIFIER, 'b', V=b)
+    6 :     Ident TK.IDNT(IDENTIFIER, 'c', V=c)

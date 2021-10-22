@@ -4,14 +4,14 @@ test: 3: "a | b | c | d"
 
 tree1:  "a | b | c | d"
     1 : List TK.PIPE(LIST, '|', V=[Ident(), Ident(), Ident(), Ident()])
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=None)
-    3 :     Ident TK.IDNT(IDENTIFIER, 'b', V=None)
-    4 :     Ident TK.IDNT(IDENTIFIER, 'c', V=None)
-    5 :     Ident TK.IDNT(IDENTIFIER, 'd', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
+    3 :     Ident TK.IDNT(IDENTIFIER, 'b', V=b)
+    4 :     Ident TK.IDNT(IDENTIFIER, 'c', V=c)
+    5 :     Ident TK.IDNT(IDENTIFIER, 'd', V=d)
 
 tree1:(post)  "a | b | c | d"
     1 : List TK.PIPE(LIST, '|', V=[Ident(), Ident(), Ident(), Ident()])
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=None)
-    3 :     Ident TK.IDNT(IDENTIFIER, 'b', V=None)
-    4 :     Ident TK.IDNT(IDENTIFIER, 'c', V=None)
-    5 :     Ident TK.IDNT(IDENTIFIER, 'd', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
+    3 :     Ident TK.IDNT(IDENTIFIER, 'b', V=b)
+    4 :     Ident TK.IDNT(IDENTIFIER, 'c', V=c)
+    5 :     Ident TK.IDNT(IDENTIFIER, 'd', V=d)

@@ -120,6 +120,7 @@ class TK(IntEnum):
     ANY = auto()  # any:
     APPLY = auto()  # >>
     ASSIGN = auto()  # =
+    BOOL = auto()
     BUY = auto()
     COMMAND = auto()
     DECREMENT = auto() # --

@@ -23,12 +23,11 @@ class SemanticAnalysisTestRunner(TestSuiteRunner, ABC):
         super().__init__(test_data, skip_tests, log_dir='./etc/test/log/semtex')
 
     def run_unprotected_test(self, log, name, test):
-        parser = Parser(str=test)
+        parser = Parser(str=test, print=False)
         fixups = Fixups()
         interp = Interpreter()
         tree = fixups.apply(parser.parse())
-        _dump_tree(tree, log)
-        tree = interp.interpret(tree)
+        tree = interp.apply(tree)
         _dump_tree(tree, log)
 
 

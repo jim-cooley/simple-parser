@@ -3,7 +3,7 @@
 test: 20: "none"
 
 tree1:  "none"
-    1 : UnaryOp TK.NONEOF(UNARY, 'none', V=None)
+    1 : UnaryOp TK.NONEOF(UNARY, 'none', V=none)
 
 tree1:(post)  "none"
-    1 : UnaryOp TK.NONEOF(UNARY, 'none', V=None)
+    1 : UnaryOp TK.NONEOF(UNARY, 'none', V=none)

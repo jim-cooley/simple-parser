@@ -8,9 +8,9 @@ tree1:  "{ 'train': (today-2y)..today }"
     3 :         Str TK.STR(LITERAL, 'train', V=train)
     4 :         BinOp TK.RANGE(BINOP, '..', V=None)
     5 :             BinOp TK.SUB(BINOP, '-', V=None)
-    6 :                 Ident TK.TODAY(KEYWORD, 'today', V=None)
+    6 :                 Ident TK.TODAY(KEYWORD, 'today', V=today)
     7 :                 Duration TK.DUR(LITERAL, '2y', V=730 days, 0:00:00)
-    8 :             Ident TK.TODAY(KEYWORD, 'today', V=None)
+    8 :             Ident TK.TODAY(KEYWORD, 'today', V=today)
 
 tree1:(post)  "{ 'train': (today-2y)..today }"
     1 : Set TK.SET(SET, '{', V=[BinOp()])
@@ -18,6 +18,6 @@ tree1:(post)  "{ 'train': (today-2y)..today }"
     3 :         Str TK.STR(LITERAL, 'train', V=train)
     4 :         BinOp TK.RANGE(BINOP, '..', V=None)
     5 :             BinOp TK.SUB(BINOP, '-', V=None)
-    6 :                 Ident TK.TODAY(KEYWORD, 'today', V=None)
+    6 :                 Ident TK.TODAY(KEYWORD, 'today', V=today)
     7 :                 Duration TK.DUR(LITERAL, '2y', V=730 days, 0:00:00)
-    8 :             Ident TK.TODAY(KEYWORD, 'today', V=None)
+    8 :             Ident TK.TODAY(KEYWORD, 'today', V=today)

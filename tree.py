@@ -14,6 +14,12 @@ class AST(object):
         elif item == 'value':
             return self.token.value
 
+    def __setattr__(self, name, value):
+        if name == 'value':
+            self.token.value = value
+        else:
+            super().__setattr__(name, value)
+
     def __str__(self):
         if getattr(self, 'format', None) is not None:
             return self.format()

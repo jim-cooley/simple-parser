@@ -7,5 +7,4 @@ tree1:  "-1.5s"
     2 :     Duration TK.DUR(LITERAL, '1.5s', V=0:00:01.500000)
 
 tree1:(post)  "-1.5s"
-    1 : UnaryOp TK.NEG(UNARY, '-', V=None)
-    2 :     Duration TK.DUR(LITERAL, '1.5s', V=0:00:01.500000)
+    1 : Duration TK.DUR(LITERAL, '1.5s', V=-1 day, 23:59:58.500000)

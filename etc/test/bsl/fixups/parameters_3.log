@@ -4,16 +4,16 @@ test: 3: "close.delay(1d)"
 
 tree1:  "close.delay(1d)"
     1 : PropRef TK.REF(BINOP, '.', V=None)
-    2 :     Ident TK.IDNT(DATASET, 'close', V=None)
+    2 :     Ident TK.IDNT(DATASET, 'close', V=close)
     3 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
-    4 :         Ident TK.IDNT(IDENTIFIER, 'delay', V=None)
+    4 :         Ident TK.IDNT(IDENTIFIER, 'delay', V=delay)
     5 :         List TK.PARAMETER_LIST(LIST, '(', V=[Duration()])
     6 :             Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
 
 tree1:(post)  "close.delay(1d)"
     1 : PropRef TK.REF(BINOP, '.', V=None)
-    2 :     Ident TK.IDNT(DATASET, 'close', V=None)
+    2 :     Ident TK.IDNT(DATASET, 'close', V=close)
     3 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
-    4 :         Ident TK.IDNT(IDENTIFIER, 'delay', V=None)
+    4 :         Ident TK.IDNT(IDENTIFIER, 'delay', V=delay)
     5 :         List TK.PARAMETER_LIST(LIST, '(', V=[Duration()])
     6 :             Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)

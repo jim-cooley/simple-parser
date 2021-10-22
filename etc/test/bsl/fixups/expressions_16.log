@@ -4,7 +4,7 @@ test: 16: "a = 2 * 3 + 4"
 
 tree1:  "a = 2 * 3 + 4"
     1 : BinOp TK.ASSIGN(BINOP, '=', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
     3 :     BinOp TK.ADD(BINOP, '+', V=None)
     4 :         BinOp TK.MUL(BINOP, '*', V=None)
     5 :             Int TK.INT(LITERAL, '2', V=2)
@@ -13,7 +13,7 @@ tree1:  "a = 2 * 3 + 4"
 
 tree1:(post)  "a = 2 * 3 + 4"
     1 : BinOp TK.ASSIGN(BINOP, '=', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
     3 :     BinOp TK.ADD(BINOP, '+', V=None)
     4 :         BinOp TK.MUL(BINOP, '*', V=None)
     5 :             Int TK.INT(LITERAL, '2', V=2)

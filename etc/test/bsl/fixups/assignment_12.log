@@ -4,12 +4,12 @@ test: 12: "report := { trades | select('symbol', 'buy_date', 'buy_price', 'sell_
 
 tree1:  "report := { trades | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price') }"
     1 : BinOp TK.DEFINE(BINOP, ':=', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'report', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'report', V=report)
     3 :     Set TK.SET(SET, '{', V=[List()])
     4 :         List TK.PIPE(LIST, '|', V=[Ident(), FnCall()])
-    5 :             Ident TK.IDNT(IDENTIFIER, 'trades', V=None)
+    5 :             Ident TK.IDNT(IDENTIFIER, 'trades', V=trades)
     6 :             FnCall TK.FUNCTION(BINOP, '(', V=None)
-    7 :                 Ident TK.FUNCTION(KEYWORD, 'select', V=None)
+    7 :                 Ident TK.FUNCTION(KEYWORD, 'select', V=select)
     8 :                 List TK.PARAMETER_LIST(LIST, '(', V=[Str(), Str(), Str(), Str(), Str()])
     9 :                     Str TK.STR(LITERAL, 'symbol', V=symbol)
    10 :                     Str TK.STR(LITERAL, 'buy_date', V=buy_date)
@@ -19,12 +19,12 @@ tree1:  "report := { trades | select('symbol', 'buy_date', 'buy_price', 'sell_da
 
 tree1:(post)  "report := { trades | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price') }"
     1 : BinOp TK.DEFINE(BINOP, ':=', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'report', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'report', V=report)
     3 :     Set TK.SET(SET, '{', V=[List()])
     4 :         List TK.PIPE(LIST, '|', V=[Ident(), FnCall()])
-    5 :             Ident TK.IDNT(IDENTIFIER, 'trades', V=None)
+    5 :             Ident TK.IDNT(IDENTIFIER, 'trades', V=trades)
     6 :             FnCall TK.FUNCTION(BINOP, '(', V=None)
-    7 :                 Ident TK.FUNCTION(KEYWORD, 'select', V=None)
+    7 :                 Ident TK.FUNCTION(KEYWORD, 'select', V=select)
     8 :                 List TK.PARAMETER_LIST(LIST, '(', V=[Str(), Str(), Str(), Str(), Str()])
     9 :                     Str TK.STR(LITERAL, 'symbol', V=symbol)
    10 :                     Str TK.STR(LITERAL, 'buy_date', V=buy_date)

@@ -22,14 +22,15 @@ class ParseTree(object):
         self.globals = Scope(keywords)
         self.commands = commands
         self.nodes = nodes if nodes is not None else []
+        self.values = None
         self.source = source
         self.lines = source.splitlines(True)
 
 
 class Parser(object):
-    def __init__(self, str=None):
+    def __init__(self, str=None, print=True):
         self.keywords = Keywords()
-        self._lexer = Lexer(string=str, keywords=self.keywords)
+        self._lexer = Lexer(string=str, keywords=self.keywords, print=print)
         self._skip_end_of_line = True
         self._parse_string = str  # which could be none
         self.nodes = []

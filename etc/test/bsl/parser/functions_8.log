@@ -4,7 +4,7 @@ test: 8: "a (1, 2, 3)"
 
 tree1:  "a (1, 2, 3)"
     1 : FnCall TK.FUNCTION(BINOP, '(', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
     3 :     List TK.PARAMETER_LIST(LIST, '(', V=[Int(), Int(), Int()])
     4 :         Int TK.INT(LITERAL, '1', V=1)
     5 :         Int TK.INT(LITERAL, '2', V=2)
