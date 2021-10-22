@@ -6,7 +6,7 @@ test: "rules = {
 }
 "
 
-tree1:
+tree1:  "rules = {"
     1 : BinOp TK.ASSIGN(BINOP, '=', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'rules', V=None)
     3 :     Set TK.SET(SET, '{', V=[List(), List()])
@@ -57,5 +57,3 @@ tree1:
    48 :                             Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
    49 :                 Ident TK.IDNT(IDENTIFIER, 'atr', V=None)
    50 :             Ident TK.SELL(KEYWORD, 'sell', V=None)
-
-tree2:

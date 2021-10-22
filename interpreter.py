@@ -31,7 +31,7 @@ _visitNodeTypeMappings = {
 class Interpreter(TreeFilter):
     def __init__(self, tree=None, print=False):
         super().__init__(tree, mapping=_visitNodeTypeMappings)
-        self._print_nodes = False
+        self._print_nodes = True
         self._node_map = {}
         self.globals = self.tree.globals
         self.symbols = self.globals

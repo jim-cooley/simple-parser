@@ -2,5 +2,5 @@
 
 test: 3: "21:00"
 
-tree1:
+tree1:  "21:00"
     1 : Time TK.TIME(LITERAL, '21:00', V=21:00:00)

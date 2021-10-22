@@ -2,15 +2,15 @@
 
 test: 13: "a.b().c.d()"
 
-tree1:
+tree1:  "a.b().c.d()"
     1 : BinOp TK.DOT(BINOP, '.', V=None)
     2 :     PropRef TK.REF(BINOP, '.', V=None)
     3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=None)
     4 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
     5 :             Ident TK.IDNT(IDENTIFIER, 'b', V=None)
-    6 :             List TK.PARAMETER_LIST(LIST, '(', V=[None])
+    6 :             List TK.PARAMETER_LIST(LIST, '(', V=[])
     7 :     PropRef TK.REF(BINOP, '.', V=None)
     8 :         Ident TK.IDNT(IDENTIFIER, 'c', V=None)
     9 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
    10 :             Ident TK.IDNT(IDENTIFIER, 'd', V=None)
-   11 :             List TK.PARAMETER_LIST(LIST, '(', V=[None])
+   11 :             List TK.PARAMETER_LIST(LIST, '(', V=[])

@@ -2,7 +2,7 @@
 
 test: 12: ":(a = 5, b='a')"
 
-tree1:
+tree1:  ":(a = 5, b='a')"
     1 : BinOp TK.TUPLE(BINOP, ':', V=None)
     2 :     List TK.PARAMETER_LIST(LIST, '(', V=[BinOp(), BinOp()])
     3 :         BinOp TK.ASSIGN(BINOP, '=', V=None)

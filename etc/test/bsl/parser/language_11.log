@@ -2,7 +2,7 @@
 
 test: 11: "close >| sma(10) and close <| sma(20)"
 
-tree1:
+tree1:  "close >| sma(10) and close <| sma(20)"
     1 : BinOp TK.AND(BINOP, 'and', V=None)
     2 :     BinOp TK.RISE_ABOVE(BINOP, '>|', V=None)
     3 :         Ident TK.IDNT(DATASET, 'close', V=None)

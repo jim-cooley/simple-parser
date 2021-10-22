@@ -2,7 +2,7 @@
 
 test: 12: "{a:5, b:{c, d}}"
 
-tree1:
+tree1:  "{a:5, b:{c, d}}"
     1 : Set TK.SET(SET, '{', V=[BinOp(), BinOp()])
     2 :     BinOp TK.TUPLE(BINOP, ':', V=None)
     3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=None)

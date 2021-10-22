@@ -2,7 +2,7 @@
 
 test: 2: "any:{a, b, c}"
 
-tree1:
+tree1:  "any:{a, b, c}"
     1 : BinOp TK.TUPLE(BINOP, ':', V=None)
     2 :     UnaryOp TK.ANY(UNARY, 'any', V=None)
     3 :     Set TK.SET(SET, '{', V=[Ident(), Ident(), Ident()])

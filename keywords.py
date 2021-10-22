@@ -45,6 +45,7 @@ _KEYWORDS = [
     (TK.IN, TCL.BINOP, 'in'),
     (TK.NOT, TCL.UNARY, 'not'),
     (TK.OR, TCL.LOGICAL, 'or'),
+    (TK.VAR, TCL.UNARY, 'var'),
 
     # datasets
     (TK.IDNT, TCL.DATASET, "close"),

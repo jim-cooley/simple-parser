@@ -2,7 +2,7 @@
 
 test: 4: "close.weekly.sma(20)"
 
-tree1:
+tree1:  "close.weekly.sma(20)"
     1 : PropRef TK.REF(BINOP, '.', V=None)
     2 :     Ident TK.IDNT(DATASET, 'close', V=None)
     3 :     PropRef TK.REF(BINOP, '.', V=None)

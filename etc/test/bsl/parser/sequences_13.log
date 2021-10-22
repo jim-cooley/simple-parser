@@ -2,7 +2,7 @@
 
 test: 13: "a(x,y) | b"
 
-tree1:
+tree1:  "a(x,y) | b"
     1 : List TK.PIPE(LIST, '|', V=[FnCall(), Ident()])
     2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
     3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=None)

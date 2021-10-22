@@ -35,6 +35,14 @@ class Scope(AST):
         return token.lexeme in self._symbols
 
     def find(self, token, default=None):
+        scope = self
+        while scope is not None:
+            if token.lexeme in scope._symbols:
+                return scope._symbols[token.lexeme]
+            scope = scope.parent
+        return default
+
+    def find_local(self, token, default=None):
         if token.lexeme in self._symbols:
             return self._symbols[token.lexeme]
         return default
@@ -54,5 +62,3 @@ class Scope(AST):
         spaces = '' if indent < 1 else ' '.ljust(indent * 4)
         for k in self._symbols.keys():
             print(f'{spaces}{k}: {self._symbols[k]}')
-
-

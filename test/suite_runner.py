@@ -82,8 +82,8 @@ def _find_test_file(name, search_paths):
         fname = f'{path}/{name}'
         if os.path.isfile(fname):
             return fname
-        if os.path.isfile(f'{fname}.dsl'):
-            return f'{fname}.dsl'
+        if os.path.isfile(f'{fname}.p'):
+            return f'{fname}.p'
     raise IOError(f'invalid test suite: {name}, is not a test file')
 
 
@@ -97,8 +97,11 @@ def _log_exception(e, log, name):
 def _dump_tree(tree, log=None):
     idx = 0
     for t in tree.nodes:
+        if t is None:
+            continue
         idx += 1
-        _t_print(log, f'\ntree{idx}:')
+        line = _get_line(t.token.location, tree.lines).strip()
+        _t_print(log, f'\ntree{idx}:  "{line}"')
         dt = DumpTree()
         viz = dt.apply(t)
         for v in viz:
@@ -106,6 +109,12 @@ def _dump_tree(tree, log=None):
 
 
 # helpers
+def _get_line(loc, lines):
+    if loc.line < len(lines):
+        return lines[loc.line]
+    return ''
+
+
 def _t_print(f, message):
     print(message)
     if f is not None:

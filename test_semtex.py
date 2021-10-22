@@ -28,10 +28,10 @@ class SemanticAnalysisTestRunner(TestSuiteRunner, ABC):
         _dump_tree(tree, log)
         fixup = FixupSet2Dictionary(tree)
         tree = fixup.apply()
-        _dump_tree(tree, log)
+#       _dump_tree(tree, log)
         interp = Interpreter(tree)
         tree = interp.interpret()
-        _dump_tree(tree, log)
+#       _dump_tree(tree, log)
 
 
 # this is only for execution under debugger or via command-line

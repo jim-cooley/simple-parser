@@ -1,6 +1,0 @@
-
-
-test: 4: "1d"
-
-tree1:
-    1 : Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)

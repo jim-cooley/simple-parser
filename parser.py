@@ -17,11 +17,13 @@ EMPTY_SET = Set(Token(tid=TK.EMPTY, tcl=TCL.LITERAL, lex="{}", val=None))
 
 @dataclass
 class ParseTree(object):
-    def __init__(self, nodes=None, keywords=None, source=None):
-        self.nodes = nodes if nodes is not None else []
+    def __init__(self, nodes=None, commands=None, keywords=None, source=None):
         self.keywords = keywords if keywords is not None else Keywords()
         self.globals = Scope(keywords)
+        self.commands = commands
+        self.nodes = nodes if nodes is not None else []
         self.source = source
+        self.lines = source.splitlines(True)
 
 
 class Parser(object):
@@ -31,6 +33,7 @@ class Parser(object):
         self._skip_end_of_line = True
         self._parse_string = str  # which could be none
         self.nodes = []
+        self.commands = []
         EMPTY_SET.token.value = EMPTY_SET
 
     # syntactic sugar (use self.peek)
@@ -38,6 +41,20 @@ class Parser(object):
         if item == 'token':
             return self._lexer.token
         pass
+
+    # -----------------------------------
+    # Parser entry point
+    # -----------------------------------
+    def parse(self):
+        self.nodes = []
+        while self._lexer.readable():
+            node = self.expression()
+            if type(node).__name__ != "list":
+                self.nodes.append(node)
+            else:
+                self.nodes += node  # a list can be returned
+        tree = ParseTree(nodes=self.nodes, commands=self.commands, keywords=self.keywords, source=self._parse_string)
+        return tree
 
     # return current token with provision for fetching if there are none.
     # after the first token, self.token works fine for peek.
@@ -80,24 +97,10 @@ class Parser(object):
         return False
 
     # -----------------------------------
-    # Parser entry point
-    # -----------------------------------
-    def parse(self):
-        self.nodes = []
-        while self._lexer.readable():
-            node = self.expression()
-            if type(node).__name__ != "list":
-                self.nodes.append(node)
-            else:
-                self.nodes += node  # a list can be returned
-        tree = ParseTree(nodes=self.nodes, keywords=self.keywords, source=self._parse_string)
-        return tree
-
-    # -----------------------------------
     # control language parsing at top
     # -----------------------------------
     def parse_command(self):
-        nodes = []
+        commands = []
         tk = self.peek()
         if not self.match([TK.EOL]) and tk.id == TK.PCT2:
             self._skip_end_of_line = False
@@ -105,12 +108,13 @@ class Parser(object):
             while tk.id != TK.EOL:
                 tk = Token(tid=TK.COMMAND, tcl=TCL.COMMAND, lex="%%", loc=self._lexer.tell())
                 command = Command(tk, self.expression())
-                nodes.append(command)
+                commands.append(command)
                 tk = self.peek()
                 if tk.id in [TK.EOF, TK.EOL]:
                     break
             self._skip_end_of_line = True
-            return nodes
+            self.commands.append(commands)
+            return None # commands
         self._skip_end_of_line = True
         return self.flow()
 
@@ -149,13 +153,19 @@ class Parser(object):
             while self.match([TK.COLN]):
                 node = BinOp(node, op.map2binop(), self.assignment())
                 op = self.token
+        elif op.id == TK.VAR:
+            self.advance()
+            node = UnaryOp(op, self.assignment())
         return node
 
     def assignment(self):
         node = self.logic_expr()
         op = self.token
         while self.match(_ASSIGNMENT_TOKENS):
-            if node.token.t_class not in _IDENTIFIER_TYPES:
+            tk = node.token
+            if tk.id == TK.PARAMETER_LIST:  # convert to tuple assignment
+                TK.id = TK.TUPLE
+            elif node.token.t_class not in _IDENTIFIER_TYPES:
                 self._expected(expected='IDENTIFIER', found=f'{node.token.id.name}')
             node = BinOp(left=node, op=op.map2binop(), right=self.assignment())
         return node
@@ -306,7 +316,7 @@ class Parser(object):
         seq = [] if node is None else [node]
         self.match([TK.LPRN])
         token = copy(self.peek())
-        if token.id != TK.RBRK:
+        if token.id != TK.RPRN:
             seq = self.sequence(TK.COMA, node)
         self.consume(TK.RPRN)
         token.t_class = TCL.LIST

@@ -2,7 +2,7 @@
 
 test: 18: "open.b(1d) | c"
 
-tree1:
+tree1:  "open.b(1d) | c"
     1 : List TK.PIPE(LIST, '|', V=[PropRef(), Ident()])
     2 :     PropRef TK.REF(BINOP, '.', V=None)
     3 :         Ident TK.IDNT(DATASET, 'open', V=None)

@@ -2,6 +2,6 @@
 
 test: 11: "[[]]"
 
-tree1:
+tree1:  "[[]]"
     1 : List TK.LIST(LIST, '[', V=[List()])
     2 :     List TK.LIST(LIST, '[', V=[None])

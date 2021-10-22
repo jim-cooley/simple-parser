@@ -2,7 +2,7 @@
 
 test: 5: "a[x,y,z]"
 
-tree1:
+tree1:  "a[x,y,z]"
     1 : Index TK.INDEX(BINOP, '[', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=None)
     3 :     List TK.INDEX(LIST, '[', V=[Ident(), Ident(), Ident()])

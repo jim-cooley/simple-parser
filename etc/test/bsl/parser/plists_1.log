@@ -2,7 +2,7 @@
 
 test: 1: "sma(10)"
 
-tree1:
+tree1:  "sma(10)"
     1 : FnCall TK.FUNCTION(BINOP, '(', V=None)
     2 :     Ident TK.IDNT(FUNCTION, 'sma', V=None)
     3 :     List TK.PARAMETER_LIST(LIST, '(', V=[Int()])

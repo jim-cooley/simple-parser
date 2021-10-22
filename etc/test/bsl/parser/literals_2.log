@@ -1,7 +1,0 @@
-
-
-test: 2: "-1"
-
-tree1:
-    1 : UnaryOp TK.NEG(UNARY, '-', V=None)
-    2 :     Int TK.INT(LITERAL, '1', V=1)

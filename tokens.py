@@ -32,6 +32,9 @@ class TCL(IntEnum):
 # tokens
 @unique
 class TK(IntEnum):
+    # the first section are lexemes from the state table.
+    # higher-level, derived tokens are next
+    # do not mix the two as these must be < 127 in value (including error states)
     WHT = (ST_MAX + 1)  #
     EOL = auto()  # \n
     AMP2 = auto()  # &&
@@ -94,17 +97,23 @@ class TK(IntEnum):
     TLDE = auto()  # ~
     USCR = auto()  # _
 
-    # specialized tokens:
-    INVALID = 124
-    BAD = 125  # from lexer
-    ERR = 126
+    #
+    # specialized tokens (error states):
     EOF = 127
+    ERR = auto()
+    BAD = auto()
+    INVALID = auto()
 
+    #
     # the length of tokens up to here is fixed at 4 chars.  its a pain, but otherwise the state table is unmaintainable.
 
-    RESERVED = 149  # last reserved token value (below 128 can be used in state machine, 128-255 error & reserved)
+    RESERVED = 200
+    # last reserved token value (below 128 can be used in state machine, 128-255 error & reserved)
+    #
 
+    #
     # higher-level / derived tokens
+    #
     ADD = auto()  # +
     ALL = auto()  # all:
     AND = auto()
@@ -113,6 +122,7 @@ class TK(IntEnum):
     ASSIGN = auto()  # =
     BUY = auto()
     COMMAND = auto()
+    DECREMENT = auto() # --
     DEFINE = auto()
     DIV = auto()  # /
     EVENT = auto()  # from =>
@@ -120,6 +130,7 @@ class TK(IntEnum):
     FALSE = auto()
     FUNCTION = auto()
     IN = auto()
+    INCREMENT = auto()
     INDEX = auto()  # indexing expression
     ISEQ = auto()  # ==
     LIST = auto()
@@ -132,6 +143,7 @@ class TK(IntEnum):
     OR = auto()
     PARAMETER_LIST = auto()  # parameter-list
     PIPE = auto()
+    POS = auto()  # unary +
     POW = auto()  # ^
     RAISE = auto()  # =>
     RANGE = auto()
@@ -144,6 +156,7 @@ class TK(IntEnum):
     TODAY = auto()
     TRUE = auto()
     TUPLE = auto()
+    VAR = auto()
 
     LAST = 299  # last reserved token id
 
@@ -185,8 +198,10 @@ _tk2binop = {
 _tk2unop = {
     TK.EXCL: TK.NOT,  # !
     TK.MNUS: TK.NEG,  # unary -
+    TK.MNU2: TK.DECREMENT, # unary --
     TK.NOT: TK.NOT,
-    TK.PLUS: TK.PLUS,  # unary +
+    TK.PLUS: TK.POS,  # unary +
+    TK.PLU2: TK.INCREMENT, # unary ++
 }
 _tk2lit = {
     TK.LBRK: TK.LIST,  # ]
@@ -206,6 +221,7 @@ _tk2type = {
     TK.LBAR: TCL.BINOP,
     TK.LESS: TCL.LOGICAL,
     TK.LTE: TCL.LOGICAL,
+    TK.MNU2: TCL.UNARY,
     TK.MNUS: TCL.UNARY,
     TK.NEQ: TCL.LOGICAL,
     TK.NOW: TCL.FUNCTION,
@@ -217,6 +233,7 @@ _tk2type = {
     TK.STR: TCL.LITERAL,
     TK.TODAY: TCL.FUNCTION,
     TK.TIME: TCL.LITERAL,
+    TK.VAR: TCL.UNARY,
     TK.WHT: TCL.NONE,
 }
 # token sets for the parser

@@ -1,5 +1,5 @@
 # sample rules file for pyser / qtradr
-%%backtest [period='train5', rules=rules]
+%%backtest (period='train5', rules=rules)
 
 atr := (high + low) / 2
 median_price := (open + close) / 2
@@ -15,5 +15,5 @@ rules => {
 
 report := { trades | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price') }
 
-%%report {report}
+%%report (report)
 

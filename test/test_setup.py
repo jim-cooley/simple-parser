@@ -1,9 +1,6 @@
 from test.cases.assignment import assignment_tests
 from test.cases.binary_operators import binary_operators_tests
-from test.cases.duration import duration_tests
 from test.cases.errors import errors_tests
-from test.cases.expressions import expressions_tests
-from test.cases.functions import functions_tests
 from test.cases.grouping import grouping_tests
 from test.cases.identifiers import identifiers_tests
 from test.cases.indexed_parameters import indexed_parameters_tests
@@ -12,7 +9,6 @@ from test.cases.lists import lists_tests
 from test.cases.property_reference import property_reference_tests
 from test.cases.keywords import keywords_tests
 from test.cases.language import language_tests
-from test.cases.literals import literals_tests
 from test.cases.logical import logical_tests
 from test.cases.plists import plists_tests
 from test.cases.range import range_tests
@@ -34,10 +30,11 @@ test_data = {
 
     'assignment': assignment_tests,
     'binary_operators': binary_operators_tests,
-    'duration': duration_tests,
+    'commands': 'commands.p',
+    'duration': 'duration.p',
     'errors': errors_tests,
-    'expressions': expressions_tests,
-    'functions': functions_tests,
+    'expressions': 'expressions.p',
+    'functions': 'functions.p',
     'grouping': grouping_tests,
     'identifiers': identifiers_tests,
     'indexed_expressions': indexed_parameters_tests,
@@ -45,7 +42,7 @@ test_data = {
     'keywords': keywords_tests,
     'language': language_tests,
     'lists': lists_tests,
-    'literals': literals_tests,
+    'literals': 'literals.p',
     'logical': logical_tests,
     'plists': plists_tests,
     'property_reference': property_reference_tests,
@@ -56,13 +53,15 @@ test_data = {
     'set_unary': set_unary_tests,
     'sets': sets_tests,
     'shell': shell_tests,
-    'simple': 'simple.dsl',
-    'simple2': 'simple2.dsl',
-    'simpler': 'simpler.dsl',
+    'simple': 'simple.p',
+    'simple2': 'simple2.p',
+    'simpler': 'simpler.p',
     'statements': statements_tests,
-    'system1': 'system1.dsl',
+    'system1': 'system1.p',
+    'system2': 'system2.p',
     'time': time_tests,
     'trades1': trades1_tests,
     'trades2': trades2_tests,
+    'unary': 'unary.p',
     'unary_operators': unary_operators_tests,
 }

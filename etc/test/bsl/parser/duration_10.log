@@ -1,6 +1,0 @@
-
-
-test: 10: "1.35h"
-
-tree1:
-    1 : Duration TK.DUR(LITERAL, '1.35h', V=1:21:00)

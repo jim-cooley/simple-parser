@@ -164,7 +164,7 @@ class Time(Literal):
 
     def format(self, fmt=None):
         fmt = "%H:%M:%S" if fmt is None else fmt
-        return self.value.strftime(fmt)
+        return self.value.strftime(fmt) if self.value is not None else 'None'
 
 
 def _parse_bool_value(lex):
