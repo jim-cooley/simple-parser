@@ -1,0 +1,6 @@
+
+
+test: 12: "$1.00"
+
+tree1:  "$1.00"
+    1 : Float TK.FLOT(LITERAL, '1.00', V=1.0)

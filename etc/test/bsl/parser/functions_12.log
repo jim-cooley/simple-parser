@@ -1,0 +1,16 @@
+
+
+test: 12: "f{a:5, b:'c', d}"
+
+tree1:  "f{a:5, b:'c', d}"
+    1 : Ident TK.IDNT(IDENTIFIER, 'f', V=None)
+
+tree2:  "f{a:5, b:'c', d}"
+    1 : Set TK.SET(SET, '{', V=[BinOp(), BinOp(), Ident()])
+    2 :     BinOp TK.TUPLE(BINOP, ':', V=None)
+    3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=None)
+    4 :         Int TK.INT(LITERAL, '5', V=5)
+    5 :     BinOp TK.TUPLE(BINOP, ':', V=None)
+    6 :         Ident TK.IDNT(IDENTIFIER, 'b', V=None)
+    7 :         Str TK.STR(LITERAL, 'c', V=c)
+    8 :     Ident TK.IDNT(IDENTIFIER, 'd', V=None)

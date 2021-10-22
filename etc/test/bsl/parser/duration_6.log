@@ -1,0 +1,6 @@
+
+
+test: 6: "1M"
+
+tree1:  "1M"
+    1 : Duration TK.DUR(LITERAL, '1M', V=30 days, 0:00:00)

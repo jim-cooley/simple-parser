@@ -47,17 +47,23 @@ class TestSuiteRunner(ABC):
             return
         print(f'\n\nsuite: {name}')
         cases = self.tests[name]
+        idx = 0
         if type(cases).__name__ == "list":
-            idx = 0
             for test in cases:
                 idx += 1
                 self._run_single_test(name, test, idx)
             return
         else:
             fname = _find_test_file(name, _SCRIPT_SEARCH_PATH)
+            tt = os.path.splitext(fname)[1]
             with open(fname, 'r') as file:
                 test = file.read()
-                self._run_single_test(name, test)
+                if tt == '.t':
+                    for line in test.splitlines():
+                        idx += 1
+                        self._run_single_test(name, line, idx)
+                else:
+                    self._run_single_test(name, test)
 
     def _run_single_test(self, name, test, idx=None):
         fn = f'{name}.log' if idx is None else f'{name}_{idx}.log'
@@ -84,6 +90,8 @@ def _find_test_file(name, search_paths):
             return fname
         if os.path.isfile(f'{fname}.p'):
             return f'{fname}.p'
+        if os.path.isfile(f'{fname}.t'):
+            return f'{fname}.t'
     raise IOError(f'invalid test suite: {name}, is not a test file')
 
 

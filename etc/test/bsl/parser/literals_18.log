@@ -1,0 +1,6 @@
+
+
+test: 18: "false"
+
+tree1:  "false"
+    1 : Bool TK.FALSE(LITERAL, 'false', V=False)

@@ -1,0 +1,13 @@
+
+
+test: 15: "{a=5, b='c', d}"
+
+tree1:
+    1 : Set TK.SET(SET, '{', V=[BinOp(), BinOp(), Ident()])
+    2 :     BinOp TK.ASSIGN(BINOP, '=', V=None)
+    3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=)
+    4 :         Int TK.INT(LITERAL, '5', V=5)
+    5 :     BinOp TK.ASSIGN(BINOP, '=', V=None)
+    6 :         Ident TK.IDNT(IDENTIFIER, 'b', V=)
+    7 :         Str TK.STR(LITERAL, 'c', V=c)
+    8 :     Ident TK.IDNT(IDENTIFIER, 'd', V=)

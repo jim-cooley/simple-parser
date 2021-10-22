@@ -8,7 +8,6 @@ from test.cases.indexing import indexing_tests
 from test.cases.lists import lists_tests
 from test.cases.property_reference import property_reference_tests
 from test.cases.keywords import keywords_tests
-from test.cases.language import language_tests
 from test.cases.logical import logical_tests
 from test.cases.plists import plists_tests
 from test.cases.range import range_tests
@@ -30,19 +29,19 @@ test_data = {
 
     'assignment': assignment_tests,
     'binary_operators': binary_operators_tests,
-    'commands': 'commands.p',
-    'duration': 'duration.p',
+    'commands': 'commands.t',
+    'duration': 'duration.t',
     'errors': errors_tests,
-    'expressions': 'expressions.p',
-    'functions': 'functions.p',
+    'expressions': 'expressions.t',
+    'functions': 'functions.t',
     'grouping': grouping_tests,
     'identifiers': identifiers_tests,
     'indexed_expressions': indexed_parameters_tests,
     'indexing': indexing_tests,
     'keywords': keywords_tests,
-    'language': language_tests,
+    'language': 'language.t',
     'lists': lists_tests,
-    'literals': 'literals.p',
+    'literals': 'literals.t',
     'logical': logical_tests,
     'plists': plists_tests,
     'property_reference': property_reference_tests,
