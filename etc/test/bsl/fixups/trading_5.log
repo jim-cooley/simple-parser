@@ -9,7 +9,7 @@ tree1:  "buy: position += trade_size"
     4 :         Ident TK.IDNT(IDENTIFIER, 'position', V=None)
     5 :         Ident TK.IDNT(IDENTIFIER, 'trade_size', V=None)
 
-tree1:  "buy: position += trade_size"
+tree1:(post)  "buy: position += trade_size"
     1 : BinOp TK.TUPLE(BINOP, ':', V=None)
     2 :     Ident TK.BUY(KEYWORD, 'buy', V=None)
     3 :     BinOp TK.PLEQ(BINOP, '+=', V=None)

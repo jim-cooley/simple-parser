@@ -335,7 +335,7 @@ tree8:  "rules: {"
   218 :                                 Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
   219 :                 Ident TK.SELL(KEYWORD, 'sell', V=None)
 
-tree1:  "periods = {"
+tree1:(post)  "periods = {"
     1 : BinOp TK.ASSIGN(BINOP, '=', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'periods', V=None)
     3 :     Set TK.SET(SET, '{', V=[BinOp()])
@@ -347,7 +347,7 @@ tree1:  "periods = {"
     9 :                     Duration TK.DUR(LITERAL, '2y', V=730 days, 0:00:00)
    10 :                     Ident TK.TODAY(KEYWORD, 'today', V=None)
 
-tree2:  "sma_period = [3,5,10..20,28]"
+tree2:(post)  "sma_period = [3,5,10..20,28]"
     1 : BinOp TK.ASSIGN(BINOP, '=', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'sma_period', V=None)
     3 :     List TK.LIST(LIST, '[', V=[Int(), Int(), BinOp(), Int()])
@@ -358,7 +358,7 @@ tree2:  "sma_period = [3,5,10..20,28]"
     8 :             Int TK.INT(LITERAL, '20', V=20)
     9 :         Int TK.INT(LITERAL, '28', V=28)
 
-tree3:  "atr = (high + low) / 2"
+tree3:(post)  "atr = (high + low) / 2"
     1 : BinOp TK.ASSIGN(BINOP, '=', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'atr', V=None)
     3 :     BinOp TK.DIV(BINOP, '/', V=None)
@@ -367,7 +367,7 @@ tree3:  "atr = (high + low) / 2"
     6 :             Ident TK.IDNT(DATASET, 'low', V=None)
     7 :         Int TK.INT(LITERAL, '2', V=2)
 
-tree4:  "median_price = (open + close) / 2"
+tree4:(post)  "median_price = (open + close) / 2"
     1 : BinOp TK.ASSIGN(BINOP, '=', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'median_price', V=None)
     3 :     BinOp TK.DIV(BINOP, '/', V=None)
@@ -376,7 +376,7 @@ tree4:  "median_price = (open + close) / 2"
     6 :             Ident TK.IDNT(DATASET, 'close', V=None)
     7 :         Int TK.INT(LITERAL, '2', V=2)
 
-tree5:  "price10a = price.delay(1d)[10:00]"
+tree5:(post)  "price10a = price.delay(1d)[10:00]"
     1 : BinOp TK.ASSIGN(BINOP, '=', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'price10a', V=None)
     3 :     PropRef TK.REF(BINOP, '.', V=None)
@@ -386,11 +386,11 @@ tree5:  "price10a = price.delay(1d)[10:00]"
     7 :             List TK.PARAMETER_LIST(LIST, '(', V=[Duration()])
     8 :                 Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
 
-tree6:  "price10a = price.delay(1d)[10:00]"
+tree6:(post)  "price10a = price.delay(1d)[10:00]"
     1 : List TK.LIST(LIST, '[', V=[Time()])
     2 :     Time TK.TIME(LITERAL, '10:00', V=10:00:00)
 
-tree7:  "report := { trades | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price') }"
+tree7:(post)  "report := { trades | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price') }"
     1 : BinOp TK.DEFINE(BINOP, ':=', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'report', V=None)
     3 :     Set TK.SET(SET, '{', V=[List()])
@@ -405,7 +405,7 @@ tree7:  "report := { trades | select('symbol', 'buy_date', 'buy_price', 'sell_da
    12 :                     Str TK.STR(LITERAL, 'sell_date', V=sell_date)
    13 :                     Str TK.STR(LITERAL, 'sell_price', V=sell_price)
 
-tree8:  "rules: {"
+tree8:(post)  "rules: {"
     1 : BinOp TK.TUPLE(BINOP, ':', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'rules', V=None)
     3 :     Set TK.SET(SET, '{', V=[BinOp(), BinOp(), BinOp(), BinOp(), Set()])

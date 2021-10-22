@@ -14,7 +14,7 @@ tree1:  "trades | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_p
     9 :             Str TK.STR(LITERAL, 'sell_date', V=sell_date)
    10 :             Str TK.STR(LITERAL, 'sell_price', V=sell_price)
 
-tree1:  "trades | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price')"
+tree1:(post)  "trades | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price')"
     1 : List TK.PIPE(LIST, '|', V=[Ident(), FnCall()])
     2 :     Ident TK.IDNT(IDENTIFIER, 'trades', V=None)
     3 :     FnCall TK.FUNCTION(BINOP, '(', V=None)

@@ -46,9 +46,9 @@ class NodeVisitor(object):
 
 # a tree filter applies some operation to every node in the tree (pre-order).
 class TreeFilter(NodeVisitor, ABC):
-    def __init__(self, tree=None, mapping=None, apply_parent_fixups=True):
+    def __init__(self, mapping=None, apply_parent_fixups=True):
         super().__init__(mapping)
-        self.tree = tree
+        self.tree = None
         self.apply_parent_fixups = apply_parent_fixups
         self._count = 0
         self._depth = 0

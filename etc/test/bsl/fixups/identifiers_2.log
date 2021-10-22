@@ -5,5 +5,5 @@ test: 2: "abcdefghijklmnopqrstuvwxyz"
 tree1:  "abcdefghijklmnopqrstuvwxyz"
     1 : Ident TK.IDNT(IDENTIFIER, 'abcdefghijklmnopqrstuvwxyz', V=None)
 
-tree1:  "abcdefghijklmnopqrstuvwxyz"
+tree1:(post)  "abcdefghijklmnopqrstuvwxyz"
     1 : Ident TK.IDNT(IDENTIFIER, 'abcdefghijklmnopqrstuvwxyz', V=None)

@@ -402,7 +402,7 @@ tree14:  "report >> rules | print"
     4 :         Ident TK.IDNT(IDENTIFIER, 'rules', V=None)
     5 :     Ident TK.IDNT(IDENTIFIER, 'print', V=None)
 
-tree1:  "periods = {"
+tree1:(post)  "periods = {"
     1 : BinOp TK.ASSIGN(BINOP, '=', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'periods', V=None)
     3 :     Set TK.SET(SET, '{', V=[BinOp()])
@@ -414,7 +414,7 @@ tree1:  "periods = {"
     9 :                     Duration TK.DUR(LITERAL, '2y', V=730 days, 0:00:00)
    10 :                     Ident TK.TODAY(KEYWORD, 'today', V=None)
 
-tree2:  "sma_periods1 = [3,5,10..20,28]"
+tree2:(post)  "sma_periods1 = [3,5,10..20,28]"
     1 : BinOp TK.ASSIGN(BINOP, '=', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'sma_periods1', V=None)
     3 :     List TK.LIST(LIST, '[', V=[Int(), Int(), BinOp(), Int()])
@@ -425,7 +425,7 @@ tree2:  "sma_periods1 = [3,5,10..20,28]"
     8 :             Int TK.INT(LITERAL, '20', V=20)
     9 :         Int TK.INT(LITERAL, '28', V=28)
 
-tree3:  "sma_periods2 = [5,10,12,20,30,60,90]"
+tree3:(post)  "sma_periods2 = [5,10,12,20,30,60,90]"
     1 : BinOp TK.ASSIGN(BINOP, '=', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'sma_periods2', V=None)
     3 :     List TK.LIST(LIST, '[', V=[Int(), Int(), Int(), Int(), Int(), Int(), Int()])
@@ -437,7 +437,7 @@ tree3:  "sma_periods2 = [5,10,12,20,30,60,90]"
     9 :         Int TK.INT(LITERAL, '60', V=60)
    10 :         Int TK.INT(LITERAL, '90', V=90)
 
-tree4:  "# sample rules file for pyser / qtradr"
+tree4:(post)  "# sample rules file for pyser / qtradr"
     1 : UnaryOp TK.VAR(UNARY, 'var', V=None)
     2 :     BinOp TK.ASSIGN(BINOP, '=', V=None)
     3 :         Ident TK.IDNT(IDENTIFIER, 'r', V=None)
@@ -446,7 +446,7 @@ tree4:  "# sample rules file for pyser / qtradr"
     6 :             List TK.PARAMETER_LIST(LIST, '(', V=[Ident()])
     7 :                 Ident TK.IDNT(IDENTIFIER, 'sma_periods1', V=None)
 
-tree5:  "# sample rules file for pyser / qtradr"
+tree5:(post)  "# sample rules file for pyser / qtradr"
     1 : UnaryOp TK.VAR(UNARY, 'var', V=None)
     2 :     BinOp TK.ASSIGN(BINOP, '=', V=None)
     3 :         Ident TK.IDNT(IDENTIFIER, 'r2', V=None)
@@ -456,7 +456,7 @@ tree5:  "# sample rules file for pyser / qtradr"
     7 :                 BinOp TK.IN(BINOP, 'in', V=None)
     8 :                     Ident TK.IDNT(IDENTIFIER, 'sma_periods2', V=None)
 
-tree6:  "(open, high, low, close, adj_close) = yahoo( file='spq500.csv', 2y )"
+tree6:(post)  "(open, high, low, close, adj_close) = yahoo( file='spq500.csv', 2y )"
     1 : BinOp TK.ASSIGN(BINOP, '=', V=None)
     2 :     List TK.PARAMETER_LIST(LIST, '(', V=[Ident(), Ident(), Ident(), Ident(), Ident()])
     3 :         Ident TK.IDNT(DATASET, 'open', V=None)
@@ -472,7 +472,7 @@ tree6:  "(open, high, low, close, adj_close) = yahoo( file='spq500.csv', 2y )"
    13 :                 Str TK.STR(LITERAL, 'spq500.csv', V=spq500.csv)
    14 :             Duration TK.DUR(LITERAL, '2y', V=730 days, 0:00:00)
 
-tree7:  "atr = (high + low) / 2"
+tree7:(post)  "atr = (high + low) / 2"
     1 : BinOp TK.ASSIGN(BINOP, '=', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'atr', V=None)
     3 :     BinOp TK.DIV(BINOP, '/', V=None)
@@ -481,7 +481,7 @@ tree7:  "atr = (high + low) / 2"
     6 :             Ident TK.IDNT(DATASET, 'low', V=None)
     7 :         Int TK.INT(LITERAL, '2', V=2)
 
-tree8:  "median_price = (open + close) / 2"
+tree8:(post)  "median_price = (open + close) / 2"
     1 : BinOp TK.ASSIGN(BINOP, '=', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'median_price', V=None)
     3 :     BinOp TK.DIV(BINOP, '/', V=None)
@@ -490,7 +490,7 @@ tree8:  "median_price = (open + close) / 2"
     6 :             Ident TK.IDNT(DATASET, 'close', V=None)
     7 :         Int TK.INT(LITERAL, '2', V=2)
 
-tree9:  "price10a = price.delay(1d)[10:00]"
+tree9:(post)  "price10a = price.delay(1d)[10:00]"
     1 : BinOp TK.ASSIGN(BINOP, '=', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'price10a', V=None)
     3 :     PropRef TK.REF(BINOP, '.', V=None)
@@ -500,11 +500,11 @@ tree9:  "price10a = price.delay(1d)[10:00]"
     7 :             List TK.PARAMETER_LIST(LIST, '(', V=[Duration()])
     8 :                 Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
 
-tree10:  "price10a = price.delay(1d)[10:00]"
+tree10:(post)  "price10a = price.delay(1d)[10:00]"
     1 : List TK.LIST(LIST, '[', V=[Time()])
     2 :     Time TK.TIME(LITERAL, '10:00', V=10:00:00)
 
-tree11:  "report := { trades | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price') }"
+tree11:(post)  "report := { trades | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price') }"
     1 : BinOp TK.DEFINE(BINOP, ':=', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'report', V=None)
     3 :     Set TK.SET(SET, '{', V=[List()])
@@ -519,7 +519,7 @@ tree11:  "report := { trades | select('symbol', 'buy_date', 'buy_price', 'sell_d
    12 :                     Str TK.STR(LITERAL, 'sell_date', V=sell_date)
    13 :                     Str TK.STR(LITERAL, 'sell_price', V=sell_price)
 
-tree12:  "rules: {"
+tree12:(post)  "rules: {"
     1 : BinOp TK.TUPLE(BINOP, ':', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'rules', V=None)
     3 :     Set TK.SET(SET, '{', V=[BinOp(), BinOp(), BinOp(), BinOp(), Set()])
@@ -740,7 +740,7 @@ tree12:  "rules: {"
   218 :                                 Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
   219 :                 Ident TK.SELL(KEYWORD, 'sell', V=None)
 
-tree13:  "backtest( rules, period=period['train'])"
+tree13:(post)  "backtest( rules, period=period['train'])"
     1 : FnCall TK.FUNCTION(BINOP, '(', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'backtest', V=None)
     3 :     List TK.PARAMETER_LIST(LIST, '(', V=[Ident(), BinOp()])
@@ -752,7 +752,7 @@ tree13:  "backtest( rules, period=period['train'])"
     9 :                 List TK.INDEX(LIST, '[', V=[Str()])
    10 :                     Str TK.STR(LITERAL, 'train', V=train)
 
-tree14:  "report >> rules | print"
+tree14:(post)  "report >> rules | print"
     1 : List TK.PIPE(LIST, '|', V=[List(), Ident()])
     2 :     List TK.APPLY(LIST, '>>', V=[Ident(), Ident()])
     3 :         Ident TK.IDNT(IDENTIFIER, 'report', V=None)

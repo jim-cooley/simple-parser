@@ -12,7 +12,7 @@ tree1:  "{ 'train': today-2y..today }"
     7 :                 Duration TK.DUR(LITERAL, '2y', V=730 days, 0:00:00)
     8 :                 Ident TK.TODAY(KEYWORD, 'today', V=None)
 
-tree1:  "{ 'train': today-2y..today }"
+tree1:(post)  "{ 'train': today-2y..today }"
     1 : Set TK.SET(SET, '{', V=[BinOp()])
     2 :     BinOp TK.TUPLE(BINOP, ':', V=None)
     3 :         Str TK.STR(LITERAL, 'train', V=train)

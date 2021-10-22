@@ -5,5 +5,5 @@ test: 6: "trades"
 tree1:  "trades"
     1 : Ident TK.IDNT(IDENTIFIER, 'trades', V=None)
 
-tree1:  "trades"
+tree1:(post)  "trades"
     1 : Ident TK.IDNT(IDENTIFIER, 'trades', V=None)

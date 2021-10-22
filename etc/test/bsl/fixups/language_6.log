@@ -33,7 +33,7 @@ tree1:  "pcross(close, sma(13)) | smacd(close, 20, 50) | smacd.close(20,50) | cl
    28 :                 Int TK.INT(LITERAL, '20', V=20)
    29 :                 Int TK.INT(LITERAL, '50', V=50)
 
-tree1:  "pcross(close, sma(13)) | smacd(close, 20, 50) | smacd.close(20,50) | close.smacd(20,50)"
+tree1:(post)  "pcross(close, sma(13)) | smacd(close, 20, 50) | smacd.close(20,50) | close.smacd(20,50)"
     1 : List TK.PIPE(LIST, '|', V=[FnCall(), FnCall(), PropRef(), PropRef()])
     2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
     3 :         Ident TK.IDNT(IDENTIFIER, 'pcross', V=None)

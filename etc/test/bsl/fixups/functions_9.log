@@ -8,8 +8,8 @@ tree1:  "a{}"
 tree2:  "a{}"
     1 : Set TK.SET(SET, '{', V=[None])
 
-tree1:  "a{}"
+tree1:(post)  "a{}"
     1 : Ident TK.IDNT(IDENTIFIER, 'a', V=None)
 
-tree2:  "a{}"
+tree2:(post)  "a{}"
     1 : Set TK.SET(SET, '{', V=[None])

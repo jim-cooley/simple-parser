@@ -131,7 +131,7 @@ tree7:  "report := { trades | select('symbol', 'buy_date', 'buy_price', 'sell_da
    12 :                     Str TK.STR(LITERAL, 'sell_date', V=sell_date)
    13 :                     Str TK.STR(LITERAL, 'sell_price', V=sell_price)
 
-tree1:  "atr := (high + low) / 2"
+tree1:(post)  "atr := (high + low) / 2"
     1 : BinOp TK.DEFINE(BINOP, ':=', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'atr', V=None)
     3 :     BinOp TK.DIV(BINOP, '/', V=None)
@@ -140,7 +140,7 @@ tree1:  "atr := (high + low) / 2"
     6 :             Ident TK.IDNT(DATASET, 'low', V=None)
     7 :         Int TK.INT(LITERAL, '2', V=2)
 
-tree2:  "median_price := (open + close) / 2"
+tree2:(post)  "median_price := (open + close) / 2"
     1 : BinOp TK.DEFINE(BINOP, ':=', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'median_price', V=None)
     3 :     BinOp TK.DIV(BINOP, '/', V=None)
@@ -149,14 +149,14 @@ tree2:  "median_price := (open + close) / 2"
     6 :             Ident TK.IDNT(DATASET, 'close', V=None)
     7 :         Int TK.INT(LITERAL, '2', V=2)
 
-tree3:  "trade_size := position * 10%"
+tree3:(post)  "trade_size := position * 10%"
     1 : BinOp TK.DEFINE(BINOP, ':=', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'trade_size', V=None)
     3 :     BinOp TK.MUL(BINOP, '*', V=None)
     4 :         Ident TK.IDNT(IDENTIFIER, 'position', V=None)
     5 :         Percent TK.PCT(LITERAL, '10%', V=0.1)
 
-tree4:  "# sample rules file for pyser / qtradr"
+tree4:(post)  "# sample rules file for pyser / qtradr"
     1 : UnaryOp TK.DEFINE(UNARY, 'def', V=None)
     2 :     BinOp TK.ASSIGN(BINOP, '=', V=None)
     3 :         Ident TK.BUY(KEYWORD, 'buy', V=None)
@@ -165,7 +165,7 @@ tree4:  "# sample rules file for pyser / qtradr"
     6 :                 Ident TK.IDNT(IDENTIFIER, 'position', V=None)
     7 :                 Ident TK.IDNT(IDENTIFIER, 'trade_size', V=None)
 
-tree5:  "# sample rules file for pyser / qtradr"
+tree5:(post)  "# sample rules file for pyser / qtradr"
     1 : UnaryOp TK.DEFINE(UNARY, 'def', V=None)
     2 :     BinOp TK.ASSIGN(BINOP, '=', V=None)
     3 :         Ident TK.SELL(KEYWORD, 'sell', V=None)
@@ -174,7 +174,7 @@ tree5:  "# sample rules file for pyser / qtradr"
     6 :                 Ident TK.IDNT(IDENTIFIER, 'position', V=None)
     7 :                 Ident TK.IDNT(IDENTIFIER, 'trade_size', V=None)
 
-tree6:  "rules => {"
+tree6:(post)  "rules => {"
     1 : List TK.RAISE(LIST, '=>', V=[Ident(), Set()])
     2 :     Ident TK.IDNT(IDENTIFIER, 'rules', V=None)
     3 :     Set TK.SET(SET, '{', V=[List(), List()])
@@ -227,7 +227,7 @@ tree6:  "rules => {"
    50 :                 Ident TK.IDNT(IDENTIFIER, 'atr', V=None)
    51 :             Ident TK.SELL(KEYWORD, 'sell', V=None)
 
-tree7:  "report := { trades | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price') }"
+tree7:(post)  "report := { trades | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price') }"
     1 : BinOp TK.DEFINE(BINOP, ':=', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'report', V=None)
     3 :     Set TK.SET(SET, '{', V=[List()])

@@ -21,7 +21,7 @@ tree2:  "start: open.delay(1d) | buy; end: open | sell"
     4 :         Ident TK.IDNT(DATASET, 'open', V=None)
     5 :     Ident TK.SELL(KEYWORD, 'sell', V=None)
 
-tree1:  "start: open.delay(1d) | buy; end: open | sell"
+tree1:(post)  "start: open.delay(1d) | buy; end: open | sell"
     1 : List TK.PIPE(LIST, '|', V=[BinOp(), Ident()])
     2 :     BinOp TK.TUPLE(BINOP, ':', V=None)
     3 :         Ident TK.IDNT(IDENTIFIER, 'start', V=None)
@@ -33,7 +33,7 @@ tree1:  "start: open.delay(1d) | buy; end: open | sell"
     9 :                     Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
    10 :     Ident TK.BUY(KEYWORD, 'buy', V=None)
 
-tree2:  "start: open.delay(1d) | buy; end: open | sell"
+tree2:(post)  "start: open.delay(1d) | buy; end: open | sell"
     1 : List TK.PIPE(LIST, '|', V=[BinOp(), Ident()])
     2 :     BinOp TK.TUPLE(BINOP, ':', V=None)
     3 :         Ident TK.IDNT(IDENTIFIER, 'end', V=None)

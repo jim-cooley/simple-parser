@@ -3,6 +3,7 @@
 from abc import ABC
 
 from literals import List
+from scope import Scope
 from tokens import TK, TCL, Token
 from visitor import TreeFilter, BINARY_NODE, UNARY_NODE, SEQUENCE_NODE
 
@@ -28,15 +29,17 @@ _fixupNodeTypeMappings = {
 # constant expression elimination
 #
 
-class FixupSet2Dictionary(TreeFilter, ABC):
-    def __init__(self, tree=None, print=False):
-        super().__init__(tree, mapping=_fixupNodeTypeMappings, apply_parent_fixups=True)
-        self._print_nodes = False
-        self.global_symbols = self.tree.keywords
-        self.current_scope = None
-        self.symbols = self.global_symbols
+class Fixups(TreeFilter, ABC):
+    keywords = None
+    global_symbols = None
+    symbols = None
+    _print_nodes = False
+
+    def __init__(self):
+        super().__init__(mapping=_fixupNodeTypeMappings, apply_parent_fixups=True)
 
     def apply(self, tree=None):
+        self._init(tree)
         self.visit(self.tree.nodes)
         return self.tree
 
@@ -94,7 +97,13 @@ class FixupSet2Dictionary(TreeFilter, ABC):
             print(f'\n\nsymbol table:')
             self.global_symbols.print(indent=1)
 
-    # just for test: use DumpTree for proper printing
+    def _init(self, tree):
+        self.tree = tree
+        self.keywords = tree.keywords
+        self.global_symbols = Scope(self.keywords)
+        self.symbols = self.global_symbols
+
+# just for test: use DumpTree for proper printing
     def _print_node(self, node):
         if self._print_nodes:
             indent = '' if self._depth < 1 else ' '.ljust(self._depth * 4)

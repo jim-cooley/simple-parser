@@ -9,7 +9,7 @@ tree1:  "none {a, b, c}"
     4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=None)
     5 :         Ident TK.IDNT(IDENTIFIER, 'c', V=None)
 
-tree1:  "none {a, b, c}"
+tree1:(post)  "none {a, b, c}"
     1 : UnaryOp TK.NONEOF(UNARY, 'none', V=None)
     2 :     Set TK.SET(SET, '{', V=[Ident(), Ident(), Ident()])
     3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=None)

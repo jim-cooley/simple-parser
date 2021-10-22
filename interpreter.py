@@ -29,12 +29,14 @@ _visitNodeTypeMappings = {
 
 
 class Interpreter(TreeFilter):
-    def __init__(self, tree=None, print=False):
-        super().__init__(tree, mapping=_visitNodeTypeMappings)
-        self._print_nodes = True
-        self._node_map = {}
-        self.globals = self.tree.globals
-        self.symbols = self.globals
+    _node_map = {}
+    keywords = None
+    globals = None
+    symbols = None
+    _print_nodes = True
+
+    def __init__(self):
+        super().__init__(mapping=_visitNodeTypeMappings)
 
     def interpret(self):
         return self.apply(self.tree)
@@ -56,6 +58,12 @@ class Interpreter(TreeFilter):
                 print(f'\ntree:{count}')
             self.visit(n)
 
+    def _init(self, tree):
+        self._node_map = {}
+        self.keywords = tree.keywords
+        self.globals = tree.globals
+        self.symbols = globals
+
     def print_symbols(self):
         if self.symbols is not None:
             print(f'\n\nsymbol table:')
@@ -69,3 +77,4 @@ class Interpreter(TreeFilter):
                 parent = node.parent
                 id = f'{parent._num + 1}' if parent._num is not None else ' '
             print(f'{self._count:5d} : {indent}{node}: {node.token.format()}, parent:{id}')
+

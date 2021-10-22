@@ -16,7 +16,7 @@ tree1:  "report := ( trades | select('symbol', 'buy_date', 'buy_price', 'sell_da
    11 :                 Str TK.STR(LITERAL, 'sell_date', V=sell_date)
    12 :                 Str TK.STR(LITERAL, 'sell_price', V=sell_price)
 
-tree1:  "report := ( trades | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price') )"
+tree1:(post)  "report := ( trades | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price') )"
     1 : BinOp TK.DEFINE(BINOP, ':=', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'report', V=None)
     3 :     List TK.PIPE(LIST, '|', V=[Ident(), FnCall()])

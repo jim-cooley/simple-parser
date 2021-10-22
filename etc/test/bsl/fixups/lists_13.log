@@ -8,7 +8,7 @@ tree1:  "[[[a]]]"
     3 :         List TK.LIST(LIST, '[', V=[Ident()])
     4 :             Ident TK.IDNT(IDENTIFIER, 'a', V=None)
 
-tree1:  "[[[a]]]"
+tree1:(post)  "[[[a]]]"
     1 : List TK.LIST(LIST, '[', V=[List()])
     2 :     List TK.LIST(LIST, '[', V=[List()])
     3 :         List TK.LIST(LIST, '[', V=[Ident()])

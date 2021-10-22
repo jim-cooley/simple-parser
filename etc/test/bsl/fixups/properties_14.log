@@ -13,7 +13,7 @@ tree1:  "a.b.c.d()"
     8 :                 Ident TK.IDNT(IDENTIFIER, 'd', V=None)
     9 :                 List TK.PARAMETER_LIST(LIST, '(', V=[])
 
-tree1:  "a.b.c.d()"
+tree1:(post)  "a.b.c.d()"
     1 : PropRef TK.REF(BINOP, '.', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=None)
     3 :     PropRef TK.REF(BINOP, '.', V=None)

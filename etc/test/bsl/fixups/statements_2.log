@@ -8,8 +8,8 @@ tree1:  "a; b"
 tree2:  "a; b"
     1 : Ident TK.IDNT(IDENTIFIER, 'b', V=None)
 
-tree1:  "a; b"
+tree1:(post)  "a; b"
     1 : Ident TK.IDNT(IDENTIFIER, 'a', V=None)
 
-tree2:  "a; b"
+tree2:(post)  "a; b"
     1 : Ident TK.IDNT(IDENTIFIER, 'b', V=None)

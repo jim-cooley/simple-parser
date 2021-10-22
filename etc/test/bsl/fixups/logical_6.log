@@ -6,6 +6,6 @@ tree1:  "! b"
     1 : UnaryOp TK.NOT(UNARY, '!', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'b', V=None)
 
-tree1:  "! b"
+tree1:(post)  "! b"
     1 : UnaryOp TK.NOT(UNARY, '!', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'b', V=None)

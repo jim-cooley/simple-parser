@@ -14,7 +14,7 @@ tree1:  "f(a=5, b='c', d)"
     9 :             Str TK.STR(LITERAL, 'c', V=c)
    10 :         Ident TK.IDNT(IDENTIFIER, 'd', V=None)
 
-tree1:  "f(a=5, b='c', d)"
+tree1:(post)  "f(a=5, b='c', d)"
     1 : FnCall TK.FUNCTION(BINOP, '(', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'f', V=None)
     3 :     List TK.PARAMETER_LIST(LIST, '(', V=[BinOp(), BinOp(), Ident()])

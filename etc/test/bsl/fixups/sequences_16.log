@@ -12,7 +12,7 @@ tree1:  "a.b(1) | c"
     7 :                 Int TK.INT(LITERAL, '1', V=1)
     8 :     Ident TK.IDNT(IDENTIFIER, 'c', V=None)
 
-tree1:  "a.b(1) | c"
+tree1:(post)  "a.b(1) | c"
     1 : List TK.PIPE(LIST, '|', V=[PropRef(), Ident()])
     2 :     PropRef TK.REF(BINOP, '.', V=None)
     3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=None)

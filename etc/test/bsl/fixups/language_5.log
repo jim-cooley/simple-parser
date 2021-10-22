@@ -23,7 +23,7 @@ tree1:  "any:{ cross(close, sma(20), delay=1, threshold=0.01) } | buy"
    18 :                         Float TK.FLOT(LITERAL, '0.01', V=0.01)
    19 :     Ident TK.BUY(KEYWORD, 'buy', V=None)
 
-tree1:  "any:{ cross(close, sma(20), delay=1, threshold=0.01) } | buy"
+tree1:(post)  "any:{ cross(close, sma(20), delay=1, threshold=0.01) } | buy"
     1 : List TK.PIPE(LIST, '|', V=[BinOp(), Ident()])
     2 :     BinOp TK.TUPLE(BINOP, ':', V=None)
     3 :         UnaryOp TK.ANY(UNARY, 'any', V=None)

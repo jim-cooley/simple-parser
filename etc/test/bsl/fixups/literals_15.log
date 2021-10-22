@@ -5,5 +5,5 @@ test: 15: "True"
 tree1:  "True"
     1 : Bool TK.TRUE(LITERAL, 'True', V=True)
 
-tree1:  "True"
+tree1:(post)  "True"
     1 : Bool TK.TRUE(LITERAL, 'True', V=True)

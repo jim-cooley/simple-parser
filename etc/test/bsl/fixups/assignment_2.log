@@ -9,7 +9,7 @@ tree1:  "a = b = c"
     4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=None)
     5 :         Ident TK.IDNT(IDENTIFIER, 'c', V=None)
 
-tree1:  "a = b = c"
+tree1:(post)  "a = b = c"
     1 : BinOp TK.ASSIGN(BINOP, '=', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=None)
     3 :     BinOp TK.ASSIGN(BINOP, '=', V=None)

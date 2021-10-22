@@ -18,7 +18,7 @@ tree1:  "close.sma(13) | signal(price, how='>')"
    13 :                 Ident TK.IDNT(IDENTIFIER, 'how', V=None)
    14 :                 Str TK.STR(LITERAL, '>', V=>)
 
-tree1:  "close.sma(13) | signal(price, how='>')"
+tree1:(post)  "close.sma(13) | signal(price, how='>')"
     1 : List TK.PIPE(LIST, '|', V=[PropRef(), FnCall()])
     2 :     PropRef TK.REF(BINOP, '.', V=None)
     3 :         Ident TK.IDNT(DATASET, 'close', V=None)

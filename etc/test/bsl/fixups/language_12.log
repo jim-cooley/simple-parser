@@ -19,7 +19,7 @@ tree1:  "close >| sma(10) and close <| sma(20) | signal"
    14 :                     Int TK.INT(LITERAL, '20', V=20)
    15 :     Ident TK.SIGNAL(KEYWORD, 'signal', V=None)
 
-tree1:  "close >| sma(10) and close <| sma(20) | signal"
+tree1:(post)  "close >| sma(10) and close <| sma(20) | signal"
     1 : List TK.PIPE(LIST, '|', V=[BinOp(), Ident()])
     2 :     BinOp TK.AND(BINOP, 'and', V=None)
     3 :         BinOp TK.RISE_ABOVE(BINOP, '>|', V=None)

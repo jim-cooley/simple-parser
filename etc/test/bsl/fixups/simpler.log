@@ -58,7 +58,7 @@ tree1:  "rules = {"
    49 :                 Ident TK.IDNT(IDENTIFIER, 'atr', V=None)
    50 :             Ident TK.SELL(KEYWORD, 'sell', V=None)
 
-tree1:  "rules = {"
+tree1:(post)  "rules = {"
     1 : BinOp TK.ASSIGN(BINOP, '=', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'rules', V=None)
     3 :     Set TK.SET(SET, '{', V=[List(), List()])

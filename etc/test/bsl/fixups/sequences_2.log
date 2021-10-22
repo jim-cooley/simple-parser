@@ -8,7 +8,7 @@ tree1:  "a | b | c"
     3 :     Ident TK.IDNT(IDENTIFIER, 'b', V=None)
     4 :     Ident TK.IDNT(IDENTIFIER, 'c', V=None)
 
-tree1:  "a | b | c"
+tree1:(post)  "a | b | c"
     1 : List TK.PIPE(LIST, '|', V=[Ident(), Ident(), Ident()])
     2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=None)
     3 :     Ident TK.IDNT(IDENTIFIER, 'b', V=None)

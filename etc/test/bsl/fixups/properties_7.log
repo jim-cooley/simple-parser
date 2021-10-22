@@ -15,7 +15,7 @@ tree1:  "a().b().c()"
    10 :         Ident TK.IDNT(IDENTIFIER, 'c', V=None)
    11 :         List TK.PARAMETER_LIST(LIST, '(', V=[])
 
-tree1:  "a().b().c()"
+tree1:(post)  "a().b().c()"
     1 : BinOp TK.DOT(BINOP, '.', V=None)
     2 :     BinOp TK.DOT(BINOP, '.', V=None)
     3 :         FnCall TK.FUNCTION(BINOP, '(', V=None)

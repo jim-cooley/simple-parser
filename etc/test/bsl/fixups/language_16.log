@@ -36,7 +36,7 @@ tree2:  "close >| sma(20) | signal | open.delay(1d) | buy; close <| sma(10) | si
    14 :                 Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
    15 :     Ident TK.SELL(KEYWORD, 'sell', V=None)
 
-tree1:  "close >| sma(20) | signal | open.delay(1d) | buy; close <| sma(10) | signal | open.delay(1d) | sell"
+tree1:(post)  "close >| sma(20) | signal | open.delay(1d) | buy; close <| sma(10) | signal | open.delay(1d) | sell"
     1 : List TK.PIPE(LIST, '|', V=[BinOp(), Ident(), PropRef(), Ident()])
     2 :     BinOp TK.RISE_ABOVE(BINOP, '>|', V=None)
     3 :         Ident TK.IDNT(DATASET, 'close', V=None)
@@ -53,7 +53,7 @@ tree1:  "close >| sma(20) | signal | open.delay(1d) | buy; close <| sma(10) | si
    14 :                 Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
    15 :     Ident TK.BUY(KEYWORD, 'buy', V=None)
 
-tree2:  "close >| sma(20) | signal | open.delay(1d) | buy; close <| sma(10) | signal | open.delay(1d) | sell"
+tree2:(post)  "close >| sma(20) | signal | open.delay(1d) | buy; close <| sma(10) | signal | open.delay(1d) | sell"
     1 : List TK.PIPE(LIST, '|', V=[BinOp(), Ident(), PropRef(), Ident()])
     2 :     BinOp TK.FALL_BELOW(BINOP, '<|', V=None)
     3 :         Ident TK.IDNT(DATASET, 'close', V=None)

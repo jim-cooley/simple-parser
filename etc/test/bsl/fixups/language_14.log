@@ -28,7 +28,7 @@ tree1:  "close >| sma(10) and close <| sma(20) | signal >> open.delay(1d) | buy"
    23 :                     Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
    24 :     Ident TK.BUY(KEYWORD, 'buy', V=None)
 
-tree1:  "close >| sma(10) and close <| sma(20) | signal >> open.delay(1d) | buy"
+tree1:(post)  "close >| sma(10) and close <| sma(20) | signal >> open.delay(1d) | buy"
     1 : List TK.PIPE(LIST, '|', V=[List(), Ident()])
     2 :     List TK.APPLY(LIST, '>>', V=[List(), PropRef()])
     3 :         List TK.PIPE(LIST, '|', V=[BinOp(), Ident()])

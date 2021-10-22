@@ -34,7 +34,7 @@ tree1:  "any:{ close >| sma(10), close <| sma(20) }:(threshold=0.01) | signal >>
    29 :                 Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
    30 :     Ident TK.BUY(KEYWORD, 'buy', V=None)
 
-tree1:  "any:{ close >| sma(10), close <| sma(20) }:(threshold=0.01) | signal >> atr | delay(1d) => buy"
+tree1:(post)  "any:{ close >| sma(10), close <| sma(20) }:(threshold=0.01) | signal >> atr | delay(1d) => buy"
     1 : List TK.RAISE(LIST, '=>', V=[List(), Ident()])
     2 :     List TK.PIPE(LIST, '|', V=[List(), FnCall()])
     3 :         List TK.APPLY(LIST, '>>', V=[List(), Ident()])

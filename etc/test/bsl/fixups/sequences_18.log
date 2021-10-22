@@ -12,7 +12,7 @@ tree1:  "open.b(1d) | c"
     7 :                 Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
     8 :     Ident TK.IDNT(IDENTIFIER, 'c', V=None)
 
-tree1:  "open.b(1d) | c"
+tree1:(post)  "open.b(1d) | c"
     1 : List TK.PIPE(LIST, '|', V=[PropRef(), Ident()])
     2 :     PropRef TK.REF(BINOP, '.', V=None)
     3 :         Ident TK.IDNT(DATASET, 'open', V=None)

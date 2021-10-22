@@ -5,5 +5,5 @@ test: 19: "None"
 tree1:  "None"
     1 : Set TK.SET(SET, 'None', V={})
 
-tree1:  "None"
+tree1:(post)  "None"
     1 : Set TK.SET(SET, 'None', V={})

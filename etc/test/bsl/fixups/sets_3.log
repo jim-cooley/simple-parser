@@ -8,7 +8,7 @@ tree1:  "{{{a}}}"
     3 :         Set TK.SET(SET, '{', V=[Ident()])
     4 :             Ident TK.IDNT(IDENTIFIER, 'a', V=None)
 
-tree1:  "{{{a}}}"
+tree1:(post)  "{{{a}}}"
     1 : Set TK.SET(SET, '{', V=[Set()])
     2 :     Set TK.SET(SET, '{', V=[Set()])
     3 :         Set TK.SET(SET, '{', V=[Ident()])

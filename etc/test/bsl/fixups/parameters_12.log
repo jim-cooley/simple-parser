@@ -12,7 +12,7 @@ tree1:  ":(a = 5, b='a')"
     7 :             Ident TK.IDNT(IDENTIFIER, 'b', V=None)
     8 :             Str TK.STR(LITERAL, 'a', V=a)
 
-tree1:  ":(a = 5, b='a')"
+tree1:(post)  ":(a = 5, b='a')"
     1 : BinOp TK.TUPLE(BINOP, ':', V=None)
     2 :     List TK.PARAMETER_LIST(LIST, '(', V=[BinOp(), BinOp()])
     3 :         BinOp TK.TUPLE(BINOP, '=', V=None)
