@@ -3,7 +3,7 @@ test_data = {
     'regression': 'regression.p',
 
     'assignment': 'assignment.t',
-    'binary': 'binary.t',
+    'binops': 'binops.t',
     'commands': 'commands.t',
     'duration': 'duration.t',
     'empty_sets': 'empty_sets.t',
