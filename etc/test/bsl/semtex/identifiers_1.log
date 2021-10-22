@@ -2,8 +2,5 @@
 
 test: 1: "a"
 
-tree1:
-    1 : Ident TK.IDNT(IDENTIFIER, 'a', V=)
-
-tree1:
-    1 : Ident TK.IDNT(IDENTIFIER, 'a', V=)
+tree1:  "a"
+    1 : Ident TK.IDNT(IDENTIFIER, 'a', V=None)

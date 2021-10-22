@@ -2,10 +2,6 @@
 
 test: 3: "not a"
 
-tree1:
-    1 : UnaryOp TK.NOT(UNARY, 'not', V=)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=)
-
-tree1:
-    1 : UnaryOp TK.NOT(UNARY, 'not', V=)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=)
+tree1:  "not a"
+    1 : UnaryOp TK.NOT(UNARY, 'not', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=None)

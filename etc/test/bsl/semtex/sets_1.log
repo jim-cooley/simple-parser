@@ -1,9 +1,7 @@
 
 
-test: 1: "{}"
+test: 1: "{a}"
 
-tree1:
-    1 : Set TK.SET(SET, '{', V=[None])
-
-tree1:
-    1 : Set TK.SET(SET, '{', V=[None])
+tree1:  "{a}"
+    1 : Set TK.SET(SET, '{', V=[Ident()])
+    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=None)

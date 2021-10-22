@@ -1,0 +1,25 @@
+
+
+test: 14: "x(a = 5, b='a',)"
+
+tree1:
+    1 : FnCall TK.FUNCTION(BINOP, '(', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'x', V=)
+    3 :     List TK.PARAMETER_LIST(LIST, '(', V=[BinOp(), BinOp(), None])
+    4 :         BinOp TK.ASSIGN(BINOP, '=', V=None)
+    5 :             Ident TK.IDNT(IDENTIFIER, 'a', V=)
+    6 :             Int TK.INT(LITERAL, '5', V=5)
+    7 :         BinOp TK.ASSIGN(BINOP, '=', V=None)
+    8 :             Ident TK.IDNT(IDENTIFIER, 'b', V=)
+    9 :             Str TK.STR(LITERAL, 'a', V=a)
+
+tree1:
+    1 : FnCall TK.FUNCTION(BINOP, '(', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'x', V=)
+    3 :     List TK.PARAMETER_LIST(LIST, '(', V=[BinOp(), BinOp(), None])
+    4 :         BinOp TK.TUPLE(BINOP, '=', V=None)
+    5 :             Ident TK.IDNT(IDENTIFIER, 'a', V=)
+    6 :             Int TK.INT(LITERAL, '5', V=5)
+    7 :         BinOp TK.TUPLE(BINOP, '=', V=None)
+    8 :             Ident TK.IDNT(IDENTIFIER, 'b', V=)
+    9 :             Str TK.STR(LITERAL, 'a', V=a)

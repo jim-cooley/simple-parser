@@ -1,23 +1,9 @@
 
 
-test: 2: "a
-b
-c"
+test: 2: "a; b"
 
-tree1:
-    1 : Ident TK.IDNT(IDENTIFIER, 'a', V=)
+tree1:  "a; b"
+    1 : Ident TK.IDNT(IDENTIFIER, 'a', V=None)
 
-tree2:
-    1 : Ident TK.IDNT(IDENTIFIER, 'b', V=)
-
-tree3:
-    1 : Ident TK.IDNT(IDENTIFIER, 'c', V=)
-
-tree1:
-    1 : Ident TK.IDNT(IDENTIFIER, 'a', V=)
-
-tree2:
-    1 : Ident TK.IDNT(IDENTIFIER, 'b', V=)
-
-tree3:
-    1 : Ident TK.IDNT(IDENTIFIER, 'c', V=)
+tree2:  "a; b"
+    1 : Ident TK.IDNT(IDENTIFIER, 'b', V=None)

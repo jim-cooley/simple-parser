@@ -2,12 +2,7 @@
 
 test: 9: "b -= 2"
 
-tree1:
+tree1:  "b -= 2"
     1 : BinOp TK.MNEQ(BINOP, '-=', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'b', V=)
-    3 :     Int TK.INT(LITERAL, '2', V=2)
-
-tree1:
-    1 : BinOp TK.MNEQ(BINOP, '-=', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'b', V=)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'b', V=None)
     3 :     Int TK.INT(LITERAL, '2', V=2)

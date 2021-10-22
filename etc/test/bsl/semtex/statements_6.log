@@ -1,19 +1,11 @@
 
 
-test: 6: "a | b ; c"
+test: 6: "a >> b ; c"
 
-tree1:
-    1 : List TK.PIPE(LIST, '|', V=[Ident(), Ident()])
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=)
-    3 :     Ident TK.IDNT(IDENTIFIER, 'b', V=)
+tree1:  "a >> b ; c"
+    1 : List TK.APPLY(LIST, '>>', V=[Ident(), Ident()])
+    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=None)
+    3 :     Ident TK.IDNT(IDENTIFIER, 'b', V=None)
 
-tree2:
-    1 : Ident TK.IDNT(IDENTIFIER, 'c', V=)
-
-tree1:
-    1 : List TK.PIPE(LIST, '|', V=[Ident(), Ident()])
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=)
-    3 :     Ident TK.IDNT(IDENTIFIER, 'b', V=)
-
-tree2:
-    1 : Ident TK.IDNT(IDENTIFIER, 'c', V=)
+tree2:  "a >> b ; c"
+    1 : Ident TK.IDNT(IDENTIFIER, 'c', V=None)

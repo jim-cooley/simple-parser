@@ -1,0 +1,8 @@
+
+
+test: 3: "a <| b"
+
+tree1:  "a <| b"
+    1 : BinOp TK.FALL_BELOW(BINOP, '<|', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=None)
+    3 :     Ident TK.IDNT(IDENTIFIER, 'b', V=None)

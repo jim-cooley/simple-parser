@@ -1,0 +1,12 @@
+
+
+test: 4: "[a..b, 1..2]"
+
+tree1:  "[a..b, 1..2]"
+    1 : List TK.LIST(LIST, '[', V=[BinOp(), BinOp()])
+    2 :     BinOp TK.RANGE(BINOP, '..', V=None)
+    3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=None)
+    4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=None)
+    5 :     BinOp TK.RANGE(BINOP, '.', V=None)
+    6 :         Float TK.FLOT(LITERAL, '1.', V=1.0)
+    7 :         Int TK.INT(LITERAL, '2', V=2)

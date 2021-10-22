@@ -2,12 +2,7 @@
 
 test: 1: "a()"
 
-tree1:
+tree1:  "a()"
     1 : FnCall TK.FUNCTION(BINOP, '(', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=)
-    3 :     List TK.PARAMETER_LIST(LIST, '(', V=[None])
-
-tree1:
-    1 : FnCall TK.FUNCTION(BINOP, '(', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=)
-    3 :     List TK.PARAMETER_LIST(LIST, '(', V=[None])
+    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=None)
+    3 :     List TK.PARAMETER_LIST(LIST, '(', V=[])

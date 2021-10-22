@@ -2,12 +2,7 @@
 
 test: 2: "a []"
 
-tree1:
+tree1:  "a []"
     1 : Index TK.INDEX(BINOP, '[', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=)
-    3 :     List TK.INDEX(LIST, '[', V=[])
-
-tree1:
-    1 : Index TK.INDEX(BINOP, '[', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=None)
     3 :     List TK.INDEX(LIST, '[', V=[])

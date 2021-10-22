@@ -2,8 +2,5 @@
 
 test: 1: "10:45a"
 
-tree1:
-    1 : Time TK.TIME(LITERAL, '10:45a', V=10:45:00)
-
-tree1:
+tree1:  "10:45a"
     1 : Time TK.TIME(LITERAL, '10:45a', V=10:45:00)

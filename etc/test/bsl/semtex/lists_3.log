@@ -2,14 +2,8 @@
 
 test: 3: "[a, b, c]"
 
-tree1:
+tree1:  "[a, b, c]"
     1 : List TK.LIST(LIST, '[', V=[Ident(), Ident(), Ident()])
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=)
-    3 :     Ident TK.IDNT(IDENTIFIER, 'b', V=)
-    4 :     Ident TK.IDNT(IDENTIFIER, 'c', V=)
-
-tree1:
-    1 : List TK.LIST(LIST, '[', V=[Ident(), Ident(), Ident()])
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=)
-    3 :     Ident TK.IDNT(IDENTIFIER, 'b', V=)
-    4 :     Ident TK.IDNT(IDENTIFIER, 'c', V=)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=None)
+    3 :     Ident TK.IDNT(IDENTIFIER, 'b', V=None)
+    4 :     Ident TK.IDNT(IDENTIFIER, 'c', V=None)

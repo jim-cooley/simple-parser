@@ -2,22 +2,12 @@
 
 test: 22: "a * -b --c"
 
-tree1:
+tree1:  "a * -b --c"
     1 : BinOp TK.MUL(BINOP, '*', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=None)
     3 :     UnaryOp TK.NEG(UNARY, '-', V=None)
-    4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=)
+    4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=None)
 
-tree2:
-    1 : UnaryOp TK.MNU2(UNARY, '--', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'c', V=)
-
-tree1:
-    1 : BinOp TK.MUL(BINOP, '*', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=)
-    3 :     UnaryOp TK.NEG(UNARY, '-', V=None)
-    4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=)
-
-tree2:
-    1 : UnaryOp TK.MNU2(UNARY, '--', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'c', V=)
+tree2:  "a * -b --c"
+    1 : UnaryOp TK.DECREMENT(UNARY, '--', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'c', V=None)

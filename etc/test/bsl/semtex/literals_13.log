@@ -2,8 +2,5 @@
 
 test: 13: "10%"
 
-tree1:
-    1 : Percent TK.PCT(LITERAL, '10%', V=0.1)
-
-tree1:
+tree1:  "10%"
     1 : Percent TK.PCT(LITERAL, '10%', V=0.1)

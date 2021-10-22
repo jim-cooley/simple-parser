@@ -2,8 +2,5 @@
 
 test: 19: "None"
 
-tree1:
-    1 : Set TK.SET(SET, 'None', V={})
-
-tree1:
+tree1:  "None"
     1 : Set TK.SET(SET, 'None', V={})
