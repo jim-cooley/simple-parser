@@ -1,0 +1,13 @@
+
+
+test: 3: "{{{}}}"
+
+tree1:  "{{{}}}"
+    1 : Set TK.SET(SET, '{', V=[Set()])
+    2 :     Set TK.SET(SET, '{', V=[Set()])
+    3 :         Set TK.SET(SET, '{', V=[None])
+
+tree1:  "{{{}}}"
+    1 : Set TK.SET(SET, '{', V=[Set()])
+    2 :     Set TK.SET(SET, '{', V=[Set()])
+    3 :         Set TK.SET(SET, '{', V=[None])

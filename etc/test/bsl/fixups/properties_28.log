@@ -1,0 +1,33 @@
+
+
+test: 28: "a(x, y).b*c(1, 2)"
+
+tree1:  "a(x, y).b*c(1, 2)"
+    1 : BinOp TK.MUL(BINOP, '*', V=None)
+    2 :     BinOp TK.DOT(BINOP, '.', V=None)
+    3 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
+    4 :             Ident TK.IDNT(IDENTIFIER, 'a', V=None)
+    5 :             List TK.PARAMETER_LIST(LIST, '(', V=[Ident(), Ident()])
+    6 :                 Ident TK.IDNT(IDENTIFIER, 'x', V=None)
+    7 :                 Ident TK.IDNT(IDENTIFIER, 'y', V=None)
+    8 :         Ident TK.IDNT(IDENTIFIER, 'b', V=None)
+    9 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
+   10 :         Ident TK.IDNT(IDENTIFIER, 'c', V=None)
+   11 :         List TK.PARAMETER_LIST(LIST, '(', V=[Int(), Int()])
+   12 :             Int TK.INT(LITERAL, '1', V=1)
+   13 :             Int TK.INT(LITERAL, '2', V=2)
+
+tree1:  "a(x, y).b*c(1, 2)"
+    1 : BinOp TK.MUL(BINOP, '*', V=None)
+    2 :     BinOp TK.DOT(BINOP, '.', V=None)
+    3 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
+    4 :             Ident TK.IDNT(IDENTIFIER, 'a', V=None)
+    5 :             List TK.PARAMETER_LIST(LIST, '(', V=[Ident(), Ident()])
+    6 :                 Ident TK.IDNT(IDENTIFIER, 'x', V=None)
+    7 :                 Ident TK.IDNT(IDENTIFIER, 'y', V=None)
+    8 :         Ident TK.IDNT(IDENTIFIER, 'b', V=None)
+    9 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
+   10 :         Ident TK.IDNT(IDENTIFIER, 'c', V=None)
+   11 :         List TK.PARAMETER_LIST(LIST, '(', V=[Int(), Int()])
+   12 :             Int TK.INT(LITERAL, '1', V=1)
+   13 :             Int TK.INT(LITERAL, '2', V=2)

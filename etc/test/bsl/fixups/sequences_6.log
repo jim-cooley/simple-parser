@@ -1,0 +1,21 @@
+
+
+test: 6: "a | b >> c | d"
+
+tree1:  "a | b >> c | d"
+    1 : List TK.PIPE(LIST, '|', V=[List(), Ident()])
+    2 :     List TK.APPLY(LIST, '>>', V=[List(), Ident()])
+    3 :         List TK.PIPE(LIST, '|', V=[Ident(), Ident()])
+    4 :             Ident TK.IDNT(IDENTIFIER, 'a', V=None)
+    5 :             Ident TK.IDNT(IDENTIFIER, 'b', V=None)
+    6 :         Ident TK.IDNT(IDENTIFIER, 'c', V=None)
+    7 :     Ident TK.IDNT(IDENTIFIER, 'd', V=None)
+
+tree1:  "a | b >> c | d"
+    1 : List TK.PIPE(LIST, '|', V=[List(), Ident()])
+    2 :     List TK.APPLY(LIST, '>>', V=[List(), Ident()])
+    3 :         List TK.PIPE(LIST, '|', V=[Ident(), Ident()])
+    4 :             Ident TK.IDNT(IDENTIFIER, 'a', V=None)
+    5 :             Ident TK.IDNT(IDENTIFIER, 'b', V=None)
+    6 :         Ident TK.IDNT(IDENTIFIER, 'c', V=None)
+    7 :     Ident TK.IDNT(IDENTIFIER, 'd', V=None)

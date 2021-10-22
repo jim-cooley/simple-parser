@@ -1,0 +1,9 @@
+
+
+test: 20: "none"
+
+tree1:  "none"
+    1 : UnaryOp TK.NONEOF(UNARY, 'none', V=None)
+
+tree1:  "none"
+    1 : UnaryOp TK.NONEOF(UNARY, 'none', V=None)

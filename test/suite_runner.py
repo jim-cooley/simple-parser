@@ -102,14 +102,15 @@ def _log_exception(e, log, name):
         print(f'{trace}')
 
 
-def _dump_tree(tree, log=None):
+def _dump_tree(tree, log=None, label=None):
     idx = 0
     for t in tree.nodes:
         if t is None:
             continue
         idx += 1
         line = _get_line(t.token.location, tree.lines).strip()
-        _t_print(log, f'\ntree{idx}:  "{line}"')
+        ll = f'({label})' if label is not None else ''
+        _t_print(log, f'\ntree{idx}:{ll}  "{line}"')
         dt = DumpTree()
         viz = dt.apply(t)
         for v in viz:

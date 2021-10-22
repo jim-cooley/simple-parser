@@ -1,0 +1,21 @@
+
+
+test: 20: "avg_daily_price := (open + close) / 2"
+
+tree1:  "avg_daily_price := (open + close) / 2"
+    1 : BinOp TK.DEFINE(BINOP, ':=', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'avg_daily_price', V=None)
+    3 :     BinOp TK.DIV(BINOP, '/', V=None)
+    4 :         BinOp TK.ADD(BINOP, '+', V=None)
+    5 :             Ident TK.IDNT(DATASET, 'open', V=None)
+    6 :             Ident TK.IDNT(DATASET, 'close', V=None)
+    7 :         Int TK.INT(LITERAL, '2', V=2)
+
+tree1:  "avg_daily_price := (open + close) / 2"
+    1 : BinOp TK.DEFINE(BINOP, ':=', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'avg_daily_price', V=None)
+    3 :     BinOp TK.DIV(BINOP, '/', V=None)
+    4 :         BinOp TK.ADD(BINOP, '+', V=None)
+    5 :             Ident TK.IDNT(DATASET, 'open', V=None)
+    6 :             Ident TK.IDNT(DATASET, 'close', V=None)
+    7 :         Int TK.INT(LITERAL, '2', V=2)

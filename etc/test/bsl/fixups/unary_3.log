@@ -1,0 +1,11 @@
+
+
+test: 3: "not b"
+
+tree1:  "not b"
+    1 : UnaryOp TK.NOT(UNARY, 'not', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'b', V=None)
+
+tree1:(post)  "not b"
+    1 : UnaryOp TK.NOT(UNARY, 'not', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'b', V=None)

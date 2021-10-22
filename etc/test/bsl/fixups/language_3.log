@@ -1,0 +1,39 @@
+
+
+test: 3: "atr = (high - low) / 2; median = (close - open) /2"
+
+tree1:  "atr = (high - low) / 2; median = (close - open) /2"
+    1 : BinOp TK.ASSIGN(BINOP, '=', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'atr', V=None)
+    3 :     BinOp TK.DIV(BINOP, '/', V=None)
+    4 :         BinOp TK.SUB(BINOP, '-', V=None)
+    5 :             Ident TK.IDNT(DATASET, 'high', V=None)
+    6 :             Ident TK.IDNT(DATASET, 'low', V=None)
+    7 :         Int TK.INT(LITERAL, '2', V=2)
+
+tree2:  "atr = (high - low) / 2; median = (close - open) /2"
+    1 : BinOp TK.ASSIGN(BINOP, '=', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'median', V=None)
+    3 :     BinOp TK.DIV(BINOP, '/', V=None)
+    4 :         BinOp TK.SUB(BINOP, '-', V=None)
+    5 :             Ident TK.IDNT(DATASET, 'close', V=None)
+    6 :             Ident TK.IDNT(DATASET, 'open', V=None)
+    7 :         Int TK.INT(LITERAL, '2', V=2)
+
+tree1:  "atr = (high - low) / 2; median = (close - open) /2"
+    1 : BinOp TK.ASSIGN(BINOP, '=', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'atr', V=None)
+    3 :     BinOp TK.DIV(BINOP, '/', V=None)
+    4 :         BinOp TK.SUB(BINOP, '-', V=None)
+    5 :             Ident TK.IDNT(DATASET, 'high', V=None)
+    6 :             Ident TK.IDNT(DATASET, 'low', V=None)
+    7 :         Int TK.INT(LITERAL, '2', V=2)
+
+tree2:  "atr = (high - low) / 2; median = (close - open) /2"
+    1 : BinOp TK.ASSIGN(BINOP, '=', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'median', V=None)
+    3 :     BinOp TK.DIV(BINOP, '/', V=None)
+    4 :         BinOp TK.SUB(BINOP, '-', V=None)
+    5 :             Ident TK.IDNT(DATASET, 'close', V=None)
+    6 :             Ident TK.IDNT(DATASET, 'open', V=None)
+    7 :         Int TK.INT(LITERAL, '2', V=2)

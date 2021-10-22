@@ -1,0 +1,9 @@
+
+
+test: 16: "true"
+
+tree1:  "true"
+    1 : Bool TK.TRUE(LITERAL, 'true', V=True)
+
+tree1:  "true"
+    1 : Bool TK.TRUE(LITERAL, 'true', V=True)

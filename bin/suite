@@ -15,13 +15,16 @@ printf "\n\n================================\n"
 printf "running tests\n"
 printf "================================\n"
 
+if [ "$prefx" == "" ]; then prefx="parser"; fi
+
 start=$(date +%s)
-if [ "$prefx" == "semtex" ]; then
-  ./test_semtex.py $suite
-else
-  ./test_parser.py $suite
-  prefx="parser"
-fi
+case "$prefx" in
+    semtex|fixups|parser)
+        ./test_${prefx}.py $suite
+        ;;
+    *)
+    printf "invalid test suite: $prefx"
+esac
 end=$(date +%s)
 
 printf "\n\n$((end - start)) seconds\n\n"

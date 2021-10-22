@@ -1,0 +1,3 @@
+
+
+test: 2: "%%backtest (rules, period='train')"
