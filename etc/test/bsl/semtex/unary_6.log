@@ -1,7 +1,7 @@
 
 
-test: 6: "--2"
+test: 6: "not 0"
 
-tree1:  "--2"
-    1 : UnaryOp TK.DECREMENT(UNARY, '--', V=None)
-    2 :     Int TK.INT(LITERAL, '2', V=2)
+tree1:  "not 0"
+result: True
+    1 : Int TK.INT(LITERAL, '0', V=True)

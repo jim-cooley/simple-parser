@@ -3,13 +3,13 @@
 test: "# sample rules file for pyser / qtradr
 
 periods = {
-    'train': today-2y..today
+    'train': (today-2y)..today
 }
 sma_periods1 = [3,5,10..20,28]
 sma_periods2 = [5,10,12,20,30,60,90]
 
 var r = range(sma_periods1)
-var r2 = range(in sma_periods2)
+var r2 = range(sma_periods2)
 
 (open, high, low, close, adj_close) = yahoo( file='spq500.csv', 2y )
 atr = (high + low) / 2
@@ -51,11 +51,11 @@ tree1:  "periods = {"
     3 :     Set TK.SET(SET, '{', V=[BinOp()])
     4 :         BinOp TK.TUPLE(BINOP, ':', V=None)
     5 :             Str TK.STR(LITERAL, 'train', V=train)
-    6 :             BinOp TK.SUB(BINOP, '-', V=None)
-    7 :                 Ident TK.TODAY(KEYWORD, 'today', V=today)
-    8 :                 BinOp TK.RANGE(BINOP, '..', V=None)
+    6 :             BinOp TK.RANGE(BINOP, '..', V=None)
+    7 :                 BinOp TK.SUB(BINOP, '-', V=None)
+    8 :                     Ident TK.TODAY(KEYWORD, 'today', V=today)
     9 :                     Duration TK.DUR(LITERAL, '2y', V=730 days, 0:00:00)
-   10 :                     Ident TK.TODAY(KEYWORD, 'today', V=today)
+   10 :                 Ident TK.TODAY(KEYWORD, 'today', V=today)
 
 tree2:  "sma_periods1 = [3,5,10..20,28]"
     1 : BinOp TK.ASSIGN(BINOP, '=', V=None)
@@ -95,9 +95,8 @@ tree5:  "# sample rules file for pyser / qtradr"
     3 :         Ident TK.IDNT(IDENTIFIER, 'r2', V=r2)
     4 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
     5 :             Ident TK.IDNT(IDENTIFIER, 'range', V=range)
-    6 :             List TK.PARAMETER_LIST(LIST, '(', V=[BinOp()])
-    7 :                 BinOp TK.IN(BINOP, 'in', V=None)
-    8 :                     Ident TK.IDNT(IDENTIFIER, 'sma_periods2', V=sma_periods2)
+    6 :             List TK.PARAMETER_LIST(LIST, '(', V=[Ident()])
+    7 :                 Ident TK.IDNT(IDENTIFIER, 'sma_periods2', V=sma_periods2)
 
 tree6:  "(open, high, low, close, adj_close) = yahoo( file='spq500.csv', 2y )"
     1 : BinOp TK.ASSIGN(BINOP, '=', V=None)

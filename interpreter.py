@@ -1,8 +1,8 @@
-from evaluate import evaluate_literal
+from evaluate import evaluate_literal, evaluate_binary_operation
 from visitor import TreeFilter, BINARY_NODE, VALUE_NODE, SEQUENCE_NODE, DEFAULT_NODE, UNARY_NODE, NATIVE_VALUE
 
 _visitNodeTypeMappings = {
-    'BinOp': BINARY_NODE,
+    'BinOp': 'process_binops',
     'Bool': 'visit_literal',
     'Command': UNARY_NODE,
     'DateDiff': 'visit_literal',
@@ -30,11 +30,10 @@ _visitNodeTypeMappings = {
 
 
 class Interpreter(TreeFilter):
-    _node_map = {}
     keywords = None
     globals = None
     symbols = None
-    _print_nodes = False
+    _verbose = False
 
     def __init__(self):
         super().__init__(mapping=_visitNodeTypeMappings, apply_parent_fixups=True)
@@ -54,14 +53,14 @@ class Interpreter(TreeFilter):
         values = []
         for n in list:
             count += 1
-            if self._print_nodes:
+            if self._verbose:
                 print(f'\ntree:{count}')
             values.append(self.visit(n))
         return values
 
     def process_binops(self, node, label=None):
-        if node is not None:
-            tkid = node.token.id
+        self.visit_binary_node(node, label)
+        return evaluate_binary_operation(node)
 
     def visit_literal(self, node, label=None):
         return evaluate_literal(node)
@@ -73,19 +72,19 @@ class Interpreter(TreeFilter):
         pass
 
     def _init(self, tree):
-        self._node_map = {}
         self.tree = tree
         self.keywords = tree.keywords
         self.globals = tree.globals
         self.symbols = globals
 
     def print_symbols(self):
-        if self.symbols is not None:
-            print(f'\n\nsymbol table:')
-            self.symbols.print(indent=1)
+        if self._verbose:
+            if self.symbols is not None:
+                print(f'\n\nsymbol table:')
+                self.symbols.print(indent=1)
 
     def _print_node(self, node):
-        if self._print_nodes:
+        if self._verbose:
             indent = '' if self._depth < 1 else ' '.ljust(self._depth * 4)
             id = ' '
             if getattr(node, 'parent', None) is not None:

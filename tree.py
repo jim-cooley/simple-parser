@@ -8,6 +8,9 @@ from tokens import TCL, TK, Token
 class AST(object):
     parent = None
 
+    def __get__(self):
+        return self.value
+
     def __getattr__(self, item):
         if item == 'properties':
             return self.token.properties

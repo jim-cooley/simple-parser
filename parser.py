@@ -1,8 +1,7 @@
 from copy import copy
-from dataclasses import dataclass
 
 from exceptions import _expected
-from scope import Scope
+from environment import Environment
 from keywords import Keywords
 from tokens import TK, TCL, _ADDITION_TOKENS, _COMPARISON_TOKENS, _FLOW_TOKENS, \
     _EQUALITY_TEST_TOKENS, _LOGIC_TOKENS, _MULTIPLICATION_TOKENS, _UNARY_TOKENS, _IDENTIFIER_TYPES, Token, \
@@ -15,26 +14,12 @@ from treedump import DumpTree
 EMPTY_SET = Set(Token(tid=TK.EMPTY, tcl=TCL.LITERAL, lex="{}", val=None))
 
 
-@dataclass
-class ParseTree(object):
-    def __init__(self, nodes=None, commands=None, keywords=None, source=None):
-        self.keywords = keywords if keywords is not None else Keywords()
-        self.globals = Scope(keywords)
-        self.commands = commands
-        self.nodes = nodes if nodes is not None else []
-        self.values = None
-        self.source = source
-        self.lines = source.splitlines(True)
-
-
 class Parser(object):
-    def __init__(self, str=None, print=True):
-        self.keywords = Keywords()
-        self._lexer = Lexer(string=str, keywords=self.keywords, print=print)
+    def __init__(self, str=None, print=True, env=None):
+        self.environment = env if env is not None else Environment(source=str)
+        self._lexer = Lexer(string=str, keywords=self.environment.keywords, print=print)
         self._skip_end_of_line = True
         self._parse_string = str  # which could be none
-        self.nodes = []
-        self.commands = []
         EMPTY_SET.token.value = EMPTY_SET
 
     # syntactic sugar (use self.peek)
@@ -47,15 +32,14 @@ class Parser(object):
     # Parser entry point
     # -----------------------------------
     def parse(self):
-        self.nodes = []
+        self.environment.nodes = []
         while self._lexer.readable():
             node = self.expression()
             if type(node).__name__ != "list":
-                self.nodes.append(node)
+                self.environment.nodes.append(node)
             else:
-                self.nodes += node  # a list can be returned
-        tree = ParseTree(nodes=self.nodes, commands=self.commands, keywords=self.keywords, source=self._parse_string)
-        return tree
+                self.environment.nodes += node  # a list can be returned
+        return self.environment
 
     # return current token with provision for fetching if there are none.
     # after the first token, self.token works fine for peek.
@@ -114,7 +98,7 @@ class Parser(object):
                 if tk.id in [TK.EOF, TK.EOL]:
                     break
             self._skip_end_of_line = True
-            self.commands.append(commands)
+            self.environment.commands.append(commands)
             return None # commands
         self._skip_end_of_line = True
         return self.flow()
@@ -167,7 +151,7 @@ class Parser(object):
             if tk.id == TK.PARAMETER_LIST:  # convert to tuple assignment
                 TK.id = TK.TUPLE
             elif node.token.t_class not in _IDENTIFIER_TYPES:
-                self._expected(expected='IDENTIFIER', found=f'{node.token.id.name}')
+                _expected(expected='IDENTIFIER', found=node.token)
             node = BinOp(left=node, op=op.map2binop(), right=self.assignment())
         return node
 

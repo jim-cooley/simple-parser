@@ -3,8 +3,11 @@
 import sys
 from abc import ABC
 
+from environment import Environment
+from eval_dispatch import binops
 from fixups import Fixups
 from interpreter import Interpreter
+from notation import PostfixPrinter
 from parser import Parser
 from test.suite_runner import TestSuiteRunner, _dump_tree, _t_print, _log_exception
 from test.test_setup import test_data
@@ -27,6 +30,7 @@ class SemanticAnalysisTestRunner(TestSuiteRunner, ABC):
         fixups = Fixups()
         interp = Interpreter()
         tree = fixups.apply(parser.parse())
+#       v = binops(tree.nodes[0])   # test generated code
         tree = interp.apply(tree)
         _dump_tree(tree, log)
 

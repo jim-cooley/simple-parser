@@ -1,4 +1,6 @@
 # parsing and semantic analysis exception handling and helper functions
+from environment import Environment
+
 
 def _contains(values, tkid):
     if values is None:
@@ -73,9 +75,24 @@ def _error(message, loc):
     raise Exception(error_text)
 
 
+def _warning(message, loc):
+    loc.offset -= 1
+    error_text = f'Warning: Invalid Syntax: {message}.'
+    _report(error_text, loc)
+    if Environment.current.strict:
+        raise Exception(error_text)
+
+
 def _runtime_error(message, loc):
     loc.offset -= 1
     error_text = f'Runtime Error: {message}.'
+    _report(error_text, loc)
+    raise Exception(error_text)
+
+
+def _runtime_warning(message, loc):
+    loc.offset -= 1
+    error_text = f'Warning: {message}.'
     _report(error_text, loc)
     raise Exception(error_text)
 

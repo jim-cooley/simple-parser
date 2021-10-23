@@ -1,6 +1,8 @@
 import os
 import traceback
 from abc import abstractmethod, ABC
+
+from notation import PostfixPrinter
 from treedump import DumpTree
 
 _LOG_DIRECTORY = "./etc/test/log"
@@ -103,6 +105,7 @@ def _log_exception(e, log, name):
 
 
 def _dump_tree(tree, log=None, label=None):
+    printer = PostfixPrinter()
     idx = 0
     for i in range(0, len(tree.nodes)):
         t = tree.nodes[i]
@@ -113,8 +116,12 @@ def _dump_tree(tree, log=None, label=None):
         ll = f'({label})' if label is not None else ''
         _t_print(log, f'\ntree{idx}:{ll}  "{line}"')
         if tree.values is not None:
-            if i < len(tree.values):
-                _t_print(log, f'result: {tree.values[i]}')
+            v = tree.values[i]
+            ty = type(v).__name__
+            if getattr(v, 'value', False):
+                v = v.value
+            print(f'notation: {printer.apply(t)}')
+            _t_print(log, f'result: {ty}({v})')
         dt = DumpTree()
         viz = dt.apply(t)
         for v in viz:

@@ -1,13 +1,13 @@
 # sample rules file for pyser / qtradr
 
 periods = {
-    'train': today-2y..today
+    'train': (today-2y)..today
 }
 sma_periods1 = [3,5,10..20,28]
 sma_periods2 = [5,10,12,20,30,60,90]
 
 var r = range(sma_periods1)
-var r2 = range(in sma_periods2)
+var r2 = range(sma_periods2)
 
 (open, high, low, close, adj_close) = yahoo( file='spq500.csv', 2y )
 atr = (high + low) / 2

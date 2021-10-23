@@ -1,7 +1,7 @@
 
 
-test: 4: "! b"
+test: 4: "not False"
 
-tree1:  "! b"
-    1 : UnaryOp TK.NOT(UNARY, '!', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'b', V=None)
+tree1:  "not False"
+result: True
+    1 : Bool TK.BOOL(LITERAL, 'False', V=True)

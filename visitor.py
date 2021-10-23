@@ -3,6 +3,7 @@ from abc import ABC, abstractmethod
 BINARY_NODE = 'visit_binary_node'
 DEFAULT_NODE = 'visit_node'
 NATIVE_VALUE = 'visit_intrinsic'
+NATIVE_LIST = 'visit_list'
 SEQUENCE_NODE = 'visit_sequence'
 UNARY_NODE = 'visit_unary_node'
 VALUE_NODE = 'visit_value'
@@ -17,6 +18,7 @@ _defaultNodeTypeMappings = {
     'PropRef': BINARY_NODE,
     'Set': SEQUENCE_NODE,
     'UnaryOp': UNARY_NODE,
+    'list': NATIVE_LIST,
 }
 
 
@@ -79,6 +81,14 @@ class TreeFilter(NodeVisitor, ABC):
         self.visit(node.left)
         self.visit(node.right)
         self.dedent()
+
+    def visit_list(self, list, label=None):
+        count = 0
+        values = []
+        for n in list:
+            count += 1
+            values.append(self.visit(n))
+        return values
 
     def visit_sequence(self, node, label=None):
         self.visit_node(node, label)

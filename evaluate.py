@@ -4,9 +4,76 @@ from exceptions import _runtime_error
 from literals import DUR
 from tokens import TK
 
+_INTRINSIC_VALUE_TYPES = ['int', 'float', 'bool']
+_INTRINSIC_STR_TYPE = 'str'
+
 
 def evaluate_literal(node):
     return node.value
+
+
+# dispatch tables
+
+
+def evaluate_binary_operation(node):
+    token = node.token
+    tid = token.id
+    left = node.left
+    l_value = left.value
+    l_ty = type(left.value).__name__
+    right = node.right
+    r_value = right.value
+    r_ty = type(right.value).__name__
+
+    # UNDONE: need dynamic dispatch here
+    if tid == TK.ADD:
+        if l_ty in _INTRINSIC_VALUE_TYPES:
+            if r_ty in _INTRINSIC_VALUE_TYPES:
+                node.value = l_value + r_value
+                return node
+            elif r_ty == _INTRINSIC_STR_TYPE:
+                node.value = f'{l_value}' + r_value
+                return node
+        elif l_ty == _INTRINSIC_STR_TYPE:
+            if r_ty == _INTRINSIC_STR_TYPE:
+                node.value = l_value + r_value
+                return node
+            else:
+                node.value = l_value + f'{r_value}'
+                return node
+        _runtime_error(f"Type mismatch for operator.__add__({l_ty}, {r_ty}", loc=token.location)
+    elif tid == TK.SUB:
+        if l_ty in _INTRINSIC_VALUE_TYPES:
+            if r_ty in _INTRINSIC_VALUE_TYPES:
+                node.value = l_value - r_value
+                return node
+        _runtime_error(f"Type mismatch for operator.__sub__({l_ty}, {r_ty}", loc=token.location)
+    elif tid == TK.MUL:
+        if l_ty in _INTRINSIC_VALUE_TYPES:
+            if r_ty in _INTRINSIC_VALUE_TYPES:
+                node.value = l_value * r_value
+                return node
+            elif r_ty == _INTRINSIC_STR_TYPE:
+                node.value = l_value + r_value
+                return node
+        elif l_ty == _INTRINSIC_STR_TYPE:
+            if r_ty in _INTRINSIC_VALUE_TYPES:
+                node.value = l_value * r_value
+                return node
+        _runtime_error(f"Type mismatch for operator.__mul__({l_ty}, {r_ty}", loc=token.location)
+    elif tid == TK.DIV:
+        if l_ty in _INTRINSIC_VALUE_TYPES:
+            if r_ty in _INTRINSIC_VALUE_TYPES:
+                node.value = l_value / r_value
+                return node
+        _runtime_error(f"Type mismatch for operator.__div__({l_ty}, {r_ty}", loc=token.location)
+    elif tid == TK.POW:
+        if l_ty in _INTRINSIC_VALUE_TYPES:
+            if r_ty in _INTRINSIC_VALUE_TYPES:
+                node.value = l_value ** r_value
+                return node
+        _runtime_error(f"Type mismatch for operator.__pow__({l_ty}, {r_ty}", loc=token.location)
+    return node
 
 
 def negate_literal(node):
@@ -97,10 +164,12 @@ def not_literal(node):
         node.value = not (v != 0)
         return node
     elif tid == TK.EMPTY:
-        return True
+        node.value = True
+        return node
     elif tid == TK.STR:
         v = node.value
         return not (v is None or len(v) == 0)
     # UNDONE: check for zero values in Time and TimeDelta
     else:
-        return False
+        node.value = False
+        return node
