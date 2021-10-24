@@ -54,9 +54,9 @@ class Literal(AST):
     def __init__(self, token):
         token.t_class = TCL.LITERAL
         self.token = token
+        self.value = token.value
         if token is not None:
             self.token.id = token.map2litval().id
-            self.value = token.value
 
 
 @dataclass

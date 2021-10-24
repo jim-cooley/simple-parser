@@ -1,5 +1,6 @@
 from datetime import timedelta
 
+from conversion import c_str2bool
 from exceptions import _runtime_error
 from literals import DUR
 from tokens import TK
@@ -85,7 +86,15 @@ def negate_literal(node):
     elif tid in [TK.BOOL]:
         node.value = not node.value
         return node
-    elif tid in [TK.STR, TK.EMPTY, TK.TIME]:
+    elif tid == TK.STR:
+        try:
+            v = - int(node.value)
+            node.value = v
+            node.token.id = TK.INT
+            return node
+        except ValueError as e:
+            pass
+    elif tid == TK.EMPTY:
         return node
     _runtime_error("Unsupported type for Unary minus", loc=token.location)
 
@@ -117,6 +126,15 @@ def increment_literal(node):
             td = timedelta(seconds=1)
         node.value += td
         return node
+    elif tid == TK.STR:
+        try:
+            v = int(node.value)
+            v += 1
+            node.value = v
+            node.token.id = TK.INT
+            return node
+        except ValueError as e:
+            pass
     _runtime_error("Unsupported type for Increment operator", loc=token.location)
 
 
@@ -148,6 +166,15 @@ def decrement_literal(node):
             td = timedelta(seconds=1)
         node.value -= td
         return node
+    elif tid == TK.STR:
+        try:
+            v = int(node.value)
+            v -= 1
+            node.value = v
+            node.token.id = TK.INT
+            return node
+        except ValueError as e:
+            pass
     _runtime_error("Unsupported type for Decrement operator", loc=token.location)
 
 
@@ -157,19 +184,24 @@ def not_literal(node):
     if tid in [TK.BOOL, TK.TRUE, TK.FALSE]:
         v = not node.value
         node.value = v
-        token.id = TK.BOOL
+        node.token.id = TK.BOOL
         return node
     elif tid in [TK.INT, TK.FLOT, TK.PCT]:
         v = node.value
         node.value = not (v != 0)
+        node.token.id = TK.BOOL
         return node
     elif tid == TK.EMPTY:
         node.value = True
+        node.token.id = TK.BOOL
         return node
     elif tid == TK.STR:
-        v = node.value
-        return not (v is None or len(v) == 0)
+        v = c_str2bool(node.value)
+        node.value = not v
+        node.token.id = TK.BOOL
+        return
     # UNDONE: check for zero values in Time and TimeDelta
     else:
         node.value = False
+        node.token.id = TK.BOOL
         return node

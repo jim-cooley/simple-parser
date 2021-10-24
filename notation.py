@@ -4,7 +4,7 @@
 #
 from enum import IntEnum
 
-from tokens import TK
+from tokens import TK, TCL
 from visitor import TreeFilter, BINARY_NODE, UNARY_NODE, SEQUENCE_NODE, NATIVE_LIST
 
 
@@ -40,18 +40,22 @@ _tk2pfx = {
     TK.DECREMENT: 'decr', # --
     TK.DEFINE: 'def',
     TK.DIV: 'div',  # /
+    TK.DUR: 'dur',
+    TK.EMPTY: 'ø',  # empty set
     TK.EVENT: 'event',  # from =>
     TK.FALL_BELOW: 'fall',  # <|
-    TK.FALSE: 'false',
+    TK.FALSE: 'b',
+    TK.FLOT: 'f',
     TK.FUNCTION: 'fn',
     TK.IN: 'in',
     TK.INCREMENT: 'incr',
     TK.INDEX: '[',  # indexing expression
+    TK.INT: 'i',
     TK.ISEQ: 'iseq',  # ==
     TK.LIST: 'list',
     TK.MUL: 'mul',  # *
     TK.NEG: 'neg',  # unary - (negate)
-    TK.NONE: 'none',
+    TK.NONE: 'lit',
     TK.NONEOF: 'noneof',  # none:
     TK.NOT: 'not',
     TK.NOW: 'now',
@@ -67,9 +71,11 @@ _tk2pfx = {
     TK.SELL: 'sell',
     TK.SET: 'set',
     TK.SIGNAL: 'signal',
+    TK.STR: 'str',
     TK.SUB: 'sub',  # - (subtract)
     TK.TODAY: 'today',
-    TK.TRUE: 'true',
+    TK.TIME: 'time',
+    TK.TRUE: 'b',
     TK.TUPLE: 'tuple',
     TK.VAR: 'var',
 }
@@ -135,11 +141,13 @@ class PostfixPrinter(TreeFilter):
         self._notes.append(_get_grouping(node.token, GRP.CLOSE))
 
     def _print_notation(self, node):
-        sym = ''
+        val = ''
         if node.token is not None:
             val = f'{_tk2pfx[node.token.id]}' if node.token.id in _tk2pfx else node.token.lexeme
-            sym = f'{val}' if node.token is not None else ''
-        self._notes.append(f'{sym}')
+            if node.token.t_class == TCL.LITERAL:
+                v = f'{node.token.value}'
+                val = f'{val}({v.lower()})'
+        self._notes.append(f'{val}')
 
 
 def _get_grouping(token, grp):

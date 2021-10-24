@@ -3,4 +3,4 @@
 test: 20: "none"
 
 tree1:  "none"
-    1 : UnaryOp TK.NONEOF(UNARY, 'none', V=none)
+    1 : Literal TK.NONE(LITERAL, 'none', V=None)

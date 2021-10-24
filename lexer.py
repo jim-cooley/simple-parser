@@ -16,9 +16,9 @@ class Lexer(object):
     _cline: string = None
     token: Token = None
 
-    def __init__(self, string, keywords=None, print=True):
-        stream = BytesIO(bytes(string, 'ascii', errors='ignore'))
-        self._verbose=print
+    def __init__(self, code, keywords=None, verbose=True):
+        stream = BytesIO(bytes(code, 'utf-8', errors='ignore'))
+        self._verbose = verbose
         self._stream = stream
         self._state = _.ST.MAIN
         self._has_more = True

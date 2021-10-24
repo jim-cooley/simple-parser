@@ -121,6 +121,8 @@ def _dump_tree(tree, log=None, label=None):
             if getattr(v, 'value', False):
                 v = v.value
             print(f'notation: {printer.apply(t)}')
+            if v is None:
+                ty = 'Lit'
             _t_print(log, f'result: {ty}({v})')
         dt = DumpTree()
         viz = dt.apply(t)

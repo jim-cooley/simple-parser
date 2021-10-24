@@ -7,20 +7,20 @@ from tokens import TK, TCL, _ADDITION_TOKENS, _COMPARISON_TOKENS, _FLOW_TOKENS, 
     _EQUALITY_TEST_TOKENS, _LOGIC_TOKENS, _MULTIPLICATION_TOKENS, _UNARY_TOKENS, _IDENTIFIER_TYPES, Token, \
     _ASSIGNMENT_TOKENS
 from lexer import Lexer
-from tree import UnaryOp, BinOp, FnCall, PropRef, PropCall, Command, Index, Ident
+from tree import UnaryOp, BinOp, FnCall, PropRef, PropCall, Command, Index, Ident, Literal
 from literals import Duration, Float, Int, Percent, Str, Time, Bool, List, Set
 from treedump import DumpTree
 
-EMPTY_SET = Set(Token(tid=TK.EMPTY, tcl=TCL.LITERAL, lex="{}", val=None))
+LIT_EMPTY_SET = Set(Token(tid=TK.EMPTY, tcl=TCL.LITERAL, lex="{}", val=None))
+LIT_NONE = Literal(Token(tid=TK.NONE, tcl=TCL.LITERAL, lex="none", val=None))
 
 
 class Parser(object):
     def __init__(self, str=None, print=True, env=None):
         self.environment = env if env is not None else Environment(source=str)
-        self._lexer = Lexer(string=str, keywords=self.environment.keywords, print=print)
+        self._lexer = Lexer(code=str, keywords=self.environment.keywords, verbose=print)
         self._skip_end_of_line = True
         self._parse_string = str  # which could be none
-        EMPTY_SET.token.value = EMPTY_SET
 
     # syntactic sugar (use self.peek)
     def __getattr__(self, item):
@@ -217,8 +217,6 @@ class Parser(object):
             node = Bool(token, False)
         elif token.id == TK.TRUE:
             node = Bool(token, True)
-        elif token.id == TK.NONE:
-            node = Set(token, None)
         elif token.id == TK.INT:
             node = Int(token)
         elif token.id == TK.FLOT:
@@ -232,7 +230,11 @@ class Parser(object):
         elif token.id == TK.QUOT:
             node = Str(token)
         elif token.id == TK.EMPTY:
-            node = EMPTY_SET
+            node = LIT_EMPTY_SET
+            node.token.location=token.location
+        elif token.id == TK.NONE:
+            node = Literal(token)
+            token.t_class = TCL.LITERAL
         elif token.id == TK.LBRC:
             self.consume(TK.LBRC)
             node = Set(token, self.sequence(TK.COMA))

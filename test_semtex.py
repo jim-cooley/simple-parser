@@ -24,13 +24,15 @@ class SemanticAnalysisTestRunner(TestSuiteRunner, ABC):
 
     def __init__(self, test_data, skip_tests=None):
         super().__init__(test_data, skip_tests, log_dir='./etc/test/log/semtex')
+        self.verbose = False
 
     def run_unprotected_test(self, log, name, test):
         parser = Parser(str=test, print=False)
         fixups = Fixups()
         interp = Interpreter()
         tree = fixups.apply(parser.parse())
-#       v = binops(tree.nodes[0])   # test generated code
+        if self.verbose:
+            _dump_tree(tree, log)
         tree = interp.apply(tree)
         _dump_tree(tree, log)
 

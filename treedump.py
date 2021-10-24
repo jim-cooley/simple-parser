@@ -15,6 +15,7 @@ _nodeTypeMappings = {
     'Index': BINARY_NODE,
     'Int': VALUE_NODE,
     'List': SEQUENCE_NODE,
+    'Literal': VALUE_NODE,
     'Node': DEFAULT_NODE,
     'Percent': VALUE_NODE,
     'PropCall': BINARY_NODE,

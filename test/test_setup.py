@@ -4,6 +4,8 @@ test_data = {
 
     'assignment': 'assignment.t',
     'binops': 'binops.t',
+    'boolean': 'boolean.t',
+    'boolean_var': 'boolean_var.t',
     'commands': 'commands.t',
     'duration': 'duration.t',
     'empty_sets': 'empty_sets.t',
@@ -18,7 +20,6 @@ test_data = {
     'lifting': 'lifting.t',
     'lists': 'lists.t',
     'literals': 'literals.t',
-    'logical': 'logical.t',
     'parameters': 'parameters.t',
     'properties': 'properties.t',
     'ranges' : 'ranges.t',

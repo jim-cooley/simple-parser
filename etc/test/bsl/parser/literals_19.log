@@ -3,4 +3,4 @@
 test: 19: "None"
 
 tree1:  "None"
-    1 : Set TK.SET(SET, 'None', V={})
+    1 : Ident TK.IDNT(IDENTIFIER, 'None', V=None)
