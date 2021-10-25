@@ -47,7 +47,7 @@ tree3:  "trade_size := position * 10%"
     5 :         Percent TK.PCT(LITERAL, '10%', V=0.1)
 
 tree4:  "# sample rules file for pyser / qtradr"
-    1 : UnaryOp TK.DEFINE(UNARY, 'def', V=None)
+    1 : UnaryOp TK.DEFATTR(UNARY, 'def', V=None)
     2 :     BinOp TK.ASSIGN(BINOP, '=', V=None)
     3 :         Ident TK.BUY(KEYWORD, 'buy', V=buy)
     4 :         Set TK.SET(SET, '{', V=[BinOp()])
@@ -56,7 +56,7 @@ tree4:  "# sample rules file for pyser / qtradr"
     7 :                 Ident TK.IDNT(IDENTIFIER, 'trade_size', V=trade_size)
 
 tree5:  "# sample rules file for pyser / qtradr"
-    1 : UnaryOp TK.DEFINE(UNARY, 'def', V=None)
+    1 : UnaryOp TK.DEFATTR(UNARY, 'def', V=None)
     2 :     BinOp TK.ASSIGN(BINOP, '=', V=None)
     3 :         Ident TK.SELL(KEYWORD, 'sell', V=sell)
     4 :         Set TK.SET(SET, '{', V=[BinOp()])

@@ -1,6 +1,7 @@
 
 test_data = {
-    'regression': 'regression.p',
+    'regression': 'regression.t',
+    'regress': 'regress.p',
 
     'assignment': 'assignment.t',
     'binops': 'binops.t',

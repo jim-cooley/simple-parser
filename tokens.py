@@ -129,8 +129,9 @@ class TK(IntEnum):
     BUY = auto()
     COMMAND = auto()
     COMPARE = auto()    # ?  a ? b is to compare a to b
-    DECREMENT = auto() # --
-    DEFINE = auto()
+    DECREMENT = auto()  # --
+    DEFINE = auto()     # :=
+    DEFATTR = auto()    # 'def' <ident> =
     DIV = auto()  # /
     DOTPROD = auto() # •
     EVENT = auto()  # from =>

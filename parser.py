@@ -118,9 +118,8 @@ class Parser(object):
 
     def parse_definition(self):
         op = self.peek()
-        if self.match([TK.DEFINE]):
+        if self.match([TK.DEFATTR]):
             node = UnaryOp(op, self.flow())
-            self.advance()
             return node
         elif op.id == TK.VAR:
             self.advance()
