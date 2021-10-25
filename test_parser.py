@@ -9,7 +9,7 @@ from test.test_setup import test_data
 _test_suite = True       # False is useful for debugging, interactive.  True for test suites
 _skip_tests = [
     'regression',
-    'errors',
+    'regress',
     'simple'
 ]
 

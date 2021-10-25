@@ -7,4 +7,4 @@ tree1:  "not 1"
     2 :     Int TK.INT(LITERAL, '1', V=1)
 
 tree1:(post)  "not 1"
-    1 : Int TK.INT(LITERAL, '1', V=False)
+    1 : Int TK.BOOL(LITERAL, '1', V=False)
