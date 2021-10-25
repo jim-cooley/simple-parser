@@ -2,5 +2,5 @@
 
 test: 2: "1m"
 
-tree1:  "1m"
+tree1:  1m
     1 : Duration TK.DUR(LITERAL, '1m', V=0:01:00)

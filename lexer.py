@@ -12,14 +12,14 @@ _MAX_TOKEN_LEN = 128  # or whatever you please, controls length of identifier am
 
 class Lexer(object):
 
-    def __init__(self, code, keywords=None, verbose=True):
+    def __init__(self, source, keywords=None, verbose=True):
         self._char: string = None
         self._chid: int = None
         self._cline: string = None
         self._has_more = True
         self.token: Token = None
-        self.text = code
-        self._len = len(code)
+        self.text = source
+        self._len = len(source)
         self._head = 0
         self._loc = Token.Loc(0, 0)
         self._skip_end_of_line = True
@@ -34,7 +34,7 @@ class Lexer(object):
     def __next__(self):
         if not self.readable():
             raise StopIteration
-        return self.advance(skip_white_space=True, skip_end_of_line=False)
+        return self._fetch(skip_white_space=True, skip_end_of_line=False)
 
     def readable(self) -> bool:
         return self._has_more  # has more is true until we return one TK.EOF
@@ -87,7 +87,7 @@ class Lexer(object):
                     self.get_char()
             tk.id = TK(cs)
             tk.location = copy.copy(self._loc)
-            if not skip_white_space or tk.id == TK.WHT:
+            if skip_white_space and tk.id == TK.WHT:
                 continue
             if tk.id == TK.EOL:
                 self._loc.line += 1

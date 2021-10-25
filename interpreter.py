@@ -37,7 +37,7 @@ class Interpreter(TreeFilter):
 
     def apply(self, tree=None):
         self._init(tree)
-        self.tree.values = self.visit(self.tree.nodes)
+        self.tree.values = self.visit(self.tree.root)
         return self.tree
 
     def visit_node(self, node, label=None):
@@ -79,7 +79,7 @@ class Interpreter(TreeFilter):
         if self._verbose:
             if self.symbols is not None:
                 print(f'\n\nsymbol table:')
-                self.symbols.print(indent=1)
+                self.symbols.printall(indent=1)
 
     def _print_node(self, node):
         if self._verbose:

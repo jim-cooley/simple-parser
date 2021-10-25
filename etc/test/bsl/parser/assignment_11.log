@@ -2,7 +2,7 @@
 
 test: 11: "trade_size := position * 10%"
 
-tree1:  "trade_size := position * 10%"
+tree1:  trade_size := position * 10%
     1 : BinOp TK.DEFINE(BINOP, ':=', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'trade_size', V=trade_size)
     3 :     BinOp TK.MUL(BINOP, '*', V=None)

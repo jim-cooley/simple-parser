@@ -1,3 +1,7 @@
 
 
 test: 1: "%%backtest"
+
+tree1:  %%backtest
+    1 : Command TK.PCT2(UNARY, '%%', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'backtest', V=backtest)

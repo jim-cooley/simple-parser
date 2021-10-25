@@ -25,14 +25,17 @@ class Environment(object):
         STRICT = 'strict'
         FORCE_ERRORS = 'force_errors'
 
-    def __init__(self, nodes=None, commands=None, keywords=None, source=None, options=None):
+    def __init__(self, source=None, nodes=None, commands=None, keywords=None, options=None):
         self.keywords = keywords if keywords is not None else Keywords()
         self.globals = Scope(keywords)
         self.commands = commands if commands is not None else []
+        self.trees = []
+
         self.nodes = nodes if nodes is not None else []
         self.values = None
-        self.source = source
-        self.lines = source.splitlines(True)
+        self.lines = None
+        self.source = self.set_source(source) if source is not None else None
+        self.tokens = None
         self.options = options if options is not None else {}
         Environment.current = self
 
@@ -54,6 +57,11 @@ class Environment(object):
         if key not in self.options:
             return default
         return self.options[key]
+
+    def set_source(self, source):
+        self.source = source
+        self.lines = source.splitlines(True)
+        return source
 
 
 _option_defaults = {

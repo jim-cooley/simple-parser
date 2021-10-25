@@ -2,7 +2,7 @@
 
 test: 43: "1h + 30m + 10s"
 
-tree1:  "1h + 30m + 10s"
+tree1:  1h + 30m + 10s
     1 : BinOp TK.ADD(BINOP, '+', V=None)
     2 :     BinOp TK.ADD(BINOP, '+', V=None)
     3 :         Duration TK.DUR(LITERAL, '1h', V=1:00:00)

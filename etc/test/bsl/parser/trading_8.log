@@ -2,7 +2,7 @@
 
 test: 8: "atr = (high + low) / 2; median = (close + open) /2"
 
-tree1:  "atr = (high + low) / 2; median = (close + open) /2"
+tree1:  atr = (high + low) / 2; median = (close + open) /2
     1 : BinOp TK.ASSIGN(BINOP, '=', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'atr', V=atr)
     3 :     BinOp TK.DIV(BINOP, '/', V=None)
@@ -11,7 +11,7 @@ tree1:  "atr = (high + low) / 2; median = (close + open) /2"
     6 :             Ident TK.IDNT(DATASET, 'low', V=low)
     7 :         Int TK.INT(LITERAL, '2', V=2)
 
-tree2:  "atr = (high + low) / 2; median = (close + open) /2"
+tree2:  atr = (high + low) / 2; median = (close + open) /2
     1 : BinOp TK.ASSIGN(BINOP, '=', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'median', V=median)
     3 :     BinOp TK.DIV(BINOP, '/', V=None)

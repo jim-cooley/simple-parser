@@ -56,11 +56,11 @@ _KEYWORDS = [
     (TK.IDNT, TCL.DATASET, "open"),
 
     # functions
-    (TK.FUNCTION, TCL.KEYWORD, 'apply'),
-    (TK.FUNCTION, TCL.KEYWORD, 'columns'),
-    (TK.FUNCTION, TCL.KEYWORD, 'expr'),
-    (TK.FUNCTION, TCL.KEYWORD, 'fillempty'),
-    (TK.FUNCTION, TCL.KEYWORD, 'select'),
+    (TK.IDNT, TCL.KEYWORD, 'apply'),
+    (TK.IDNT, TCL.KEYWORD, 'columns'),
+    (TK.IDNT, TCL.KEYWORD, 'expr'),
+    (TK.IDNT, TCL.KEYWORD, 'fillempty'),
+    (TK.IDNT, TCL.KEYWORD, 'select'),
     (TK.IDNT, TCL.FUNCTION, "ema"),
     (TK.IDNT, TCL.FUNCTION, "sma"),
 ]

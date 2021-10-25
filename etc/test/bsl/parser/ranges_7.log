@@ -2,7 +2,7 @@
 
 test: 7: "{ 'train': today-2y..today }"
 
-tree1:  "{ 'train': today-2y..today }"
+tree1:  { 'train': today-2y..today }
     1 : Set TK.SET(SET, '{', V=[BinOp()])
     2 :     BinOp TK.TUPLE(BINOP, ':', V=None)
     3 :         Str TK.STR(LITERAL, 'train', V=train)

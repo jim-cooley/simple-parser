@@ -2,6 +2,6 @@
 
 test: 21: "-1y"
 
-tree1:  "-1y"
+tree1:  -1y
     1 : UnaryOp TK.NEG(UNARY, '-', V=None)
     2 :     Duration TK.DUR(LITERAL, '1y', V=365 days, 0:00:00)

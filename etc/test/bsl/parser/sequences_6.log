@@ -2,7 +2,7 @@
 
 test: 6: "a | b >> c | d"
 
-tree1:  "a | b >> c | d"
+tree1:  a | b >> c | d
     1 : List TK.PIPE(LIST, '|', V=[List(), Ident()])
     2 :     List TK.APPLY(LIST, '>>', V=[List(), Ident()])
     3 :         List TK.PIPE(LIST, '|', V=[Ident(), Ident()])

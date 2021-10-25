@@ -2,7 +2,7 @@
 
 test: 10: "start: open.delay(1d) | buy"
 
-tree1:  "start: open.delay(1d) | buy"
+tree1:  start: open.delay(1d) | buy
     1 : List TK.PIPE(LIST, '|', V=[BinOp(), Ident()])
     2 :     BinOp TK.TUPLE(BINOP, ':', V=None)
     3 :         Ident TK.IDNT(IDENTIFIER, 'start', V=start)

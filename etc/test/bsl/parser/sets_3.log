@@ -2,7 +2,7 @@
 
 test: 3: "{{{a}}}"
 
-tree1:  "{{{a}}}"
+tree1:  {{{a}}}
     1 : Set TK.SET(SET, '{', V=[Set()])
     2 :     Set TK.SET(SET, '{', V=[Set()])
     3 :         Set TK.SET(SET, '{', V=[Ident()])

@@ -6,8 +6,8 @@ from abc import ABC
 from fixups import Fixups
 from interpreter import Interpreter
 from parser import Parser
-from notation import PostfixPrinter
-from test.suite_runner import TestSuiteRunner, _dump_tree, _t_print, _log_exception
+from notation import NotationPrinter
+from test.suite_runner import TestSuiteRunner, _dump_trees, _t_print, _log_exception
 from test.test_setup import test_data
 
 _test_suite = True       # False is useful for debugging, interactive.  True for test suites
@@ -22,10 +22,10 @@ class PostfixPrinterRunner(TestSuiteRunner, ABC):
 
     def run_unprotected_test(self, log, name, test):
         parser = Parser(str=test, verbose=False)
-        printer = PostfixPrinter()
+        printer = NotationPrinter()
         parse_tree = parser.parse()
         idx = 0
-        for t in parse_tree.nodes:
+        for t in parse_tree.root:
             idx += 1
             print(f'{idx:5d}: {printer.apply(t)}')
 

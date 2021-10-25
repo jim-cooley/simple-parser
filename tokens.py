@@ -270,7 +270,7 @@ class Token:
     @dataclass
     class Loc:
         def __init__(self, line=0, offset=0):
-            self.line = 0
+            self.line = line
             self.offset = offset
 
     def __init__(self, tid, tcl=None, lex="", val=None, loc=None, prop=None):
@@ -302,6 +302,8 @@ class Token:
         _tcl = f'{self.t_class.name}' if hasattr(self.t_class, "name") else 'TCL({self.t_type})'
         _tv = 'None' if self.value is None else f'{self.value}'
         _tl = f'\'{self.lexeme}\''
+        if _tl == '\'\n\'':
+            _tl = "'\\n'"
         if self.properties is not None and len(self.properties.keys()) > 0:
             _props = f': {self.properties}'
         else:

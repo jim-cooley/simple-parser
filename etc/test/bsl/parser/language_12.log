@@ -2,7 +2,7 @@
 
 test: 12: "close >| sma(10) and close <| sma(20) | signal"
 
-tree1:  "close >| sma(10) and close <| sma(20) | signal"
+tree1:  close >| sma(10) and close <| sma(20) | signal
     1 : List TK.PIPE(LIST, '|', V=[BinOp(), Ident()])
     2 :     BinOp TK.AND(BINOP, 'and', V=None)
     3 :         BinOp TK.RISE_ABOVE(BINOP, '>|', V=None)

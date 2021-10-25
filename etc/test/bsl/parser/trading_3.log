@@ -2,7 +2,7 @@
 
 test: 3: "any:{ close >| sma(10), close >| sma(20) }:(threshold=0.01) | signal >> delay(1d) | atr => buy"
 
-tree1:  "any:{ close >| sma(10), close >| sma(20) }:(threshold=0.01) | signal >> delay(1d) | atr => buy"
+tree1:  any:{ close >| sma(10), close >| sma(20) }:(threshold=0.01) | signal >> delay(1d) | atr => buy
     1 : List TK.RAISE(LIST, '=>', V=[List(), Ident()])
     2 :     List TK.PIPE(LIST, '|', V=[List(), Ident()])
     3 :         List TK.APPLY(LIST, '>>', V=[List(), FnCall()])

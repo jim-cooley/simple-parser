@@ -2,7 +2,7 @@
 
 test: 14: "a.b(x) | c"
 
-tree1:  "a.b(x) | c"
+tree1:  a.b(x) | c
     1 : List TK.PIPE(LIST, '|', V=[PropRef(), Ident()])
     2 :     PropRef TK.REF(BINOP, '.', V=None)
     3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)

@@ -42,7 +42,7 @@ class Fixups(TreeModifier, ABC):
 
     def apply(self, tree=None):
         self._init(tree)
-        self.visit(self.tree.nodes)
+        self.visit(self.tree.root)
         return self.tree
 
     # overridden:
@@ -129,7 +129,7 @@ class Fixups(TreeModifier, ABC):
     def print_symbols(self):
         if self.global_symbols is not None:
             print(f'\n\nsymbol table:')
-            self.global_symbols.print(indent=1)
+            self.global_symbols.printall(indent=1)
 
     def _init(self, tree):
         self.tree = tree

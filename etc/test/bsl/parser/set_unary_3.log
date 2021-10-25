@@ -2,7 +2,7 @@
 
 test: 3: "all:{a, b, c}"
 
-tree1:  "all:{a, b, c}"
+tree1:  all:{a, b, c}
     1 : BinOp TK.TUPLE(BINOP, ':', V=None)
     2 :     UnaryOp TK.ALL(UNARY, 'all', V=all)
     3 :     Set TK.SET(SET, '{', V=[Ident(), Ident(), Ident()])

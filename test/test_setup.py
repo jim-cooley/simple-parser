@@ -21,6 +21,7 @@ test_data = {
     'lifting': 'lifting.t',
     'lists': 'lists.t',
     'literals': 'literals.t',
+    'none': 'none.t',
     'parameters': 'parameters.t',
     'properties': 'properties.t',
     'ranges' : 'ranges.t',

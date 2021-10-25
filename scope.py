@@ -38,7 +38,9 @@ class Scope(AST):
         scope = self
         while scope is not None:
             if token.lexeme in scope._symbols:
-                return scope._symbols[token.lexeme]
+                tk = copy(scope._symbols[token.lexeme])
+                tk.location = token.location
+                return tk
             scope = scope.parent
         return default
 

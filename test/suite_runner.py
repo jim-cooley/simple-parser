@@ -2,7 +2,7 @@ import os
 import traceback
 from abc import abstractmethod, ABC
 
-from notation import PostfixPrinter
+from notation import NotationPrinter
 from treedump import DumpTree
 
 _LOG_DIRECTORY = "./etc/test/log"
@@ -104,28 +104,58 @@ def _log_exception(e, log, name):
         print(f'{trace}')
 
 
-def _dump_tree(tree, log=None, label=None):
-    printer = PostfixPrinter()
+def _dump_environment(env, log=None, label=None):
+    _dump_tokens(env)
+    _dump_trees(env, log)
+    _dump_commands(env, log)
+
+
+def _dump_commands(env, log=None, label=None):
+    printer = NotationPrinter()
     idx = 0
-    for i in range(0, len(tree.nodes)):
-        t = tree.nodes[i]
+    for i in range(0, len(env.commands)):
+        t = env.commands[i]
         if t is None:
             continue
         idx += 1
-        line = _get_line(t.token.location, tree.lines).strip()
+        line = _get_line(t.token.location, env.lines).strip()
         ll = f'({label})' if label is not None else ''
-        _t_print(log, f'\ntree{idx}:{ll}  "{line}"')
-        if tree.values is not None:
-            v = tree.values[i]
+        _t_print(log, f'\ntree{idx}:{ll}  {line}')
+        print(f'notation: {printer.apply(t)}')
+        dt = DumpTree()
+        viz = dt.apply(t)
+        for v in viz:
+            _t_print(log, v)
+
+
+def _dump_tokens(env):
+    print('tokens:')
+    env.tokens.printall()
+
+
+def _dump_trees(env, log=None, label=None):
+    printer = NotationPrinter()
+    idx = 0
+    trees = env.trees
+    for i in range(0, len(trees)):
+        t = trees[i]
+        if t is None:
+            continue
+        idx += 1
+        line = _get_line(t.root.token.location, env.lines).strip()
+        ll = f'({label})' if label is not None else ''
+        _t_print(log, f'\ntree{idx}:{ll}  {line}')
+        print(f'notation: {printer.apply(t.root)}')
+        if env.values is not None:
+            v = env.values[i]
             ty = type(v).__name__
             if getattr(v, 'value', False):
                 v = v.value
-            print(f'notation: {printer.apply(t)}')
             if v is None:
                 ty = 'Lit'
             _t_print(log, f'result: {ty}({v})')
         dt = DumpTree()
-        viz = dt.apply(t)
+        viz = dt.apply(t.root)
         for v in viz:
             _t_print(log, v)
 

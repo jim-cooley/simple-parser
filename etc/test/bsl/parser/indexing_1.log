@@ -2,7 +2,7 @@
 
 test: 1: "a[]"
 
-tree1:  "a[]"
+tree1:  a[]
     1 : Index TK.INDEX(BINOP, '[', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    3 :     List TK.INDEX(LIST, '[', V=[])
+    3 :     List TK.TUPLE(LIST, '[', V=[])

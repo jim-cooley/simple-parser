@@ -2,7 +2,7 @@
 
 test: 13: "close >| sma(10) and close <| sma(20) | signal >> open.delay(1d)"
 
-tree1:  "close >| sma(10) and close <| sma(20) | signal >> open.delay(1d)"
+tree1:  close >| sma(10) and close <| sma(20) | signal >> open.delay(1d)
     1 : List TK.APPLY(LIST, '>>', V=[List(), PropRef()])
     2 :     List TK.PIPE(LIST, '|', V=[BinOp(), Ident()])
     3 :         BinOp TK.AND(BINOP, 'and', V=None)

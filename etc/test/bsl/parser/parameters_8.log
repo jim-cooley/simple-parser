@@ -1,13 +1,15 @@
 
 
-test: 8: ":(a = 5, b='a')"
+test: 8: "close{weekly}.sma(20)"
 
-tree1:  ":(a = 5, b='a')"
-    1 : BinOp TK.TUPLE(BINOP, ':', V=None)
-    2 :     List TK.PARAMETER_LIST(LIST, '(', V=[BinOp(), BinOp()])
-    3 :         BinOp TK.ASSIGN(BINOP, '=', V=None)
-    4 :             Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    5 :             Int TK.INT(LITERAL, '5', V=5)
-    6 :         BinOp TK.ASSIGN(BINOP, '=', V=None)
-    7 :             Ident TK.IDNT(IDENTIFIER, 'b', V=b)
-    8 :             Str TK.STR(LITERAL, 'a', V=a)
+tree1:  close{weekly}.sma(20)
+    1 : Ident TK.IDNT(DATASET, 'close', V=close)
+
+tree2:  close{weekly}.sma(20)
+    1 : BinOp TK.DOT(BINOP, '.', V=None)
+    2 :     Set TK.SET(SET, '{', V=[Ident()])
+    3 :         Ident TK.IDNT(IDENTIFIER, 'weekly', V=weekly)
+    4 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
+    5 :         Ident TK.IDNT(FUNCTION, 'sma', V=sma)
+    6 :         List TK.PARAMETER_LIST(LIST, '(', V=[Int()])
+    7 :             Int TK.INT(LITERAL, '20', V=20)

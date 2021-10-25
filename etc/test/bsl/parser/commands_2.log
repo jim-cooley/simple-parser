@@ -1,3 +1,13 @@
 
 
 test: 2: "%%backtest (rules, period='train')"
+
+tree1:  %%backtest (rules, period='train')
+    1 : Command TK.PCT2(UNARY, '%%', V=None)
+    2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
+    3 :         Ident TK.IDNT(IDENTIFIER, 'backtest', V=backtest)
+    4 :         List TK.PARAMETER_LIST(LIST, '(', V=[Ident(), BinOp()])
+    5 :             Ident TK.IDNT(IDENTIFIER, 'rules', V=rules)
+    6 :             BinOp TK.ASSIGN(BINOP, '=', V=None)
+    7 :                 Ident TK.IDNT(IDENTIFIER, 'period', V=period)
+    8 :                 Str TK.STR(LITERAL, 'train', V=train)

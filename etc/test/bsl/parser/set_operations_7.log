@@ -2,7 +2,7 @@
 
 test: 7: "{a} ^ {b}"
 
-tree1:  "{a} ^ {b}"
+tree1:  {a} ^ {b}
     1 : BinOp TK.POW(BINOP, '^', V=None)
     2 :     Set TK.SET(SET, '{', V=[Ident()])
     3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)

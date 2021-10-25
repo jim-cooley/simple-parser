@@ -63,9 +63,8 @@ def _match_cl_set(node, tcl_list):
 
 # error reporting
 def _expected(expected, found):
-    token = found
-    message = f'Expected {expected}, found {token.id.name}'
-    _error(message, token.location)
+    message = f'Expected {expected}, found {found.id.name}'
+    _error(message, found.location)
 
 
 def _error(message, loc):

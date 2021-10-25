@@ -2,6 +2,6 @@
 
 test: 16: "-1m"
 
-tree1:  "-1m"
+tree1:  -1m
     1 : UnaryOp TK.NEG(UNARY, '-', V=None)
     2 :     Duration TK.DUR(LITERAL, '1m', V=0:01:00)

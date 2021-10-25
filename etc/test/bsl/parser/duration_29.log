@@ -2,6 +2,6 @@
 
 test: 29: "+1s"
 
-tree1:  "+1s"
+tree1:  +1s
     1 : UnaryOp TK.POS(UNARY, '+', V=None)
     2 :     Duration TK.DUR(LITERAL, '1s', V=0:00:01)
