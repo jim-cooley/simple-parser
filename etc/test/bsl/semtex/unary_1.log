@@ -3,5 +3,5 @@
 test: 1: "+ 2"
 
 tree1:  "+ 2"
-result: 2
+result: int(2)
     1 : Int TK.INT(LITERAL, '2', V=2)
