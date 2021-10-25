@@ -96,6 +96,11 @@ class TK(IntEnum):
     TIME = auto()  # h:m:s
     TLDE = auto()  # ~
     USCR = auto()  # _
+    #
+    SPEC = auto()  # special character tokens
+    LATX = auto()  # LaTeX supported escape codes %code vs \code{}
+    HTML_ESCAPE = auto()  # Html-style escape code: &ne vs &ne;
+    UNICODE = auto()  # \u...
 
     #
     # specialized tokens (error states):
@@ -127,6 +132,7 @@ class TK(IntEnum):
     DECREMENT = auto() # --
     DEFINE = auto()
     DIV = auto()  # /
+    DOTPROD = auto() # •
     EVENT = auto()  # from =>
     FALL_BELOW = auto()  # <|
     FALSE = auto()
@@ -136,6 +142,7 @@ class TK(IntEnum):
     INDEX = auto()  # indexing expression
     ISEQ = auto()  # ==
     LIST = auto()
+    MOD = auto()
     MUL = auto()  # *
     NEG = auto()  # unary - (negate)
     NONE = auto()
@@ -239,6 +246,12 @@ _tk2type = {
     TK.VAR: TCL.UNARY,
     TK.WHT: TCL.NONE,
 }
+# maps extended special characters directly to tokens
+u16_to_tkid = {
+    '•': TK.DOTPROD,
+    'Ø': TK.EMPTY,
+}
+
 # token sets for the parser
 _ADDITION_TOKENS = [TK.PLUS, TK.MNUS]
 _ASSIGNMENT_TOKENS = [TK.COEQ, TK.EQLS, TK.ASSIGN, TK.MNEQ, TK.PLEQ]

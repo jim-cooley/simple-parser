@@ -27,10 +27,10 @@ class SemanticAnalysisTestRunner(TestSuiteRunner, ABC):
         self.verbose = False
 
     def run_unprotected_test(self, log, name, test):
-        parser = Parser(str=test, print=False)
+        parser = Parser(verbose=False)
         fixups = Fixups()
         interp = Interpreter()
-        tree = fixups.apply(parser.parse())
+        tree = fixups.apply(parser.parse(text=test))
         if self.verbose:
             _dump_tree(tree, log)
         tree = interp.apply(tree)

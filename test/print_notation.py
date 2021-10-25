@@ -21,7 +21,7 @@ class PostfixPrinterRunner(TestSuiteRunner, ABC):
         super().__init__(test_data, skip_tests, log_dir='./etc/test/log/postfix')
 
     def run_unprotected_test(self, log, name, test):
-        parser = Parser(str=test, print=False)
+        parser = Parser(str=test, verbose=False)
         printer = PostfixPrinter()
         parse_tree = parser.parse()
         idx = 0

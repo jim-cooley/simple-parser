@@ -44,6 +44,7 @@ _KEYWORDS = [
     (TK.AND, TCL.LOGICAL, 'and'),
     (TK.DEFINE, TCL.UNARY, 'def'),
     (TK.IN, TCL.BINOP, 'in'),
+    (TK.MOD, TCL.BINOP, 'mod'),
     (TK.NOT, TCL.UNARY, 'not'),
     (TK.OR, TCL.LOGICAL, 'or'),
     (TK.VAR, TCL.UNARY, 'var'),

@@ -20,8 +20,8 @@ class ParserTestRunner(TestSuiteRunner, ABC):
         super().__init__(td, skip_tests, log_dir='./etc/test/log/parser')
 
     def run_unprotected_test(self, log, name, test):
-        parser = Parser(str=test)
-        tree = parser.parse()
+        parser = Parser()
+        tree = parser.parse(text=test)
         _dump_tree(tree, log)
 
 

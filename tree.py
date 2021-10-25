@@ -92,6 +92,9 @@ class Ident(Literal):
         token.t_class = tcl
         self.value = token.lexeme
 
+    def format(self):
+        return f'Ident({self.token.lexeme})'
+
 
 @dataclass
 class Index(FnCall):
