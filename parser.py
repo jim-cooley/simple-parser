@@ -53,7 +53,7 @@ class Parser(object):
                 break
             nodes = [node] if type(node).__name__ != "list" else node
             self.environment.trees += [ParseTree(_) for _ in nodes]
-        return self.environment
+        return self.environment.trees
 
     def _init(self, text):
         self._tk_stream = TokenStream(source=text)

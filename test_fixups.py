@@ -3,10 +3,11 @@
 import sys
 from abc import ABC
 
+from environment import Environment
 from fixups import Fixups
 from interpreter import Interpreter
 from parser import Parser
-from test.suite_runner import TestSuiteRunner, _dump_trees, _t_print, _log_exception
+from test.suite_runner import TestSuiteRunner, _dump_trees, _t_print, _log_exception, _dump_environment
 from test.test_setup import test_data
 
 _test_suite = True       # False is useful for debugging, interactive.  True for test suites
@@ -23,12 +24,13 @@ class SemanticAnalysisTestRunner(TestSuiteRunner, ABC):
         super().__init__(test_data, skip_tests, log_dir='./etc/test/log/fixups')
 
     def run_unprotected_test(self, log, name, test):
-        parser = Parser()
+        environment = Environment()
+        parser = Parser(environment)
         tree = parser.parse(text=test)
-        _dump_trees(tree, log)
+        _dump_environment(tree, log)
         fixups = Fixups()
         tree = fixups.apply(tree)
-        _dump_trees(tree, log, label='post')
+        _dump_environment(tree, log, label='post')
 
 
 # this is only for execution under debugger or via command-line

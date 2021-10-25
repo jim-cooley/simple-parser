@@ -23,8 +23,8 @@ class ParserTestRunner(TestSuiteRunner, ABC):
     def run_unprotected_test(self, log, name, test):
         environment = Environment()
         parser = Parser(environment)
-        tree = parser.parse(text=test)
-        _dump_environment(tree, log)
+        parser.parse(text=test)
+        _dump_environment(environment, log)
 
 
 # this is only for execution under debugger or via command-line
