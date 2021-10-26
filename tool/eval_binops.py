@@ -12,70 +12,6 @@ _type2idx = {
 }
 
 
-def binops(node):
-    if node.token.id in _binops_dispatch_table:
-        left = node.left
-        l_ty = type(left.value).__name__
-        right = node.right
-        r_ty = type(right.value).__name__
-        if l_ty in _type2idx and r_ty in _type2idx:
-            ixl = _type2idx[l_ty]
-            ixr = _type2idx[r_ty]
-            fn = _binops_dispatch_table[node.token.id][ixr][ixl]
-            return fn(left, right)
-    _error(f'Invalid operation {node.token.id.name}', loc=node.token.location)
-
-
-def _add__int_int(left, right):
-    l = left.value
-    r = right.value
-    return l + r
-
-def _add__str_int(left, right):
-    l = left.value
-    r = right.value
-    return l + f'{r}'
-
-def _add__int_str(left, right):
-    l = left.value
-    r = right.value
-    return f'{l}' + r
-
-def _sub__int_int(left, right):
-    l = left.value
-    r = right.value
-    return l - r
-
-def _div__int_int(left, right):
-    l = left.value
-    r = right.value
-    return l / r
-
-def _pow__int_int(left, right):
-    l = left.value
-    r = right.value
-    return l ** r
-
-def _mul__int_int(left, right):
-    l = left.value
-    r = right.value
-    return l * r
-
-def _invalid_add(left, right):
-    _runtime_error(f'Type mismatch for operator add({type(left)}, {type(right)})', loc=None)
-
-def _invalid_sub(left, right):
-    _runtime_error(f'Type mismatch for operator sub({type(left)}, {type(right)})', loc=None)
-
-def _invalid_div(left, right):
-    _runtime_error(f'Type mismatch for operator div({type(left)}, {type(right)})', loc=None)
-
-def _invalid_pow(left, right):
-    _runtime_error(f'Type mismatch for operator pow({type(left)}, {type(right)})', loc=None)
-
-def _invalid_mul(left, right):
-    _runtime_error(f'Type mismatch for operator mul({type(left)}, {type(right)})', loc=None)
-
 _binops_dispatch_table = {
 
     TK.ADD: [
@@ -119,5 +55,81 @@ _binops_dispatch_table = {
     
     ],
 }
+
+
+def eval_binops_dispatch(node):
+    if node.token.id in _binops_dispatch_table:
+        left = node.left
+        l_ty = type(left.value).__name__
+        right = node.right
+        r_ty = type(right.value).__name__
+        if l_ty in _type2idx and r_ty in _type2idx:
+            ixl = _type2idx[l_ty]
+            ixr = _type2idx[r_ty]
+            fn = _binops_dispatch_table[node.token.id][ixr][ixl]
+            return fn(left, right)
+    _error(f'Invalid operation {node.token.id.name}', loc=node.token.location)
+
+
+def _add__int_int(left, right):
+    l_value = left.value
+    r_value = right.value
+    return l_value + r_value
+
+
+def _add__str_int(left, right):
+    l_value = left.value
+    r_value = right.value
+    return l_value + f'{r_value}'
+
+
+def _add__int_str(left, right):
+    l_value = left.value
+    r_value = right.value
+    return f'{l_value}' + r_value
+
+
+def _sub__int_int(left, right):
+    l_value = left.value
+    r_value = right.value
+    return l_value - r_value
+
+
+def _div__int_int(left, right):
+    l_value = left.value
+    r_value = right.value
+    return l_value / r_value
+
+
+def _pow__int_int(left, right):
+    l_value = left.value
+    r_value = right.value
+    return l_value ** r_value
+
+
+def _mul__int_int(left, right):
+    l_value = left.value
+    r_value = right.value
+    return l_value * r_value
+
+
+def _invalid_add(left, right):
+    _runtime_error(f'Type mismatch for operator add({type(left)}, {type(right)})', loc=None)
+
+
+def _invalid_sub(left, right):
+    _runtime_error(f'Type mismatch for operator sub({type(left)}, {type(right)})', loc=None)
+
+
+def _invalid_div(left, right):
+    _runtime_error(f'Type mismatch for operator div({type(left)}, {type(right)})', loc=None)
+
+
+def _invalid_pow(left, right):
+    _runtime_error(f'Type mismatch for operator pow({type(left)}, {type(right)})', loc=None)
+
+
+def _invalid_mul(left, right):
+    _runtime_error(f'Type mismatch for operator mul({type(left)}, {type(right)})', loc=None)
 
 

@@ -2,7 +2,7 @@
 
 from abc import ABC
 
-from evaluate import negate_literal, increment_literal, decrement_literal, not_literal
+from evaluate import negate_literal, increment_literal, decrement_literal, not_literal, evaluate_binary_operation
 from literals import List
 from modifytree import TreeModifier
 from scope import Scope
@@ -46,7 +46,7 @@ class Fixups(TreeModifier, ABC):
         if trees is None:
             return None
         for t in trees:
-            self.visit(t.root)
+            t.root = self.visit(t.root)
         return self.trees
 
     # overridden:
@@ -93,6 +93,8 @@ class Fixups(TreeModifier, ABC):
             tkid = node.token.id
             if tkid == TK.TUPLE:
                 return self.convert_coln_plist(node, label)
+            if node.left.t_class == TCL.LITERAL and node.right.t_class == TCL.LITERAL:
+                rnode = evaluate_binary_operation(node)
         return rnode
 
     def process_command(self, node, label=None):
@@ -114,19 +116,19 @@ class Fixups(TreeModifier, ABC):
         if expr is None:
             return node
         if expr.token.t_class == TCL.LITERAL:
-            if node.op == TK.NEG:
-                negate_literal(expr)
-                return _lift(node, expr)
-            elif node.op == TK.POS:
+            if node.op == TK.NOT:
+                expr = not_literal(expr)
                 return _lift(node, expr)
             elif node.op == TK.INCREMENT:
-                increment_literal(expr)
+                expr = increment_literal(expr)
                 return _lift(node, expr)
             elif node.op == TK.DECREMENT:
-                decrement_literal(expr)
+                expr = decrement_literal(expr)
                 return _lift(node, expr)
-            elif node.op == TK.NOT:
-                not_literal(expr)
+            elif node.op == TK.NEG:
+                expr = negate_literal(expr)
+                return _lift(node, expr)
+            elif node.op == TK.POS:
                 return _lift(node, expr)
         return node
 

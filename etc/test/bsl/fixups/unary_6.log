@@ -9,5 +9,4 @@ result: None
 
 tree1:(post)  not 0
 result: None
-    1 : UnaryOp TK.NOT(UNARY, 'not', V=None)
-    2 :     Int TK.BOOL(LITERAL, '0', V=True)
+    1 : Bool TK.BOOL(LITERAL, None, V=True)

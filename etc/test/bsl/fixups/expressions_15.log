@@ -25,4 +25,4 @@ result: None
     6 :                 Int TK.INT(LITERAL, '2', V=2)
     7 :                 Int TK.INT(LITERAL, '3', V=3)
     8 :         Int TK.INT(LITERAL, '4', V=4)
-    9 :     Int TK.BOOL(LITERAL, '5', V=False)
+    9 :     Bool TK.BOOL(LITERAL, None, V=False)

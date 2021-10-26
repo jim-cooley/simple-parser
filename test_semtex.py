@@ -4,10 +4,8 @@ import sys
 from abc import ABC
 
 from environment import Environment
-from eval_dispatch import binops
 from fixups import Fixups
 from interpreter import Interpreter
-from notation import NotationPrinter
 from parser import Parser
 from test.suite_runner import TestSuiteRunner, _dump_trees, _t_print, _log_exception, _dump_environment
 from test.test_setup import test_data

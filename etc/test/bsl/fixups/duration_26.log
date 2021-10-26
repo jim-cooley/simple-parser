@@ -9,5 +9,4 @@ result: None
 
 tree1:(post)  -1.25w
 result: None
-    1 : UnaryOp TK.NEG(UNARY, '-', V=None)
-    2 :     Duration TK.DUR(LITERAL, '1.25w', V=-9 days, 6:00:00)
+    1 : Duration TK.DUR(LITERAL, '1.25w', V=-9 days, 6:00:00)

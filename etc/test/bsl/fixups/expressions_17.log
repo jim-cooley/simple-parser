@@ -29,5 +29,4 @@ result: None
 
 tree2:(post)  a = 2 * 3 + 4 not 5
 result: None
-    1 : UnaryOp TK.NOT(UNARY, 'not', V=None)
-    2 :     Int TK.BOOL(LITERAL, '5', V=False)
+    1 : Bool TK.BOOL(LITERAL, None, V=False)

@@ -305,7 +305,7 @@ class Token:
         _tn = f'.{self.id.name}(' if hasattr(self.id, "name") else f'({self.id}, '
         _tcl = f'{self.t_class.name}' if hasattr(self.t_class, "name") else 'TCL({self.t_type})'
         _tv = 'None' if self.value is None else f'{self.value}'
-        _tl = f'\'{self.lexeme}\''
+        _tl = f'\'{self.lexeme}\'' if self.lexeme is not None else 'None'
         if _tl == '\'\n\'':
             _tl = "'\\n'"
         if self.properties is not None and len(self.properties.keys()) > 0:

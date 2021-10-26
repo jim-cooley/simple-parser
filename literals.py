@@ -24,7 +24,10 @@ class DUR(Enum):
 @dataclass
 class Bool(Literal):
     def __init__(self, token, value=None):
-        token.value = value if value is not None else _parse_bool_value(token.lexeme)
+        if value is not None:
+            token.value = value
+        if token.value is None:
+            token.value = _parse_bool_value(token.lexeme)
         super().__init__(token)
 
     def format(self):
@@ -35,7 +38,8 @@ class Bool(Literal):
 @dataclass
 class DateTime(Literal):
     def __init__(self, token):
-        token.value = _parse_date_value(token.lexeme)
+        if token.value is None:
+            token.value = _parse_date_value(token.lexeme)
         super().__init__(token)
 
     def format(self):
@@ -45,7 +49,8 @@ class DateTime(Literal):
 @dataclass
 class Duration(Literal):
     def __init__(self, token):
-        token.value, self.units = _parse_duration(token.lexeme)
+        if token.value is None:
+            token.value, self.units = _parse_duration(token.lexeme)
         super().__init__(token)
 
     def total_seconds(self):
@@ -61,7 +66,8 @@ class Duration(Literal):
 @dataclass
 class Float(Literal):
     def __init__(self, token):
-        token.value = float(token.lexeme)
+        if token.value is None:
+            token.value = float(token.lexeme)
         super().__init__(token)
 
     def format(self, fmt=None):
@@ -71,7 +77,8 @@ class Float(Literal):
 @dataclass
 class Int(Literal):
     def __init__(self, token):
-        token.value = int(token.lexeme)
+        if token.value is None:
+            token.value = int(token.lexeme)
         super().__init__(token)
 
     def format(self, fmt=None):

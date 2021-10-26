@@ -9,5 +9,4 @@ result: None
 
 tree1:(post)  --2
 result: None
-    1 : UnaryOp TK.DECREMENT(UNARY, '--', V=None)
-    2 :     Int TK.INT(LITERAL, '2', V=1)
+    1 : Int TK.INT(LITERAL, None, V=1)
