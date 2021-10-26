@@ -152,7 +152,7 @@ result: None
     8 :                 Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
 
 tree10:  price10a = price.delay(1d)[10:00]
-result: Time(10:00:00)
+result: time(10:00:00)
     1 : List TK.LIST(LIST, '[', V=[Time()])
     2 :     Time TK.TIME(LITERAL, '10:00', V=10:00:00)
 
@@ -407,7 +407,7 @@ result: None
    10 :                     Str TK.STR(LITERAL, 'train', V=train)
 
 tree14:  report >> rules | print
-result: List([Ident(), Ident()])
+result: list([Ident(), Ident()])
     1 : List TK.CHAIN(LIST, '|', V=[List(), Ident()])
     2 :     List TK.APPLY(LIST, '>>', V=[Ident(), Ident()])
     3 :         Ident TK.IDNT(IDENTIFIER, 'report', V=report)
@@ -521,7 +521,7 @@ result: None
     8 :                 Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
 
 tree10:(post)  price10a = price.delay(1d)[10:00]
-result: Time(10:00:00)
+result: time(10:00:00)
     1 : List TK.LIST(LIST, '[', V=[Time()])
     2 :     Time TK.TIME(LITERAL, '10:00', V=10:00:00)
 
@@ -778,7 +778,7 @@ result: None
    10 :                     Str TK.STR(LITERAL, 'train', V=train)
 
 tree14:(post)  report >> rules | print
-result: List([Ident(), Ident()])
+result: list([Ident(), Ident()])
     1 : List TK.CHAIN(LIST, '|', V=[List(), Ident()])
     2 :     List TK.APPLY(LIST, '>>', V=[Ident(), Ident()])
     3 :         Ident TK.IDNT(IDENTIFIER, 'report', V=report)

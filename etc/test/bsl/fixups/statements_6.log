@@ -3,7 +3,7 @@
 test: 6: "a >> b ; c"
 
 tree1:  a >> b ; c
-result: Ident(a)
+result: str(a)
     1 : List TK.APPLY(LIST, '>>', V=[Ident(), Ident()])
     2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
     3 :     Ident TK.IDNT(IDENTIFIER, 'b', V=b)
@@ -13,7 +13,7 @@ result: str(c)
     1 : Ident TK.IDNT(IDENTIFIER, 'c', V=c)
 
 tree1:(post)  a >> b ; c
-result: Ident(a)
+result: str(a)
     1 : List TK.APPLY(LIST, '>>', V=[Ident(), Ident()])
     2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
     3 :     Ident TK.IDNT(IDENTIFIER, 'b', V=b)

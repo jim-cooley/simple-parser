@@ -3,7 +3,7 @@
 test: 10: "close <| sma(10) | signal >> delay(1d) | atr => sell"
 
 tree1:  close <| sma(10) | signal >> delay(1d) | atr => sell
-result: List([List(), Ident()])
+result: list([List(), Ident()])
     1 : List TK.RAISE(LIST, '=>', V=[List(), Ident()])
     2 :     List TK.CHAIN(LIST, '|', V=[List(), Ident()])
     3 :         List TK.APPLY(LIST, '>>', V=[List(), FnCall()])

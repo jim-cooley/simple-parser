@@ -3,7 +3,7 @@
 test: 13: "close >| sma(10) and close <| sma(20) | signal >> open.delay(1d)"
 
 tree1:  close >| sma(10) and close <| sma(20) | signal >> open.delay(1d)
-result: List([BinOp(), Ident()])
+result: list([BinOp(), Ident()])
     1 : List TK.APPLY(LIST, '>>', V=[List(), PropRef()])
     2 :     List TK.CHAIN(LIST, '|', V=[BinOp(), Ident()])
     3 :         BinOp TK.AND(BINOP, 'and', V=None)
@@ -28,7 +28,7 @@ result: List([BinOp(), Ident()])
    22 :                 Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
 
 tree1:(post)  close >| sma(10) and close <| sma(20) | signal >> open.delay(1d)
-result: List([BinOp(), Ident()])
+result: list([BinOp(), Ident()])
     1 : List TK.APPLY(LIST, '>>', V=[List(), PropRef()])
     2 :     List TK.CHAIN(LIST, '|', V=[BinOp(), Ident()])
     3 :         BinOp TK.AND(BINOP, 'and', V=None)

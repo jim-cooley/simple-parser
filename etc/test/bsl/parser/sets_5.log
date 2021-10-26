@@ -3,7 +3,7 @@
 test: 5: "{{a}, {b}, {c}}"
 
 tree1:  {{a}, {b}, {c}}
-result: Set([Ident()])
+result: list([Ident()])
     1 : Set TK.SET(SET, '{', V=[Set(), Set(), Set()])
     2 :     Set TK.SET(SET, '{', V=[Ident()])
     3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)

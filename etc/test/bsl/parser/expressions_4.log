@@ -1,11 +1,16 @@
 
 
-test: 4: "3 * 2 + 1"
+test: 4: "a = b.c(x,y,z)"
 
-tree1:  3 * 2 + 1
+tree1:  a = b.c(x,y,z)
 result: None
-    1 : BinOp TK.ADD(BINOP, '+', V=None)
-    2 :     BinOp TK.MUL(BINOP, '*', V=None)
-    3 :         Int TK.INT(LITERAL, '3', V=3)
-    4 :         Int TK.INT(LITERAL, '2', V=2)
-    5 :     Int TK.INT(LITERAL, '1', V=1)
+    1 : BinOp TK.ASSIGN(BINOP, '=', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
+    3 :     PropRef TK.REF(BINOP, '.', V=None)
+    4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=b)
+    5 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
+    6 :             Ident TK.IDNT(IDENTIFIER, 'c', V=c)
+    7 :             List TK.PARAMETER_LIST(LIST, '(', V=[Ident(), Ident(), Ident()])
+    8 :                 Ident TK.IDNT(IDENTIFIER, 'x', V=x)
+    9 :                 Ident TK.IDNT(IDENTIFIER, 'y', V=y)
+   10 :                 Ident TK.IDNT(IDENTIFIER, 'z', V=z)

@@ -148,9 +148,9 @@ def _dump_trees(env, log=None, label=None):
         print(f'notation: {printer.apply(t.root)}')
         if t.values is not None:
             v = t.values if type(t.values).__name__ != 'list' else t.values[0]
-            ty = type(v).__name__
             if getattr(v, 'value', False):
                 v = v.value
+            ty = type(v).__name__
             if v is None:
                 ty = 'Lit'
             _t_print(log, f'result: {ty}({v})')

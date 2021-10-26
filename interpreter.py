@@ -1,4 +1,4 @@
-from evaluate import evaluate_literal, evaluate_binary_operation
+from evaluate import evaluate_literal, evaluate_binary_operation, evaluate_unary_operation
 from visitor import TreeFilter, BINARY_NODE, VALUE_NODE, SEQUENCE_NODE, DEFAULT_NODE, UNARY_NODE, NATIVE_VALUE
 
 _visitNodeTypeMappings = {
@@ -75,7 +75,26 @@ class Interpreter(TreeFilter):
         return value
 
     def process_unops(self, node, label=None):
-        pass
+        if node is None:
+            return None
+        self.visit(node.expr)
+
+        if expr.token.t_class == TCL.LITERAL:
+            if node.op == TK.NOT:
+                expr = not_literal(expr)
+                return _lift(node, expr)
+            elif node.op == TK.INCREMENT:
+                expr = increment_literal(expr)
+                return _lift(node, expr)
+            elif node.op == TK.DECREMENT:
+                expr = decrement_literal(expr)
+                return _lift(node, expr)
+            elif node.op == TK.NEG:
+                expr = negate_literal(expr)
+                return _lift(node, expr)
+            elif node.op == TK.POS:
+                return _lift(node, expr)
+        return node
 
     def _init(self, tree):
         self.trees = tree

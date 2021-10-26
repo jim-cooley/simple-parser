@@ -3,7 +3,7 @@
 test: 9: "a | b | c => d"
 
 tree1:  a | b | c => d
-result: List([Ident(), Ident(), Ident()])
+result: list([Ident(), Ident(), Ident()])
     1 : List TK.RAISE(LIST, '=>', V=[List(), Ident()])
     2 :     List TK.CHAIN(LIST, '|', V=[Ident(), Ident(), Ident()])
     3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)
@@ -12,7 +12,7 @@ result: List([Ident(), Ident(), Ident()])
     6 :     Ident TK.IDNT(IDENTIFIER, 'd', V=d)
 
 tree1:(post)  a | b | c => d
-result: List([Ident(), Ident(), Ident()])
+result: list([Ident(), Ident(), Ident()])
     1 : List TK.RAISE(LIST, '=>', V=[List(), Ident()])
     2 :     List TK.CHAIN(LIST, '|', V=[Ident(), Ident(), Ident()])
     3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)

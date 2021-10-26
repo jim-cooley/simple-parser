@@ -10,7 +10,7 @@ result: None
     4 :         Ident TK.IDNT(IDENTIFIER, 'x', V=x)
 
 tree2:  a[x][y]
-result: Ident(y)
+result: str(y)
     1 : List TK.LIST(LIST, '[', V=[Ident()])
     2 :     Ident TK.IDNT(IDENTIFIER, 'y', V=y)
 
@@ -22,6 +22,6 @@ result: None
     4 :         Ident TK.IDNT(IDENTIFIER, 'x', V=x)
 
 tree2:(post)  a[x][y]
-result: Ident(y)
+result: str(y)
     1 : List TK.LIST(LIST, '[', V=[Ident()])
     2 :     Ident TK.IDNT(IDENTIFIER, 'y', V=y)

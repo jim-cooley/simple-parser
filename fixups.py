@@ -2,10 +2,10 @@
 
 from abc import ABC
 
-from evaluate import negate_literal, increment_literal, decrement_literal, not_literal, evaluate_binary_operation
+from eval_unary import decrement_literal, increment_literal, negate_literal, not_literal
+from evaluate import evaluate_binary_operation
 from literals import List
 from modifytree import TreeModifier
-from scope import Scope
 from tokens import TK, TCL, Token
 from visitor import BINARY_NODE
 

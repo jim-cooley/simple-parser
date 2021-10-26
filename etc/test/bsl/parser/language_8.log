@@ -3,7 +3,7 @@
 test: 8: "{close.sma(20) and close.sma(50)} | diff | sign | signal(how='cross')"
 
 tree1:  {close.sma(20) and close.sma(50)} | diff | sign | signal(how='cross')
-result: Set([BinOp()])
+result: list([BinOp()])
     1 : List TK.CHAIN(LIST, '|', V=[Set(), Ident(), Ident(), FnCall()])
     2 :     Set TK.SET(SET, '{', V=[BinOp()])
     3 :         BinOp TK.AND(BINOP, 'and', V=None)

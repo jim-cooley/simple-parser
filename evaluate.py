@@ -1,11 +1,9 @@
-from datetime import timedelta
-
-from conversion import c_node2bool, c_node2int, c_node2float
+from eval_binops import eval_binops_dispatch
+from eval_unary import not_literal, increment_literal, decrement_literal, negate_literal
 from exceptions import _runtime_error
-from literals import DUR
 from tokens import TK, TCL
 
-_INTRINSIC_VALUE_TYPES = ['int', 'float', 'bool']
+_INTRINSIC_VALUE_TYPES = ['int', 'float', 'bool', 'timedelta']
 _INTRINSIC_STR_TYPE = 'str'
 
 
@@ -14,18 +12,22 @@ def evaluate_literal(node):
 
 
 def evaluate_binary_operation(node):
+    return eval_binops_dispatch(node)
+
+
+def evaluate_binary_operation2(node):
     token = node.token
     tid = token.id
-    left = node.left
-    l_value = left.value
-    l_ty = type(left.value).__name__
-    right = node.right
-    r_value = right.value
-    r_ty = type(right.value).__name__
+    l_value = node.left.value
+    l_ty = type(l_value).__name__
+    r_value = node.right.value
+    r_ty = type(r_value).__name__
 
     # UNDONE: need dynamic dispatch here
+    if l_value is None or r_value is None:
+        return None
 
-    if left.token.t_class != TCL.LITERAL or right.token.t_class != TCL.LITERAL:
+    if l_ty not in _INTRINSIC_VALUE_TYPES or r_ty not in _INTRINSIC_VALUE_TYPES:
         return None
 
     if tid == TK.ADD:
@@ -69,6 +71,18 @@ def evaluate_binary_operation(node):
                 node.value = l_value / r_value
                 return node
         _runtime_error(f"Type mismatch for operator.__div__({l_ty}, {r_ty}", loc=token.location)
+    elif tid == TK.IDIV:
+        if l_ty in _INTRINSIC_VALUE_TYPES:
+            if r_ty in _INTRINSIC_VALUE_TYPES:
+                node.value = l_value // r_value
+                return node
+        _runtime_error(f"Type mismatch for operator.__idiv__({l_ty}, {r_ty}", loc=token.location)
+    elif tid == TK.MOD:
+        if l_ty in _INTRINSIC_VALUE_TYPES:
+            if r_ty in _INTRINSIC_VALUE_TYPES:
+                node.value = l_value % r_value
+                return node
+        _runtime_error(f"Type mismatch for operator.__mod__({l_ty}, {r_ty}", loc=token.location)
     elif tid == TK.POW:
         if l_ty in _INTRINSIC_VALUE_TYPES:
             if r_ty in _INTRINSIC_VALUE_TYPES:
@@ -78,62 +92,22 @@ def evaluate_binary_operation(node):
     return node
 
 
-def compare_literal(node):
-    tid = node.token.id
-    if tid in [TK.FLOT, TK.PCT, TK.DUR]:
-        n = c_node2float(node)
-        n.value -= 1
-    else:
-        n = c_node2int(node)
-        n.value -= 1
-    return n
+def evaluate_unary_operation(node):
+    tid = node.op
+    left = node.expr
 
+    if left.token.value is None:
+        return None
 
-def decrement_literal(node):
-    tid = node.token.id
-    if tid in [TK.FLOT, TK.PCT, TK.DUR]:
-        n = c_node2float(node)
-        n.value -= 1
-    else:
-        n = c_node2int(node)
-        n.value -= 1
-    return n
-
-
-def increment_literal(node):
-    tid = node.token.id
-    if tid in [TK.FLOT, TK.PCT, TK.DUR]:
-        n = c_node2float(node)
-        n.value += 1
-    else:
-        n = c_node2int(node)
-        n.value += 1
-    return n
-
-
-def negate_literal(node):
-    token = node.token
-    tid = token.id
-    if tid in [TK.INT, TK.FLOT, TK.PCT, TK.DUR]:
-        node.value = - node.value
-        return node
-    elif tid in [TK.BOOL]:
-        node.value = not node.value
-        return node
-    elif tid == TK.STR:
-        try:
-            v = - int(node.value)
-            node.value = v
-            node.token.id = TK.INT
-            return node
-        except ValueError as e:
-            pass
-    elif tid == TK.EMPTY:
-        return node
-    _runtime_error("Unsupported type for Unary minus", loc=token.location)
-
-
-def not_literal(node):
-    n = c_node2bool(node)
-    n.value = not n.value
-    return n
+    if left.token.t_class == TCL.LITERAL:
+        if tid == TK.NOT:
+            return not_literal(left)
+        elif tid == TK.INCREMENT:
+            return increment_literal(left)
+        elif tid == TK.DECREMENT:
+            return decrement_literal(left)
+        elif tid == TK.NEG:
+            return negate_literal(left)
+        elif tid == TK.POS:
+            return left
+    return node

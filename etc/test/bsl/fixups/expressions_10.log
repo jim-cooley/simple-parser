@@ -1,15 +1,21 @@
 
 
-test: 10: "a or b"
+test: 10: "a * -b * c"
 
-tree1:  a or b
+tree1:  a * -b * c
 result: None
-    1 : BinOp TK.OR(BINOP, 'or', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    3 :     Ident TK.IDNT(IDENTIFIER, 'b', V=b)
+    1 : BinOp TK.MUL(BINOP, '*', V=None)
+    2 :     BinOp TK.MUL(BINOP, '*', V=None)
+    3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)
+    4 :         UnaryOp TK.NEG(UNARY, '-', V=None)
+    5 :             Ident TK.IDNT(IDENTIFIER, 'b', V=b)
+    6 :     Ident TK.IDNT(IDENTIFIER, 'c', V=c)
 
-tree1:(post)  a or b
+tree1:(post)  a * -b * c
 result: None
-    1 : BinOp TK.OR(BINOP, 'or', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    3 :     Ident TK.IDNT(IDENTIFIER, 'b', V=b)
+    1 : BinOp TK.MUL(BINOP, '*', V=None)
+    2 :     BinOp TK.MUL(BINOP, '*', V=None)
+    3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)
+    4 :         UnaryOp TK.NEG(UNARY, '-', V=None)
+    5 :             Ident TK.IDNT(IDENTIFIER, 'b', V=b)
+    6 :     Ident TK.IDNT(IDENTIFIER, 'c', V=c)

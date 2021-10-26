@@ -2,44 +2,65 @@
 import sys
 from tokens import TK
 
-_COLUMNS = ['int', 'float', 'bool', 'str']
+_COLUMNS = ['int', 'float', 'bool', 'str', 'timedelta']
 
 _evaluate_binops_fn = {
     TK.ADD: [
-        #     int         float           bool             str
-        ['l + r',       'l + r',        'l + r',        "l + f'{r}'"],    # int
-        ['l + r',       'l + r',        'l + r',        "l + f'{r}'"],    # float
-        ['l + r',       'l + r',        'l + r',        "l + f'{r}'"],    # bool
-        ["f'{l}' + r",  "f'{l}' + r",   "f'{l}' + r",   "l + r"],         # str
+        #     int         float           bool             str             dur
+        ['l + r',       'l + r',        'l + r',        "l + f'{r}'",   'l + r'],    # int
+        ['l + r',       'l + r',        'l + r',        "l + f'{r}'",   'l + r'],    # float
+        ['l + r',       'l + r',        'l + r',        "l + f'{r}'",   'l + r'],    # bool
+        ["f'{l}' + r",  "f'{l}' + r",   "f'{l}' + r",   "invalid",      'invalid'],  # str
+        ['l + r',       'l + r',        'l + r',        "l + f'{r}'",   'l + r'],    # dur
     ],
     TK.SUB: [
         #     int         float           bool             str
-        ['l - r',       'l - r',        'l - r',        "invalid"],       # int
-        ['l - r',       'l - r',        'l - r',        "invalid"],       # float
-        ['l - r',       'l - r',        'l - r',        "invalid"],       # bool
-        ['invalid',     "invalid",      "invalid",      "invalid"],       # str
+        ['l - r',       'l - r',        'l - r',        "invalid",      'l - r'],    # int
+        ['l - r',       'l - r',        'l - r',        "invalid",      'l - r'],    # float
+        ['l - r',       'l - r',        'l - r',        "invalid",      'l - r'],    # bool
+        ['invalid',     "invalid",      "invalid",      "invalid",      'l - r'],    # str
+        ['l - r',       'l - r',        'l - r',        "invalid",      'l - r'],    # dur
     ],
     TK.DIV: [
-        #     int         float           bool             str
-        ['l / r',       'l / r',        'l / r',        "invalid"],       # int
-        ['l / r',       'l / r',        'l / r',        "invalid"],       # float
-        ['l / r',       'l / r',        'l / r',        "invalid"],       # bool
-        ['invalid',     "invalid",      "invalid",      "invalid"],       # str
+        #     int         float           bool             str            dur
+        ['l / r',       'l / r',        'l / r',        "invalid",      'l / r'],    # int
+        ['l / r',       'l / r',        'l / r',        "invalid",      'l / r'],    # float
+        ['l / r',       'l / r',        'l / r',        "invalid",      'l / r'],    # bool
+        ['invalid',     "invalid",      "invalid",      "invalid",      'l / r'],    # str
+        ['l / r',       'l / r',        'l / r',        "invalid",      'l / r'],    # dur
+    ],
+    TK.IDIV: [
+        #     int         float           bool             str            dur
+        ['l // r',       'l // r',        'l // r',     "invalid",      'l // r'],    # int
+        ['l // r',       'l // r',        'l // r',     "invalid",      'l // r'],    # float
+        ['l // r',       'l // r',        'l // r',     "invalid",      'l // r'],    # bool
+        ['invalid',      "invalid",       "invalid",    "invalid",      'l // r'],    # str
+        ['l // r',       'l // r',        'l // r',     "invalid",      'l // r'],    # dur
     ],
     TK.POW: [
-        #     int         float           bool             str
-        ['l ** r',       'l ** r',        'l ** r',        "invalid"],       # int
-        ['l ** r',       'l ** r',        'l ** r',        "invalid"],       # float
-        ['l ** r',       'l ** r',        'l ** r',        "invalid"],       # bool
-        ['invalid',     "invalid",      "invalid",      "invalid"],       # str
+        #     int         float           bool             str           dur
+        ['l ** r',       'l ** r',        'l ** r',     "invalid",      'l ** r'],    # int
+        ['l ** r',       'l ** r',        'l ** r',     "invalid",      'l ** r'],    # float
+        ['l ** r',       'l ** r',        'l ** r',     "invalid",      'l ** r'],    # bool
+        ['invalid',      "invalid",       "invalid",    "invalid",      'l ** r'],    # str
+        ['l ** r',       'l ** r',        'l ** r',     "invalid",      'l ** r'],    # dur
     ],
     TK.MUL: [
-        #     int         float           bool             str
-        ['l * r',       'l * r',        'l * r',        "l * r"],       # int
-        ['l * r',       'l * r',        'l * r',        "l * r"],       # float
-        ['l * r',       'l * r',        'l * r',        "l * r"],       # bool
-        ['l * r',       "l * r",        "l * r",        "l * r"],       # str
-    ]
+        #     int         float           bool             str            dur
+        ['l * r',       'l * r',        'l * r',        "l * r",        "l * r"],     # int
+        ['l * r',       'l * r',        'l * r',        "l * r",        "l * r"],     # float
+        ['l * r',       'l * r',        'l * r',        "l * r",        "l * r"],     # bool
+        ['l * r',       "l * r",        "l * r",        "l * r",        "l * r"],     # str
+        ['l * r',       'l * r',        'l * r',        "l * r",        "l * r"],     # dur
+    ],
+    TK.MOD: [
+        #     int         float           bool             str            dur
+        ['l % r',      'l % r',        'l % r',         "l % r",        "l % r"],     # int
+        ['l % r',      'l % r',        'l % r',         "l % r",        "l % r"],     # float
+        ['l % r',      'l % r',        'l % r',         "l % r",        "l % r"],     # bool
+        ['l % r',      "l % r",        "l % r",         "l % r",        "l % r"],     # str
+        ['l % r',      'l % r',        'l % r',         "l % r",        "l % r"],     # dur
+    ],
 }
 
 _functions = {}
@@ -59,14 +80,14 @@ def main(args):
 
 def generate_dispatch_function(f, name):
     _write_define_fn(f, f'eval_{name}_dispatch', 'node')
-    _t_print(f, 1, f"if node.token.id in _{name}_dispatch_table:")
-    _t_print(f, 2, "left = node.left")
-    _t_print(f, 2, "l_ty = type(left.value).__name__")
-    _t_print(f, 2, "right = node.right")
-    _t_print(f, 2, "r_ty = type(right.value).__name__")
+    _t_print(f, 1, f"if node.op in _{name}_dispatch_table:")
+    _t_print(f, 2, "l_value = node.left.value")
+    _t_print(f, 2, "l_ty = type(l_value).__name__")
+    _t_print(f, 2, "r_value = node.right.value")
+    _t_print(f, 2, "r_ty = type(r_value).__name__")
+    _t_print(f, 2, "if l_value is None or r_value is None:")
+    _t_print(f, 3, 'return None')
     _t_print(f, 2, "if l_ty in _type2idx and r_ty in _type2idx:")
-    _t_print(f, 3, "l_value = left.value")
-    _t_print(f, 3, "r_value = right.value")
     _t_print(f, 3, "ixl = _type2idx[l_ty]")
     _t_print(f, 3, "ixr = _type2idx[r_ty]")
     _t_print(f, 3, f'fn = _{name}_dispatch_table[node.token.id][ixr][ixl]')
@@ -145,9 +166,7 @@ def generate_dispatch_table(file, name):
 
 
 def _write_binop_fn_preamble(f, name):
-    _write_define_fn(f, name, 'left, right')
-    _t_print(f, 1,  "l_value = left.value")
-    _t_print(f, 1,  "r_value = right.value")
+    _write_define_fn(f, name, 'l_value, r_value')
 
 
 def _write_define_fn(f, name, params):
@@ -158,15 +177,15 @@ def _write_preamble(file):
     _t_print(file, 0, "from exceptions import _runtime_error, _error\n"
                       "from tokens import TK\n"
                       "\n"
-                      "_INTRINSIC_VALUE_TYPES = ['int', 'float', 'bool', 'str']\n"
+                      f"_INTRINSIC_VALUE_TYPES = {_COLUMNS}\n"
                       "\n"
                       "\n"
-                      "_type2idx = {\n"
-                      "    'int': 1,\n"
-                      "    'float': 2,\n"
-                      "    'bool': 3,\n"
-                      "    'str': 4,\n"
-                      "}\n\n")
+                      "_type2idx = {")
+    idx = 0
+    for ty in _COLUMNS:
+        _t_print(file, 1, f'\'{ty}\': {idx},')
+        idx += 1
+    _t_print(file, 0, "}\n\n")
 
 
 def _get_indent(level):

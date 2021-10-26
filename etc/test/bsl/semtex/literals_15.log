@@ -2,5 +2,6 @@
 
 test: 15: "True"
 
-tree1:  "True"
+tree1:(post)  True
+result: bool(True)
     1 : Bool TK.TRUE(LITERAL, 'True', V=True)

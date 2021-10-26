@@ -101,7 +101,7 @@ result: None
     8 :                 Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
 
 tree6:  price10a = price.delay(1d)[10:00]
-result: Time(10:00:00)
+result: time(10:00:00)
     1 : List TK.LIST(LIST, '[', V=[Time()])
     2 :     Time TK.TIME(LITERAL, '10:00', V=10:00:00)
 

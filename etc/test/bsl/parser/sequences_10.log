@@ -3,7 +3,7 @@
 test: 10: "a | b => c | d"
 
 tree1:  a | b => c | d
-result: List([List(), Ident()])
+result: list([List(), Ident()])
     1 : List TK.CHAIN(LIST, '|', V=[List(), Ident()])
     2 :     List TK.RAISE(LIST, '=>', V=[List(), Ident()])
     3 :         List TK.CHAIN(LIST, '|', V=[Ident(), Ident()])

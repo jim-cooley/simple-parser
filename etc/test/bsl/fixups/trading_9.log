@@ -3,7 +3,7 @@
 test: 9: "any:{ close >| sma(10), close >| sma(20) }:(threshold=0.01) | signal >> delay(1d) | atr => buy"
 
 tree1:  any:{ close >| sma(10), close >| sma(20) }:(threshold=0.01) | signal >> delay(1d) | atr => buy
-result: List([List(), Ident()])
+result: list([List(), Ident()])
     1 : List TK.RAISE(LIST, '=>', V=[List(), Ident()])
     2 :     List TK.CHAIN(LIST, '|', V=[List(), Ident()])
     3 :         List TK.APPLY(LIST, '>>', V=[List(), FnCall()])
@@ -35,7 +35,7 @@ result: List([List(), Ident()])
    29 :     Ident TK.BUY(KEYWORD, 'buy', V=buy)
 
 tree1:(post)  any:{ close >| sma(10), close >| sma(20) }:(threshold=0.01) | signal >> delay(1d) | atr => buy
-result: List([List(), Ident()])
+result: list([List(), Ident()])
     1 : List TK.RAISE(LIST, '=>', V=[List(), Ident()])
     2 :     List TK.CHAIN(LIST, '|', V=[List(), Ident()])
     3 :         List TK.APPLY(LIST, '>>', V=[List(), FnCall()])

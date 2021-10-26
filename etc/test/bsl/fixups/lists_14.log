@@ -3,7 +3,7 @@
 test: 14: "[[[[a]]]]"
 
 tree1:  [[[[a]]]]
-result: List([List()])
+result: list([List()])
     1 : List TK.LIST(LIST, '[', V=[List()])
     2 :     List TK.LIST(LIST, '[', V=[List()])
     3 :         List TK.LIST(LIST, '[', V=[List()])
@@ -11,7 +11,7 @@ result: List([List()])
     5 :                 Ident TK.IDNT(IDENTIFIER, 'a', V=a)
 
 tree1:(post)  [[[[a]]]]
-result: List([List()])
+result: list([List()])
     1 : List TK.LIST(LIST, '[', V=[List()])
     2 :     List TK.LIST(LIST, '[', V=[List()])
     3 :         List TK.LIST(LIST, '[', V=[List()])

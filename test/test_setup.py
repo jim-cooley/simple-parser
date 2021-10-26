@@ -8,6 +8,7 @@ test_data = {
     'boolean': 'boolean.t',
     'boolean_var': 'boolean_var.t',
     'commands': 'commands.t',
+    'constant_expr': 'constant_expr.t',
     'duration': 'duration.t',
     'empty_sets': 'empty_sets.t',
     'expressions': 'expressions.t',
