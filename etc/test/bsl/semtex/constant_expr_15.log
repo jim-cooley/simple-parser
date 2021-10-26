@@ -1,0 +1,11 @@
+
+
+test: 15: "1 * 2 * 0.1"
+
+tree1:(post)  1 * 2 * 0.1
+result: None
+    1 : BinOp TK.MUL(BINOP, '*', V=None)
+    2 :     BinOp TK.MUL(BINOP, '*', V=None)
+    3 :         Int TK.INT(LITERAL, '1', V=1)
+    4 :         Int TK.INT(LITERAL, '2', V=2)
+    5 :     Float TK.FLOT(LITERAL, '0.1', V=0.1)

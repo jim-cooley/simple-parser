@@ -1,0 +1,9 @@
+
+
+test: 13: "1.0 + 2"
+
+tree1:(post)  1.0 + 2
+result: float(3.0)
+    1 : BinOp TK.ADD(BINOP, '+', V=None)
+    2 :     Float TK.FLOT(LITERAL, '1.0', V=1.0)
+    3 :     Int TK.INT(LITERAL, '2', V=2)
