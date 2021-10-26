@@ -3,6 +3,7 @@
 test: 2: "fn_with_parameters(1,2,3,4)"
 
 tree1:  fn_with_parameters(1,2,3,4)
+result: None
     1 : FnCall TK.FUNCTION(BINOP, '(', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'fn_with_parameters', V=fn_with_parameters)
     3 :     List TK.PARAMETER_LIST(LIST, '(', V=[Int(), Int(), Int(), Int()])
@@ -12,6 +13,7 @@ tree1:  fn_with_parameters(1,2,3,4)
     7 :         Int TK.INT(LITERAL, '4', V=4)
 
 tree1:(post)  fn_with_parameters(1,2,3,4)
+result: None
     1 : FnCall TK.FUNCTION(BINOP, '(', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'fn_with_parameters', V=fn_with_parameters)
     3 :     List TK.PARAMETER_LIST(LIST, '(', V=[Int(), Int(), Int(), Int()])

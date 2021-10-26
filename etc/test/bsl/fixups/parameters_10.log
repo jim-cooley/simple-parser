@@ -3,6 +3,7 @@
 test: 10: "x(a = 5, b='a')"
 
 tree1:  x(a = 5, b='a')
+result: None
     1 : FnCall TK.FUNCTION(BINOP, '(', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'x', V=x)
     3 :     List TK.PARAMETER_LIST(LIST, '(', V=[BinOp(), BinOp()])
@@ -14,6 +15,7 @@ tree1:  x(a = 5, b='a')
     9 :             Str TK.STR(LITERAL, 'a', V=a)
 
 tree1:(post)  x(a = 5, b='a')
+result: None
     1 : FnCall TK.FUNCTION(BINOP, '(', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'x', V=x)
     3 :     List TK.PARAMETER_LIST(LIST, '(', V=[BinOp(), BinOp()])

@@ -3,9 +3,11 @@
 test: 8: "close{weekly}.sma(20)"
 
 tree1:  close{weekly}.sma(20)
+result: str(close)
     1 : Ident TK.IDNT(DATASET, 'close', V=close)
 
 tree2:  close{weekly}.sma(20)
+result: None
     1 : BinOp TK.DOT(BINOP, '.', V=None)
     2 :     Set TK.SET(SET, '{', V=[Ident()])
     3 :         Ident TK.IDNT(IDENTIFIER, 'weekly', V=weekly)
@@ -15,9 +17,11 @@ tree2:  close{weekly}.sma(20)
     7 :             Int TK.INT(LITERAL, '20', V=20)
 
 tree1:(post)  close{weekly}.sma(20)
+result: str(close)
     1 : Ident TK.IDNT(DATASET, 'close', V=close)
 
 tree2:(post)  close{weekly}.sma(20)
+result: None
     1 : BinOp TK.DOT(BINOP, '.', V=None)
     2 :     Set TK.SET(SET, '{', V=[Ident()])
     3 :         Ident TK.IDNT(IDENTIFIER, 'weekly', V=weekly)
