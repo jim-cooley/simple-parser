@@ -2,8 +2,9 @@
 
 test: 6: "pcross(close, sma(13)) | smacd(close, 20, 50) | smacd.close(20,50) | close.smacd(20,50)"
 
-tree1:  "pcross(close, sma(13)) | smacd(close, 20, 50) | smacd.close(20,50) | close.smacd(20,50)"
-    1 : List TK.PIPE(LIST, '|', V=[FnCall(), FnCall(), PropRef(), PropRef()])
+tree1:  pcross(close, sma(13)) | smacd(close, 20, 50) | smacd.close(20,50) | close.smacd(20,50)
+result: FnCall(BinOp(TK.FUNCTION(BINOP, '(', V=None): l=Ident(pcross), r=[Ident(close),BinOp(TK.FUNCTION(BINOP, '(', V=None): l=Ident(sma), r=[13]])
+    1 : List TK.CHAIN(LIST, '|', V=[FnCall(), FnCall(), PropRef(), PropRef()])
     2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
     3 :         Ident TK.IDNT(IDENTIFIER, 'pcross', V=pcross)
     4 :         List TK.PARAMETER_LIST(LIST, '(', V=[Ident(), FnCall()])
@@ -33,8 +34,9 @@ tree1:  "pcross(close, sma(13)) | smacd(close, 20, 50) | smacd.close(20,50) | cl
    28 :                 Int TK.INT(LITERAL, '20', V=20)
    29 :                 Int TK.INT(LITERAL, '50', V=50)
 
-tree1:(post)  "pcross(close, sma(13)) | smacd(close, 20, 50) | smacd.close(20,50) | close.smacd(20,50)"
-    1 : List TK.PIPE(LIST, '|', V=[FnCall(), FnCall(), PropRef(), PropRef()])
+tree1:(post)  pcross(close, sma(13)) | smacd(close, 20, 50) | smacd.close(20,50) | close.smacd(20,50)
+result: FnCall(BinOp(TK.FUNCTION(BINOP, '(', V=None): l=Ident(pcross), r=[Ident(close),BinOp(TK.FUNCTION(BINOP, '(', V=None): l=Ident(sma), r=[13]])
+    1 : List TK.CHAIN(LIST, '|', V=[FnCall(), FnCall(), PropRef(), PropRef()])
     2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
     3 :         Ident TK.IDNT(IDENTIFIER, 'pcross', V=pcross)
     4 :         List TK.PARAMETER_LIST(LIST, '(', V=[Ident(), FnCall()])

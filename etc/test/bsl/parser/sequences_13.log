@@ -3,7 +3,8 @@
 test: 13: "a(x,y) | b"
 
 tree1:  a(x,y) | b
-    1 : List TK.PIPE(LIST, '|', V=[FnCall(), Ident()])
+result: FnCall(BinOp(TK.FUNCTION(BINOP, '(', V=None): l=Ident(a), r=[Ident(x),Ident(y)])
+    1 : List TK.CHAIN(LIST, '|', V=[FnCall(), Ident()])
     2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
     3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)
     4 :         List TK.PARAMETER_LIST(LIST, '(', V=[Ident(), Ident()])

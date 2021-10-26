@@ -2,16 +2,18 @@
 
 test: 12: "a(x) | b"
 
-tree1:  "a(x) | b"
-    1 : List TK.PIPE(LIST, '|', V=[FnCall(), Ident()])
+tree1:  a(x) | b
+result: FnCall(BinOp(TK.FUNCTION(BINOP, '(', V=None): l=Ident(a), r=[Ident(x)])
+    1 : List TK.CHAIN(LIST, '|', V=[FnCall(), Ident()])
     2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
     3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)
     4 :         List TK.PARAMETER_LIST(LIST, '(', V=[Ident()])
     5 :             Ident TK.IDNT(IDENTIFIER, 'x', V=x)
     6 :     Ident TK.IDNT(IDENTIFIER, 'b', V=b)
 
-tree1:(post)  "a(x) | b"
-    1 : List TK.PIPE(LIST, '|', V=[FnCall(), Ident()])
+tree1:(post)  a(x) | b
+result: FnCall(BinOp(TK.FUNCTION(BINOP, '(', V=None): l=Ident(a), r=[Ident(x)])
+    1 : List TK.CHAIN(LIST, '|', V=[FnCall(), Ident()])
     2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
     3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)
     4 :         List TK.PARAMETER_LIST(LIST, '(', V=[Ident()])

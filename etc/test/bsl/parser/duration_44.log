@@ -3,6 +3,7 @@
 test: 44: "1m - 5d"
 
 tree1:  1m - 5d
+result: None
     1 : BinOp TK.SUB(BINOP, '-', V=None)
     2 :     Duration TK.DUR(LITERAL, '1m', V=0:01:00)
     3 :     Duration TK.DUR(LITERAL, '5d', V=5 days, 0:00:00)

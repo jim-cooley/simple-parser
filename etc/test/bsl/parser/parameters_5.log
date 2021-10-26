@@ -3,6 +3,7 @@
 test: 5: "close[+1d]"
 
 tree1:  close[+1d]
+result: None
     1 : Index TK.INDEX(BINOP, '[', V=None)
     2 :     Ident TK.IDNT(DATASET, 'close', V=close)
     3 :     List TK.TUPLE(LIST, '[', V=[UnaryOp()])

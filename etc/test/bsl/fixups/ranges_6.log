@@ -2,14 +2,16 @@
 
 test: 6: "(today-2y)..today"
 
-tree1:  "(today-2y)..today"
+tree1:  (today-2y)..today
+result: None
     1 : BinOp TK.RANGE(BINOP, '..', V=None)
     2 :     BinOp TK.SUB(BINOP, '-', V=None)
     3 :         Ident TK.TODAY(KEYWORD, 'today', V=today)
     4 :         Duration TK.DUR(LITERAL, '2y', V=730 days, 0:00:00)
     5 :     Ident TK.TODAY(KEYWORD, 'today', V=today)
 
-tree1:(post)  "(today-2y)..today"
+tree1:(post)  (today-2y)..today
+result: None
     1 : BinOp TK.RANGE(BINOP, '..', V=None)
     2 :     BinOp TK.SUB(BINOP, '-', V=None)
     3 :         Ident TK.TODAY(KEYWORD, 'today', V=today)

@@ -3,6 +3,7 @@
 test: 8: "['a':5, 'b':'c', d]"
 
 tree1:  ['a':5, 'b':'c', d]
+result: BinOp(BinOp(TK.TUPLE(BINOP, ':', V=None): l=a, r=5)
     1 : List TK.LIST(LIST, '[', V=[BinOp(), BinOp(), Ident()])
     2 :     BinOp TK.TUPLE(BINOP, ':', V=None)
     3 :         Str TK.STR(LITERAL, 'a', V=a)

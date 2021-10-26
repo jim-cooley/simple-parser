@@ -3,6 +3,7 @@
 test: 15: "f(a=5, b='c', d)"
 
 tree1:  f(a=5, b='c', d)
+result: None
     1 : FnCall TK.FUNCTION(BINOP, '(', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'f', V=f)
     3 :     List TK.PARAMETER_LIST(LIST, '(', V=[BinOp(), BinOp(), Ident()])

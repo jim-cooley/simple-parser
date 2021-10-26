@@ -2,8 +2,9 @@
 
 test: 1: "close.sma(13) | signal(price, how='>')"
 
-tree1:  "close.sma(13) | signal(price, how='>')"
-    1 : List TK.PIPE(LIST, '|', V=[PropRef(), FnCall()])
+tree1:  close.sma(13) | signal(price, how='>')
+result: PropRef(BinOp(TK.REF(BINOP, '.', V=None): l=Ident(close), r=BinOp(TK.FUNCTION(BINOP, '(', V=None): l=Ident(sma), r=[13])
+    1 : List TK.CHAIN(LIST, '|', V=[PropRef(), FnCall()])
     2 :     PropRef TK.REF(BINOP, '.', V=None)
     3 :         Ident TK.IDNT(DATASET, 'close', V=close)
     4 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
@@ -18,8 +19,9 @@ tree1:  "close.sma(13) | signal(price, how='>')"
    13 :                 Ident TK.IDNT(IDENTIFIER, 'how', V=how)
    14 :                 Str TK.STR(LITERAL, '>', V=>)
 
-tree1:(post)  "close.sma(13) | signal(price, how='>')"
-    1 : List TK.PIPE(LIST, '|', V=[PropRef(), FnCall()])
+tree1:(post)  close.sma(13) | signal(price, how='>')
+result: PropRef(BinOp(TK.REF(BINOP, '.', V=None): l=Ident(close), r=BinOp(TK.FUNCTION(BINOP, '(', V=None): l=Ident(sma), r=[13])
+    1 : List TK.CHAIN(LIST, '|', V=[PropRef(), FnCall()])
     2 :     PropRef TK.REF(BINOP, '.', V=None)
     3 :         Ident TK.IDNT(DATASET, 'close', V=close)
     4 :         FnCall TK.FUNCTION(BINOP, '(', V=None)

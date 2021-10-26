@@ -3,7 +3,8 @@
 test: 7: "trades | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price')"
 
 tree1:  trades | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price')
-    1 : List TK.PIPE(LIST, '|', V=[Ident(), FnCall()])
+result: Ident(trades)
+    1 : List TK.CHAIN(LIST, '|', V=[Ident(), FnCall()])
     2 :     Ident TK.IDNT(IDENTIFIER, 'trades', V=trades)
     3 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
     4 :         Ident TK.IDNT(KEYWORD, 'select', V=select)

@@ -37,13 +37,17 @@ class Fixups(TreeModifier, ABC):
     symbols = None
     _print_nodes = False
 
-    def __init__(self):
+    def __init__(self, environment):
         super().__init__(mapping=_fixupNodeTypeMappings, apply_parent_fixups=True)
+        self.environment = environment
 
-    def apply(self, tree=None):
-        self._init(tree)
-        self.visit(self.tree.root)
-        return self.tree
+    def apply(self, trees):
+        self._init(trees)
+        if trees is None:
+            return None
+        for t in trees:
+            self.visit(t.root)
+        return self.trees
 
     # overridden:
     def visit_node(self, node, label=None):
@@ -132,10 +136,9 @@ class Fixups(TreeModifier, ABC):
             self.global_symbols.printall(indent=1)
 
     def _init(self, tree):
-        self.tree = tree
-        self.keywords = tree.keywords
-        self.global_symbols = Scope(self.keywords)
-        self.symbols = self.global_symbols
+        self.trees = tree
+        self.keywords = self.environment.keywords
+        self.globals = self.environment.globals
 
 # just for test: use DumpTree for proper printing
     def _print_node(self, node):

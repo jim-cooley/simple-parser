@@ -3,9 +3,11 @@
 test: 11: "a{x, y, z}"
 
 tree1:  a{x, y, z}
+result: str(a)
     1 : Ident TK.IDNT(IDENTIFIER, 'a', V=a)
 
 tree2:  a{x, y, z}
+result: Ident(x)
     1 : Set TK.SET(SET, '{', V=[Ident(), Ident(), Ident()])
     2 :     Ident TK.IDNT(IDENTIFIER, 'x', V=x)
     3 :     Ident TK.IDNT(IDENTIFIER, 'y', V=y)

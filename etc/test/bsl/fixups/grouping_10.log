@@ -2,8 +2,10 @@
 
 test: 10: "((a))"
 
-tree1:  "((a))"
+tree1:  ((a))
+result: str(a)
     1 : Ident TK.IDNT(IDENTIFIER, 'a', V=a)
 
-tree1:(post)  "((a))"
+tree1:(post)  ((a))
+result: str(a)
     1 : Ident TK.IDNT(IDENTIFIER, 'a', V=a)

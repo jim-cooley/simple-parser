@@ -127,6 +127,7 @@ class TK(IntEnum):
     ASSIGN = auto()  # =
     BOOL = auto()
     BUY = auto()
+    CHAIN = auto()
     COMMAND = auto()
     COMPARE = auto()    # ?  a ? b is to compare a to b
     DECREMENT = auto()  # --
@@ -152,7 +153,6 @@ class TK(IntEnum):
     NOW = auto()
     OR = auto()
     PARAMETER_LIST = auto()  # parameter-list
-    PIPE = auto()
     POS = auto()  # unary +
     POW = auto()  # ^
     RAISE = auto()  # =>
@@ -175,7 +175,7 @@ class TK(IntEnum):
 _tk2binop = {
     TK.AMPS: TK.AND,
     TK.AND: TK.AND,
-    TK.BAR: TK.PIPE,
+    TK.BAR: TK.CHAIN,
     TK.CLN2: TK.EVENT,
     TK.COEQ: TK.DEFINE,
     TK.COLN: TK.TUPLE,
@@ -207,9 +207,12 @@ _tk2binop = {
     TK.STAR: TK.MUL,
 }
 _tk2unop = {
+    TK.ALL: TK.ALL,
+    TK.ANY: TK.ANY,
     TK.EXCL: TK.NOT,  # !
     TK.MNUS: TK.NEG,  # unary -
     TK.MNU2: TK.DECREMENT, # unary --
+    TK.NONE: TK.NONEOF,
     TK.NOT: TK.NOT,
     TK.PLUS: TK.POS,  # unary +
     TK.PLU2: TK.INCREMENT, # unary ++
@@ -262,6 +265,7 @@ _EQUALITY_TEST_TOKENS = [TK.EQEQ, TK.NEQ]
 _LOGIC_TOKENS = [TK.AND, TK.OR, TK.AMPS, TK.CLN2, TK.QSTN]
 _MULTIPLICATION_TOKENS = [TK.SLSH, TK.STAR, TK.EXPN, TK.DOT, TK.DOT2]
 _UNARY_TOKENS = [TK.PLUS, TK.MNUS, TK.NOT, TK.EXCL, TK.MNU2, TK.PLU2]
+_SET_UNARY_TOKENS = [TK.NONE, TK.ALL, TK.ANY]
 _IDENTIFIER_TYPES = [TCL.KEYWORD, TCL.DATASET, TCL.IDENTIFIER]
 
 

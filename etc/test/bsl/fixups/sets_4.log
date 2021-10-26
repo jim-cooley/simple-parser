@@ -2,13 +2,15 @@
 
 test: 4: "{a, b, c}"
 
-tree1:  "{a, b, c}"
+tree1:  {a, b, c}
+result: Ident(a)
     1 : Set TK.SET(SET, '{', V=[Ident(), Ident(), Ident()])
     2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
     3 :     Ident TK.IDNT(IDENTIFIER, 'b', V=b)
     4 :     Ident TK.IDNT(IDENTIFIER, 'c', V=c)
 
-tree1:(post)  "{a, b, c}"
+tree1:(post)  {a, b, c}
+result: Ident(a)
     1 : Set TK.SET(SET, '{', V=[Ident(), Ident(), Ident()])
     2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
     3 :     Ident TK.IDNT(IDENTIFIER, 'b', V=b)

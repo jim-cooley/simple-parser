@@ -1,3 +1,4 @@
+.1
 report := { trades | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price') }
 #a | b >> c | d
 #a | b | c | d

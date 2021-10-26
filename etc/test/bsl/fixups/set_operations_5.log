@@ -2,15 +2,17 @@
 
 test: 5: "{a} | {b}"
 
-tree1:  "{a} | {b}"
-    1 : List TK.PIPE(LIST, '|', V=[Set(), Set()])
+tree1:  {a} | {b}
+result: Set([Ident()])
+    1 : List TK.CHAIN(LIST, '|', V=[Set(), Set()])
     2 :     Set TK.SET(SET, '{', V=[Ident()])
     3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)
     4 :     Set TK.SET(SET, '{', V=[Ident()])
     5 :         Ident TK.IDNT(IDENTIFIER, 'b', V=b)
 
-tree1:(post)  "{a} | {b}"
-    1 : List TK.PIPE(LIST, '|', V=[Set(), Set()])
+tree1:(post)  {a} | {b}
+result: Set([Ident()])
+    1 : List TK.CHAIN(LIST, '|', V=[Set(), Set()])
     2 :     Set TK.SET(SET, '{', V=[Ident()])
     3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)
     4 :     Set TK.SET(SET, '{', V=[Ident()])

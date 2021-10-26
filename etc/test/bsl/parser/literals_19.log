@@ -3,4 +3,5 @@
 test: 19: "None"
 
 tree1:  None
+result: str(None)
     1 : Ident TK.IDNT(IDENTIFIER, 'None', V=None)

@@ -3,6 +3,7 @@
 test: 12: "a.b.c().d()"
 
 tree1:  a.b.c().d()
+result: None
     1 : BinOp TK.DOT(BINOP, '.', V=None)
     2 :     PropRef TK.REF(BINOP, '.', V=None)
     3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)

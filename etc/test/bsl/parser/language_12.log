@@ -3,7 +3,8 @@
 test: 12: "close >| sma(10) and close <| sma(20) | signal"
 
 tree1:  close >| sma(10) and close <| sma(20) | signal
-    1 : List TK.PIPE(LIST, '|', V=[BinOp(), Ident()])
+result: BinOp(BinOp(TK.AND(BINOP, 'and', V=None): l=BinOp(TK.RISE_ABOVE(BINOP, '>|', V=None): l=Ident(close), r=BinOp(TK.FUNCTION(BINOP, '(', V=None): l=Ident(sma), r=[10], r=BinOp(TK.FALL_BELOW(BINOP, '<|', V=None): l=Ident(close), r=BinOp(TK.FUNCTION(BINOP, '(', V=None): l=Ident(sma), r=[20])
+    1 : List TK.CHAIN(LIST, '|', V=[BinOp(), Ident()])
     2 :     BinOp TK.AND(BINOP, 'and', V=None)
     3 :         BinOp TK.RISE_ABOVE(BINOP, '>|', V=None)
     4 :             Ident TK.IDNT(DATASET, 'close', V=close)

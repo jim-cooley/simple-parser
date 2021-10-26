@@ -2,8 +2,10 @@
 
 test: 10: "0.1"
 
-tree1:  "0.1"
+tree1:  0.1
+result: float(0.1)
     1 : Float TK.FLOT(LITERAL, '0.1', V=0.1)
 
-tree1:(post)  "0.1"
+tree1:(post)  0.1
+result: float(0.1)
     1 : Float TK.FLOT(LITERAL, '0.1', V=0.1)

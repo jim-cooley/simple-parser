@@ -2,8 +2,10 @@
 
 test: 4: "a_b"
 
-tree1:  "a_b"
+tree1:  a_b
+result: str(a_b)
     1 : Ident TK.IDNT(IDENTIFIER, 'a_b', V=a_b)
 
-tree1:(post)  "a_b"
+tree1:(post)  a_b
+result: str(a_b)
     1 : Ident TK.IDNT(IDENTIFIER, 'a_b', V=a_b)

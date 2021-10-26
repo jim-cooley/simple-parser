@@ -2,7 +2,8 @@
 
 test: 16: "a.b(1, 2, z)"
 
-tree1:  "a.b(1, 2, z)"
+tree1:  a.b(1, 2, z)
+result: None
     1 : PropRef TK.REF(BINOP, '.', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
     3 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
@@ -12,7 +13,8 @@ tree1:  "a.b(1, 2, z)"
     7 :             Int TK.INT(LITERAL, '2', V=2)
     8 :             Ident TK.IDNT(IDENTIFIER, 'z', V=z)
 
-tree1:(post)  "a.b(1, 2, z)"
+tree1:(post)  a.b(1, 2, z)
+result: None
     1 : PropRef TK.REF(BINOP, '.', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
     3 :     FnCall TK.FUNCTION(BINOP, '(', V=None)

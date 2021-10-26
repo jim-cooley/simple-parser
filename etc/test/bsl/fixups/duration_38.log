@@ -2,9 +2,12 @@
 
 test: 38: "+1.35h"
 
-tree1:  "+1.35h"
+tree1:  +1.35h
+result: None
     1 : UnaryOp TK.POS(UNARY, '+', V=None)
     2 :     Duration TK.DUR(LITERAL, '1.35h', V=1:21:00)
 
-tree1:(post)  "+1.35h"
-    1 : Duration TK.DUR(LITERAL, '1.35h', V=1:21:00)
+tree1:(post)  +1.35h
+result: None
+    1 : UnaryOp TK.POS(UNARY, '+', V=None)
+    2 :     Duration TK.DUR(LITERAL, '1.35h', V=1:21:00)

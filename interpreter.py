@@ -31,14 +31,22 @@ _visitNodeTypeMappings = {
 
 class Interpreter(TreeFilter):
 
-    def __init__(self):
+    def __init__(self, environment):
         super().__init__(mapping=_visitNodeTypeMappings, apply_parent_fixups=True)
+        self.environment = environment
         self._verbose = False
 
     def apply(self, tree=None):
-        self._init(tree)
-        self.tree.values = self.visit(self.tree.root)
-        return self.tree
+        self.trees.values = self.visit(self.trees.root)
+        return self.trees
+
+    def apply(self, trees):
+        self._init(trees)
+        if trees is None:
+            return None
+        for t in trees:
+            t.values = self.visit(t.root)
+        return self.trees
 
     def visit_node(self, node, label=None):
         super().visit_node(node, label)
@@ -70,10 +78,9 @@ class Interpreter(TreeFilter):
         pass
 
     def _init(self, tree):
-        self.tree = tree
-        self.keywords = tree.keywords
-        self.globals = tree.globals
-        self.symbols = self.globals
+        self.trees = tree
+        self.keywords = self.environment.keywords
+        self.globals = self.environment.globals
 
     def print_symbols(self):
         if self._verbose:

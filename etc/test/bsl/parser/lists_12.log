@@ -3,6 +3,7 @@
 test: 12: "[[a]]"
 
 tree1:  [[a]]
+result: List([Ident()])
     1 : List TK.LIST(LIST, '[', V=[List()])
     2 :     List TK.LIST(LIST, '[', V=[Ident()])
     3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)

@@ -3,7 +3,8 @@
 test: 16: "close >| sma(20) | signal | open.delay(1d) | buy; close <| sma(10) | signal | open.delay(1d) | sell"
 
 tree1:  close >| sma(20) | signal | open.delay(1d) | buy; close <| sma(10) | signal | open.delay(1d) | sell
-    1 : List TK.PIPE(LIST, '|', V=[BinOp(), Ident(), PropRef(), Ident()])
+result: BinOp(BinOp(TK.RISE_ABOVE(BINOP, '>|', V=None): l=Ident(close), r=BinOp(TK.FUNCTION(BINOP, '(', V=None): l=Ident(sma), r=[20])
+    1 : List TK.CHAIN(LIST, '|', V=[BinOp(), Ident(), PropRef(), Ident()])
     2 :     BinOp TK.RISE_ABOVE(BINOP, '>|', V=None)
     3 :         Ident TK.IDNT(DATASET, 'close', V=close)
     4 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
@@ -20,7 +21,8 @@ tree1:  close >| sma(20) | signal | open.delay(1d) | buy; close <| sma(10) | sig
    15 :     Ident TK.BUY(KEYWORD, 'buy', V=buy)
 
 tree2:  close >| sma(20) | signal | open.delay(1d) | buy; close <| sma(10) | signal | open.delay(1d) | sell
-    1 : List TK.PIPE(LIST, '|', V=[BinOp(), Ident(), PropRef(), Ident()])
+result: BinOp(BinOp(TK.FALL_BELOW(BINOP, '<|', V=None): l=Ident(close), r=BinOp(TK.FUNCTION(BINOP, '(', V=None): l=Ident(sma), r=[10])
+    1 : List TK.CHAIN(LIST, '|', V=[BinOp(), Ident(), PropRef(), Ident()])
     2 :     BinOp TK.FALL_BELOW(BINOP, '<|', V=None)
     3 :         Ident TK.IDNT(DATASET, 'close', V=close)
     4 :         FnCall TK.FUNCTION(BINOP, '(', V=None)

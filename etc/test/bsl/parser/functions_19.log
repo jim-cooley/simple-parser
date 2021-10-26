@@ -3,6 +3,7 @@
 test: 19: "atr := (high + low) / 2"
 
 tree1:  atr := (high + low) / 2
+result: None
     1 : BinOp TK.DEFINE(BINOP, ':=', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'atr', V=atr)
     3 :     BinOp TK.DIV(BINOP, '/', V=None)

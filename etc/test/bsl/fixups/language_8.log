@@ -2,8 +2,9 @@
 
 test: 8: "{close.sma(20) and close.sma(50)} | diff | sign | signal(how='cross')"
 
-tree1:  "{close.sma(20) and close.sma(50)} | diff | sign | signal(how='cross')"
-    1 : List TK.PIPE(LIST, '|', V=[Set(), Ident(), Ident(), FnCall()])
+tree1:  {close.sma(20) and close.sma(50)} | diff | sign | signal(how='cross')
+result: Set([BinOp()])
+    1 : List TK.CHAIN(LIST, '|', V=[Set(), Ident(), Ident(), FnCall()])
     2 :     Set TK.SET(SET, '{', V=[BinOp()])
     3 :         BinOp TK.AND(BINOP, 'and', V=None)
     4 :             PropRef TK.REF(BINOP, '.', V=None)
@@ -27,8 +28,9 @@ tree1:  "{close.sma(20) and close.sma(50)} | diff | sign | signal(how='cross')"
    22 :                 Ident TK.IDNT(IDENTIFIER, 'how', V=how)
    23 :                 Str TK.STR(LITERAL, 'cross', V=cross)
 
-tree1:(post)  "{close.sma(20) and close.sma(50)} | diff | sign | signal(how='cross')"
-    1 : List TK.PIPE(LIST, '|', V=[Set(), Ident(), Ident(), FnCall()])
+tree1:(post)  {close.sma(20) and close.sma(50)} | diff | sign | signal(how='cross')
+result: Set([BinOp()])
+    1 : List TK.CHAIN(LIST, '|', V=[Set(), Ident(), Ident(), FnCall()])
     2 :     Set TK.SET(SET, '{', V=[BinOp()])
     3 :         BinOp TK.AND(BINOP, 'and', V=None)
     4 :             PropRef TK.REF(BINOP, '.', V=None)

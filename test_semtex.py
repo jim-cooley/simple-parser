@@ -9,7 +9,7 @@ from fixups import Fixups
 from interpreter import Interpreter
 from notation import NotationPrinter
 from parser import Parser
-from test.suite_runner import TestSuiteRunner, _dump_trees, _t_print, _log_exception
+from test.suite_runner import TestSuiteRunner, _dump_trees, _t_print, _log_exception, _dump_environment
 from test.test_setup import test_data
 
 _test_suite = True       # False is useful for debugging, interactive.  True for test suites
@@ -27,14 +27,15 @@ class SemanticAnalysisTestRunner(TestSuiteRunner, ABC):
         self.verbose = False
 
     def run_unprotected_test(self, log, name, test):
-        parser = Parser(verbose=False)
-        fixups = Fixups()
-        interp = Interpreter()
-        tree = fixups.apply(parser.parse(text=test))
+        environment = Environment()
+        parser = Parser(environment, verbose=False)
+        fixups = Fixups(environment)
+        interp = Interpreter(environment)
+        trees = fixups.apply(parser.parse(text=test))
         if self.verbose:
-            _dump_trees(tree, log)
-        tree = interp.apply(tree)
-        _dump_trees(tree, log)
+            _dump_environment(environment, log, label='post')
+        interp.apply(trees)
+        _dump_environment(environment, log, label='post')
 
 
 # this is only for execution under debugger or via command-line

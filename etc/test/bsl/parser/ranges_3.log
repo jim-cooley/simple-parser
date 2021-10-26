@@ -3,6 +3,7 @@
 test: 3: "[1..2]"
 
 tree1:  [1..2]
+result: BinOp(BinOp(TK.RANGE(BINOP, '.', V=None): l=1.0, r=2)
     1 : List TK.LIST(LIST, '[', V=[BinOp()])
     2 :     BinOp TK.RANGE(BINOP, '.', V=None)
     3 :         Float TK.FLOT(LITERAL, '1.', V=1.0)

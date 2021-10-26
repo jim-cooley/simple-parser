@@ -2,8 +2,10 @@
 
 test: 2: "abcdefghijklmnopqrstuvwxyz"
 
-tree1:  "abcdefghijklmnopqrstuvwxyz"
+tree1:  abcdefghijklmnopqrstuvwxyz
+result: str(abcdefghijklmnopqrstuvwxyz)
     1 : Ident TK.IDNT(IDENTIFIER, 'abcdefghijklmnopqrstuvwxyz', V=abcdefghijklmnopqrstuvwxyz)
 
-tree1:(post)  "abcdefghijklmnopqrstuvwxyz"
+tree1:(post)  abcdefghijklmnopqrstuvwxyz
+result: str(abcdefghijklmnopqrstuvwxyz)
     1 : Ident TK.IDNT(IDENTIFIER, 'abcdefghijklmnopqrstuvwxyz', V=abcdefghijklmnopqrstuvwxyz)

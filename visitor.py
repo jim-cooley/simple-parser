@@ -51,7 +51,7 @@ class TreeFilter(NodeVisitor, ABC):
 
     def __init__(self, mapping=None, apply_parent_fixups=True):
         super().__init__(mapping)
-        self.tree = None
+        self.trees = None
         self.apply_parent_fixups = apply_parent_fixups
         self._count = 0
         self._depth = 0

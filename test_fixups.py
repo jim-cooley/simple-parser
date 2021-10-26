@@ -26,11 +26,11 @@ class SemanticAnalysisTestRunner(TestSuiteRunner, ABC):
     def run_unprotected_test(self, log, name, test):
         environment = Environment()
         parser = Parser(environment)
+        fixups = Fixups(environment)
         tree = parser.parse(text=test)
-        _dump_environment(tree, log)
-        fixups = Fixups()
+        _dump_environment(environment, log)
         tree = fixups.apply(tree)
-        _dump_environment(tree, log, label='post')
+        _dump_environment(environment, log, label='post')
 
 
 # this is only for execution under debugger or via command-line

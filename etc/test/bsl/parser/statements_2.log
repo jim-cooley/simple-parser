@@ -3,7 +3,9 @@
 test: 2: "a; b"
 
 tree1:  a; b
+result: str(a)
     1 : Ident TK.IDNT(IDENTIFIER, 'a', V=a)
 
 tree2:  a; b
+result: str(b)
     1 : Ident TK.IDNT(IDENTIFIER, 'b', V=b)

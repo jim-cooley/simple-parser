@@ -3,10 +3,11 @@
 test: 4: "close <| sma(10) | signal >> delay(1d) | atr => sell"
 
 tree1:  close <| sma(10) | signal >> delay(1d) | atr => sell
+result: List([List(), Ident()])
     1 : List TK.RAISE(LIST, '=>', V=[List(), Ident()])
-    2 :     List TK.PIPE(LIST, '|', V=[List(), Ident()])
+    2 :     List TK.CHAIN(LIST, '|', V=[List(), Ident()])
     3 :         List TK.APPLY(LIST, '>>', V=[List(), FnCall()])
-    4 :             List TK.PIPE(LIST, '|', V=[BinOp(), Ident()])
+    4 :             List TK.CHAIN(LIST, '|', V=[BinOp(), Ident()])
     5 :                 BinOp TK.FALL_BELOW(BINOP, '<|', V=None)
     6 :                     Ident TK.IDNT(DATASET, 'close', V=close)
     7 :                     FnCall TK.FUNCTION(BINOP, '(', V=None)

@@ -28,11 +28,9 @@ class Environment(object):
     def __init__(self, source=None, nodes=None, commands=None, keywords=None, options=None):
         self.keywords = keywords if keywords is not None else Keywords()
         self.globals = Scope(keywords)
+        self.symbols = self.globals
         self.commands = commands if commands is not None else []
         self.trees = []
-
-        self.nodes = nodes if nodes is not None else []
-        self.values = None
         self.lines = None
         self.source = self.set_source(source) if source is not None else None
         self.tokens = None

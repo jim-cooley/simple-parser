@@ -2,9 +2,12 @@
 
 test: 2: "- 3"
 
-tree1:  "- 3"
+tree1:  - 3
+result: None
     1 : UnaryOp TK.NEG(UNARY, '-', V=None)
     2 :     Int TK.INT(LITERAL, '3', V=3)
 
-tree1:(post)  "- 3"
-    1 : Int TK.INT(LITERAL, '3', V=-3)
+tree1:(post)  - 3
+result: None
+    1 : UnaryOp TK.NEG(UNARY, '-', V=None)
+    2 :     Int TK.INT(LITERAL, '3', V=-3)

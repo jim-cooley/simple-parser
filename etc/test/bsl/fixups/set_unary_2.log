@@ -2,18 +2,18 @@
 
 test: 2: "any:{a, b, c}"
 
-tree1:  "any:{a, b, c}"
-    1 : BinOp TK.TUPLE(BINOP, ':', V=None)
-    2 :     UnaryOp TK.ANY(UNARY, 'any', V=any)
-    3 :     Set TK.SET(SET, '{', V=[Ident(), Ident(), Ident()])
-    4 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    5 :         Ident TK.IDNT(IDENTIFIER, 'b', V=b)
-    6 :         Ident TK.IDNT(IDENTIFIER, 'c', V=c)
+tree1:  any:{a, b, c}
+result: None
+    1 : UnaryOp TK.ANY(UNARY, 'any:', V=None)
+    2 :     Set TK.SET(SET, '{', V=[Ident(), Ident(), Ident()])
+    3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)
+    4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=b)
+    5 :         Ident TK.IDNT(IDENTIFIER, 'c', V=c)
 
-tree1:(post)  "any:{a, b, c}"
-    1 : BinOp TK.TUPLE(BINOP, ':', V=None)
-    2 :     UnaryOp TK.ANY(UNARY, 'any', V=any)
-    3 :     Set TK.SET(SET, '{', V=[Ident(), Ident(), Ident()])
-    4 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    5 :         Ident TK.IDNT(IDENTIFIER, 'b', V=b)
-    6 :         Ident TK.IDNT(IDENTIFIER, 'c', V=c)
+tree1:(post)  any:{a, b, c}
+result: None
+    1 : UnaryOp TK.ANY(UNARY, 'any:', V=None)
+    2 :     Set TK.SET(SET, '{', V=[Ident(), Ident(), Ident()])
+    3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)
+    4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=b)
+    5 :         Ident TK.IDNT(IDENTIFIER, 'c', V=c)

@@ -3,6 +3,7 @@
 test: 11: "{a:5, b:{c, d}}"
 
 tree1:  {a:5, b:{c, d}}
+result: BinOp(BinOp(TK.TUPLE(BINOP, ':', V=None): l=Ident(a), r=5)
     1 : Set TK.SET(SET, '{', V=[BinOp(), BinOp()])
     2 :     BinOp TK.TUPLE(BINOP, ':', V=None)
     3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)

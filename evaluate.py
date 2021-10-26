@@ -3,7 +3,7 @@ from datetime import timedelta
 from conversion import c_str2bool
 from exceptions import _runtime_error
 from literals import DUR
-from tokens import TK
+from tokens import TK, TCL
 
 _INTRINSIC_VALUE_TYPES = ['int', 'float', 'bool']
 _INTRINSIC_STR_TYPE = 'str'
@@ -27,6 +27,10 @@ def evaluate_binary_operation(node):
     r_ty = type(right.value).__name__
 
     # UNDONE: need dynamic dispatch here
+
+    if left.token.t_class != TCL.LITERAL or right.token.t_class != TCL.LITERAL:
+        return None
+
     if tid == TK.ADD:
         if l_ty in _INTRINSIC_VALUE_TYPES:
             if r_ty in _INTRINSIC_VALUE_TYPES:

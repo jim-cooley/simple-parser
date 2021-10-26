@@ -17,6 +17,7 @@ class TokenStream:
         HEAD = 0
         CURR = 1
         TAIL = 2
+        NEXT = 3    # next non-eol
 
     def __init__(self, source, verbose=False):
         self.keywords = Keywords()
@@ -64,6 +65,11 @@ class TokenStream:
             self.pos += rel
         elif whence == TokenStream.SEEK.TAIL:
             self.pos = len(self.tokens) + rel - 1
+        elif whence == TokenStream.SEEK.NEXT:
+            while self.tokens[self.pos].id == TK.EOL:
+                self.pos += 1
+                if self.tokens[self.pos].id == TK.EOF:
+                    break
         if self.pos > len(self.tokens):
             self.pos = len(self.tokens)
         self._has_more = True

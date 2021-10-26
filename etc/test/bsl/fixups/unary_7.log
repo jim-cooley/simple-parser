@@ -2,9 +2,12 @@
 
 test: 7: "not 1"
 
-tree1:  "not 1"
+tree1:  not 1
+result: None
     1 : UnaryOp TK.NOT(UNARY, 'not', V=None)
     2 :     Int TK.INT(LITERAL, '1', V=1)
 
-tree1:(post)  "not 1"
-    1 : Int TK.BOOL(LITERAL, '1', V=False)
+tree1:(post)  not 1
+result: None
+    1 : UnaryOp TK.NOT(UNARY, 'not', V=None)
+    2 :     Int TK.BOOL(LITERAL, '1', V=False)

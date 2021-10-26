@@ -1,23 +1,20 @@
 
 
-test: 4: "close.weekly.sma(20)"
+test: 4: "close.delay[+1d]"
 
-tree1:  "close.weekly.sma(20)"
+tree1:  close.delay[+1d]
     1 : PropRef TK.REF(BINOP, '.', V=None)
     2 :     Ident TK.IDNT(DATASET, 'close', V=close)
-    3 :     PropRef TK.REF(BINOP, '.', V=None)
-    4 :         Ident TK.IDNT(IDENTIFIER, 'weekly', V=weekly)
-    5 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
-    6 :             Ident TK.IDNT(FUNCTION, 'sma', V=sma)
-    7 :             List TK.PARAMETER_LIST(LIST, '(', V=[Int()])
-    8 :                 Int TK.INT(LITERAL, '20', V=20)
+    3 :     Index TK.INDEX(BINOP, '[', V=None)
+    4 :         Ident TK.IDNT(IDENTIFIER, 'delay', V=delay)
+    5 :         List TK.TUPLE(LIST, '[', V=[UnaryOp()])
+    6 :             UnaryOp TK.POS(UNARY, '+', V=None)
+    7 :                 Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
 
-tree1:(post)  "close.weekly.sma(20)"
+tree1:(post)  close.delay[+1d]
     1 : PropRef TK.REF(BINOP, '.', V=None)
     2 :     Ident TK.IDNT(DATASET, 'close', V=close)
-    3 :     PropRef TK.REF(BINOP, '.', V=None)
-    4 :         Ident TK.IDNT(IDENTIFIER, 'weekly', V=weekly)
-    5 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
-    6 :             Ident TK.IDNT(FUNCTION, 'sma', V=sma)
-    7 :             List TK.PARAMETER_LIST(LIST, '(', V=[Int()])
-    8 :                 Int TK.INT(LITERAL, '20', V=20)
+    3 :     Index TK.INDEX(BINOP, '[', V=None)
+    4 :         Ident TK.IDNT(IDENTIFIER, 'delay', V=delay)
+    5 :         List TK.TUPLE(LIST, '[', V=[Duration()])
+    6 :             Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)

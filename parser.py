@@ -1,11 +1,10 @@
 from copy import copy
 from dataclasses import dataclass
 
-from exceptions import _expected
-from environment import Environment
+from exceptions import _expected, _error
 from tokens import TK, TCL, _ADDITION_TOKENS, _COMPARISON_TOKENS, _FLOW_TOKENS, \
     _EQUALITY_TEST_TOKENS, _LOGIC_TOKENS, _MULTIPLICATION_TOKENS, _UNARY_TOKENS, _IDENTIFIER_TYPES, Token, \
-    _ASSIGNMENT_TOKENS
+    _ASSIGNMENT_TOKENS, _SET_UNARY_TOKENS
 from tokenstream import TokenStream
 from tree import UnaryOp, BinOp, FnCall, PropRef, PropCall, Command, Index, Ident, Literal
 from literals import Duration, Float, Int, Percent, Str, Time, Bool, List, Set
@@ -19,7 +18,7 @@ LIT_NONE = Literal(Token(tid=TK.NONE, tcl=TCL.LITERAL, lex="none", val=None))
 class ParseTree(object):
     def __init__(self, root, values=None, start=None, length=None):
         self.root = root
-        self.values = values
+        self.values = values if values is not None else root.value
         self.tk_start = start
         self.tk_len = length
 
@@ -48,7 +47,7 @@ class Parser(object):
     def parse(self, text):
         self._init(text)
         while True:
-            node = self.parse_command()
+            node = self.expression()
             if node is None or node.token.id == TK.EOF:
                 break
             nodes = [node] if type(node).__name__ != "list" else node
@@ -61,14 +60,25 @@ class Parser(object):
         self.environment.lines = text.splitlines()
         self.environment.tokens = self._tk_stream
         self._skip_end_of_line = True
+#       self._tk_stream.seek(0, TokenStream.SEEK.NEXT)
+
+    # -----------------------------------
+    # Recursive Descent Parser Entry
+    # -----------------------------------
+    def expression(self):
+        node = self.parse_command()
+        op = self._peek()
+        if op.id == TK.SEMI:
+            self._advance()
+        return node
 
     # -----------------------------------
     # control language parsing at top
     # -----------------------------------
     def parse_command(self):
-        commands = []
         tk = self._peek()
-        if not self._match([TK.EOL]) and tk.id == TK.PCT2:
+        if tk.id == TK.PCT2:
+            commands = []
             self._skip_end_of_line = False
             self._advance()
             while tk.id != TK.EOL:
@@ -77,22 +87,14 @@ class Parser(object):
                 tk = self._peek()
                 if tk.id in [TK.EOF, TK.EOL]:
                     break
-            self._skip_end_of_line = True
             self.environment.commands += commands
-            return None  # commands
-        self._skip_end_of_line = True
-        return self.expression()
+            self._skip_end_of_line = True
+            return self.expression()
+        return self.parse_definition()
 
     # -----------------------------------
     # Recursive Descent Parser States
     # -----------------------------------
-    def expression(self):
-        node = self.parse_definition()
-        op = self._peek()
-        if op.id == TK.SEMI:
-            self._advance()
-        return node
-
     def parse_definition(self):
         op = self._peek()
         if self._match([TK.DEFATTR]):
@@ -105,22 +107,31 @@ class Parser(object):
         return self.flow()
 
     def flow(self):
-        node = self.set_parameters()
+        node = self.tuples()
         op = copy(self._peek())  # need a copy or we modify the _lexer's token with op.map()
         while op.id in _FLOW_TOKENS:
             sep = op.id
             seq = List(op.map2binop(), [node])
             while self._match([sep]):
-                node = self.set_parameters()
+                node = self.tuples()
                 seq.append(node)
             node = seq
             op = copy(self._peek())
         return node
 
-    def set_parameters(self):
+    def tuples(self):
         node = self.assignment()
         op = self._peek()
         if op.id == TK.COLN:
+#            if node is None:
+#               _error("Expected lefthand side for binary operator", op.location)
+            tid = node.token.id
+            if tid in _SET_UNARY_TOKENS:
+                op.id = tid
+                op.lexeme = node.token.lexeme + ':'
+                self._advance()
+                node = UnaryOp(op.map2unop(), self.tuples())
+                return node
             while self._match([TK.COLN]):
                 node = BinOp(node, op.map2binop(), self.assignment())
                 op = self._peek()
@@ -171,16 +182,25 @@ class Parser(object):
         return node
 
     def factor(self):
-        node = self.unary()
+        l_node = self.unary()
         op = self._peek()
         while self._match(_MULTIPLICATION_TOKENS):
-            node2 = self.unary()
+            r_node = self.unary()
             # fixup for lack of 2-state lookahead: 1..2 scans as ['1.', '.', '2'] but scanner can only backup 1 token.
-            if node is not None and op.id == TK.DOT and node.token.id == TK.FLOT:
-                op.id = TK.DOT2
-            node = BinOp(node, op.map2binop(), node2)
+            if op.id == TK.DOT:
+                if l_node is not None:
+                    if l_node.token.id == TK.FLOT:
+                        op.id = TK.DOT2
+                elif r_node.token.id == TK.INT:  # l_node is None
+                    s_val = f'.{r_node.token.value}'
+                    r_node.token.id = TK.FLOT
+                    r_node.token.lexeme = s_val
+                    r_node.token.value = float(s_val)
+                    l_node = Float(r_node.token)
+                    return l_node
+            l_node = BinOp(l_node, op.map2binop(), r_node)
             op = self._peek()
-        return node
+        return l_node
 
     def unary(self):
         op = self._peek()
@@ -308,6 +328,10 @@ class Parser(object):
     # return current token with provision for fetching if there are none.
     # after the first token, self.token works fine for peek.
     def _peek(self):
+        tk = self._tk_stream.peek()
+        if not self._skip_end_of_line or tk.id != TK.EOL:
+            return tk
+        self._tk_stream.seek(1, TokenStream.SEEK.NEXT)
         return self._tk_stream.peek()
 
     # returns current token and advances
@@ -315,6 +339,11 @@ class Parser(object):
         while True:
             tk = self._tk_stream.read1()
             if self._skip_end_of_line and tk.id == TK.EOL:
+                continue
+            break
+        while True:
+            if self._skip_end_of_line and self._peek().id == TK.EOL:
+                self._tk_stream.read1()
                 continue
             break
         return tk

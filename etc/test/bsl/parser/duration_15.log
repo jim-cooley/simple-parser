@@ -3,5 +3,6 @@
 test: 15: "-1s"
 
 tree1:  -1s
+result: None
     1 : UnaryOp TK.NEG(UNARY, '-', V=None)
     2 :     Duration TK.DUR(LITERAL, '1s', V=0:00:01)

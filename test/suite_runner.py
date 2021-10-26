@@ -106,7 +106,7 @@ def _log_exception(e, log, name):
 
 def _dump_environment(env, log=None, label=None):
     _dump_tokens(env)
-    _dump_trees(env, log)
+    _dump_trees(env, log, label)
     _dump_commands(env, log)
 
 
@@ -146,14 +146,16 @@ def _dump_trees(env, log=None, label=None):
         ll = f'({label})' if label is not None else ''
         _t_print(log, f'\ntree{idx}:{ll}  {line}')
         print(f'notation: {printer.apply(t.root)}')
-        if env.values is not None:
-            v = env.values[i]
+        if t.values is not None:
+            v = t.values if type(t.values).__name__ != 'list' else t.values[0]
             ty = type(v).__name__
             if getattr(v, 'value', False):
                 v = v.value
             if v is None:
                 ty = 'Lit'
             _t_print(log, f'result: {ty}({v})')
+        else:
+            _t_print(log, f'result: None')
         dt = DumpTree()
         viz = dt.apply(t.root)
         for v in viz:

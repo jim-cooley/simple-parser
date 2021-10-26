@@ -2,7 +2,8 @@
 
 test: 27: "a(x, y)*b.c(1, 2)"
 
-tree1:  "a(x, y)*b.c(1, 2)"
+tree1:  a(x, y)*b.c(1, 2)
+result: None
     1 : BinOp TK.MUL(BINOP, '*', V=None)
     2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
     3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)
@@ -17,7 +18,8 @@ tree1:  "a(x, y)*b.c(1, 2)"
    12 :                 Int TK.INT(LITERAL, '1', V=1)
    13 :                 Int TK.INT(LITERAL, '2', V=2)
 
-tree1:(post)  "a(x, y)*b.c(1, 2)"
+tree1:(post)  a(x, y)*b.c(1, 2)
+result: None
     1 : BinOp TK.MUL(BINOP, '*', V=None)
     2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
     3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)

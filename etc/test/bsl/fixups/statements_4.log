@@ -2,20 +2,26 @@
 
 test: 4: "a ; b ; c"
 
-tree1:  "a ; b ; c"
+tree1:  a ; b ; c
+result: str(a)
     1 : Ident TK.IDNT(IDENTIFIER, 'a', V=a)
 
-tree2:  "a ; b ; c"
+tree2:  a ; b ; c
+result: str(b)
     1 : Ident TK.IDNT(IDENTIFIER, 'b', V=b)
 
-tree3:  "a ; b ; c"
+tree3:  a ; b ; c
+result: str(c)
     1 : Ident TK.IDNT(IDENTIFIER, 'c', V=c)
 
-tree1:(post)  "a ; b ; c"
+tree1:(post)  a ; b ; c
+result: str(a)
     1 : Ident TK.IDNT(IDENTIFIER, 'a', V=a)
 
-tree2:(post)  "a ; b ; c"
+tree2:(post)  a ; b ; c
+result: str(b)
     1 : Ident TK.IDNT(IDENTIFIER, 'b', V=b)
 
-tree3:(post)  "a ; b ; c"
+tree3:(post)  a ; b ; c
+result: str(c)
     1 : Ident TK.IDNT(IDENTIFIER, 'c', V=c)

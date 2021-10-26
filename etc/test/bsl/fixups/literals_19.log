@@ -2,8 +2,10 @@
 
 test: 19: "None"
 
-tree1:  "None"
-    1 : Set TK.SET(SET, 'None', V={})
+tree1:  None
+result: str(None)
+    1 : Ident TK.IDNT(IDENTIFIER, 'None', V=None)
 
-tree1:(post)  "None"
-    1 : Set TK.SET(SET, 'None', V={})
+tree1:(post)  None
+result: str(None)
+    1 : Ident TK.IDNT(IDENTIFIER, 'None', V=None)

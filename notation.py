@@ -69,7 +69,7 @@ _tk2pfx = {
     TK.OR: 'or',
     TK.PARAMETER_LIST: '',  # parameter-list
     TK.PCT: 'f',
-    TK.PIPE: 'pex',
+    TK.CHAIN: 'chain',
     TK.POS: 'pos',  # unary +
     TK.POW: 'pow',  # ^
     TK.RAISE: 'raise',  # =>
@@ -92,7 +92,7 @@ _tk2grp = {
     TK.INDEX:['[ ', ', ', ' ]', '[]'],
     TK.LIST: ['[', ', ', ']', '[]'],
     TK.PARAMETER_LIST: ['( ', ', ', ' )', '()'],
-    TK.PIPE: ['{', ' | ', '}', '{}'],
+    TK.CHAIN: ['{', ' | ', '}', '{}'],
     TK.SET: ['{ ', ', ',  ' }', '{}'],
     TK.TUPLE: ['( ', ':', ' )', '()']
 }

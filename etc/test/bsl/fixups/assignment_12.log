@@ -2,14 +2,15 @@
 
 test: 12: "report := { trades | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price') }"
 
-tree1:  "report := { trades | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price') }"
+tree1:  report := { trades | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price') }
+result: None
     1 : BinOp TK.DEFINE(BINOP, ':=', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'report', V=report)
     3 :     Set TK.SET(SET, '{', V=[List()])
-    4 :         List TK.PIPE(LIST, '|', V=[Ident(), FnCall()])
+    4 :         List TK.CHAIN(LIST, '|', V=[Ident(), FnCall()])
     5 :             Ident TK.IDNT(IDENTIFIER, 'trades', V=trades)
     6 :             FnCall TK.FUNCTION(BINOP, '(', V=None)
-    7 :                 Ident TK.FUNCTION(KEYWORD, 'select', V=select)
+    7 :                 Ident TK.IDNT(KEYWORD, 'select', V=select)
     8 :                 List TK.PARAMETER_LIST(LIST, '(', V=[Str(), Str(), Str(), Str(), Str()])
     9 :                     Str TK.STR(LITERAL, 'symbol', V=symbol)
    10 :                     Str TK.STR(LITERAL, 'buy_date', V=buy_date)
@@ -17,14 +18,15 @@ tree1:  "report := { trades | select('symbol', 'buy_date', 'buy_price', 'sell_da
    12 :                     Str TK.STR(LITERAL, 'sell_date', V=sell_date)
    13 :                     Str TK.STR(LITERAL, 'sell_price', V=sell_price)
 
-tree1:(post)  "report := { trades | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price') }"
+tree1:(post)  report := { trades | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price') }
+result: None
     1 : BinOp TK.DEFINE(BINOP, ':=', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'report', V=report)
     3 :     Set TK.SET(SET, '{', V=[List()])
-    4 :         List TK.PIPE(LIST, '|', V=[Ident(), FnCall()])
+    4 :         List TK.CHAIN(LIST, '|', V=[Ident(), FnCall()])
     5 :             Ident TK.IDNT(IDENTIFIER, 'trades', V=trades)
     6 :             FnCall TK.FUNCTION(BINOP, '(', V=None)
-    7 :                 Ident TK.FUNCTION(KEYWORD, 'select', V=select)
+    7 :                 Ident TK.IDNT(KEYWORD, 'select', V=select)
     8 :                 List TK.PARAMETER_LIST(LIST, '(', V=[Str(), Str(), Str(), Str(), Str()])
     9 :                     Str TK.STR(LITERAL, 'symbol', V=symbol)
    10 :                     Str TK.STR(LITERAL, 'buy_date', V=buy_date)

@@ -3,7 +3,8 @@
 test: 5: "{a} | {b}"
 
 tree1:  {a} | {b}
-    1 : List TK.PIPE(LIST, '|', V=[Set(), Set()])
+result: Set([Ident()])
+    1 : List TK.CHAIN(LIST, '|', V=[Set(), Set()])
     2 :     Set TK.SET(SET, '{', V=[Ident()])
     3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)
     4 :     Set TK.SET(SET, '{', V=[Ident()])

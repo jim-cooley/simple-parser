@@ -2,14 +2,16 @@
 
 test: 2: "a = b = c"
 
-tree1:  "a = b = c"
+tree1:  a = b = c
+result: None
     1 : BinOp TK.ASSIGN(BINOP, '=', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
     3 :     BinOp TK.ASSIGN(BINOP, '=', V=None)
     4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=b)
     5 :         Ident TK.IDNT(IDENTIFIER, 'c', V=c)
 
-tree1:(post)  "a = b = c"
+tree1:(post)  a = b = c
+result: None
     1 : BinOp TK.ASSIGN(BINOP, '=', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
     3 :     BinOp TK.ASSIGN(BINOP, '=', V=None)

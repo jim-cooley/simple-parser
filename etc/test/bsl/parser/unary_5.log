@@ -3,5 +3,6 @@
 test: 5: "not True"
 
 tree1:  not True
+result: None
     1 : UnaryOp TK.NOT(UNARY, 'not', V=None)
     2 :     Bool TK.TRUE(LITERAL, 'True', V=True)

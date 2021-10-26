@@ -3,7 +3,8 @@
 test: 10: "start: open.delay(1d) | buy"
 
 tree1:  start: open.delay(1d) | buy
-    1 : List TK.PIPE(LIST, '|', V=[BinOp(), Ident()])
+result: BinOp(BinOp(TK.TUPLE(BINOP, ':', V=None): l=Ident(start), r=BinOp(TK.REF(BINOP, '.', V=None): l=Ident(open), r=BinOp(TK.FUNCTION(BINOP, '(', V=None): l=Ident(delay), r=[1 day, 0:00:00])
+    1 : List TK.CHAIN(LIST, '|', V=[BinOp(), Ident()])
     2 :     BinOp TK.TUPLE(BINOP, ':', V=None)
     3 :         Ident TK.IDNT(IDENTIFIER, 'start', V=start)
     4 :         PropRef TK.REF(BINOP, '.', V=None)

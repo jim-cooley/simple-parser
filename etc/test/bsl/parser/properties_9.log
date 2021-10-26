@@ -3,6 +3,7 @@
 test: 9: "a().b.c().d()"
 
 tree1:  a().b.c().d()
+result: None
     1 : BinOp TK.DOT(BINOP, '.', V=None)
     2 :     BinOp TK.DOT(BINOP, '.', V=None)
     3 :         FnCall TK.FUNCTION(BINOP, '(', V=None)

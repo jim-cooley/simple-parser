@@ -2,7 +2,8 @@
 
 test: 15: "a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z()"
 
-tree1:  "a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z()"
+tree1:  a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z()
+result: None
     1 : PropRef TK.REF(BINOP, '.', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
     3 :     PropRef TK.REF(BINOP, '.', V=None)
@@ -57,7 +58,8 @@ tree1:  "a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z()"
    52 :                                                                                                         Ident TK.IDNT(IDENTIFIER, 'z', V=z)
    53 :                                                                                                         List TK.PARAMETER_LIST(LIST, '(', V=[])
 
-tree1:(post)  "a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z()"
+tree1:(post)  a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z()
+result: None
     1 : PropRef TK.REF(BINOP, '.', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
     3 :     PropRef TK.REF(BINOP, '.', V=None)

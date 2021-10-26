@@ -3,6 +3,7 @@
 test: 30: "a().b*c().d()"
 
 tree1:  a().b*c().d()
+result: None
     1 : BinOp TK.DOT(BINOP, '.', V=None)
     2 :     BinOp TK.MUL(BINOP, '*', V=None)
     3 :         BinOp TK.DOT(BINOP, '.', V=None)
