@@ -23,6 +23,12 @@ class Scope:
     def value(self, value):
         self.token.value += value
 
+    @property
+    def name(self):
+        if self.token is None or self.token.lexeme is None:
+            return ''
+        return self.token.lexeme
+
     def assign(self, token, expr):
         self._find_add(token, expr)
 
@@ -67,6 +73,7 @@ class Scope:
         symbol = self.find_local(token)
         if symbol is None:
             symbol = Ident(deepcopy(token))
+            symbol.parent_scope = self
             if getattr(value, '_symbols', False):
                 symbol._symbols = deepcopy(value._symbols)
                 symbol.value = symbol
@@ -102,7 +109,7 @@ class Ident(Object):
         self.value = token.lexeme
 
     def format(self):
-        return f'Ident({self.token.lexeme})'
+        return f'Ident({self.name})'
 
 
 @dataclass

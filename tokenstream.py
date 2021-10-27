@@ -45,8 +45,9 @@ class TokenStream:
     def get_tokens(self):
         return self.tokens
 
-    def peek(self):
-        return self.tokens[self.pos] if self.pos < len(self.tokens) else _tk_copy(TK_EOF)
+    def peek(self, rel=0, whence=SEEK.HEAD):
+        pos = self.pos + rel
+        return self.tokens[pos] if pos < len(self.tokens) else _tk_copy(TK_EOF)
 
     def read1(self):
         t = self.tokens[self.pos] if self.pos < len(self.tokens) else _tk_copy(TK_EOF)

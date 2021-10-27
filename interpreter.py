@@ -37,7 +37,7 @@ class Interpreter(TreeFilter):
     def __init__(self, environment):
         super().__init__(mapping=_visitNodeTypeMappings, apply_parent_fixups=True)
         self.environment = environment
-        self._verbose = True
+        self._verbose = False
 
     def apply(self, tree=None):
         self.trees.values = self.visit(self.trees.root)
@@ -58,7 +58,7 @@ class Interpreter(TreeFilter):
 
     # encountered if 'tree' is actually a 'forest'
     def visit_list(self, list, label=None):
-        self.visit_node(list)
+        self._print_node(list)
         count = 0
         values = []
         for n in list:
@@ -69,53 +69,33 @@ class Interpreter(TreeFilter):
         return values
 
     def visit_literal(self, node, label=None):
-        self.visit_node(node)
+        self._print_node(node)
         return evaluate_literal(node)
 
     def visit_ident(self, node, label=None):
-        self.visit_node(node)
+        self._print_node(node)
         return evaluate_identifier(node)
 
-    def visit_intrinsic(self, value, label=None):
-        self.visit_node(value)
-        return value
-
     def process_binops(self, node, label=None):
-        self.visit_node(node)
-        node.left.value = self.visit(node.left)
-        node.right.value = self.visit(node.right)
-        return evaluate_binary_operation(node)
+        self._print_node(node)
+        self.indent()
+        left = self.visit(node.left)
+        right = self.visit(node.right)
+        self.dedent()
+        return evaluate_binary_operation(node, left, right)
 
     def process_set(self, node, label=None):
-        self.visit_node(node)
-        if node is None:
-            return None
+        self._print_node(node)
         values = node.values()
         if values is None:
             return None
         return evaluate_set(node, self)
 
     def process_unops(self, node, label=None):
-        if node is None:
-            return None
-        self.visit_node(node)
-        self.visit(node.expr)
-#        if expr.token.t_class == TCL.LITERAL:
-#            if node.op == TK.NOT:
-#                expr = not_literal(expr)
-#                return _lift(node, expr)
-#            elif node.op == TK.INCREMENT:
-#                 expr = increment_literal(expr)
-#                 return _lift(node, expr)
-#             elif node.op == TK.DECREMENT:
-#                 expr = decrement_literal(expr)
-#                 return _lift(node, expr)
-#             elif node.op == TK.NEG:
-#                 expr = negate_literal(expr)
-#                 return _lift(node, expr)
-#             elif node.op == TK.POS:
-#                 return _lift(node, expr)
-        return node
+        self._print_node(node)
+        self.indent()
+        left = self.visit(node.expr)
+        return evaluate_unary_operation(node, left)
 
     def _init(self, tree):
         self.trees = tree

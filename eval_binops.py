@@ -35,15 +35,13 @@ def eval_binops_dispatch_fixup(node):
     if node is None:
         return None
     if node.op in _binops_dispatch_table:
-        return eval_binops_dispatch(node)
+        return eval_binops_dispatch(node, node.left, node.right)
     return node.value
 
 
-def eval_binops_dispatch(node):
-    left = node.left
+def eval_binops_dispatch(node, left, right):
     l_value = left.value
     l_ty = type(left).__name__
-    right = node.right
     r_value = right.value
     r_ty = type(right).__name__
     if l_ty == 'Ident':

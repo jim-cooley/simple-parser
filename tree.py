@@ -31,6 +31,23 @@ class AST:
 
 
 @dataclass
+class Assignment(AST):
+    def __init__(self, l_token, op, right):
+        super().__init__(token=op)
+        op.t_class = TCL.BINOP
+        self.l_token = l_token
+        self.right = right
+        self.op = op.id
+        if right is not None:
+            right.parent = self
+
+    def format(self):
+        left = "None" if self.l_token is None else f'{self.l_token}'
+        right = 'None' if self.right is None else f'{self.right}'
+        return f'BinOp({self.token}: l={left}, r={right}'
+
+
+@dataclass
 class BinOp(AST):
     def __init__(self, left, op, right):
         super().__init__(token=op)

@@ -4,6 +4,7 @@ from eval_unary import not_literal, increment_literal, decrement_literal, negate
 from exceptions import _runtime_error, _error
 from literals import LIT_NONE
 from tokens import TK, TCL
+from tree import AST
 
 _INTRINSIC_VALUE_TYPES = ['int', 'float', 'bool', 'timedelta']
 _INTRINSIC_STR_TYPE = 'str'
@@ -22,42 +23,49 @@ def evaluate_literal(node):
 
 def evaluate_identifier(node):
     left = Environment.current.symbols.find(node.token)
-    if left is None:
-        return None
-    return left.value
+    return left
 
 
-def evaluate_binary_operation(node):
+def evaluate_binary_operation(node, left, right):
     op = node.op
     if op in _binops_dispatch_table:
-        return eval_binops_dispatch(node)
+        return eval_binops_dispatch(node, left, right)
     elif op == TK.REF:
         scope = Environment.current.symbols
-        symbol = scope.find(node.left.token)
+        symbol = scope.find(left.token)
         if symbol is None:
             return LIT_NONE
         scope = Environment.current.enter_scope(symbol)
-        ref = scope.find_local(node.right.token)
+        ref = scope.find_local(right.token)
         Environment.current.leave_scope(scope)
         if ref is None:
             return LIT_NONE
         return ref.value if ref is not None else LIT_NONE
-    elif op == TK.REF:
-        pass
     elif op == TK.ASSIGN:
         scope = Environment.current.symbols
-        symbol = scope.find_add_local(node.left.token, node.right.value)
-        symbol.value = node.right.value
-        return node.right.value
+        token = left.token
+        if isinstance(left.value, AST):
+            token = left.value.token
+            scope = left.value.parent_scope
+        symbol = scope.find_add_local(token, right.value)
+        symbol.value = right.value
+        return right.value
     elif op in _INPLACE_OPS:
-        left = Environment.current.symbols.find(node.left.token)
+        left = Environment.current.symbols.find(left.token)
         if left is not None:
             op = _unary2binop[op]
-            left.value = eval_binops_dispatch2(op, left.value, node.right.value)
+            left.value = eval_binops_dispatch2(op, left.value, right.value)
             return left.value
-        _runtime_error(f'Variable ({node.left.token.lexeme}) used before being initialized', loc=node.token.location)
+        _runtime_error(f'Variable ({left.token.lexeme}) used before being initialized', loc=token.location)
+    elif op == TK.DEF:
+        scope = Environment.current.symbols
+        symbol = scope.find_add(left.token)
+        scope = Environment.current.enter_scope(symbol)
+        ref = scope.find_add_local(right.token)
+        Environment.current.leave_scope(scope)
+        return ref if ref is not None else LIT_NONE
     return None  # fixups uses this code as well.  probably want option_strict enablement
-    _error(f'Invalid operation {node.token.id.name}', loc=node.token.location)
+    _error(f'Invalid operation {token.id.name}', loc=token.location)
 
 
 # undone: some set attributes (formulae, chain calculations) will need to be dynamically evaluated
@@ -79,7 +87,7 @@ def evaluate_set(node, visitor=None):
     return node
 
 
-def evaluate_unary_operation(node):
+def evaluate_unary_operation(node, expr):
     tid = node.op
     left = node.expr
 
@@ -88,13 +96,13 @@ def evaluate_unary_operation(node):
 
     if left.token.t_class == TCL.LITERAL:
         if tid == TK.NOT:
-            return not_literal(left)
+            return not_literal(left).value
         elif tid == TK.INCREMENT:
-            return increment_literal(left)
+            return increment_literal(left).value
         elif tid == TK.DECREMENT:
-            return decrement_literal(left)
+            return decrement_literal(left).value
         elif tid == TK.NEG:
-            return negate_literal(left)
+            return negate_literal(left).value
         elif tid == TK.POS:
-            return left
-    return node
+            return left.value
+    return node.value
