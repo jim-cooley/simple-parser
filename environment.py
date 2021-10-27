@@ -69,7 +69,7 @@ class Environment(object):
         return scope
 
     def leave_scope(self, scope):
-        parent = scope.parent
+        parent = scope.parent_scope
         Environment.current.symbols = parent
         return scope.unlink()
 

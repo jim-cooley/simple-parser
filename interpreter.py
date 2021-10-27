@@ -1,5 +1,6 @@
 from environment import Environment
-from evaluate import evaluate_literal, evaluate_binary_operation, evaluate_unary_operation, evaluate_identifier
+from evaluate import evaluate_literal, evaluate_binary_operation, evaluate_unary_operation, evaluate_identifier, \
+    evaluate_set
 from scope import Scope
 from visitor import TreeFilter, BINARY_NODE, VALUE_NODE, SEQUENCE_NODE, DEFAULT_NODE, UNARY_NODE, NATIVE_VALUE
 
@@ -19,7 +20,7 @@ _visitNodeTypeMappings = {
     'Node': DEFAULT_NODE,
     'Percent': 'visit_literal',
     'PropCall': BINARY_NODE,
-    'PropRef': BINARY_NODE,
+    'PropRef': 'process_binops',
     'Set': 'process_set',
     'Str': 'visit_literal',
     'Time': 'visit_literal',
@@ -86,15 +87,7 @@ class Interpreter(TreeFilter):
         values = node.values()
         if values is None:
             return None
-        scope = Environment.current.enter_scope()
-        node.value = scope
-        for idx in range(0, len(values)):
-            n = values[idx]
-            if n is None:
-                continue
-            self.visit(n)
-        Environment.current.leave_scope(scope)
-        return None
+        return evaluate_set(node, self)
 
     def process_unops(self, node, label=None):
         if node is None:

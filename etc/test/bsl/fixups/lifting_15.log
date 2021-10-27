@@ -6,7 +6,7 @@ tree1:  fn(-1)
 result: None
     1 : FnCall TK.FUNCTION(BINOP, '(', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'fn', V=fn)
-    3 :     List TK.PARAMETER_LIST(LIST, '(', V=[UnaryOp()])
+    3 :     List TK.TUPLE(LIST, '(', V=[UnaryOp()])
     4 :         UnaryOp TK.NEG(UNARY, '-', V=None)
     5 :             Int TK.INT(LITERAL, '1', V=1)
 
@@ -14,5 +14,5 @@ tree1:(post)  fn(-1)
 result: None
     1 : FnCall TK.FUNCTION(BINOP, '(', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'fn', V=fn)
-    3 :     List TK.PARAMETER_LIST(LIST, '(', V=[Int()])
+    3 :     List TK.TUPLE(LIST, '(', V=[Int()])
     4 :         Int TK.INT(LITERAL, '1', V=-1)

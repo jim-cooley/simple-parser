@@ -24,7 +24,7 @@ result: None
     5 :             Ident TK.IDNT(IDENTIFIER, 'a', V=a)
     6 :             Ident TK.IDNT(IDENTIFIER, 'b', V=b)
     7 :             Ident TK.IDNT(IDENTIFIER, 'c', V=c)
-    8 :     List TK.PARAMETER_LIST(LIST, '(', V=[BinOp()])
+    8 :     List TK.TUPLE(LIST, '(', V=[BinOp()])
     9 :         BinOp TK.TUPLE(BINOP, '=', V=None)
    10 :             Ident TK.IDNT(IDENTIFIER, 'a', V=a)
    11 :             Int TK.INT(LITERAL, '5', V=5)

@@ -141,9 +141,10 @@ class Parser(object):
         while self._match(_ASSIGNMENT_TOKENS):
             tk = node.token
             if tk.id == TK.PARAMETER_LIST:  # convert to tuple assignment
-                TK.id = TK.TUPLE
-            elif node.token.t_class not in _IDENTIFIER_TYPES:
-                _expected(expected='IDENTIFIER', found=node.token)
+                tk.id = TK.TUPLE
+            if tk.id not in [TK.REF, TK.TUPLE]:
+                if node.token.t_class not in _IDENTIFIER_TYPES:
+                    _expected(expected='IDENTIFIER', found=node.token)
             node = BinOp(left=node, op=op.map2binop(), right=self.assignment())
         return node
 
@@ -307,8 +308,8 @@ class Parser(object):
         if token.id != TK.RPRN:
             seq = self.sequence(TK.COMA, node)
         self._consume(TK.RPRN)
-        token.t_class = TCL.LIST
-        token.id = TK.PARAMETER_LIST
+        token.t_class = TCL.TUPLE
+        token.id = TK.TUPLE
         token.lexeme = '('  # fixup token.
         return List(token, seq)
 

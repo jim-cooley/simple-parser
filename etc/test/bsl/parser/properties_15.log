@@ -56,4 +56,4 @@ result: None
    50 :                                                                                                     Ident TK.IDNT(IDENTIFIER, 'y', V=y)
    51 :                                                                                                     FnCall TK.FUNCTION(BINOP, '(', V=None)
    52 :                                                                                                         Ident TK.IDNT(IDENTIFIER, 'z', V=z)
-   53 :                                                                                                         List TK.PARAMETER_LIST(LIST, '(', V=[])
+   53 :                                                                                                         List TK.TUPLE(LIST, '(', V=[])

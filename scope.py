@@ -1,7 +1,7 @@
 # one of javascript's interesting things is that a Scope object is an Object.
 # in our case 'Set' represents that basic Object, but we make this
 # inherit from AST so that we can see where this goes.
-from copy import copy
+from copy import copy, deepcopy
 from dataclasses import dataclass
 
 from tokens import Token, TCL, TK
@@ -14,6 +14,14 @@ class Scope:
         super().__init__(**kwargs)
         self.parent_scope = parent_scope
         self._symbols = {}
+
+    @property
+    def value(self):
+        return self._symbols
+
+    @value.setter
+    def value(self, value):
+        self.token.value += value
 
     def assign(self, token, expr):
         self._find_add(token, expr)
@@ -58,8 +66,12 @@ class Scope:
     def find_add_local(self, token, value=None):
         symbol = self.find_local(token)
         if symbol is None:
-            symbol = Ident(copy(token))
-            symbol.value = value
+            symbol = Ident(deepcopy(token))
+            if getattr(value, '_symbols', False):
+                symbol._symbols = deepcopy(value._symbols)
+                symbol.value = symbol
+            else:
+                symbol.value = deepcopy(value)
             self._symbols[token.lexeme] = symbol
         return symbol
 

@@ -167,7 +167,7 @@ def _lift(node, child):
 
 # fixup helpers:
 def _fixup_coln_plist(node, target):
-    plist = List(Token(TK.PARAMETER_LIST, tcl=TCL.LIST, lex='(', loc=node.token.location), [target])
+    plist = List(Token(TK.TUPLE, tcl=TCL.TUPLE, lex='(', loc=node.token.location), [target])
     target.parent = plist
     plist.parent = node
     return plist

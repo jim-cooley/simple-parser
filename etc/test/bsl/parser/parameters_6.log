@@ -10,5 +10,5 @@ result: None
     4 :         Ident TK.IDNT(IDENTIFIER, 'weekly', V=weekly)
     5 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
     6 :             Ident TK.IDNT(FUNCTION, 'sma', V=sma)
-    7 :             List TK.PARAMETER_LIST(LIST, '(', V=[Int()])
+    7 :             List TK.TUPLE(LIST, '(', V=[Int()])
     8 :                 Int TK.INT(LITERAL, '20', V=20)

@@ -10,7 +10,7 @@ result: None
     4 :         Ident TK.IDNT(IDENTIFIER, 'trades', V=trades)
     5 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
     6 :             Ident TK.IDNT(KEYWORD, 'select', V=select)
-    7 :             List TK.PARAMETER_LIST(LIST, '(', V=[Str(), Str(), Str(), Str(), Str()])
+    7 :             List TK.TUPLE(LIST, '(', V=[Str(), Str(), Str(), Str(), Str()])
     8 :                 Str TK.STR(LITERAL, 'symbol', V=symbol)
     9 :                 Str TK.STR(LITERAL, 'buy_date', V=buy_date)
    10 :                 Str TK.STR(LITERAL, 'buy_price', V=buy_price)

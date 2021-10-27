@@ -155,7 +155,7 @@ class Set(List):
             return None
         if type(self.value).__name__ == "list":
             return self.value
-        return self.tuples() # list(self.value.values())
+        return list(self._symbols.values())
 
     def tuples(self):
         return list(self.value.items())
@@ -165,9 +165,10 @@ class Set(List):
             return '{}'
         else:
             fstr = ''
-            max = (len(self.value)-1)
-            for idx in range(0, len(self.value)):
-                fstr += f'{self.value[idx]}'
+            values = list(self._symbols.values())
+            max = len(values) - 1
+            for idx in range(0, max + 1):
+                fstr += f'{values[idx]}'
                 fstr += ',' if idx < max else ''
             return '{' + f'{fstr}' + '}'
 

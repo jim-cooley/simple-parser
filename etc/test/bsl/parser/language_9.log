@@ -9,6 +9,6 @@ result: PropRef(BinOp(TK.REF(BINOP, '.', V=None): l=Ident(open), r=BinOp(TK.FUNC
     3 :         Ident TK.IDNT(DATASET, 'open', V=open)
     4 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
     5 :             Ident TK.IDNT(IDENTIFIER, 'delay', V=delay)
-    6 :             List TK.PARAMETER_LIST(LIST, '(', V=[Duration()])
+    6 :             List TK.TUPLE(LIST, '(', V=[Duration()])
     7 :                 Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
     8 :     Ident TK.BUY(KEYWORD, 'buy', V=buy)

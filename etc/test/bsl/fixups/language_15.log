@@ -11,7 +11,7 @@ result: BinOp(BinOp(TK.TUPLE(BINOP, ':', V=None): l=Ident(start), r=BinOp(TK.REF
     5 :             Ident TK.IDNT(DATASET, 'open', V=open)
     6 :             FnCall TK.FUNCTION(BINOP, '(', V=None)
     7 :                 Ident TK.IDNT(IDENTIFIER, 'delay', V=delay)
-    8 :                 List TK.PARAMETER_LIST(LIST, '(', V=[Duration()])
+    8 :                 List TK.TUPLE(LIST, '(', V=[Duration()])
     9 :                     Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
    10 :     Ident TK.BUY(KEYWORD, 'buy', V=buy)
 
@@ -32,7 +32,7 @@ result: BinOp(BinOp(TK.TUPLE(BINOP, ':', V=None): l=Ident(start), r=BinOp(TK.REF
     5 :             Ident TK.IDNT(DATASET, 'open', V=open)
     6 :             FnCall TK.FUNCTION(BINOP, '(', V=None)
     7 :                 Ident TK.IDNT(IDENTIFIER, 'delay', V=delay)
-    8 :                 List TK.PARAMETER_LIST(LIST, '(', V=[Duration()])
+    8 :                 List TK.TUPLE(LIST, '(', V=[Duration()])
     9 :                     Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
    10 :     Ident TK.BUY(KEYWORD, 'buy', V=buy)
 

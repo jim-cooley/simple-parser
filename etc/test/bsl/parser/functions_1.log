@@ -6,4 +6,4 @@ tree1:  a()
 result: None
     1 : FnCall TK.FUNCTION(BINOP, '(', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    3 :     List TK.PARAMETER_LIST(LIST, '(', V=[])
+    3 :     List TK.TUPLE(LIST, '(', V=[])

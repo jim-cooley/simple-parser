@@ -13,7 +13,7 @@ result: None
     3 :         Ident TK.IDNT(IDENTIFIER, 'weekly', V=weekly)
     4 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
     5 :         Ident TK.IDNT(FUNCTION, 'sma', V=sma)
-    6 :         List TK.PARAMETER_LIST(LIST, '(', V=[Int()])
+    6 :         List TK.TUPLE(LIST, '(', V=[Int()])
     7 :             Int TK.INT(LITERAL, '20', V=20)
 
 tree1:(post)  close{weekly}.sma(20)
@@ -27,5 +27,5 @@ result: None
     3 :         Ident TK.IDNT(IDENTIFIER, 'weekly', V=weekly)
     4 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
     5 :         Ident TK.IDNT(FUNCTION, 'sma', V=sma)
-    6 :         List TK.PARAMETER_LIST(LIST, '(', V=[Int()])
+    6 :         List TK.TUPLE(LIST, '(', V=[Int()])
     7 :             Int TK.INT(LITERAL, '20', V=20)

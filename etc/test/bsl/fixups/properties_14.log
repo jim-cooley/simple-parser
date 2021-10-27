@@ -12,7 +12,7 @@ result: None
     6 :             Ident TK.IDNT(IDENTIFIER, 'c', V=c)
     7 :             FnCall TK.FUNCTION(BINOP, '(', V=None)
     8 :                 Ident TK.IDNT(IDENTIFIER, 'd', V=d)
-    9 :                 List TK.PARAMETER_LIST(LIST, '(', V=[])
+    9 :                 List TK.TUPLE(LIST, '(', V=[])
 
 tree1:(post)  a.b.c.d()
 result: None
@@ -24,4 +24,4 @@ result: None
     6 :             Ident TK.IDNT(IDENTIFIER, 'c', V=c)
     7 :             FnCall TK.FUNCTION(BINOP, '(', V=None)
     8 :                 Ident TK.IDNT(IDENTIFIER, 'd', V=d)
-    9 :                 List TK.PARAMETER_LIST(LIST, '(', V=[])
+    9 :                 List TK.TUPLE(LIST, '(', V=[])

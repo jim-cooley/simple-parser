@@ -9,7 +9,7 @@ result: PropRef(BinOp(TK.REF(BINOP, '.', V=None): l=Ident(a), r=BinOp(TK.FUNCTIO
     3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)
     4 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
     5 :             Ident TK.IDNT(IDENTIFIER, 'b', V=b)
-    6 :             List TK.PARAMETER_LIST(LIST, '(', V=[Duration()])
+    6 :             List TK.TUPLE(LIST, '(', V=[Duration()])
     7 :                 Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
     8 :     Ident TK.IDNT(IDENTIFIER, 'c', V=c)
 
@@ -20,6 +20,6 @@ result: PropRef(BinOp(TK.REF(BINOP, '.', V=None): l=Ident(a), r=BinOp(TK.FUNCTIO
     3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)
     4 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
     5 :             Ident TK.IDNT(IDENTIFIER, 'b', V=b)
-    6 :             List TK.PARAMETER_LIST(LIST, '(', V=[Duration()])
+    6 :             List TK.TUPLE(LIST, '(', V=[Duration()])
     7 :                 Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
     8 :     Ident TK.IDNT(IDENTIFIER, 'c', V=c)

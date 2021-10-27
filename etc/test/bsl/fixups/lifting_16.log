@@ -8,7 +8,7 @@ result: None
     2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
     3 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
     4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=b)
-    5 :         List TK.PARAMETER_LIST(LIST, '(', V=[UnaryOp()])
+    5 :         List TK.TUPLE(LIST, '(', V=[UnaryOp()])
     6 :             UnaryOp TK.NEG(UNARY, '-', V=None)
     7 :                 Int TK.INT(LITERAL, '1', V=1)
 
@@ -18,5 +18,5 @@ result: None
     2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
     3 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
     4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=b)
-    5 :         List TK.PARAMETER_LIST(LIST, '(', V=[Int()])
+    5 :         List TK.TUPLE(LIST, '(', V=[Int()])
     6 :             Int TK.INT(LITERAL, '1', V=-1)

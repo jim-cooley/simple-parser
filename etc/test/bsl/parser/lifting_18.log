@@ -9,7 +9,7 @@ result: None
     3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)
     4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=b)
     5 :         Ident TK.IDNT(IDENTIFIER, 'c', V=c)
-    6 :     List TK.PARAMETER_LIST(LIST, '(', V=[UnaryOp(), Int()])
+    6 :     List TK.TUPLE(LIST, '(', V=[UnaryOp(), Int()])
     7 :         UnaryOp TK.NEG(UNARY, '-', V=None)
     8 :             Int TK.INT(LITERAL, '1', V=1)
     9 :         Int TK.INT(LITERAL, '1', V=1)

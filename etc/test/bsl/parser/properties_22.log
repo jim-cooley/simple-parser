@@ -10,4 +10,4 @@ result: None
     4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=b)
     5 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
     6 :             Ident TK.IDNT(IDENTIFIER, 'c', V=c)
-    7 :             List TK.PARAMETER_LIST(LIST, '(', V=[])
+    7 :             List TK.TUPLE(LIST, '(', V=[])

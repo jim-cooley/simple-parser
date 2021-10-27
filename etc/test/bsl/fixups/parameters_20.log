@@ -14,7 +14,7 @@ tree1:(post)  a:(a = 5)
 result: None
     1 : BinOp TK.TUPLE(BINOP, ':', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    3 :     List TK.PARAMETER_LIST(LIST, '(', V=[BinOp()])
+    3 :     List TK.TUPLE(LIST, '(', V=[BinOp()])
     4 :         BinOp TK.TUPLE(BINOP, '=', V=None)
     5 :             Ident TK.IDNT(IDENTIFIER, 'a', V=a)
     6 :             Int TK.INT(LITERAL, '5', V=5)
