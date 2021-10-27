@@ -2,6 +2,21 @@
 logpath="./etc/test/log"
 bslpath="./etc/test/bsl"
 
+declare -i ignore_baselines=0
+declare -i quiet=0
+
+while [[ $# -gt 0 ]] ; do
+    case "$1" in
+        -b | --ignore_baselines)
+            ignore_baselines=1;;
+        -q | --quiet)
+            quiet=1;;
+        *)
+            break;;
+    esac
+    shift
+done
+
 prefx=$1
 suite=$2
 
@@ -38,23 +53,36 @@ for test in $logpath/$prefx/$suite*; do
 #   printf "$(basename $test):\n"
     if [ -f "$baseline" ]; then
         result="fail"
-        diff "$baseline" "$test" >> ./suite.log && result="pass"
-        grep -i "exception" "$test" && result="fail (exception)"
+        if [ $ignore_baselines -eq 0 ]; then
+            diff "$baseline" "$test" >> ./suite.log && result="pass"
+        else
+            result="pass"
+        fi
+        grep -i "exception" "$test" && printf "in $test\n" && result="fail (exception)"
         if [ "$result" == "pass" ]; then
             pass=$((pass + 1))
         fi
-        printf "$(basename $test):  $result\n"
-        printf "$(basename $test):\t$result\n" >> ./suite.log
+        if [ $quiet -eq 0 ]; then
+            printf "$(basename $test):  $result\n"
+            printf "$(basename $test):\t$result\n" >> ./suite.log
+        fi
     else
-        reason="no baseline"
-        grep -i "exception" "$test" && reason="exception"
+        if [ $ignore_baselines -eq 0 ]; then
+            reason="no baseline"
+        else
+            reason=""
+        fi
+        grep -i "exception" "$test" && printf "in $test\n" && reason="exception"
         if [ "$reason" == "no baseline" ]; then
             no_baseline=$((no_baseline + 1))
         fi
-        printf "$(basename $test):\tfail: $reason\n"
-        printf "$(basename $test):\tfail: $reason\n" >> ./suite.log
+        if [ $quiet -eq 0 ]; then
+            printf "$(basename $test):\tfail: $reason\n"
+            printf "$(basename $test):\tfail: $reason\n" >> ./suite.log
+        fi
     fi
 done
+
 printf "\n\nresults summary:\n" >> ./suite.log
 printf "================================\n" >> ./suite.log
 printf "  pass:        $pass\n" >> ./suite.log
