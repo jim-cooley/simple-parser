@@ -3,6 +3,7 @@ import traceback
 from abc import abstractmethod, ABC
 
 from notation import NotationPrinter
+from tokens import TCL
 from treedump import DumpTree
 
 _LOG_DIRECTORY = "./etc/test/log"
@@ -108,6 +109,7 @@ def _dump_environment(env, log=None, label=None):
     _dump_tokens(env)
     _dump_trees(env, log, label)
     _dump_commands(env, log)
+    _dump_symbols(env, label)
 
 
 def _dump_commands(env, log=None, label=None):
@@ -126,6 +128,16 @@ def _dump_commands(env, log=None, label=None):
         viz = dt.apply(t)
         for v in viz:
             _t_print(log, v)
+
+
+def _dump_symbols(env, label=None):
+    print("\n\nsymbols: ")
+    idx = 0
+    for k in env.symbols._symbols.keys():
+        v = env.symbols._symbols[k]
+        if type(v).__name__ == 'Ident':
+            print(f'{idx:5d}:  {k} : Ident({v.token})')
+            idx += 1
 
 
 def _dump_tokens(env):

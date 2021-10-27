@@ -27,7 +27,7 @@ class Environment(object):
 
     def __init__(self, source=None, nodes=None, commands=None, keywords=None, options=None):
         self.keywords = keywords if keywords is not None else Keywords()
-        self.globals = Scope(keywords)
+        self.globals = Scope(self.keywords)
         self.symbols = self.globals
         self.commands = commands if commands is not None else []
         self.trees = []
@@ -60,6 +60,18 @@ class Environment(object):
         self.source = source
         self.lines = source.splitlines(True)
         return source
+
+    def enter_scope(self, scope=None):
+        if scope is None:
+            scope = Scope()
+        scope.link(Environment.current.symbols)
+        Environment.current.symbols = scope
+        return scope
+
+    def leave_scope(self, scope):
+        parent = scope.parent
+        Environment.current.symbols = parent
+        return scope.unlink()
 
 
 _option_defaults = {

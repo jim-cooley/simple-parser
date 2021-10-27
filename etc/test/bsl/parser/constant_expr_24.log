@@ -1,0 +1,9 @@
+
+
+test: 24: "1w + 1d"
+
+tree1:  1w + 1d
+result: None
+    1 : BinOp TK.ADD(BINOP, '+', V=None)
+    2 :     Duration TK.DUR(LITERAL, '1w', V=7 days, 0:00:00)
+    3 :     Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)

@@ -1,0 +1,15 @@
+
+
+test: 68: "1 or "hello""
+
+tree1:  1 or "hello"
+result: None
+    1 : BinOp TK.OR(BINOP, 'or', V=None)
+    2 :     Int TK.INT(LITERAL, '1', V=1)
+    3 :     Str TK.STR(LITERAL, 'hello', V=hello)
+
+tree1:(post)  1 or "hello"
+result: None
+    1 : BinOp TK.OR(BINOP, 'or', V=None)
+    2 :     Int TK.INT(LITERAL, '1', V=1)
+    3 :     Str TK.STR(LITERAL, 'hello', V=hello)

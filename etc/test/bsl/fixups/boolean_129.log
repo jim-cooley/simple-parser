@@ -1,0 +1,15 @@
+
+
+test: 129: ""0" >= 0"
+
+tree1:  "0" >= 0
+result: None
+    1 : BinOp TK.GTE(BINOP, '>=', V=None)
+    2 :     Str TK.STR(LITERAL, '0', V=0)
+    3 :     Int TK.INT(LITERAL, '0', V=0)
+
+tree1:(post)  "0" >= 0
+result: None
+    1 : BinOp TK.GTE(BINOP, '>=', V=None)
+    2 :     Str TK.STR(LITERAL, '0', V=0)
+    3 :     Int TK.INT(LITERAL, '0', V=0)

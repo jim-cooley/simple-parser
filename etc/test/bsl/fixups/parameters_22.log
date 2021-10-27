@@ -1,0 +1,30 @@
+
+
+test: 22: "a:{a,b,c}:(a = 5)"
+
+tree1:  a:{a,b,c}:(a = 5)
+result: None
+    1 : BinOp TK.TUPLE(BINOP, ':', V=None)
+    2 :     BinOp TK.TUPLE(BINOP, ':', V=None)
+    3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)
+    4 :         Set TK.SET(SET, '{', V=[Ident(), Ident(), Ident()])
+    5 :             Ident TK.IDNT(IDENTIFIER, 'a', V=a)
+    6 :             Ident TK.IDNT(IDENTIFIER, 'b', V=b)
+    7 :             Ident TK.IDNT(IDENTIFIER, 'c', V=c)
+    8 :     BinOp TK.ASSIGN(BINOP, '=', V=None)
+    9 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)
+   10 :         Int TK.INT(LITERAL, '5', V=5)
+
+tree1:(post)  a:{a,b,c}:(a = 5)
+result: None
+    1 : BinOp TK.TUPLE(BINOP, ':', V=None)
+    2 :     BinOp TK.TUPLE(BINOP, ':', V=None)
+    3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)
+    4 :         Set TK.SET(SET, '{', V=[Ident(), Ident(), Ident()])
+    5 :             Ident TK.IDNT(IDENTIFIER, 'a', V=a)
+    6 :             Ident TK.IDNT(IDENTIFIER, 'b', V=b)
+    7 :             Ident TK.IDNT(IDENTIFIER, 'c', V=c)
+    8 :     List TK.PARAMETER_LIST(LIST, '(', V=[BinOp()])
+    9 :         BinOp TK.TUPLE(BINOP, '=', V=None)
+   10 :             Ident TK.IDNT(IDENTIFIER, 'a', V=a)
+   11 :             Int TK.INT(LITERAL, '5', V=5)

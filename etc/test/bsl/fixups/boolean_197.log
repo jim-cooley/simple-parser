@@ -1,0 +1,15 @@
+
+
+test: 197: ""0" ? "0""
+
+tree1:  "0" ? "0"
+result: None
+    1 : BinOp TK.COMPARE(BINOP, '?', V=None)
+    2 :     Str TK.STR(LITERAL, '0', V=0)
+    3 :     Str TK.STR(LITERAL, '0', V=0)
+
+tree1:(post)  "0" ? "0"
+result: None
+    1 : BinOp TK.COMPARE(BINOP, '?', V=None)
+    2 :     Str TK.STR(LITERAL, '0', V=0)
+    3 :     Str TK.STR(LITERAL, '0', V=0)

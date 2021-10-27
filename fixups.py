@@ -4,7 +4,7 @@ from abc import ABC
 
 from eval_unary import decrement_literal, increment_literal, negate_literal, not_literal
 from evaluate import evaluate_binary_operation
-from literals import List
+from tree_literals import List
 from modifytree import TreeModifier
 from tokens import TK, TCL, Token
 from visitor import BINARY_NODE
@@ -93,7 +93,7 @@ class Fixups(TreeModifier, ABC):
             tkid = node.token.id
             if tkid == TK.TUPLE:
                 return self.convert_coln_plist(node, label)
-            if node.left.t_class == TCL.LITERAL and node.right.t_class == TCL.LITERAL:
+            if node.left.token.t_class == TCL.LITERAL and node.right.token.t_class == TCL.LITERAL:
                 rnode = evaluate_binary_operation(node)
         return rnode
 

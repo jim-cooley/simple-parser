@@ -1,0 +1,15 @@
+
+
+test: 184: "false ? true"
+
+tree1:  false ? true
+result: None
+    1 : BinOp TK.COMPARE(BINOP, '?', V=None)
+    2 :     Bool TK.FALSE(LITERAL, 'false', V=False)
+    3 :     Bool TK.TRUE(LITERAL, 'true', V=True)
+
+tree1:(post)  false ? true
+result: None
+    1 : BinOp TK.COMPARE(BINOP, '?', V=None)
+    2 :     Bool TK.FALSE(LITERAL, 'false', V=False)
+    3 :     Bool TK.TRUE(LITERAL, 'true', V=True)

@@ -1,0 +1,9 @@
+
+
+test: 145: "0 != 1"
+
+tree1:  0 != 1
+result: None
+    1 : BinOp TK.NEQ(BINOP, '!=', V=None)
+    2 :     Int TK.INT(LITERAL, '0', V=0)
+    3 :     Int TK.INT(LITERAL, '1', V=1)

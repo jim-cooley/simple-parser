@@ -1,0 +1,8 @@
+
+
+test: 14: "not "2""
+
+tree1:  not "2"
+result: None
+    1 : UnaryOp TK.NOT(UNARY, 'not', V=None)
+    2 :     Str TK.STR(LITERAL, '2', V=2)

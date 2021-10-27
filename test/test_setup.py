@@ -11,6 +11,7 @@ test_data = {
     'constant_expr': 'constant_expr.t',
     'duration': 'duration.t',
     'empty_sets': 'empty_sets.t',
+    'eval_test': 'eval_test.p',
     'expressions': 'expressions.t',
     'functions': 'functions.t',
     'grouping': 'grouping.t',

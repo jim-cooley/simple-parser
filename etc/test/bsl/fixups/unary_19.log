@@ -1,0 +1,12 @@
+
+
+test: 19: "--1s"
+
+tree1:  --1s
+result: None
+    1 : UnaryOp TK.DECREMENT(UNARY, '--', V=None)
+    2 :     Duration TK.DUR(LITERAL, '1s', V=0:00:01)
+
+tree1:(post)  --1s
+result: None
+    1 : Float TK.FLOT(LITERAL, None, V=0.0)

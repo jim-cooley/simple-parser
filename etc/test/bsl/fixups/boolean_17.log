@@ -1,0 +1,12 @@
+
+
+test: 17: "not "hello""
+
+tree1:  not "hello"
+result: None
+    1 : UnaryOp TK.NOT(UNARY, 'not', V=None)
+    2 :     Str TK.STR(LITERAL, 'hello', V=hello)
+
+tree1:(post)  not "hello"
+result: None
+    1 : Bool TK.BOOL(LITERAL, None, V=False)

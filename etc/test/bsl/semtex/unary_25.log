@@ -1,0 +1,7 @@
+
+
+test: 25: "++1y"
+
+tree1:  "++1y"
+result: timedelta(730 days, 0:00:00)
+    1 : Duration TK.DUR(LITERAL, '1y', V=730 days, 0:00:00)

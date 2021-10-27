@@ -1,0 +1,15 @@
+
+
+test: 30: "true and true"
+
+tree1:  true and true
+result: None
+    1 : BinOp TK.AND(BINOP, 'and', V=None)
+    2 :     Bool TK.TRUE(LITERAL, 'true', V=True)
+    3 :     Bool TK.TRUE(LITERAL, 'true', V=True)
+
+tree1:(post)  true and true
+result: None
+    1 : BinOp TK.AND(BINOP, 'and', V=None)
+    2 :     Bool TK.TRUE(LITERAL, 'true', V=True)
+    3 :     Bool TK.TRUE(LITERAL, 'true', V=True)

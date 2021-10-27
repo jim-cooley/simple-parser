@@ -1,0 +1,12 @@
+
+
+test: 22: "! 0"
+
+tree1:  ! 0
+result: None
+    1 : UnaryOp TK.NOT(UNARY, '!', V=None)
+    2 :     Int TK.INT(LITERAL, '0', V=0)
+
+tree1:(post)  ! 0
+result: None
+    1 : Bool TK.BOOL(LITERAL, None, V=True)

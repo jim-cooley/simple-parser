@@ -3,8 +3,8 @@ from dataclasses import dataclass
 from datetime import datetime, time, timedelta
 from enum import Enum
 
-from tokens import TCL, TK
-from tree import Literal
+from tokens import TCL, TK, Token
+from scope import Literal
 
 '''
 Type Helpers
@@ -281,3 +281,7 @@ def _parse_duration_units(units):
     elif units in ("s", "sec", "seconds"):
         dur = DUR.SECOND
     return dur
+
+
+LIT_EMPTY_SET = Set(Token(tid=TK.EMPTY, tcl=TCL.LITERAL, lex="{}", val=None))
+LIT_NONE = Literal(Token(tid=TK.NONE, tcl=TCL.LITERAL, lex="none", val=None))

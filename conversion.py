@@ -6,7 +6,7 @@ from copy import copy
 from datetime import timedelta
 
 from exceptions import _runtime_error
-from literals import Bool, Int, Float, _parse_duration
+from tree_literals import Bool, Int, Float, _parse_duration
 from tokens import TK
 
 

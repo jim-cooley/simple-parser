@@ -1,4 +1,6 @@
-from evaluate import evaluate_literal, evaluate_binary_operation, evaluate_unary_operation
+from environment import Environment
+from evaluate import evaluate_literal, evaluate_binary_operation, evaluate_unary_operation, evaluate_identifier
+from scope import Scope
 from visitor import TreeFilter, BINARY_NODE, VALUE_NODE, SEQUENCE_NODE, DEFAULT_NODE, UNARY_NODE, NATIVE_VALUE
 
 _visitNodeTypeMappings = {
@@ -10,7 +12,7 @@ _visitNodeTypeMappings = {
     'Duration': 'visit_literal',
     'Float': 'visit_literal',
     'FnCall': BINARY_NODE,
-    'Ident': VALUE_NODE,
+    'Ident': 'visit_ident',
     'Index': BINARY_NODE,
     'Int': 'visit_literal',
     'List': SEQUENCE_NODE,
@@ -18,7 +20,7 @@ _visitNodeTypeMappings = {
     'Percent': 'visit_literal',
     'PropCall': BINARY_NODE,
     'PropRef': BINARY_NODE,
-    'Set': SEQUENCE_NODE,
+    'Set': 'process_set',
     'Str': 'visit_literal',
     'Time': 'visit_literal',
     'UnaryOp': UNARY_NODE,
@@ -64,36 +66,55 @@ class Interpreter(TreeFilter):
             values.append(self.visit(n))
         return values
 
-    def process_binops(self, node, label=None):
-        self.visit_binary_node(node, label)
-        return evaluate_binary_operation(node)
-
     def visit_literal(self, node, label=None):
         return evaluate_literal(node)
 
+    def visit_ident(self, node, label=None):
+        return evaluate_identifier(node)
+
     def visit_intrinsic(self, value, label=None):
         return value
+
+    def process_binops(self, node, label=None):
+        node.left.value = self.visit(node.left)
+        node.right.value = self.visit(node.right)
+        return evaluate_binary_operation(node)
+
+    def process_set(self, node, label=None):
+        if node is None:
+            return None
+        values = node.values()
+        if values is None:
+            return None
+        scope = Environment.current.enter_scope()
+        node.value = scope
+        for idx in range(0, len(values)):
+            n = values[idx]
+            if n is None:
+                continue
+            self.visit(n)
+        Environment.current.leave_scope(scope)
+        return None
 
     def process_unops(self, node, label=None):
         if node is None:
             return None
         self.visit(node.expr)
-
-        if expr.token.t_class == TCL.LITERAL:
-            if node.op == TK.NOT:
-                expr = not_literal(expr)
-                return _lift(node, expr)
-            elif node.op == TK.INCREMENT:
-                expr = increment_literal(expr)
-                return _lift(node, expr)
-            elif node.op == TK.DECREMENT:
-                expr = decrement_literal(expr)
-                return _lift(node, expr)
-            elif node.op == TK.NEG:
-                expr = negate_literal(expr)
-                return _lift(node, expr)
-            elif node.op == TK.POS:
-                return _lift(node, expr)
+#        if expr.token.t_class == TCL.LITERAL:
+#            if node.op == TK.NOT:
+#                expr = not_literal(expr)
+#                return _lift(node, expr)
+#            elif node.op == TK.INCREMENT:
+#                 expr = increment_literal(expr)
+#                 return _lift(node, expr)
+#             elif node.op == TK.DECREMENT:
+#                 expr = decrement_literal(expr)
+#                 return _lift(node, expr)
+#             elif node.op == TK.NEG:
+#                 expr = negate_literal(expr)
+#                 return _lift(node, expr)
+#             elif node.op == TK.POS:
+#                 return _lift(node, expr)
         return node
 
     def _init(self, tree):

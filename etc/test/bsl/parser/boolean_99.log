@@ -1,0 +1,9 @@
+
+
+test: 99: ""1" < "0""
+
+tree1:  "1" < "0"
+result: None
+    1 : BinOp TK.LESS(BINOP, '<', V=None)
+    2 :     Str TK.STR(LITERAL, '1', V=1)
+    3 :     Str TK.STR(LITERAL, '0', V=0)

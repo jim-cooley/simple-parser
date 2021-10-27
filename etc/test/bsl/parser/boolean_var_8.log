@@ -1,0 +1,9 @@
+
+
+test: 8: "a < b"
+
+tree1:  a < b
+result: None
+    1 : BinOp TK.LESS(BINOP, '<', V=None)
+    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
+    3 :     Ident TK.IDNT(IDENTIFIER, 'b', V=b)

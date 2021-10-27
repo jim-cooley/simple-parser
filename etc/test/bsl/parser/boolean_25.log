@@ -1,0 +1,8 @@
+
+
+test: 25: "! "2""
+
+tree1:  ! "2"
+result: None
+    1 : UnaryOp TK.NOT(UNARY, '!', V=None)
+    2 :     Str TK.STR(LITERAL, '2', V=2)

@@ -1,0 +1,8 @@
+
+
+test: 10: "not 0"
+
+tree1:  not 0
+result: None
+    1 : UnaryOp TK.NOT(UNARY, 'not', V=None)
+    2 :     Int TK.INT(LITERAL, '0', V=0)

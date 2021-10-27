@@ -1,7 +1,9 @@
 from exceptions import _runtime_error, _error
 from tokens import TK
+from tree_literals import LIT_NONE
+from environment import Environment
 
-_INTRINSIC_VALUE_TYPES = ['int', 'float', 'bool', 'str', 'timedelta']
+_INTRINSIC_VALUE_TYPES = ['int', 'float', 'bool', 'str', 'timedelta', 'time']
 
 
 _type2idx = {
@@ -10,23 +12,50 @@ _type2idx = {
     'bool': 2,
     'str': 3,
     'timedelta': 4,
+    'time': 5,
 }
+
+_type2native = {
+    'Ident': 'ident',
+    'Bool': 'bool',
+    'DateTime': 'datetime',
+    'Duration': 'timedelta',
+    'Float': 'float',
+    'Int': 'int',
+    'Percent': 'float',
+    'Str': 'str',
+    'Time': 'datetime',
+}
+
+_INDEXED_TYPES = [TK.SET, TK.LIST, TK.TUPLE, TK.PARAMETER_LIST]
 
 
 def eval_binops_dispatch(node):
-    if node.op in _binops_dispatch_table:
-        l_value = node.left.value
-        l_ty = type(l_value).__name__
-        r_value = node.right.value
-        r_ty = type(r_value).__name__
-        if l_value is None or r_value is None:
-            return None
-        if l_ty in _type2idx and r_ty in _type2idx:
-            ixl = _type2idx[l_ty]
-            ixr = _type2idx[r_ty]
-            fn = _binops_dispatch_table[node.token.id][ixr][ixl]
-            return fn(l_value, r_value)
-    _error(f'Invalid operation {node.token.id.name}', loc=node.token.location)
+    left = node.left
+    l_value = left.value
+    l_ty = type(left).__name__
+    right = node.right
+    r_value = right.value
+    r_ty = type(right).__name__
+    if l_ty == 'Ident':
+        l_value = Environment.current.symbols.find(left.token).value
+    if r_ty == 'Ident':
+        r_value = Environment.current.symbols.find(right.token).value
+    if l_value is None or r_value is None:
+        return None
+    return eval_binops_dispatch2(node.token.id, l_value, r_value)
+
+
+def eval_binops_dispatch2(tkid, l_value, r_value):
+    l_ty = type(l_value).__name__
+    r_ty = type(r_value).__name__
+    l_ty = l_ty if l_ty not in _type2native else _type2native[l_ty]
+    r_ty = r_ty if r_ty not in _type2native else _type2native[r_ty]
+    if l_ty in _type2idx and r_ty in _type2idx:
+        ixl = _type2idx[l_ty]
+        ixr = _type2idx[r_ty]
+        fn = _binops_dispatch_table[tkid][ixr][ixl]
+        return fn(l_value, r_value)
 
 
 def _add__int_int(l_value, r_value):
@@ -100,7 +129,7 @@ _binops_dispatch_table = {
         [_add__int_int, _add__int_int, _add__int_int, _add__str_int, _add__int_int],   # int
         [_add__int_int, _add__int_int, _add__int_int, _add__str_int, _add__int_int],   # float
         [_add__int_int, _add__int_int, _add__int_int, _add__str_int, _add__int_int],   # bool
-        [_add__int_str, _add__int_str, _add__int_str, _invalid_add, _invalid_add],   # str
+        [_add__int_str, _add__int_str, _add__int_str, _invalid_add,  _invalid_add],   # str
         [_add__int_int, _add__int_int, _add__int_int, _add__str_int, _add__int_int],   # timedelta
 
     ],
@@ -118,7 +147,7 @@ _binops_dispatch_table = {
         [_div__int_int, _div__int_int, _div__int_int, _invalid_div, _div__int_int],   # int
         [_div__int_int, _div__int_int, _div__int_int, _invalid_div, _div__int_int],   # float
         [_div__int_int, _div__int_int, _div__int_int, _invalid_div, _div__int_int],   # bool
-        [_invalid_div, _invalid_div, _invalid_div, _invalid_div, _div__int_int],   # str
+        [_invalid_div,  _invalid_div,  _invalid_div,  _invalid_div, _div__int_int],   # str
         [_div__int_int, _div__int_int, _div__int_int, _invalid_div, _div__int_int],   # timedelta
 
     ],

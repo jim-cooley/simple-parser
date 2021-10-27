@@ -1,0 +1,7 @@
+
+
+test: 21: "++1h"
+
+tree1:  "++1h"
+result: timedelta(2:00:00)
+    1 : Duration TK.DUR(LITERAL, '1h', V=2:00:00)

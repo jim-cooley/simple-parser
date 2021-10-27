@@ -1,17 +1,15 @@
 from copy import copy
 from dataclasses import dataclass
 
-from exceptions import _expected, _error
+from exceptions import _expected
 from tokens import TK, TCL, _ADDITION_TOKENS, _COMPARISON_TOKENS, _FLOW_TOKENS, \
-    _EQUALITY_TEST_TOKENS, _LOGIC_TOKENS, _MULTIPLICATION_TOKENS, _UNARY_TOKENS, _IDENTIFIER_TYPES, Token, \
-    _ASSIGNMENT_TOKENS, _SET_UNARY_TOKENS
+    _EQUALITY_TEST_TOKENS, _LOGIC_TOKENS, _MULTIPLICATION_TOKENS, _UNARY_TOKENS, _IDENTIFIER_TYPES, _ASSIGNMENT_TOKENS, _SET_UNARY_TOKENS
 from tokenstream import TokenStream
-from tree import UnaryOp, BinOp, FnCall, PropRef, PropCall, Command, Index, Ident, Literal
-from literals import Duration, Float, Int, Percent, Str, Time, Bool, List, Set
+from tree import UnaryOp, BinOp, Command
+from tree_binops import FnCall, Index, PropCall, PropRef
+from scope import Ident, Literal
+from tree_literals import Duration, Float, Int, Percent, Str, Time, Bool, List, Set, LIT_EMPTY_SET
 from treedump import DumpTree
-
-LIT_EMPTY_SET = Set(Token(tid=TK.EMPTY, tcl=TCL.LITERAL, lex="{}", val=None))
-LIT_NONE = Literal(Token(tid=TK.NONE, tcl=TCL.LITERAL, lex="none", val=None))
 
 
 @dataclass
@@ -33,7 +31,7 @@ class Parser(object):
     def __getattr__(self, item):
         if item == 'token':
             return self._peek()
-        pass
+        return super().__getattr__(self, item)
 
     def __iter__(self):
         return self

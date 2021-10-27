@@ -1,0 +1,12 @@
+
+
+test: 20: "! false"
+
+tree1:  ! false
+result: None
+    1 : UnaryOp TK.NOT(UNARY, '!', V=None)
+    2 :     Bool TK.FALSE(LITERAL, 'false', V=False)
+
+tree1:(post)  ! false
+result: None
+    1 : Bool TK.BOOL(LITERAL, None, V=True)

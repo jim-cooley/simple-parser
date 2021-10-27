@@ -5,7 +5,9 @@
 pyvenv.cfg
 pytex.py
 __pycache__
+suite.log
 include/
 bin/
 lib/
-*.log
+log/
+out/

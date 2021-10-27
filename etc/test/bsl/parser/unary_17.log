@@ -1,0 +1,9 @@
+
+
+test: 17: "++++2"
+
+tree1:  ++++2
+result: None
+    1 : UnaryOp TK.INCREMENT(UNARY, '++', V=None)
+    2 :     UnaryOp TK.INCREMENT(UNARY, '++', V=None)
+    3 :         Int TK.INT(LITERAL, '2', V=2)

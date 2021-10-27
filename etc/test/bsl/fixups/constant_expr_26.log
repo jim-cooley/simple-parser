@@ -1,0 +1,15 @@
+
+
+test: 26: "365d / 12"
+
+tree1:  365d / 12
+result: None
+    1 : BinOp TK.DIV(BINOP, '/', V=None)
+    2 :     Duration TK.DUR(LITERAL, '365d', V=365 days, 0:00:00)
+    3 :     Int TK.INT(LITERAL, '12', V=12)
+
+tree1:(post)  365d / 12
+result: None
+    1 : BinOp TK.DIV(BINOP, '/', V=None)
+    2 :     Duration TK.DUR(LITERAL, '365d', V=365 days, 0:00:00)
+    3 :     Int TK.INT(LITERAL, '12', V=12)

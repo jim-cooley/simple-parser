@@ -1,0 +1,15 @@
+
+
+test: 18: "++++b"
+
+tree1:  ++++b
+result: None
+    1 : UnaryOp TK.INCREMENT(UNARY, '++', V=None)
+    2 :     UnaryOp TK.INCREMENT(UNARY, '++', V=None)
+    3 :         Ident TK.IDNT(IDENTIFIER, 'b', V=b)
+
+tree1:(post)  ++++b
+result: None
+    1 : UnaryOp TK.INCREMENT(UNARY, '++', V=None)
+    2 :     UnaryOp TK.INCREMENT(UNARY, '++', V=None)
+    3 :         Ident TK.IDNT(IDENTIFIER, 'b', V=b)

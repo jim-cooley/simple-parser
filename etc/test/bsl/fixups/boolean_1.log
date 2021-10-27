@@ -1,0 +1,12 @@
+
+
+test: 1: "not none"
+
+tree1:  not none
+result: None
+    1 : UnaryOp TK.NOT(UNARY, 'not', V=None)
+    2 :     Literal TK.NONE(LITERAL, 'none', V=None)
+
+tree1:(post)  not none
+result: None
+    1 : Bool TK.BOOL(LITERAL, None, V=True)

@@ -1,0 +1,7 @@
+
+
+test: 23: "--1w"
+
+tree1:  "--1w"
+result: timedelta(0:00:00)
+    1 : Duration TK.DUR(LITERAL, '1w', V=0:00:00)

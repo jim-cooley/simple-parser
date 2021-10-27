@@ -1,0 +1,15 @@
+
+
+test: 137: "false != false"
+
+tree1:  false != false
+result: None
+    1 : BinOp TK.NEQ(BINOP, '!=', V=None)
+    2 :     Bool TK.FALSE(LITERAL, 'false', V=False)
+    3 :     Bool TK.FALSE(LITERAL, 'false', V=False)
+
+tree1:(post)  false != false
+result: None
+    1 : BinOp TK.NEQ(BINOP, '!=', V=None)
+    2 :     Bool TK.FALSE(LITERAL, 'false', V=False)
+    3 :     Bool TK.FALSE(LITERAL, 'false', V=False)
