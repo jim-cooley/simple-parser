@@ -64,12 +64,15 @@ for test in $logpath/$prefx/$suite*; do
         fi
         if [ $quiet -eq 0 ]; then
             printf "$(basename $test):  $result\n"
-            printf "$(basename $test):\t$result\n" >> ./suite.log
+        fi
+        if [ "$result" != "pass" ]; then
+            printf "$(basename $test):\t$result\n" >> ./suite.log &>> ./suite.log
         fi
     else
         if [ $ignore_baselines -eq 0 ]; then
             reason="no baseline"
         else
+            no_baseline=$((no_baseline + 1))
             reason=""
         fi
         grep -i "exception" "$test" && printf "in $test\n" && reason="exception"
@@ -78,7 +81,12 @@ for test in $logpath/$prefx/$suite*; do
         fi
         if [ $quiet -eq 0 ]; then
             printf "$(basename $test):\tfail: $reason\n"
-            printf "$(basename $test):\tfail: $reason\n" >> ./suite.log
+        fi
+        if [ $ignore_baselines -eq 0 ]; then
+            printf "$(basename $test):\tfail: $reason\n" >> ./suite.log &>> ./suite.log
+        elif [ "$reason" != "" ]; then
+
+            printf "$(basename $test):\tfail: $reason\n" >> ./suite.log &>> ./suite.log
         fi
     fi
 done
@@ -101,6 +109,9 @@ printf "================================\n\n"
 end=$(date +%s)
 printf "$((end - start)) seconds\n\n"
 
-grep -i fail ./suite.log
+
+if [ $quiet -eq 0 ]; then
+    grep -i fail ./suite.log
+fi
 
 printf "\n\n"
