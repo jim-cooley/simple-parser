@@ -26,6 +26,7 @@ class PropCall(FnCall):
 
 @dataclass
 class PropRef(BinOp):
-    def __init__(self, token, prop, op=None):
-        op = Token(tid=TK.REF, tcl=TCL.BINOP, lex=".", loc=token.location) if op is None else op
+    def __init__(self, token, prop, op=None, ref=False):
+        op = Token(tid=TK.REF if ref is True else TK.DEF, tcl=TCL.BINOP, lex=".",
+                   loc=token.location) if op is None else op
         super().__init__(left=Ident(token), op=op, right=prop)

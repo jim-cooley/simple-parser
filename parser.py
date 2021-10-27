@@ -26,6 +26,7 @@ class Parser(object):
         self.environment = environment
         self.verbose = verbose
         self._skip_end_of_line = True
+        self._generate_refs = False   # ugly coupling, but generate refs or defs depending on which side of the binop
 
     # syntactic sugar (use self.peek)
     def __getattr__(self, item):
@@ -95,12 +96,16 @@ class Parser(object):
     # -----------------------------------
     def parse_definition(self):
         op = self._peek()
-        if self._match([TK.DEFATTR]):
+        if self._match([TK.DEFINE]):
+            self._generate_refs = True
             node = UnaryOp(op, self.flow())
+            self._generate_refs = False
             return node
         elif op.id == TK.VAR:
+            self._generate_refs = True
             self._advance()
             node = UnaryOp(op, self.assignment())
+            self._generate_refs = False
             return node
         return self.flow()
 
@@ -139,11 +144,13 @@ class Parser(object):
         node = self.logic_expr()
         op = self._peek()
         while self._match(_ASSIGNMENT_TOKENS):
+            self._generate_refs = True
             tk = node.token
-            if tk.id not in [TK.REF, TK.TUPLE]:
+            if tk.id not in [TK.DEF, TK.REF, TK.TUPLE]:
                 if node.token.t_class not in _IDENTIFIER_TYPES:
                     _expected(expected='IDENTIFIER', found=node.token)
             node = BinOp(left=node, op=op.map2binop(), right=self.assignment())
+        self._generate_refs = False
         return node
 
     def logic_expr(self):
@@ -202,10 +209,15 @@ class Parser(object):
     def unary(self):
         op = self._peek()
         if self._match(_UNARY_TOKENS):
-            return UnaryOp(op.map2unop(), self.unary())
+            self._generate_refs = True
+            node = UnaryOp(op.map2unop(), self.unary())
+            self._generate_refs = True
+            return node
         node = self.prime()
         if node is not None and node.token.id in [TK.ANY, TK.ALL, TK.NONEOF]:
+            self._generate_refs = True
             node = UnaryOp(node.token, self.unary())
+            self._generate_refs = True
         return node
 
     def prime(self):
@@ -271,7 +283,7 @@ class Parser(object):
         token = self._peek()
         if token.id == TK.DOT:
             token = self._consume_next(TK.IDNT)
-            node = PropRef(tk, self.identifier())
+            node = PropRef(tk, self.identifier(), ref=self._generate_refs)
             if token.id == TK.LPRN:
                 node = PropCall(tk, node.member, self.plist())
         elif token.id == TK.DOT2:

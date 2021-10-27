@@ -8,6 +8,6 @@ result: None
     2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
     3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)
     4 :         List TK.TUPLE(LIST, '(', V=[])
-    5 :     PropRef TK.REF(BINOP, '.', V=None)
+    5 :     PropRef TK.DEF(BINOP, '.', V=None)
     6 :         Ident TK.IDNT(IDENTIFIER, 'b', V=b)
     7 :         Ident TK.IDNT(IDENTIFIER, 'c', V=c)

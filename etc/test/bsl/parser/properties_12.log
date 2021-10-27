@@ -5,9 +5,9 @@ test: 12: "a.b.c().d()"
 tree1:  a.b.c().d()
 result: None
     1 : BinOp TK.DOT(BINOP, '.', V=None)
-    2 :     PropRef TK.REF(BINOP, '.', V=None)
+    2 :     PropRef TK.DEF(BINOP, '.', V=None)
     3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    4 :         PropRef TK.REF(BINOP, '.', V=None)
+    4 :         PropRef TK.DEF(BINOP, '.', V=None)
     5 :             Ident TK.IDNT(IDENTIFIER, 'b', V=b)
     6 :             FnCall TK.FUNCTION(BINOP, '(', V=None)
     7 :                 Ident TK.IDNT(IDENTIFIER, 'c', V=c)

@@ -4,7 +4,7 @@ test: 4: "close.delay[+1d]"
 
 tree1:  close.delay[+1d]
 result: None
-    1 : PropRef TK.REF(BINOP, '.', V=None)
+    1 : PropRef TK.DEF(BINOP, '.', V=None)
     2 :     Ident TK.IDNT(DATASET, 'close', V=close)
     3 :     Index TK.INDEX(BINOP, '[', V=None)
     4 :         Ident TK.IDNT(IDENTIFIER, 'delay', V=delay)

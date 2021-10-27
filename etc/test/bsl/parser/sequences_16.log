@@ -3,9 +3,9 @@
 test: 16: "a.b(1) | c"
 
 tree1:  a.b(1) | c
-result: PropRef(BinOp(TK.REF(BINOP, '.', V=None): l=Ident(a), r=BinOp(TK.FUNCTION(BINOP, '(', V=None): l=Ident(b), r=[1])
+result: PropRef(BinOp(TK.DEF(BINOP, '.', V=None): l=Ident(a), r=BinOp(TK.FUNCTION(BINOP, '(', V=None): l=Ident(b), r=[1])
     1 : List TK.CHAIN(LIST, '|', V=[PropRef(), Ident()])
-    2 :     PropRef TK.REF(BINOP, '.', V=None)
+    2 :     PropRef TK.DEF(BINOP, '.', V=None)
     3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)
     4 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
     5 :             Ident TK.IDNT(IDENTIFIER, 'b', V=b)

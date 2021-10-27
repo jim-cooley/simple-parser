@@ -37,11 +37,13 @@ def evaluate_binary_operation(node):
         if symbol is None:
             return LIT_NONE
         scope = Environment.current.enter_scope(symbol)
-        ref = scope.find(node.right.token)
+        ref = scope.find_local(node.right.token)
         Environment.current.leave_scope(scope)
         if ref is None:
             return LIT_NONE
         return ref.value if ref is not None else LIT_NONE
+    elif op == TK.REF:
+        pass
     elif op == TK.ASSIGN:
         scope = Environment.current.symbols
         symbol = scope.find_add_local(node.left.token, node.right.value)

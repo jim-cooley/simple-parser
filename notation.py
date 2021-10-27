@@ -40,6 +40,7 @@ _tk2pfx = {
     TK.COMMAND: 'command',
     TK.COMPARE: 'cmp',
     TK.DECREMENT: 'decr', # --
+    TK.DEF: '_def',
     TK.DEFINE: 'def',
     TK.DIV: 'div',  # /
     TK.DUR: 'dur',

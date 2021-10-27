@@ -132,10 +132,10 @@ class TK(IntEnum):
     COMMAND = auto()
     COMPARE = auto()    # ?  a ? b is to compare a to b
     DECREMENT = auto()  # --
-    DEFINE = auto()     # :=
-    DEFATTR = auto()    # 'def' <ident> =
+    DEF = auto()     # set version of REF
+    DEFINE = auto()     # :=, 'def'
     DIV = auto()  # /
-    DOTPROD = auto() # •
+    DOTPROD = auto()  # •
     EVENT = auto()  # from =>
     FALL_BELOW = auto()  # <|
     FALSE = auto()
@@ -225,6 +225,7 @@ _tk2lit = {
 }
 # token type mapping
 _tk2type = {
+    TK.DEF: TCL.IDENTIFIER,
     TK.DLRS: TCL.UNARY,
     TK.DUR: TCL.LITERAL,
     TK.EQLS: TCL.BINOP,

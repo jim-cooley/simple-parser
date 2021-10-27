@@ -42,7 +42,7 @@ _KEYWORDS = [
 
     # operators
     (TK.AND, TCL.LOGICAL, 'and'),
-    (TK.DEFATTR, TCL.UNARY, 'def'),
+    (TK.DEFINE, TCL.UNARY, 'def'),
     (TK.IN, TCL.BINOP, 'in'),
     (TK.IDIV, TCL.BINOP, 'div'),
     (TK.MOD, TCL.BINOP, 'mod'),

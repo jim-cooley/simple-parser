@@ -3,9 +3,9 @@
 test: 9: "open.delay(1d) | buy"
 
 tree1:  open.delay(1d) | buy
-result: PropRef(BinOp(TK.REF(BINOP, '.', V=None): l=Ident(open), r=BinOp(TK.FUNCTION(BINOP, '(', V=None): l=Ident(delay), r=[1 day, 0:00:00])
+result: PropRef(BinOp(TK.DEF(BINOP, '.', V=None): l=Ident(open), r=BinOp(TK.FUNCTION(BINOP, '(', V=None): l=Ident(delay), r=[1 day, 0:00:00])
     1 : List TK.CHAIN(LIST, '|', V=[PropRef(), Ident()])
-    2 :     PropRef TK.REF(BINOP, '.', V=None)
+    2 :     PropRef TK.DEF(BINOP, '.', V=None)
     3 :         Ident TK.IDNT(DATASET, 'open', V=open)
     4 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
     5 :             Ident TK.IDNT(IDENTIFIER, 'delay', V=delay)
@@ -14,9 +14,9 @@ result: PropRef(BinOp(TK.REF(BINOP, '.', V=None): l=Ident(open), r=BinOp(TK.FUNC
     8 :     Ident TK.BUY(KEYWORD, 'buy', V=buy)
 
 tree1:(post)  open.delay(1d) | buy
-result: PropRef(BinOp(TK.REF(BINOP, '.', V=None): l=Ident(open), r=BinOp(TK.FUNCTION(BINOP, '(', V=None): l=Ident(delay), r=[1 day, 0:00:00])
+result: PropRef(BinOp(TK.DEF(BINOP, '.', V=None): l=Ident(open), r=BinOp(TK.FUNCTION(BINOP, '(', V=None): l=Ident(delay), r=[1 day, 0:00:00])
     1 : List TK.CHAIN(LIST, '|', V=[PropRef(), Ident()])
-    2 :     PropRef TK.REF(BINOP, '.', V=None)
+    2 :     PropRef TK.DEF(BINOP, '.', V=None)
     3 :         Ident TK.IDNT(DATASET, 'open', V=open)
     4 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
     5 :             Ident TK.IDNT(IDENTIFIER, 'delay', V=delay)

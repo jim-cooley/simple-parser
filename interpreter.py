@@ -37,7 +37,7 @@ class Interpreter(TreeFilter):
     def __init__(self, environment):
         super().__init__(mapping=_visitNodeTypeMappings, apply_parent_fixups=True)
         self.environment = environment
-        self._verbose = False
+        self._verbose = True
 
     def apply(self, tree=None):
         self.trees.values = self.visit(self.trees.root)
@@ -58,6 +58,7 @@ class Interpreter(TreeFilter):
 
     # encountered if 'tree' is actually a 'forest'
     def visit_list(self, list, label=None):
+        self.visit_node(list)
         count = 0
         values = []
         for n in list:
@@ -68,20 +69,25 @@ class Interpreter(TreeFilter):
         return values
 
     def visit_literal(self, node, label=None):
+        self.visit_node(node)
         return evaluate_literal(node)
 
     def visit_ident(self, node, label=None):
+        self.visit_node(node)
         return evaluate_identifier(node)
 
     def visit_intrinsic(self, value, label=None):
+        self.visit_node(value)
         return value
 
     def process_binops(self, node, label=None):
+        self.visit_node(node)
         node.left.value = self.visit(node.left)
         node.right.value = self.visit(node.right)
         return evaluate_binary_operation(node)
 
     def process_set(self, node, label=None):
+        self.visit_node(node)
         if node is None:
             return None
         values = node.values()
@@ -92,6 +98,7 @@ class Interpreter(TreeFilter):
     def process_unops(self, node, label=None):
         if node is None:
             return None
+        self.visit_node(node)
         self.visit(node.expr)
 #        if expr.token.t_class == TCL.LITERAL:
 #            if node.op == TK.NOT:

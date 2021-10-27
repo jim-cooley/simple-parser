@@ -1,23 +1,9 @@
 
 
-test: "%%option(strict=true)
-
-a = 4
-#a + 3
-#d = 1d
-#r = a * d
-#a += 3
-#r = a * d
-
+test: "a = 4
 s = { a=5 }
-#s.a
-#a
-#s.a * a
-
 s.b = s.a * a
-
 s.b
-
 ++s.b
 
 "
@@ -40,7 +26,7 @@ result: None
 tree3:  s.b = s.a * a
 result: None
     1 : BinOp TK.ASSIGN(BINOP, '=', V=None)
-    2 :     PropRef TK.REF(BINOP, '.', V=None)
+    2 :     PropRef TK.DEF(BINOP, '.', V=None)
     3 :         Ident TK.IDNT(IDENTIFIER, 's', V=s)
     4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=b)
     5 :     BinOp TK.MUL(BINOP, '*', V=None)
@@ -51,7 +37,7 @@ result: None
 
 tree4:  s.b
 result: None
-    1 : PropRef TK.REF(BINOP, '.', V=None)
+    1 : PropRef TK.DEF(BINOP, '.', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 's', V=s)
     3 :     Ident TK.IDNT(IDENTIFIER, 'b', V=b)
 
@@ -61,15 +47,6 @@ result: None
     2 :     PropRef TK.REF(BINOP, '.', V=None)
     3 :         Ident TK.IDNT(IDENTIFIER, 's', V=s)
     4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=b)
-
-tree1:  %%option(strict=true)
-    1 : Command TK.PCT2(UNARY, '%%', V=None)
-    2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
-    3 :         Ident TK.IDNT(IDENTIFIER, 'option', V=option)
-    4 :         List TK.TUPLE(LIST, '(', V=[BinOp()])
-    5 :             BinOp TK.ASSIGN(BINOP, '=', V=None)
-    6 :                 Ident TK.IDNT(IDENTIFIER, 'strict', V=strict)
-    7 :                 Bool TK.TRUE(LITERAL, 'true', V=True)
 
 tree1:(post)  a = 4
 result: None
@@ -89,7 +66,7 @@ result: None
 tree3:(post)  s.b = s.a * a
 result: None
     1 : BinOp TK.ASSIGN(BINOP, '=', V=None)
-    2 :     PropRef TK.REF(BINOP, '.', V=None)
+    2 :     PropRef TK.DEF(BINOP, '.', V=None)
     3 :         Ident TK.IDNT(IDENTIFIER, 's', V=s)
     4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=b)
     5 :     BinOp TK.MUL(BINOP, '*', V=None)
@@ -100,7 +77,7 @@ result: None
 
 tree4:(post)  s.b
 result: None
-    1 : PropRef TK.REF(BINOP, '.', V=None)
+    1 : PropRef TK.DEF(BINOP, '.', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 's', V=s)
     3 :     Ident TK.IDNT(IDENTIFIER, 'b', V=b)
 
@@ -110,12 +87,3 @@ result: None
     2 :     PropRef TK.REF(BINOP, '.', V=None)
     3 :         Ident TK.IDNT(IDENTIFIER, 's', V=s)
     4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=b)
-
-tree1:  %%option(strict=true)
-    1 : Command TK.PCT2(UNARY, '%%', V=None)
-    2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
-    3 :         Ident TK.IDNT(IDENTIFIER, 'option', V=option)
-    4 :         List TK.TUPLE(LIST, '(', V=[BinOp()])
-    5 :             BinOp TK.ASSIGN(BINOP, '=', V=None)
-    6 :                 Ident TK.IDNT(IDENTIFIER, 'strict', V=strict)
-    7 :                 Bool TK.TRUE(LITERAL, 'true', V=True)
