@@ -22,7 +22,7 @@ result: None
     1 : BinOp TK.ADD(BINOP, '+', V=None)
     2 :     BinOp TK.ADD(BINOP, '+', V=None)
     3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    4 :         BinOp TK.MUL(BINOP, '*', V=None)
+    4 :         BinOp TK.MUL(BINOP, '*', V=6)
     5 :             Int TK.INT(LITERAL, '2', V=2)
     6 :             Int TK.INT(LITERAL, '3', V=3)
     7 :     Int TK.INT(LITERAL, '4', V=4)

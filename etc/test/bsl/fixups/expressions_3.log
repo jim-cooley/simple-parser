@@ -14,6 +14,6 @@ tree1:(post)  a = 2 * 3
 result: None
     1 : BinOp TK.ASSIGN(BINOP, '=', V=None)
     2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    3 :     BinOp TK.MUL(BINOP, '*', V=None)
+    3 :     BinOp TK.MUL(BINOP, '*', V=6)
     4 :         Int TK.INT(LITERAL, '2', V=2)
     5 :         Int TK.INT(LITERAL, '3', V=3)

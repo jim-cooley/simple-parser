@@ -8,7 +8,7 @@ from tokenstream import TokenStream
 from tree import UnaryOp, BinOp, Command
 from tree_binops import FnCall, Index, PropCall, PropRef
 from scope import Ident, Literal
-from tree_literals import Duration, Float, Int, Percent, Str, Time, Bool, List, Set, LIT_EMPTY_SET
+from literals import Duration, Float, Int, Percent, Str, Time, Bool, List, Set, LIT_EMPTY_SET
 from treedump import DumpTree
 
 

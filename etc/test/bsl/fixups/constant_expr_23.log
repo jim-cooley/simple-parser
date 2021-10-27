@@ -10,6 +10,6 @@ result: None
 
 tree1:(post)  1w + 1M
 result: None
-    1 : BinOp TK.ADD(BINOP, '+', V=None)
+    1 : BinOp TK.ADD(BINOP, '+', V=35 days, 0:00:00)
     2 :     Duration TK.DUR(LITERAL, '1w', V=7 days, 0:00:00)
     3 :     Duration TK.DUR(LITERAL, '1M', V=28 days, 0:00:00)

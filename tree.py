@@ -6,10 +6,12 @@ from tokens import TCL
 # base classes:
 @dataclass
 class AST:
-    def __init__(self, token=None, parent=None, **kwargs):
+    def __init__(self, token=None, value=None, parent=None, **kwargs):
         super().__init__(**kwargs)
-        self.token = token
         self.parent = parent
+        self.token = token
+        if token is not None and value is not None:
+            token.value = value
 
     def __get__(self):
         return self.value
@@ -58,7 +60,6 @@ class UnaryOp(AST):
             expr.parent = self
 
 
-# derived classes
 @dataclass
 class Command(UnaryOp):
     def __init__(self, token, expr):

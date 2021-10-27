@@ -6,8 +6,8 @@ from tokens import TK, TCL
 
 @dataclass
 class Keywords(Scope):
-    def __init__(self, parent=None):
-        super().__init__(parent)
+    def __init__(self, parent_scope=None):
+        super().__init__(parent_scope)
         self.load_keywords()
 
     # Keywords are r/o

@@ -177,25 +177,3 @@ false == 0
 "1" == "0"
 "a" == "b"
 "a" == "b"
-#
-true ? false
-true ? true
-false ? false
-false ? true
-true ? 0
-false ? 0
-#
-1 ? 0
-1 ? 1
-0 ? 1
-0 ? 0
-1 ? 2
--1 ? -2
--1 ? 0
-#
-"0" ? 0
-"0" ? "0"
-"1" ? 0
-"1" ? "0"
-"a" ? "b"
-"a" ? "b"

@@ -24,11 +24,11 @@ class DUR(Enum):
 @dataclass
 class Bool(Literal):
     def __init__(self, token, value=None):
+        super().__init__(token=token)
         if value is not None:
             token.value = value
         if token.value is None:
             token.value = _parse_bool_value(token.lexeme)
-        super().__init__(token)
 
     def format(self):
         tk = self.token
@@ -38,9 +38,9 @@ class Bool(Literal):
 @dataclass
 class DateTime(Literal):
     def __init__(self, token):
+        super().__init__(token=token)
         if token.value is None:
             token.value = _parse_date_value(token.lexeme)
-        super().__init__(token)
 
     def format(self):
         return f'{self.value}'
@@ -49,9 +49,9 @@ class DateTime(Literal):
 @dataclass
 class Duration(Literal):
     def __init__(self, token):
+        super().__init__(token=token)
         if token.value is None:
             token.value, self.units = _parse_duration(token.lexeme)
-        super().__init__(token)
 
     def total_seconds(self):
         return self.value.total_seconds()
@@ -66,9 +66,9 @@ class Duration(Literal):
 @dataclass
 class Float(Literal):
     def __init__(self, token):
+        super().__init__(token=token)
         if token.value is None:
             token.value = float(token.lexeme)
-        super().__init__(token)
 
     def format(self, fmt=None):
         return f'{self.value}'
@@ -77,9 +77,9 @@ class Float(Literal):
 @dataclass
 class Int(Literal):
     def __init__(self, token):
+        super().__init__(token=token)
         if token.value is None:
             token.value = int(token.lexeme)
-        super().__init__(token)
 
     def format(self, fmt=None):
         return f'{self.value}'
@@ -87,11 +87,11 @@ class Int(Literal):
 
 @dataclass
 class List(Literal):
-    def __init__(self, token, m_list=None):
-        super().__init__(token)
+    def __init__(self, token, llist=None):
+        super().__init__(token=token)
         token.t_class = TCL.LIST
-        token.value = None if m_list is None else m_list
-        self.value = m_list
+        token.value = None if llist is None else llist
+        self.value = llist
 
     def __getitem__(self, item):
         return self.values()[item]
@@ -120,8 +120,8 @@ class List(Literal):
 @dataclass
 class Percent(Literal):
     def __init__(self, token):
+        super().__init__(token=token)
         token.value = float(token.lexeme.replace("%",""))/100
-        super().__init__(token)
 
     def format(self, fmt=None):
         return '' if self.value is None else f'{self.value*100} %'
@@ -130,9 +130,9 @@ class Percent(Literal):
 @dataclass
 class Set(List):
     def __init__(self, token, dict=None):
+        super().__init__(token=token, llist=dict)
         dict = {} if dict is None else dict
         token.value = None if dict is None else dict
-        super().__init__(token, dict)
         token.id = TK.SET
         token.t_class = TCL.SET
 
@@ -175,8 +175,8 @@ class Set(List):
 @dataclass
 class Str(Literal):
     def __init__(self, token):
+        super().__init__(token=token)
         token.value = token.lexeme
-        super().__init__(token)
 
     def format(self, fmt=None):
         if self.value is None:
@@ -190,8 +190,8 @@ class Str(Literal):
 @dataclass
 class Time(Literal):
     def __init__(self, token):
+        super().__init__(token=token)
         token.value = _parse_time_value(token.lexeme)
-        super().__init__(token)
 
     def format(self, fmt=None):
         fmt = "%H:%M:%S" if fmt is None else fmt

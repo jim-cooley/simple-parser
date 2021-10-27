@@ -151,7 +151,7 @@ def _dump_trees(env, log=None, label=None):
     trees = env.trees
     for i in range(0, len(trees)):
         t = trees[i]
-        if t is None:
+        if t is None or t.root is None:
             continue
         idx += 1
         line = _get_line(t.root.token.location, env.lines).strip()

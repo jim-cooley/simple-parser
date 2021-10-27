@@ -10,6 +10,6 @@ result: None
 
 tree1:(post)  1m - 5d
 result: None
-    1 : BinOp TK.SUB(BINOP, '-', V=None)
+    1 : BinOp TK.SUB(BINOP, '-', V=-5 days, 0:01:00)
     2 :     Duration TK.DUR(LITERAL, '1m', V=0:01:00)
     3 :     Duration TK.DUR(LITERAL, '5d', V=5 days, 0:00:00)

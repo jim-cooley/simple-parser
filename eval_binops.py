@@ -1,6 +1,6 @@
 from exceptions import _runtime_error, _error
 from tokens import TK
-from tree_literals import LIT_NONE
+from literals import LIT_NONE
 from environment import Environment
 
 _INTRINSIC_VALUE_TYPES = ['int', 'float', 'bool', 'str', 'timedelta', 'time']
@@ -28,6 +28,15 @@ _type2native = {
 }
 
 _INDEXED_TYPES = [TK.SET, TK.LIST, TK.TUPLE, TK.PARAMETER_LIST]
+
+
+# used by fixups
+def eval_binops_dispatch_fixup(node):
+    if node is None:
+        return None
+    if node.op in _binops_dispatch_table:
+        return eval_binops_dispatch(node)
+    return node.value
 
 
 def eval_binops_dispatch(node):

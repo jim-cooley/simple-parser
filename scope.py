@@ -4,17 +4,16 @@
 from copy import copy
 from dataclasses import dataclass
 
-from tokens import Token, TCL
+from tokens import Token, TCL, TK
 from tree import AST
 
 
 @dataclass
 class Scope:
-    def __init__(self, parent=None, **kwargs):
+    def __init__(self, parent_scope=None, **kwargs):
         super().__init__(**kwargs)
-        self.parent = parent
+        self.parent_scope = parent_scope
         self._symbols = {}
-        self.token = None
 
     def assign(self, token, expr):
         self._find_add(token, expr)
@@ -26,11 +25,11 @@ class Scope:
         return token.lexeme in self._symbols
 
     def link(self, scope):
-        self.parent = scope
+        self.parent_scope = scope
         return self
 
     def unlink(self):
-        self.parent = None
+        self.parent_scope = None
         return self
 
     def find(self, token, default=None):
@@ -40,7 +39,7 @@ class Scope:
                 tk = copy(scope._symbols[token.lexeme])
                 tk.location = token.location
                 return tk
-            scope = scope.parent
+            scope = scope.parent_scope
         return default
 
     def find_local(self, token, default=None):
@@ -75,10 +74,19 @@ class Scope:
 
 
 @dataclass
-class Ident(AST, Scope):
-    def __init__(self, token, parent=None):
-        super().__init__(parent=parent)
-        self.token = token
+class Object(AST, Scope):
+    def __init__(self, token=None, value=None, parent=None):
+        super().__init__(token=token, value=value, parent=parent, parent_scope=None)
+
+    def format(self):
+        tk = self.token
+        return f'{tk.value}' if tk.value is not None and tk.value else 'None'
+
+
+@dataclass
+class Ident(Object):
+    def __init__(self, token=None, parent=None):
+        super().__init__(token=token, parent=parent)
         self.value = token.lexeme
 
     def format(self):
@@ -86,9 +94,12 @@ class Ident(AST, Scope):
 
 
 @dataclass
-class Literal(AST, Scope):
-    def __init__(self, token):
-        super().__init__(token=token)
-        token.t_class = TCL.LITERAL
+class Literal(Object):
+    def __init__(self, token=None, value=None, parent=None):
+        super().__init__(token=token, value=value, parent=parent)
         if token is not None:
+            token.t_class = TCL.LITERAL
             self.token.id = token.map2litval().id
+        else:
+            self.token = Token(tid=TK.OBJECT, tcl=TCL.LITERAL, val=value)
+

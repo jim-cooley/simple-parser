@@ -152,6 +152,7 @@ class TK(IntEnum):
     NONEOF = auto()  # none:
     NOT = auto()
     NOW = auto()
+    OBJECT = auto()  # unknown type
     OR = auto()
     PARAMETER_LIST = auto()  # parameter-list
     POS = auto()  # unary +
@@ -240,6 +241,7 @@ _tk2type = {
     TK.MNUS: TCL.UNARY,
     TK.NEQ: TCL.LOGICAL,
     TK.NOW: TCL.FUNCTION,
+    TK.OBJECT: TCL.LITERAL,
     TK.PCT: TCL.UNARY,
     TK.PLUS: TCL.UNARY,
     TK.RBAR: TCL.BINOP,
@@ -278,13 +280,12 @@ class Token:
             self.line = line
             self.offset = offset
 
-    def __init__(self, tid, tcl=None, lex="", val=None, loc=None, prop=None):
+    def __init__(self, tid, tcl=None, lex="", val=None, loc=None):
         self.id: TK = tid
         self.t_class: TCL = TCL(tcl) if tcl is not None else TCL.NONE
         self.lexeme = lex
         self.value = val
-        self.location = loc
-        self.properties = {} if not prop else prop
+        self.location = loc if loc is not None else Token.Loc()
 
     def __repr__(self):
         return self.format()
@@ -309,12 +310,8 @@ class Token:
         _tl = f'\'{self.lexeme}\'' if self.lexeme is not None else 'None'
         if _tl == '\'\n\'':
             _tl = "'\\n'"
-        if self.properties is not None and len(self.properties.keys()) > 0:
-            _props = f': {self.properties}'
-        else:
-            _props = ''
 #       _tloc = f'line:{self.location.line + 1}, pos:{self.location.offset - 1}'
-        return f'TK{_tn}{_tcl}, {_tl}, V={_tv}){_props}'
+        return f'TK{_tn}{_tcl}, {_tl}, V={_tv})'
 
     def _map(self, tk_map):
         if self.id in tk_map:

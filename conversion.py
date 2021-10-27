@@ -6,7 +6,7 @@ from copy import copy
 from datetime import timedelta
 
 from exceptions import _runtime_error
-from tree_literals import Bool, Int, Float, _parse_duration
+from literals import Bool, Int, Float, _parse_duration
 from tokens import TK
 
 
@@ -50,6 +50,8 @@ def c_node2float(node):
 # General Value conversion helpers
 # --------------------------------
 def c_to_bool(val, tid):
+    if val is None:
+        return False
     if tid in [TK.BOOL, TK.TRUE, TK.FALSE]:
         return val
     elif tid in [TK.INT, TK.FLOT, TK.PCT]:
@@ -63,6 +65,8 @@ def c_to_bool(val, tid):
 
 
 def c_to_dur(val, tid):
+    if val is None:
+        return timedelta(seconds=0)
     if tid == TK.DUR:
         return val
     elif tid in [TK.FLOT, TK.INT, TK.PCT]:
@@ -79,6 +83,8 @@ def c_to_dur(val, tid):
 
 
 def c_to_float(val, tid):
+    if val is None:
+        return float(0)
     if tid in [TK.FLOT, TK.PCT]:
         return val
     elif tid in [TK.EMPTY, TK.NONE, TK.FALSE]:
@@ -97,6 +103,8 @@ def c_to_float(val, tid):
 
 
 def c_to_int(val, tid):
+    if val is None:
+        return 0
     if tid == TK.INT:
         return val
     elif tid in [TK.EMPTY, TK.NONE, TK.FALSE]:
@@ -118,15 +126,17 @@ def c_to_int(val, tid):
 # Specific value conversion helpers
 # --------------------------------
 def _c_str2bool(val):
+    if val is None:
+        return False
     try:
         i = int(val)
         return bool(i)
-    except ValueError as e:
+    except Exception as e:
         pass
     try:
         b = bool(val)
         return b
-    except ValueError as e:
+    except Exception as e:
         pass
     if val.lower() == 'none' or val.lower() == 'empty':
         return False

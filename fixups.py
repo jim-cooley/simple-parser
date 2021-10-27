@@ -2,9 +2,12 @@
 
 from abc import ABC
 
+from eval_binops import eval_binops_dispatch_fixup
 from eval_unary import decrement_literal, increment_literal, negate_literal, not_literal
-from evaluate import evaluate_binary_operation
-from tree_literals import List
+from evaluate import _INTRINSIC_VALUE_TYPES
+from scope import Literal
+from tree import AST
+from literals import List
 from modifytree import TreeModifier
 from tokens import TK, TCL, Token
 from visitor import BINARY_NODE
@@ -46,7 +49,10 @@ class Fixups(TreeModifier, ABC):
         if trees is None:
             return None
         for t in trees:
-            t.root = self.visit(t.root)
+            val = self.visit(t.root)
+            if not isinstance(val, AST):
+                val = Literal(val)
+            t.root = val
         return self.trees
 
     # overridden:
@@ -62,7 +68,7 @@ class Fixups(TreeModifier, ABC):
             if n is None:
                 continue
             if self._print_nodes:
-                print(f'\ntree:{idx+1}')
+                print(f'\ntree:{idx + 1}')
             list[idx] = self.visit(n)
         return list
 
@@ -94,7 +100,7 @@ class Fixups(TreeModifier, ABC):
             if tkid == TK.TUPLE:
                 return self.convert_coln_plist(node, label)
             if node.left.token.t_class == TCL.LITERAL and node.right.token.t_class == TCL.LITERAL:
-                rnode = evaluate_binary_operation(node)
+                rnode = _fixup_binary_operation(node)
         return rnode
 
     def process_command(self, node, label=None):
@@ -142,7 +148,7 @@ class Fixups(TreeModifier, ABC):
         self.keywords = self.environment.keywords
         self.globals = self.environment.globals
 
-# just for test: use DumpTree for proper printing
+    # just for test: use DumpTree for proper printing
     def _print_node(self, node):
         if self._print_nodes:
             indent = '' if self._depth < 1 else ' '.ljust(self._depth * 4)
@@ -165,3 +171,22 @@ def _fixup_coln_plist(node, target):
     target.parent = plist
     plist.parent = node
     return plist
+
+
+# no identifiers
+def _fixup_binary_operation(node):
+    op = node.op
+    l_value = node.left.value
+    l_ty = type(l_value).__name__
+    r_value = node.right.value
+    r_ty = type(r_value).__name__
+
+    # UNDONE: need dynamic dispatch here
+    if l_value is None or r_value is None:
+        return node
+
+    if l_ty not in _INTRINSIC_VALUE_TYPES or r_ty not in _INTRINSIC_VALUE_TYPES:
+        return node
+
+    node.value = eval_binops_dispatch_fixup(node)
+    return node

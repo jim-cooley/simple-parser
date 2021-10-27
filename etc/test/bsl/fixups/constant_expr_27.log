@@ -10,6 +10,6 @@ result: None
 
 tree1:(post)  365d div 12
 result: None
-    1 : BinOp TK.IDIV(BINOP, 'div', V=None)
+    1 : BinOp TK.IDIV(BINOP, 'div', V=30 days, 10:00:00)
     2 :     Duration TK.DUR(LITERAL, '365d', V=365 days, 0:00:00)
     3 :     Int TK.INT(LITERAL, '12', V=12)
