@@ -155,7 +155,6 @@ class TK(IntEnum):
     NOW = auto()
     OBJECT = auto()  # unknown type
     OR = auto()
-    PARAMETER_LIST = auto()  # parameter-list
     POS = auto()  # unary +
     POW = auto()  # ^
     RAISE = auto()  # =>
@@ -244,7 +243,6 @@ _tk2type = {
     TK.NEQ: TCL.LOGICAL,
     TK.NOW: TCL.FUNCTION,
     TK.OBJECT: TCL.LITERAL,
-    TK.PARAMETER_LIST: TCL.TUPLE,
     TK.PCT: TCL.UNARY,
     TK.PLUS: TCL.UNARY,
     TK.REF: TCL.IDENTIFIER,

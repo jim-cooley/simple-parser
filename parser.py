@@ -140,8 +140,6 @@ class Parser(object):
         op = self._peek()
         while self._match(_ASSIGNMENT_TOKENS):
             tk = node.token
-            if tk.id == TK.PARAMETER_LIST:  # convert to tuple assignment
-                tk.id = TK.TUPLE
             if tk.id not in [TK.REF, TK.TUPLE]:
                 if node.token.t_class not in _IDENTIFIER_TYPES:
                     _expected(expected='IDENTIFIER', found=node.token)

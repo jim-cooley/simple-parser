@@ -27,7 +27,7 @@ _type2native = {
     'Time': 'datetime',
 }
 
-_INDEXED_TYPES = [TK.SET, TK.LIST, TK.TUPLE, TK.PARAMETER_LIST]
+_INDEXED_TYPES = [TK.SET, TK.LIST, TK.TUPLE]
 
 
 # used by fixups

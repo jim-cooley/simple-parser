@@ -67,7 +67,6 @@ _tk2pfx = {
     TK.NOT: 'not',
     TK.NOW: 'now',
     TK.OR: 'or',
-    TK.PARAMETER_LIST: '',  # parameter-list
     TK.PCT: 'f',
     TK.CHAIN: 'chain',
     TK.POS: 'pos',  # unary +
@@ -84,17 +83,16 @@ _tk2pfx = {
     TK.TODAY: 'today',
     TK.TIME: 'time',
     TK.TRUE: 'b',
-    TK.TUPLE: '_',
+    TK.TUPLE: '',
     TK.VAR: 'var',
 }
 
 _tk2grp = {
     TK.INDEX:['[ ', ', ', ' ]', '[]'],
     TK.LIST: ['[', ', ', ']', '[]'],
-    TK.PARAMETER_LIST: ['( ', ', ', ' )', '()'],
     TK.CHAIN: ['{', ' | ', '}', '{}'],
     TK.SET: ['{ ', ', ',  ' }', '{}'],
-    TK.TUPLE: ['( ', ':', ' )', '()']
+    TK.TUPLE: ['( ', ', ', ' )', '()']
 }
 
 _DEFAULT_GRP = ['( ', ', ', ' )', '()']
