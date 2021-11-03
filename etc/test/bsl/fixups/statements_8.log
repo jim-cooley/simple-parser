@@ -1,0 +1,16 @@
+
+
+test: 8:
+"a | b | c | d >> e ; f"
+
+tree1:  a | b | c | d >> e ; f
+result: list([Flow(), ApplyChainProd()])
+
+tree2:  a | b | c | d >> e ; f
+result: Lit(None)
+
+tree1:(post)  a | b | c | d >> e ; f
+result: list([Flow(), ApplyChainProd()])
+
+tree2:(post)  a | b | c | d >> e ; f
+result: Lit(None)

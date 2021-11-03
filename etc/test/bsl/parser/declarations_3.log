@@ -1,0 +1,21 @@
+
+
+test: 3:
+"var f.a.b.c(x) = x*x # vars in parameter list need to be Ref, not Get's"
+
+tree1:  var f.a.b.c(x) = x*x # vars in parameter list need to be Ref, not Get's
+result: None
+    1 : DefineVar TK.EQLS(BINOP, '=', V=None)
+    2 :     PropRef TK.REF(BINOP, '.', V=None)
+    3 :         Get TK.IDNT(IDENTIFIER, 'f', V=None)
+    4 :         PropRef TK.REF(BINOP, '.', V=None)
+    5 :             Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    6 :             PropRef TK.REF(BINOP, '.', V=None)
+    7 :                 Get TK.IDNT(IDENTIFIER, 'b', V=None)
+    8 :                 FnCall TK.FUNCTION(BINOP, '(', V=None)
+    9 :                     Get TK.IDNT(IDENTIFIER, 'c', V=None)
+   10 :                     List TK.TUPLE(LITERAL, '(', V=[Get()])
+   11 :                         Get TK.IDNT(IDENTIFIER, 'x', V=None)
+   12 :     BinOp TK.MUL(BINOP, '*', V=None)
+   13 :         Get TK.IDNT(IDENTIFIER, 'x', V=None)
+   14 :         Get TK.IDNT(IDENTIFIER, 'x', V=None)

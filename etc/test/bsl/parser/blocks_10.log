@@ -1,0 +1,7 @@
+
+
+test: 10:
+"node => { _ : _.left = _.right}"
+
+tree1:  node => { _ : _.left = _.right}
+result: list([Get(), Block()])

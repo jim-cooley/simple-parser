@@ -1,15 +1,10 @@
 
 
-test: 7: "a | b >> c ; d"
+test: 7:
+"a | b >> c ; d"
 
 tree1:  a | b >> c ; d
-result: list([Ident(), Ident()])
-    1 : List TK.APPLY(LIST, '>>', V=[List(), Ident()])
-    2 :     List TK.CHAIN(LIST, '|', V=[Ident(), Ident()])
-    3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=b)
-    5 :     Ident TK.IDNT(IDENTIFIER, 'c', V=c)
+result: list([Flow(), ApplyChainProd()])
 
 tree2:  a | b >> c ; d
-result: str(d)
-    1 : Ident TK.IDNT(IDENTIFIER, 'd', V=d)
+result: Lit(None)

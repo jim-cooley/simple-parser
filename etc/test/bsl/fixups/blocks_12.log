@@ -1,0 +1,4 @@
+
+
+test: 12:
+"# { b }:{node} := {b.left = b.right}"

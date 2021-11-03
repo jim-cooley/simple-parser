@@ -1,0 +1,7 @@
+
+
+test: 7:
+"f(a,b)                       # parameter list (tuple)"
+
+tree1:  f(a,b)                       # parameter list (tuple)
+result: Lit(None)

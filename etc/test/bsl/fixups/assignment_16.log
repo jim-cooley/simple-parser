@@ -1,0 +1,10 @@
+
+
+test: 16:
+"a().b.c = 4"
+
+tree1:  a().b.c = 4
+result: Lit(None)
+
+tree1:(post)  a().b.c = 4
+result: Lit(None)

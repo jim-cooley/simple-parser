@@ -1,0 +1,7 @@
+
+
+test: 22:
+"def f(x) = { a.b(x):x*x }"
+
+tree1:  def f(x) = { a.b(x):x*x }
+result: Lit(None)

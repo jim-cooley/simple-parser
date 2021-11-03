@@ -1,19 +1,7 @@
 
 
-test: 9: "a().b.c().d()"
+test: 9:
+"a().b.c().d()"
 
 tree1:  a().b.c().d()
-result: None
-    1 : BinOp TK.DOT(BINOP, '.', V=None)
-    2 :     BinOp TK.DOT(BINOP, '.', V=None)
-    3 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
-    4 :             Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    5 :             List TK.TUPLE(LIST, '(', V=[])
-    6 :         PropRef TK.DEF(BINOP, '.', V=None)
-    7 :             Ident TK.IDNT(IDENTIFIER, 'b', V=b)
-    8 :             FnCall TK.FUNCTION(BINOP, '(', V=None)
-    9 :                 Ident TK.IDNT(IDENTIFIER, 'c', V=c)
-   10 :                 List TK.TUPLE(LIST, '(', V=[])
-   11 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
-   12 :         Ident TK.IDNT(IDENTIFIER, 'd', V=d)
-   13 :         List TK.TUPLE(LIST, '(', V=[])
+result: Lit(None)

@@ -1,0 +1,7 @@
+
+
+test: 25:
+"f(x) := x * 4;"
+
+tree1:  f(x) := x * 4;
+result: Lit(None)

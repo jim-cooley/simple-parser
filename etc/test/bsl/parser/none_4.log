@@ -1,9 +1,7 @@
 
 
-test: 4: "none and false"
+test: 4:
+"none and false"
 
 tree1:  none and false
-result: None
-    1 : BinOp TK.AND(BINOP, 'and', V=None)
-    2 :     Literal TK.NONE(LITERAL, 'none', V=None)
-    3 :     Bool TK.FALSE(LITERAL, 'false', V=False)
+result: Lit(None)

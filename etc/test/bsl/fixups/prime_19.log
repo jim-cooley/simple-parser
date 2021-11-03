@@ -1,0 +1,10 @@
+
+
+test: 19:
+"None"
+
+tree1:  None
+result: Lit(None)
+
+tree1:(post)  None
+result: Lit(None)

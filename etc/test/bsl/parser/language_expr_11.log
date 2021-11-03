@@ -1,0 +1,7 @@
+
+
+test: 11:
+"close >| sma(10) and close <| sma(20)"
+
+tree1:  close >| sma(10) and close <| sma(20)
+result: Lit(None)

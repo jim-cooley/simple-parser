@@ -1,0 +1,10 @@
+
+
+test: 3:
+"atr = (high - low) / 2; median = (close - open) /2"
+
+tree1:  atr = (high - low) / 2; median = (close - open) /2
+result: Lit(None)
+
+tree2:  atr = (high - low) / 2; median = (close - open) /2
+result: Lit(None)

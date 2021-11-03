@@ -32,7 +32,6 @@ _KEYWORDS = [
     (TK.FALSE, TCL.KEYWORD, 'False'),
     (TK.FALSE, TCL.KEYWORD, 'false'),
     (TK.NONE, TCL.KEYWORD, 'none'),
-#   (TK.NONEOF, TCL.KEYWORD, 'none'),
     (TK.NOW, TCL.KEYWORD, 'now'),
     (TK.SELL, TCL.KEYWORD, "sell"),
     (TK.SIGNAL, TCL.KEYWORD, "signal"),
@@ -41,13 +40,13 @@ _KEYWORDS = [
     (TK.TRUE, TCL.KEYWORD, 'true'),
 
     # operators
-    (TK.AND, TCL.LOGICAL, 'and'),
+    (TK.AND, TCL.BINOP, 'and'),
     (TK.DEFINE, TCL.UNARY, 'def'),
     (TK.IN, TCL.BINOP, 'in'),
     (TK.IDIV, TCL.BINOP, 'div'),
     (TK.MOD, TCL.BINOP, 'mod'),
     (TK.NOT, TCL.UNARY, 'not'),
-    (TK.OR, TCL.LOGICAL, 'or'),
+    (TK.OR, TCL.BINOP, 'or'),
     (TK.VAR, TCL.UNARY, 'var'),
 
     # datasets
@@ -57,6 +56,7 @@ _KEYWORDS = [
     (TK.IDNT, TCL.DATASET, "open"),
 
     # functions
+    (TK.ANON, TCL.IDENTIFIER, '_'),
     (TK.IDNT, TCL.KEYWORD, 'apply'),
     (TK.IDNT, TCL.KEYWORD, 'columns'),
     (TK.IDNT, TCL.KEYWORD, 'expr'),
@@ -65,3 +65,4 @@ _KEYWORDS = [
     (TK.IDNT, TCL.FUNCTION, "ema"),
     (TK.IDNT, TCL.FUNCTION, "sma"),
 ]
+

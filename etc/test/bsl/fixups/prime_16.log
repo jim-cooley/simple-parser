@@ -1,0 +1,10 @@
+
+
+test: 16:
+"true"
+
+tree1:  true
+result: bool(True)
+
+tree1:(post)  true
+result: bool(True)

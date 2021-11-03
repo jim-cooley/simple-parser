@@ -1,0 +1,7 @@
+
+
+test: 9:
+"(2 + 4) * 3                  # expression grouping"
+
+tree1:  (2 + 4) * 3                  # expression grouping
+result: Lit(None)

@@ -3,7 +3,9 @@ import sys
 from abc import ABC
 
 from environment import Environment
-from test.suite_runner import TestSuiteRunner, _t_print, _dump_trees, _log_exception, _dump_environment
+from test.suite_runner import TestSuiteRunner, _log_exception, _dump_environment
+from exceptions import _t_print
+from treeprint import print_forest
 from parser import Parser
 from test.test_setup import test_data
 
@@ -21,10 +23,10 @@ class ParserTestRunner(TestSuiteRunner, ABC):
         super().__init__(td, skip_tests, log_dir='./etc/test/log/parser')
 
     def run_unprotected_test(self, log, name, test):
-        environment = Environment()
-        parser = Parser(environment)
+        self.environment = Environment()
+        parser = Parser(self.environment)
         parser.parse(text=test)
-        _dump_environment(environment, log)
+        _dump_environment(self.environment, log, print_results=False)
 
 
 # this is only for execution under debugger or via command-line

@@ -1,0 +1,10 @@
+
+
+test: 43:
+"f := { a(x):x*x }; { b: b.left = b.right}:(node);"
+
+tree1:  f := { a(x):x*x }; { b: b.left = b.right}:(node);
+result: Lit(None)
+
+tree2:  f := { a(x):x*x }; { b: b.left = b.right}:(node);
+result: Lit(None)

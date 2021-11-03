@@ -3,5 +3,5 @@
 test: 15: "True"
 
 tree1:  True
-result: bool(True)
+result: None
     1 : Bool TK.TRUE(LITERAL, 'True', V=True)

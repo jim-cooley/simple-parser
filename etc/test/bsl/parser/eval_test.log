@@ -1,6 +1,9 @@
 
 
-test: "a = 4
+test:
+"a = 4
+b = a * 3
+c = b
 s = { a=5 }
 s.b = s.a * a
 s.b
@@ -9,41 +12,22 @@ s.b
 "
 
 tree1:  a = 4
-result: None
-    1 : BinOp TK.ASSIGN(BINOP, '=', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    3 :     Int TK.INT(LITERAL, '4', V=4)
+result: Lit(None)
 
-tree2:  s = { a=5 }
-result: None
-    1 : BinOp TK.ASSIGN(BINOP, '=', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 's', V=s)
-    3 :     Set TK.SET(SET, '{', V=[BinOp()])
-    4 :         BinOp TK.ASSIGN(BINOP, '=', V=None)
-    5 :             Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    6 :             Int TK.INT(LITERAL, '5', V=5)
+tree2:  b = a * 3
+result: Lit(None)
 
-tree3:  s.b = s.a * a
-result: None
-    1 : BinOp TK.ASSIGN(BINOP, '=', V=None)
-    2 :     PropRef TK.DEF(BINOP, '.', V=None)
-    3 :         Ident TK.IDNT(IDENTIFIER, 's', V=s)
-    4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=b)
-    5 :     BinOp TK.MUL(BINOP, '*', V=None)
-    6 :         PropRef TK.REF(BINOP, '.', V=None)
-    7 :             Ident TK.IDNT(IDENTIFIER, 's', V=s)
-    8 :             Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    9 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)
+tree3:  c = b
+result: Lit(None)
 
-tree4:  s.b
-result: None
-    1 : PropRef TK.DEF(BINOP, '.', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 's', V=s)
-    3 :     Ident TK.IDNT(IDENTIFIER, 'b', V=b)
+tree4:  s = { a=5 }
+result: Lit(None)
 
-tree5:  ++s.b
-result: None
-    1 : UnaryOp TK.INCREMENT(UNARY, '++', V=None)
-    2 :     PropRef TK.REF(BINOP, '.', V=None)
-    3 :         Ident TK.IDNT(IDENTIFIER, 's', V=s)
-    4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=b)
+tree5:  s.b = s.a * a
+result: Lit(None)
+
+tree6:  s.b
+result: Lit(None)
+
+tree7:  ++s.b
+result: Lit(None)

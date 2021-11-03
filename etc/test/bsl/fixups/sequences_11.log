@@ -1,19 +1,10 @@
 
 
-test: 11: "a() | b"
+test: 11:
+"a() | b"
 
 tree1:  a() | b
-result: FnCall(BinOp(TK.FUNCTION(BINOP, '(', V=None): l=Ident(a), r=[])
-    1 : List TK.CHAIN(LIST, '|', V=[FnCall(), Ident()])
-    2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
-    3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    4 :         List TK.TUPLE(LIST, '(', V=[])
-    5 :     Ident TK.IDNT(IDENTIFIER, 'b', V=b)
+result: list([FnCall(), ApplyChainProd()])
 
 tree1:(post)  a() | b
-result: FnCall(BinOp(TK.FUNCTION(BINOP, '(', V=None): l=Ident(a), r=[])
-    1 : List TK.CHAIN(LIST, '|', V=[FnCall(), Ident()])
-    2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
-    3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    4 :         List TK.TUPLE(LIST, '(', V=[])
-    5 :     Ident TK.IDNT(IDENTIFIER, 'b', V=b)
+result: list([FnCall(), ApplyChainProd()])

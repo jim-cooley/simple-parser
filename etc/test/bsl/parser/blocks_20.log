@@ -1,0 +1,7 @@
+
+
+test: 20:
+"( b ) | buy"
+
+tree1:  ( b ) | buy
+result: list([Get(), ApplyChainProd()])

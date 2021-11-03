@@ -1,22 +1,10 @@
 
 
-test: 16: "a.b(-1)"
+test: 16:
+"a.b(-1)"
 
 tree1:  a.b(-1)
-result: None
-    1 : PropRef TK.DEF(BINOP, '.', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    3 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
-    4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=b)
-    5 :         List TK.TUPLE(LIST, '(', V=[UnaryOp()])
-    6 :             UnaryOp TK.NEG(UNARY, '-', V=None)
-    7 :                 Int TK.INT(LITERAL, '1', V=1)
+result: Lit(None)
 
 tree1:(post)  a.b(-1)
-result: None
-    1 : PropRef TK.DEF(BINOP, '.', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    3 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
-    4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=b)
-    5 :         List TK.TUPLE(LIST, '(', V=[Int()])
-    6 :             Int TK.INT(LITERAL, '1', V=-1)
+result: Lit(None)

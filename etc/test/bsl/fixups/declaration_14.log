@@ -1,0 +1,10 @@
+
+
+test: 14:
+"var f(x) = x * 4"
+
+tree1:  var f(x) = x * 4
+result: Lit(None)
+
+tree1:(post)  var f(x) = x * 4
+result: Lit(None)

@@ -1,12 +1,10 @@
 
 
-test: 17: "-1h"
+test: 17:
+"-1h"
 
 tree1:  -1h
-result: None
-    1 : UnaryOp TK.NEG(UNARY, '-', V=None)
-    2 :     Duration TK.DUR(LITERAL, '1h', V=1:00:00)
+result: Lit(None)
 
 tree1:(post)  -1h
-result: None
-    1 : Duration TK.DUR(LITERAL, '1h', V=-1 day, 23:00:00)
+result: Lit(None)

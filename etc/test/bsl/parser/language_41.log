@@ -1,0 +1,7 @@
+
+
+test: 41:
+"{ b };"
+
+tree1:  { b };
+result: list([Get()])

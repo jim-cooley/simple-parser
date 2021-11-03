@@ -1,15 +1,10 @@
 
 
-test: 4: "a + b"
+test: 4:
+"a + b"
 
 tree1:  a + b
-result: None
-    1 : BinOp TK.ADD(BINOP, '+', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    3 :     Ident TK.IDNT(IDENTIFIER, 'b', V=b)
+result: Lit(None)
 
 tree1:(post)  a + b
-result: None
-    1 : BinOp TK.ADD(BINOP, '+', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    3 :     Ident TK.IDNT(IDENTIFIER, 'b', V=b)
+result: Lit(None)

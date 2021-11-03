@@ -1,39 +1,10 @@
 
 
-test: 32: "a().b()*c().d()"
+test: 32:
+"a().b()*c().d()"
 
 tree1:  a().b()*c().d()
-result: None
-    1 : BinOp TK.DOT(BINOP, '.', V=None)
-    2 :     BinOp TK.MUL(BINOP, '*', V=None)
-    3 :         BinOp TK.DOT(BINOP, '.', V=None)
-    4 :             FnCall TK.FUNCTION(BINOP, '(', V=None)
-    5 :                 Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    6 :                 List TK.TUPLE(LIST, '(', V=[])
-    7 :             FnCall TK.FUNCTION(BINOP, '(', V=None)
-    8 :                 Ident TK.IDNT(IDENTIFIER, 'b', V=b)
-    9 :                 List TK.TUPLE(LIST, '(', V=[])
-   10 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
-   11 :             Ident TK.IDNT(IDENTIFIER, 'c', V=c)
-   12 :             List TK.TUPLE(LIST, '(', V=[])
-   13 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
-   14 :         Ident TK.IDNT(IDENTIFIER, 'd', V=d)
-   15 :         List TK.TUPLE(LIST, '(', V=[])
+result: Lit(None)
 
 tree1:(post)  a().b()*c().d()
-result: None
-    1 : BinOp TK.DOT(BINOP, '.', V=None)
-    2 :     BinOp TK.MUL(BINOP, '*', V=None)
-    3 :         BinOp TK.DOT(BINOP, '.', V=None)
-    4 :             FnCall TK.FUNCTION(BINOP, '(', V=None)
-    5 :                 Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    6 :                 List TK.TUPLE(LIST, '(', V=[])
-    7 :             FnCall TK.FUNCTION(BINOP, '(', V=None)
-    8 :                 Ident TK.IDNT(IDENTIFIER, 'b', V=b)
-    9 :                 List TK.TUPLE(LIST, '(', V=[])
-   10 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
-   11 :             Ident TK.IDNT(IDENTIFIER, 'c', V=c)
-   12 :             List TK.TUPLE(LIST, '(', V=[])
-   13 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
-   14 :         Ident TK.IDNT(IDENTIFIER, 'd', V=d)
-   15 :         List TK.TUPLE(LIST, '(', V=[])
+result: Lit(None)

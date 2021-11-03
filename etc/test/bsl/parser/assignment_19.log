@@ -1,0 +1,7 @@
+
+
+test: 19:
+"a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z = 5"
+
+tree1:  a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z = 5
+result: Lit(None)

@@ -1,0 +1,10 @@
+
+
+test: 6:
+"{ b : b.left = b.right}:(node)"
+
+tree1:  { b : b.left = b.right}:(node)
+result: Lit(None)
+
+tree1:(post)  { b : b.left = b.right}:(node)
+result: Lit(None)

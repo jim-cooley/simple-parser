@@ -3,5 +3,5 @@
 test: 13: "10%"
 
 tree1:  10%
-result: float(0.1)
+result: None
     1 : Percent TK.PCT(LITERAL, '10%', V=0.1)

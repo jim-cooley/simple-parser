@@ -1,3 +1,4 @@
 
 
-test: 11: "#:(a = 5)   - now syntax error"
+test: 11:
+"#:(a = 5)   - now syntax error"

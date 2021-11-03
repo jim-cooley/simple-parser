@@ -1,8 +1,7 @@
 
 
-test: 3: "not "none""
+test: 3:
+"not "none""
 
 tree1:  not "none"
-result: None
-    1 : UnaryOp TK.NOT(UNARY, 'not', V=None)
-    2 :     Str TK.STR(LITERAL, 'none', V=none)
+result: Lit(None)

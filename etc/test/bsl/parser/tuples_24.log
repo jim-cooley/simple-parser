@@ -1,0 +1,7 @@
+
+
+test: 24:
+"{a, b, c}:(a=5, b=3, c=4)    # set parameterization k=v (error?)"
+
+tree1:  {a, b, c}:(a=5, b=3, c=4)    # set parameterization k=v (error?)
+result: Lit(None)

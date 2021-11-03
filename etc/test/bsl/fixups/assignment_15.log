@@ -1,0 +1,10 @@
+
+
+test: 15:
+"s.a = 5"
+
+tree1:  s.a = 5
+result: Lit(None)
+
+tree1:(post)  s.a = 5
+result: Lit(None)

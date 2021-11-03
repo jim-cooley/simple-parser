@@ -1,16 +1,59 @@
-close.sma(13) | signal(price, how='>')
-any:{ close >| sma(10), close <| sma(20) }:threshold=0.01 | signal >> avg | delay(1d) | buy
-atr = (high - low) / 2; median = (close - open) /2
-any:{ close >| sma(10), close <| sma(20) }:(threshold=0.01) | signal >> atr | delay(1d) => buy
-any:{ cross(close, sma(20), delay=1, threshold=0.01) } | buy
-pcross(close, sma(13)) | smacd(close, 20, 50) | smacd.close(20,50) | close.smacd(20,50)
-(close.sma(20) and close.sma(50)) | diff | sign | signal(how='cross')
-{close.sma(20) and close.sma(50)} | diff | sign | signal(how='cross')
-open.delay(1d) | buy
-start: open.delay(1d) | buy
-close >| sma(10) and close <| sma(20)
-close >| sma(10) and close <| sma(20) | signal
-close >| sma(10) and close <| sma(20) | signal >> open.delay(1d)
-close >| sma(10) and close <| sma(20) | signal >> open.delay(1d) | buy
-start: open.delay(1d) | buy; end: open | sell
-close >| sma(20) | signal | open.delay(1d) | buy; close <| sma(10) | signal | open.delay(1d) | sell
+#
+# a 'sniff-test' composed of grammatical edge cases among the parser states
+#
+
+# prime:
+#   NUMBER | DATETIME | DURATION | SET | STRING | true | false | none
+
+# declaration:
+#   _statement_
+#   'def' _var_declaration_
+#   'var' _definition_
+#   '%%' _command
+var f = 5
+var f = x
+var f(x) = x * 4
+var f.a.b.c = 5
+var f.a.b.c(x) = x*x # vars in parameter list need to be Ref, not Get's
+var (a, b, c) = (4, 5, 6)
+
+def f = 5
+def f = x
+def f(x) = x * 4
+def f.a.b.c = 5
+def f.a.b.c(x) = x*x # vars in parameter list need to be Ref, not Get's
+def (a, b, c) = (4, 5, 6)
+
+f = 5
+f = x
+f(x) = x * 4
+f.a.b.c = 5
+f.a.b.c(x) = x*x # vars in parameter list need to be Ref, not Get's
+(a, b, c) = (4, 5, 6)
+
+# statement:
+#   _expression_
+#   { _block_ }
+#   { _block_ }:( _tuple_ )
+#   { _block_ }:{ _block_ }
+#   _statement_ ; _statement_
+a; b; c
+{ b };
+{ a(x):x*x }
+f := { a(x):x*x }; { b: b.left = b.right}:(node);
+var f = { a(x):x*x }
+def f = { a(x):x*x }
+f := { a(x):x*x }
+{ b: b.left = b.right}:(node)
+
+
+# expression:
+#   _assignment_
+#   _assignment_ | _assignment_
+#   _assignment_ => _assignment_
+#   _assignment_ >> _assignment_
+#   _assignment_ -> _assignment_
+a | b | c >> d
+{ b => b.left = b.right}:(node)
+{ _ => _.left = _.right}:(node)
+{ b } => buy

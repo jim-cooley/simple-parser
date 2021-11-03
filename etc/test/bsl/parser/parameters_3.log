@@ -1,12 +1,7 @@
 
 
-test: 3: "close.delay(1d)"
+test: 3:
+"close.delay(1d)"
 
 tree1:  close.delay(1d)
-result: None
-    1 : PropRef TK.DEF(BINOP, '.', V=None)
-    2 :     Ident TK.IDNT(DATASET, 'close', V=close)
-    3 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
-    4 :         Ident TK.IDNT(IDENTIFIER, 'delay', V=delay)
-    5 :         List TK.TUPLE(LIST, '(', V=[Duration()])
-    6 :             Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
+result: Lit(None)

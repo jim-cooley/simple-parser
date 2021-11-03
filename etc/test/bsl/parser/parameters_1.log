@@ -1,10 +1,7 @@
 
 
-test: 1: "sma(10)"
+test: 1:
+"sma(10)"
 
 tree1:  sma(10)
-result: None
-    1 : FnCall TK.FUNCTION(BINOP, '(', V=None)
-    2 :     Ident TK.IDNT(FUNCTION, 'sma', V=sma)
-    3 :     List TK.TUPLE(LIST, '(', V=[Int()])
-    4 :         Int TK.INT(LITERAL, '10', V=10)
+result: Lit(None)

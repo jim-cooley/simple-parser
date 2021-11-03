@@ -1,0 +1,10 @@
+
+
+test: 13:
+"f.a.b = { var a(x):x*x }"
+
+tree1:  f.a.b = { var a(x):x*x }
+result: Lit(None)
+
+tree1:(post)  f.a.b = { var a(x):x*x }
+result: Lit(None)

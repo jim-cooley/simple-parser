@@ -1,27 +1,10 @@
 
 
-test: 7: "close[weekly].sma(20)"
+test: 7:
+"close[weekly].sma(20)"
 
 tree1:  close[weekly].sma(20)
-result: None
-    1 : BinOp TK.DOT(BINOP, '.', V=None)
-    2 :     Index TK.INDEX(BINOP, '[', V=None)
-    3 :         Ident TK.IDNT(DATASET, 'close', V=close)
-    4 :         List TK.TUPLE(LIST, '[', V=[Ident()])
-    5 :             Ident TK.IDNT(IDENTIFIER, 'weekly', V=weekly)
-    6 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
-    7 :         Ident TK.IDNT(FUNCTION, 'sma', V=sma)
-    8 :         List TK.TUPLE(LIST, '(', V=[Int()])
-    9 :             Int TK.INT(LITERAL, '20', V=20)
+result: Lit(None)
 
 tree1:(post)  close[weekly].sma(20)
-result: None
-    1 : BinOp TK.DOT(BINOP, '.', V=None)
-    2 :     Index TK.INDEX(BINOP, '[', V=None)
-    3 :         Ident TK.IDNT(DATASET, 'close', V=close)
-    4 :         List TK.TUPLE(LIST, '[', V=[Ident()])
-    5 :             Ident TK.IDNT(IDENTIFIER, 'weekly', V=weekly)
-    6 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
-    7 :         Ident TK.IDNT(FUNCTION, 'sma', V=sma)
-    8 :         List TK.TUPLE(LIST, '(', V=[Int()])
-    9 :             Int TK.INT(LITERAL, '20', V=20)
+result: Lit(None)

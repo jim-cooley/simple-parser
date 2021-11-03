@@ -1,0 +1,7 @@
+
+
+test: 28:
+"f = { a:5 }      # should be block, not set"
+
+tree1:  f = { a:5 }      # should be block, not set
+result: Lit(None)

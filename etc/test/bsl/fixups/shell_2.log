@@ -1,55 +1,10 @@
 
 
-test: 2: "%%load_quotes(file='./etc/spq500.csv'); backtest(period='train5'); report('trades', 'stops')"
+test: 2:
+"%%load_quotes(file='./etc/spq500.csv'); backtest(period='train5'); report('trades', 'stops')"
 
 tree1:  %%load_quotes(file='./etc/spq500.csv'); backtest(period='train5'); report('trades', 'stops')
-    1 : Command TK.PCT2(UNARY, '%%', V=None)
-    2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
-    3 :         Ident TK.IDNT(IDENTIFIER, 'load_quotes', V=load_quotes)
-    4 :         List TK.TUPLE(LIST, '(', V=[BinOp()])
-    5 :             BinOp TK.ASSIGN(BINOP, '=', V=None)
-    6 :                 Ident TK.IDNT(IDENTIFIER, 'file', V=file)
-    7 :                 Str TK.STR(LITERAL, './etc/spq500.csv', V=./etc/spq500.csv)
 
 tree2:  %%load_quotes(file='./etc/spq500.csv'); backtest(period='train5'); report('trades', 'stops')
-    1 : Command TK.IDNT(UNARY, 'backtest', V=backtest)
-    2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
-    3 :         Ident TK.IDNT(UNARY, 'backtest', V=backtest)
-    4 :         List TK.TUPLE(LIST, '(', V=[BinOp()])
-    5 :             BinOp TK.ASSIGN(BINOP, '=', V=None)
-    6 :                 Ident TK.IDNT(IDENTIFIER, 'period', V=period)
-    7 :                 Str TK.STR(LITERAL, 'train5', V=train5)
 
 tree3:  %%load_quotes(file='./etc/spq500.csv'); backtest(period='train5'); report('trades', 'stops')
-    1 : Command TK.IDNT(UNARY, 'report', V=report)
-    2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
-    3 :         Ident TK.IDNT(UNARY, 'report', V=report)
-    4 :         List TK.TUPLE(LIST, '(', V=[Str(), Str()])
-    5 :             Str TK.STR(LITERAL, 'trades', V=trades)
-    6 :             Str TK.STR(LITERAL, 'stops', V=stops)
-
-tree1:  %%load_quotes(file='./etc/spq500.csv'); backtest(period='train5'); report('trades', 'stops')
-    1 : Command TK.PCT2(UNARY, '%%', V=None)
-    2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
-    3 :         Ident TK.IDNT(IDENTIFIER, 'load_quotes', V=load_quotes)
-    4 :         List TK.TUPLE(LIST, '(', V=[BinOp()])
-    5 :             BinOp TK.ASSIGN(BINOP, '=', V=None)
-    6 :                 Ident TK.IDNT(IDENTIFIER, 'file', V=file)
-    7 :                 Str TK.STR(LITERAL, './etc/spq500.csv', V=./etc/spq500.csv)
-
-tree2:  %%load_quotes(file='./etc/spq500.csv'); backtest(period='train5'); report('trades', 'stops')
-    1 : Command TK.IDNT(UNARY, 'backtest', V=backtest)
-    2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
-    3 :         Ident TK.IDNT(UNARY, 'backtest', V=backtest)
-    4 :         List TK.TUPLE(LIST, '(', V=[BinOp()])
-    5 :             BinOp TK.ASSIGN(BINOP, '=', V=None)
-    6 :                 Ident TK.IDNT(IDENTIFIER, 'period', V=period)
-    7 :                 Str TK.STR(LITERAL, 'train5', V=train5)
-
-tree3:  %%load_quotes(file='./etc/spq500.csv'); backtest(period='train5'); report('trades', 'stops')
-    1 : Command TK.IDNT(UNARY, 'report', V=report)
-    2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
-    3 :         Ident TK.IDNT(UNARY, 'report', V=report)
-    4 :         List TK.TUPLE(LIST, '(', V=[Str(), Str()])
-    5 :             Str TK.STR(LITERAL, 'trades', V=trades)
-    6 :             Str TK.STR(LITERAL, 'stops', V=stops)

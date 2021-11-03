@@ -1,0 +1,7 @@
+
+
+test: 10:
+"0.1"
+
+tree1:  0.1
+result: float(0.1)

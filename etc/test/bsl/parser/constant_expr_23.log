@@ -1,9 +1,7 @@
 
 
-test: 23: "1w + 1M"
+test: 23:
+"1w + 1M"
 
 tree1:  1w + 1M
-result: None
-    1 : BinOp TK.ADD(BINOP, '+', V=None)
-    2 :     Duration TK.DUR(LITERAL, '1w', V=7 days, 0:00:00)
-    3 :     Duration TK.DUR(LITERAL, '1M', V=28 days, 0:00:00)
+result: Lit(None)

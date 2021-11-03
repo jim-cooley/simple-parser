@@ -5,7 +5,7 @@ from copy import copy, deepcopy
 from dataclasses import dataclass
 
 from tokens import Token, TCL, TK
-from tree import AST
+from tree import AST, Expression
 
 
 @dataclass
@@ -96,10 +96,65 @@ class Scope:
 class Object(AST, Scope):
     def __init__(self, token=None, value=None, parent=None):
         super().__init__(token=token, value=value, parent=parent, parent_scope=None)
+        self.is_lvalue = True
 
     def format(self):
         tk = self.token
         return f'{tk.value}' if tk.value is not None and tk.value else 'None'
+
+
+# -----------------------------------
+# Objects
+# -----------------------------------
+@dataclass
+class Block(Expression, Object):
+    def __init__(self, items=None, loc=None):
+        op = Token(tid=TK.BLOCK, tcl=TCL.SCOPE, loc=loc)
+        super().__init__(token=op, is_lvalue=False)
+        self.items = items if items is not None else []
+        self.value = self.items
+
+    def __getitem__(self, index):
+        return self.items[index]
+
+    def __setitem__(self, index, value):
+        self.items[index] = value
+
+    @property
+    def last(self):
+        return self.items[len(self.items) - 1]
+
+    @last.setter
+    def last(self, value):
+        self.items[len(self.items) - 1] = value
+
+    def append(self, item):
+        self.items.append(item)
+
+    def len(self):
+        return len(self.items)
+
+    def values(self):
+        return self.items
+
+    def format(self):
+        if self.value is None:
+            return '{}'
+        else:
+            fstr = ''
+            max = (len(self.value)-1)
+            for idx in range(0, len(self.value)):
+                fstr += f'{self.items[idx]}'
+                fstr += ',' if idx < max else ''
+            return '{' + f'{fstr}' + '}'
+
+
+@dataclass
+class Flow(Block):
+    def __init__(self, token=None, llist=None):
+        super().__init__(items=llist)
+        token.value = llist
+        self.token = token
 
 
 @dataclass
@@ -122,3 +177,12 @@ class Literal(Object):
         else:
             self.token = Token(tid=TK.OBJECT, tcl=TCL.LITERAL, val=value)
 
+
+def _dump_symbols(scope):
+    print("\n\nsymbols: ")
+    idx = 0
+    for k in scope._symbols.keys():
+        v = scope._symbols[k]
+        if type(v).__name__ == 'Ident':
+            print(f'{idx:5d}:  {k} : Ident({v.token})')
+            idx += 1

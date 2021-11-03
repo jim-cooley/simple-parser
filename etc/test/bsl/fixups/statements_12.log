@@ -1,0 +1,22 @@
+
+
+test: 12:
+"a, b, c"
+
+tree1:  a, b, c
+result: Lit(None)
+
+tree2:  a, b, c
+result: Lit(None)
+
+tree3:  a, b, c
+result: Lit(None)
+
+tree1:(post)  a, b, c
+result: Lit(None)
+
+tree2:(post)  a, b, c
+result: Lit(None)
+
+tree3:(post)  a, b, c
+result: Lit(None)

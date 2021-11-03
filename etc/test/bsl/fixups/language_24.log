@@ -1,0 +1,10 @@
+
+
+test: 24:
+"def f.a.b.c(x) = x*x # vars in parameter list need to be Ref, not Get's"
+
+tree1:  def f.a.b.c(x) = x*x # vars in parameter list need to be Ref, not Get's
+result: Lit(None)
+
+tree1:(post)  def f.a.b.c(x) = x*x # vars in parameter list need to be Ref, not Get's
+result: Lit(None)

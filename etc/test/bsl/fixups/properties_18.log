@@ -1,23 +1,10 @@
 
 
-test: 18: "a().b.c"
+test: 18:
+"a().b.c"
 
 tree1:  a().b.c
-result: None
-    1 : BinOp TK.DOT(BINOP, '.', V=None)
-    2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
-    3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    4 :         List TK.TUPLE(LIST, '(', V=[])
-    5 :     PropRef TK.DEF(BINOP, '.', V=None)
-    6 :         Ident TK.IDNT(IDENTIFIER, 'b', V=b)
-    7 :         Ident TK.IDNT(IDENTIFIER, 'c', V=c)
+result: Lit(None)
 
 tree1:(post)  a().b.c
-result: None
-    1 : BinOp TK.DOT(BINOP, '.', V=None)
-    2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
-    3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    4 :         List TK.TUPLE(LIST, '(', V=[])
-    5 :     PropRef TK.DEF(BINOP, '.', V=None)
-    6 :         Ident TK.IDNT(IDENTIFIER, 'b', V=b)
-    7 :         Ident TK.IDNT(IDENTIFIER, 'c', V=c)
+result: Lit(None)

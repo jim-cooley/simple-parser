@@ -1,19 +1,10 @@
 
 
-test: 8: "{{a, b, c}}"
+test: 8:
+"{{a, b, c}}"
 
 tree1:  {{a, b, c}}
-result: list([Ident(), Ident(), Ident()])
-    1 : Set TK.SET(SET, '{', V=[Set()])
-    2 :     Set TK.SET(SET, '{', V=[Ident(), Ident(), Ident()])
-    3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=b)
-    5 :         Ident TK.IDNT(IDENTIFIER, 'c', V=c)
+result: list([Set()])
 
 tree1:(post)  {{a, b, c}}
-result: list([Ident(), Ident(), Ident()])
-    1 : Set TK.SET(SET, '{', V=[Set()])
-    2 :     Set TK.SET(SET, '{', V=[Ident(), Ident(), Ident()])
-    3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=b)
-    5 :         Ident TK.IDNT(IDENTIFIER, 'c', V=c)
+result: list([Set()])

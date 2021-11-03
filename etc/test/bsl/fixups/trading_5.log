@@ -1,19 +1,10 @@
 
 
-test: 5: "buy: position += trade_size"
+test: 5:
+"buy: position += trade_size"
 
 tree1:  buy: position += trade_size
-result: None
-    1 : BinOp TK.TUPLE(BINOP, ':', V=None)
-    2 :     Ident TK.BUY(KEYWORD, 'buy', V=buy)
-    3 :     BinOp TK.PLEQ(BINOP, '+=', V=None)
-    4 :         Ident TK.IDNT(IDENTIFIER, 'position', V=position)
-    5 :         Ident TK.IDNT(IDENTIFIER, 'trade_size', V=trade_size)
+result: Lit(None)
 
 tree1:(post)  buy: position += trade_size
-result: None
-    1 : BinOp TK.TUPLE(BINOP, ':', V=None)
-    2 :     Ident TK.BUY(KEYWORD, 'buy', V=buy)
-    3 :     BinOp TK.PLEQ(BINOP, '+=', V=None)
-    4 :         Ident TK.IDNT(IDENTIFIER, 'position', V=position)
-    5 :         Ident TK.IDNT(IDENTIFIER, 'trade_size', V=trade_size)
+result: Lit(None)

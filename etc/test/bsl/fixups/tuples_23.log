@@ -1,0 +1,10 @@
+
+
+test: 23:
+"{a, b, c}:(a:5, b:3, c:4)    # set parameterization k:v"
+
+tree1:  {a, b, c}:(a:5, b:3, c:4)    # set parameterization k:v
+result: Lit(None)
+
+tree1:(post)  {a, b, c}:(a:5, b:3, c:4)    # set parameterization k:v
+result: Lit(None)

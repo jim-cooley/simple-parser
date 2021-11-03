@@ -1,0 +1,7 @@
+
+
+test: 28:
+"f = x"
+
+tree1:  f = x
+result: Lit(None)

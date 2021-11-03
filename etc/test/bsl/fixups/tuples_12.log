@@ -1,0 +1,10 @@
+
+
+test: 12:
+"((a,),)                      # tuple in a tuple"
+
+tree1:  ((a,),)                      # tuple in a tuple
+result: list([List()])
+
+tree1:(post)  ((a,),)                      # tuple in a tuple
+result: list([List()])

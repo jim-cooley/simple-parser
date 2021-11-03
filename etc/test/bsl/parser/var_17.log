@@ -1,0 +1,7 @@
+
+
+test: 17:
+"var f(x) = { a(_):_*_ }"
+
+tree1:  var f(x) = { a(_):_*_ }
+result: Lit(None)

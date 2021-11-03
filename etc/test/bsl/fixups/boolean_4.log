@@ -1,12 +1,10 @@
 
 
-test: 4: "not "empty""
+test: 4:
+"not "empty""
 
 tree1:  not "empty"
-result: None
-    1 : UnaryOp TK.NOT(UNARY, 'not', V=None)
-    2 :     Str TK.STR(LITERAL, 'empty', V=empty)
+result: Lit(None)
 
 tree1:(post)  not "empty"
-result: None
-    1 : Bool TK.BOOL(LITERAL, None, V=False)
+result: Lit(None)

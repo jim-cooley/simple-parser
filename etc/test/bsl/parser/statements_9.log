@@ -1,0 +1,7 @@
+
+
+test: 9:
+"a | b | c | d >> e | f | g > h"
+
+tree1:  a | b | c | d >> e | f | g > h
+result: list([Flow(), Get(), BinOp()])

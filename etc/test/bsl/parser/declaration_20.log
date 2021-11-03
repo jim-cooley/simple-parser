@@ -1,0 +1,7 @@
+
+
+test: 20:
+"def f(x) := { x * 4 }"
+
+tree1:  def f(x) := { x * 4 }
+result: Lit(None)

@@ -1,0 +1,18 @@
+
+
+test: 11:
+"var f = { 5 }"
+
+tree1:  var f = { 5 }
+result: None
+    1 : DefineVar TK.EQLS(BINOP, '=', V=None)
+    2 :     Ref TK.IDNT(IDENTIFIER, 'f', V=None)
+    3 :     Block TK.BLOCK(SCOPE, '', V=[Int()])
+    4 :         Int TK.INT(LITERAL, '5', V=5)
+
+tree1:(post)  var f = { 5 }
+result: None
+    1 : DefineVar TK.EQLS(BINOP, '=', V=None)
+    2 :     Ref TK.IDNT(IDENTIFIER, 'f', V=None)
+    3 :     Block TK.BLOCK(SCOPE, '', V=[Int()])
+    4 :         Int TK.INT(LITERAL, '5', V=5)

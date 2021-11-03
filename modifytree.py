@@ -7,7 +7,6 @@ from visitor import NodeVisitor
 class TreeModifier(NodeVisitor, ABC):
     def __init__(self, mapping=None, apply_parent_fixups=True):
         super().__init__(mapping)
-        self.trees = None
         self.apply_parent_fixups = apply_parent_fixups
         self._count = 0
         self._depth = 0
@@ -15,7 +14,7 @@ class TreeModifier(NodeVisitor, ABC):
     @abstractmethod
     def apply(self, tree=None):
         self._count = 0
-        pass  # must return tree
+        return None
 
     @abstractmethod
     def visit_node(self, node, label=None):

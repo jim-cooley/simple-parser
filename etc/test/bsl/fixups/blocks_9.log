@@ -1,0 +1,10 @@
+
+
+test: 9:
+"node => { b : b.left = b.right}"
+
+tree1:  node => { b : b.left = b.right}
+result: list([Get(), Block()])
+
+tree1:(post)  node => { b : b.left = b.right}
+result: list([Get(), Block()])

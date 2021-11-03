@@ -1,0 +1,5 @@
+suite - run test suites
+  -b  = ignore baselines
+  -q  = silence unneccessary output
+  -t  = single test mode (see -b)
+  -h  = help

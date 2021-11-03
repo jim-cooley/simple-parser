@@ -1,0 +1,7 @@
+
+
+test: 9:
+"var f = { a(_):_*_ }"
+
+tree1:  var f = { a(_):_*_ }
+result: Lit(None)

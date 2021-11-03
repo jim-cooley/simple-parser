@@ -1,0 +1,10 @@
+
+
+test: 6:
+"pcross(close, sma(13)) | smacd(close, 20, 50) | smacd.close(20,50) | close.smacd(20,50)"
+
+tree1:  pcross(close, sma(13)) | smacd(close, 20, 50) | smacd.close(20,50) | close.smacd(20,50)
+result: list([FnCall(), FnCall(), PropRef(), PropRef()])
+
+tree1:(post)  pcross(close, sma(13)) | smacd(close, 20, 50) | smacd.close(20,50) | close.smacd(20,50)
+result: list([FnCall(), FnCall(), PropRef(), PropRef()])

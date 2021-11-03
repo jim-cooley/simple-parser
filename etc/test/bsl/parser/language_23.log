@@ -1,0 +1,7 @@
+
+
+test: 23:
+"def f.a.b.c = 5"
+
+tree1:  def f.a.b.c = 5
+result: Lit(None)

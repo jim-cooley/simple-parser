@@ -1,0 +1,10 @@
+
+
+test: 15:
+"{a, b, c}:(c=4, a=5, b=6)"
+
+tree1:  {a, b, c}:(c=4, a=5, b=6)
+result: Lit(None)
+
+tree1:(post)  {a, b, c}:(c=4, a=5, b=6)
+result: Lit(None)

@@ -1,0 +1,7 @@
+
+
+test: 13:
+"close >| sma(10) and close <| sma(20) | signal >> open.delay(1d)"
+
+tree1:  close >| sma(10) and close <| sma(20) | signal >> open.delay(1d)
+result: list([Flow(), PropRef()])

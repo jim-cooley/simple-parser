@@ -1,59 +1,53 @@
 
 
-test: "rules = {
+test:
+"rules0a := {
+    buy:: any:{ close >| sma(10), close >| sma(20) }:(threshold=0.01) | signal | delay(1d) | atr,
+    sell:: close <| sma(10) | signal | delay(1d) | atr
+}
+rules0 := {
+    close >| sma(10) | signal | delay(1d) | atr | buy,
+    close <| sma(10) | signal | delay(1d) | atr | sell
+}
+rules1 => {
     any:{ close >| sma(10), close >| sma(20) }:(threshold=0.01) | signal >> delay(1d) | atr => buy,
-    close <| sma(10) | signal >> delay(1d) | atr => sell
+    close <| sma(10) | signal >> delay(1d) | atr -> sell
+}
+rules2 := {
+    buy: any:{ close >| sma(10), close >| sma(20) }:(threshold=0.01) | signal >> delay(1d) | atr,
+    sell: close <| sma(10) | signal >> delay(1d) | atr
+}
+rules3 := {
+    any:{ close >| sma(10), close >| sma(20) }:(threshold=0.01) | signal >> delay(1d) | atr => buy,
+    close <| sma(10) | signal >> delay(1d) | atr -> sell
+}
+rules4 = {
+    any:{ close >| sma(10), close >| sma(20) }:(threshold=0.01) | signal >> delay(1d) | atr => buy,
+    close <| sma(10) | signal >> delay(1d) | atr -> sell
+}
+def rules5 = {
+    any:{ close >| sma(10), close >| sma(20) }:(threshold=0.01) | signal >> delay(1d) | atr => buy,
+    close <| sma(10) | signal >> delay(1d) | atr -> sell
 }
 "
 
-tree1:  rules = {
-result: None
-    1 : BinOp TK.ASSIGN(BINOP, '=', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'rules', V=rules)
-    3 :     Set TK.SET(SET, '{', V=[List(), List()])
-    4 :         List TK.RAISE(LIST, '=>', V=[List(), Ident()])
-    5 :             List TK.CHAIN(LIST, '|', V=[List(), Ident()])
-    6 :                 List TK.APPLY(LIST, '>>', V=[List(), FnCall()])
-    7 :                     List TK.CHAIN(LIST, '|', V=[UnaryOp(), Ident()])
-    8 :                         UnaryOp TK.ANY(UNARY, 'any:', V=None)
-    9 :                             BinOp TK.TUPLE(BINOP, ':', V=None)
-   10 :                                 Set TK.SET(SET, '{', V=[BinOp(), BinOp()])
-   11 :                                     BinOp TK.RISE_ABOVE(BINOP, '>|', V=None)
-   12 :                                         Ident TK.IDNT(DATASET, 'close', V=close)
-   13 :                                         FnCall TK.FUNCTION(BINOP, '(', V=None)
-   14 :                                             Ident TK.IDNT(FUNCTION, 'sma', V=sma)
-   15 :                                             List TK.TUPLE(LIST, '(', V=[Int()])
-   16 :                                                 Int TK.INT(LITERAL, '10', V=10)
-   17 :                                     BinOp TK.RISE_ABOVE(BINOP, '>|', V=None)
-   18 :                                         Ident TK.IDNT(DATASET, 'close', V=close)
-   19 :                                         FnCall TK.FUNCTION(BINOP, '(', V=None)
-   20 :                                             Ident TK.IDNT(FUNCTION, 'sma', V=sma)
-   21 :                                             List TK.TUPLE(LIST, '(', V=[Int()])
-   22 :                                                 Int TK.INT(LITERAL, '20', V=20)
-   23 :                                 BinOp TK.ASSIGN(BINOP, '=', V=None)
-   24 :                                     Ident TK.IDNT(IDENTIFIER, 'threshold', V=threshold)
-   25 :                                     Float TK.FLOT(LITERAL, '0.01', V=0.01)
-   26 :                         Ident TK.SIGNAL(KEYWORD, 'signal', V=signal)
-   27 :                     FnCall TK.FUNCTION(BINOP, '(', V=None)
-   28 :                         Ident TK.IDNT(IDENTIFIER, 'delay', V=delay)
-   29 :                         List TK.TUPLE(LIST, '(', V=[Duration()])
-   30 :                             Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
-   31 :                 Ident TK.IDNT(IDENTIFIER, 'atr', V=atr)
-   32 :             Ident TK.BUY(KEYWORD, 'buy', V=buy)
-   33 :         List TK.RAISE(LIST, '=>', V=[List(), Ident()])
-   34 :             List TK.CHAIN(LIST, '|', V=[List(), Ident()])
-   35 :                 List TK.APPLY(LIST, '>>', V=[List(), FnCall()])
-   36 :                     List TK.CHAIN(LIST, '|', V=[BinOp(), Ident()])
-   37 :                         BinOp TK.FALL_BELOW(BINOP, '<|', V=None)
-   38 :                             Ident TK.IDNT(DATASET, 'close', V=close)
-   39 :                             FnCall TK.FUNCTION(BINOP, '(', V=None)
-   40 :                                 Ident TK.IDNT(FUNCTION, 'sma', V=sma)
-   41 :                                 List TK.TUPLE(LIST, '(', V=[Int()])
-   42 :                                     Int TK.INT(LITERAL, '10', V=10)
-   43 :                         Ident TK.SIGNAL(KEYWORD, 'signal', V=signal)
-   44 :                     FnCall TK.FUNCTION(BINOP, '(', V=None)
-   45 :                         Ident TK.IDNT(IDENTIFIER, 'delay', V=delay)
-   46 :                         List TK.TUPLE(LIST, '(', V=[Duration()])
-   47 :                             Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
-   48 :                 Ident TK.IDNT(IDENTIFIER, 'atr', V=atr)
-   49 :             Ident TK.SELL(KEYWORD, 'sell', V=sell)
+tree1:  rules0a := {
+result: Lit(None)
+
+tree2:  rules0 := {
+result: Lit(None)
+
+tree3:  rules1 => {
+result: list([Get(), Block()])
+
+tree4:  rules2 := {
+result: Lit(None)
+
+tree5:  rules3 := {
+result: Lit(None)
+
+tree6:  rules4 = {
+result: Lit(None)
+
+tree7:  def rules5 = {
+result: Lit(None)

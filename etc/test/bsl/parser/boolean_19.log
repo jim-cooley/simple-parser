@@ -1,8 +1,7 @@
 
 
-test: 19: "! true"
+test: 19:
+"! true"
 
 tree1:  ! true
-result: None
-    1 : UnaryOp TK.NOT(UNARY, '!', V=None)
-    2 :     Bool TK.TRUE(LITERAL, 'true', V=True)
+result: Lit(None)

@@ -1,0 +1,10 @@
+
+
+test: 4:
+""abced""
+
+tree1:  "abced"
+result: str(abced)
+
+tree1:(post)  "abced"
+result: str(abced)

@@ -1,0 +1,10 @@
+
+
+test: 30:
+"f.a.b.c = 5"
+
+tree1:  f.a.b.c = 5
+result: Lit(None)
+
+tree1:(post)  f.a.b.c = 5
+result: Lit(None)

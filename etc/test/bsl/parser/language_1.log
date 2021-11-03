@@ -1,20 +1,4 @@
 
 
-test: 1: "close.sma(13) | signal(price, how='>')"
-
-tree1:  close.sma(13) | signal(price, how='>')
-result: PropRef(BinOp(TK.DEF(BINOP, '.', V=None): l=Ident(close), r=BinOp(TK.FUNCTION(BINOP, '(', V=None): l=Ident(sma), r=[13])
-    1 : List TK.CHAIN(LIST, '|', V=[PropRef(), FnCall()])
-    2 :     PropRef TK.DEF(BINOP, '.', V=None)
-    3 :         Ident TK.IDNT(DATASET, 'close', V=close)
-    4 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
-    5 :             Ident TK.IDNT(FUNCTION, 'sma', V=sma)
-    6 :             List TK.TUPLE(LIST, '(', V=[Int()])
-    7 :                 Int TK.INT(LITERAL, '13', V=13)
-    8 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
-    9 :         Ident TK.SIGNAL(KEYWORD, 'signal', V=signal)
-   10 :         List TK.TUPLE(LIST, '(', V=[Ident(), BinOp()])
-   11 :             Ident TK.IDNT(IDENTIFIER, 'price', V=price)
-   12 :             BinOp TK.ASSIGN(BINOP, '=', V=None)
-   13 :                 Ident TK.IDNT(IDENTIFIER, 'how', V=how)
-   14 :                 Str TK.STR(LITERAL, '>', V=>)
+test: 1:
+"#"

@@ -1,0 +1,7 @@
+
+
+test: 4:
+""abced""
+
+tree1:  "abced"
+result: str(abced)

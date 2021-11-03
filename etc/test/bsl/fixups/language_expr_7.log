@@ -1,0 +1,10 @@
+
+
+test: 7:
+"(close.sma(20) and close.sma(50)) | diff | sign | signal(how='cross')"
+
+tree1:  (close.sma(20) and close.sma(50)) | diff | sign | signal(how='cross')
+result: list([BinOp(), Get(), Get(), FnCall()])
+
+tree1:(post)  (close.sma(20) and close.sma(50)) | diff | sign | signal(how='cross')
+result: list([BinOp(), Get(), Get(), FnCall()])

@@ -1,0 +1,10 @@
+
+
+test: 8:
+"((a))                        # grouping"
+
+tree1:  ((a))                        # grouping
+result: Lit(None)
+
+tree1:(post)  ((a))                        # grouping
+result: Lit(None)

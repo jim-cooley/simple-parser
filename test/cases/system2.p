@@ -1,4 +1,9 @@
 # sample rules file for pyser / qtradr
+{ close }:(threshold=5) | signal
+
+rules >> report | print
+
+
 
 periods = {
     'train': (today-2y)..today
@@ -40,4 +45,4 @@ rules: {
 }
 
 backtest( rules, period=period['train'])
-report >> rules | print
+rules >> report | print

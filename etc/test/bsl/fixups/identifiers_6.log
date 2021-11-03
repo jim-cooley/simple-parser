@@ -1,19 +1,10 @@
 
 
-test: 6: "a.b.c"
+test: 6:
+"a.b.c"
 
 tree1:  a.b.c
-result: None
-    1 : PropRef TK.DEF(BINOP, '.', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    3 :     PropRef TK.DEF(BINOP, '.', V=None)
-    4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=b)
-    5 :         Ident TK.IDNT(IDENTIFIER, 'c', V=c)
+result: Lit(None)
 
 tree1:(post)  a.b.c
-result: None
-    1 : PropRef TK.DEF(BINOP, '.', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    3 :     PropRef TK.DEF(BINOP, '.', V=None)
-    4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=b)
-    5 :         Ident TK.IDNT(IDENTIFIER, 'c', V=c)
+result: Lit(None)

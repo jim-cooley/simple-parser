@@ -1,0 +1,7 @@
+
+
+test: 4:
+"(a) = (5)                    # grouping or tuple assignment?"
+
+tree1:  (a) = (5)                    # grouping or tuple assignment?
+result: Lit(None)

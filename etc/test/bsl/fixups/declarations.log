@@ -1,0 +1,22 @@
+
+
+test: "# var declarations
+var f = 5
+var f = { 5 }
+var f := 5
+var f := { 5 }
+
+# def declarations
+def f(x) := x * 4;
+def f(x) = x * 4
+def f(x) := { x * 4 }
+def f(x) : = {
+    x = 4
+    y = 7
+    x * y
+}
+
+
+"
+FAIL: 'declarations' failed with Exception 'NoneType' object has no attribute 'token'
+

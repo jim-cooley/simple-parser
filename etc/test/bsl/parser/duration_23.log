@@ -1,8 +1,7 @@
 
 
-test: 23: "-1.5m"
+test: 23:
+"-1.5m"
 
 tree1:  -1.5m
-result: None
-    1 : UnaryOp TK.NEG(UNARY, '-', V=None)
-    2 :     Duration TK.DUR(LITERAL, '1.5m', V=0:01:30)
+result: Lit(None)

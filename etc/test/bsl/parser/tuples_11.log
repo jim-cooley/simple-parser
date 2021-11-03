@@ -1,0 +1,7 @@
+
+
+test: 11:
+"((a,))                       # grouping of tuple"
+
+tree1:  ((a,))                       # grouping of tuple
+result: list([Get()])

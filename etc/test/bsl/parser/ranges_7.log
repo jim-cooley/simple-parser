@@ -1,14 +1,7 @@
 
 
-test: 7: "{ 'train': today-2y..today }"
+test: 7:
+"{ 'train': today-2y..today }"
 
 tree1:  { 'train': today-2y..today }
-result: BinOp(BinOp(TK.TUPLE(BINOP, ':', V=None): l=train, r=BinOp(TK.SUB(BINOP, '-', V=None): l=Ident(today), r=BinOp(TK.RANGE(BINOP, '..', V=None): l=730 days, 0:00:00, r=Ident(today))
-    1 : Set TK.SET(SET, '{', V=[BinOp()])
-    2 :     BinOp TK.TUPLE(BINOP, ':', V=None)
-    3 :         Str TK.STR(LITERAL, 'train', V=train)
-    4 :         BinOp TK.SUB(BINOP, '-', V=None)
-    5 :             Ident TK.TODAY(KEYWORD, 'today', V=today)
-    6 :             BinOp TK.RANGE(BINOP, '..', V=None)
-    7 :                 Duration TK.DUR(LITERAL, '2y', V=730 days, 0:00:00)
-    8 :                 Ident TK.TODAY(KEYWORD, 'today', V=today)
+result: list([Define()])

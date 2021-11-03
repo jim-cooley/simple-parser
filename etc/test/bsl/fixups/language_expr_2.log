@@ -1,0 +1,10 @@
+
+
+test: 2:
+"any:{ close >| sma(10), close <| sma(20) }:(threshold=0.01) | signal >> avg | delay(1d) | buy"
+
+tree1:  any:{ close >| sma(10), close <| sma(20) }:(threshold=0.01) | signal >> avg | delay(1d) | buy
+result: Lit(None)
+
+tree1:(post)  any:{ close >| sma(10), close <| sma(20) }:(threshold=0.01) | signal >> avg | delay(1d) | buy
+result: Lit(None)

@@ -1,35 +1,10 @@
 
 
-test: 21: "a(x, y).b.c(1, 2)"
+test: 21:
+"a(x, y).b.c(1, 2)"
 
 tree1:  a(x, y).b.c(1, 2)
-result: None
-    1 : BinOp TK.DOT(BINOP, '.', V=None)
-    2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
-    3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    4 :         List TK.TUPLE(LIST, '(', V=[Ident(), Ident()])
-    5 :             Ident TK.IDNT(IDENTIFIER, 'x', V=x)
-    6 :             Ident TK.IDNT(IDENTIFIER, 'y', V=y)
-    7 :     PropRef TK.DEF(BINOP, '.', V=None)
-    8 :         Ident TK.IDNT(IDENTIFIER, 'b', V=b)
-    9 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
-   10 :             Ident TK.IDNT(IDENTIFIER, 'c', V=c)
-   11 :             List TK.TUPLE(LIST, '(', V=[Int(), Int()])
-   12 :                 Int TK.INT(LITERAL, '1', V=1)
-   13 :                 Int TK.INT(LITERAL, '2', V=2)
+result: Lit(None)
 
 tree1:(post)  a(x, y).b.c(1, 2)
-result: None
-    1 : BinOp TK.DOT(BINOP, '.', V=None)
-    2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
-    3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    4 :         List TK.TUPLE(LIST, '(', V=[Ident(), Ident()])
-    5 :             Ident TK.IDNT(IDENTIFIER, 'x', V=x)
-    6 :             Ident TK.IDNT(IDENTIFIER, 'y', V=y)
-    7 :     PropRef TK.DEF(BINOP, '.', V=None)
-    8 :         Ident TK.IDNT(IDENTIFIER, 'b', V=b)
-    9 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
-   10 :             Ident TK.IDNT(IDENTIFIER, 'c', V=c)
-   11 :             List TK.TUPLE(LIST, '(', V=[Int(), Int()])
-   12 :                 Int TK.INT(LITERAL, '1', V=1)
-   13 :                 Int TK.INT(LITERAL, '2', V=2)
+result: Lit(None)

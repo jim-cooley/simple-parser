@@ -1,0 +1,7 @@
+
+
+test: 52:
+"f = { a(_):_*_ }"
+
+tree1:  f = { a(_):_*_ }
+result: Lit(None)

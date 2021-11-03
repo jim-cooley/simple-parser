@@ -1,0 +1,10 @@
+
+
+test: 14:
+"10.5%"
+
+tree1:  10.5%
+result: float(0.105)
+
+tree1:(post)  10.5%
+result: float(0.105)

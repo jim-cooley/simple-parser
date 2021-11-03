@@ -1,0 +1,10 @@
+
+
+test: 5:
+"'defgh'"
+
+tree1:  'defgh'
+result: str(defgh)
+
+tree1:(post)  'defgh'
+result: str(defgh)

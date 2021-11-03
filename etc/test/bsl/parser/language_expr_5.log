@@ -1,0 +1,7 @@
+
+
+test: 5:
+"any:{ cross(close, sma(20), delay=1, threshold=0.01) } | buy"
+
+tree1:  any:{ cross(close, sma(20), delay=1, threshold=0.01) } | buy
+result: Lit(None)

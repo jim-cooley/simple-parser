@@ -1,12 +1,10 @@
 
 
-test: 26: "--1.5s"
+test: 26:
+"--1.5s"
 
 tree1:  --1.5s
-result: None
-    1 : UnaryOp TK.DECREMENT(UNARY, '--', V=None)
-    2 :     Duration TK.DUR(LITERAL, '1.5s', V=0:00:01.500000)
+result: Lit(None)
 
 tree1:(post)  --1.5s
-result: None
-    1 : Float TK.FLOT(LITERAL, None, V=0.5)
+result: Lit(None)

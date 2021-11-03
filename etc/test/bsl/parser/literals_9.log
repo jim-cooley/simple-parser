@@ -3,5 +3,5 @@
 test: 9: ".1"
 
 tree1:  .1
-result: float(0.1)
+result: None
     1 : Float TK.FLOT(LITERAL, '.1', V=0.1)

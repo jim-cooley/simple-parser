@@ -3,5 +3,5 @@
 test: 4: ""abced""
 
 tree1:  "abced"
-result: str(abced)
+result: None
     1 : Str TK.STR(LITERAL, 'abced', V=abced)

@@ -1,22 +1,25 @@
 from copy import copy
 from dataclasses import dataclass
 
-from exceptions import _expected
+from exceptions import SemtexException
+from rewrites import RewriteGets2Refs, RewriteFnCall2DefineFn
 from tokens import TK, TCL, _ADDITION_TOKENS, _COMPARISON_TOKENS, _FLOW_TOKENS, \
-    _EQUALITY_TEST_TOKENS, _LOGIC_TOKENS, _MULTIPLICATION_TOKENS, _UNARY_TOKENS, _IDENTIFIER_TYPES, _ASSIGNMENT_TOKENS, _SET_UNARY_TOKENS
-from tokenstream import TokenStream
-from tree import UnaryOp, BinOp, Command
-from tree_binops import FnCall, Index, PropCall, PropRef
-from scope import Ident, Literal
+    _EQUALITY_TEST_TOKENS, _LOGIC_TOKENS, _MULTIPLICATION_TOKENS, _UNARY_TOKENS, _IDENTIFIER_TYPES, _ASSIGNMENT_TOKENS, \
+    _SET_UNARY_TOKENS, Token, _IDENTIFIER_TOKENS, _ASSIGNMENT_TOKENS_EX, _IDENTIFIER_TOKENS_EX, _ASSIGNMENT_TOKENS_REF, \
+    TK_EMPTY, TK_SET
+from lexer import Lexer
+from tree import UnaryOp, BinOp, Command, Assign, Get, FnCall, Index, PropCall, PropRef, Define, DefineFn, DefineVar, \
+    DefineVarFn, ApplyChainProd, Ref
+from scope import Block, Flow, Literal
 from literals import Duration, Float, Int, Percent, Str, Time, Bool, List, Set, LIT_EMPTY_SET
-from treedump import DumpTree
+from treeprint import TreePrint
 
 
 @dataclass
 class ParseTree(object):
     def __init__(self, root, values=None, start=None, length=None):
         self.root = root
-        self.values = values if values is not None else root.value
+        self.values = values if values is not None else [root.value]
         self.tk_start = start
         self.tk_len = length
 
@@ -24,21 +27,19 @@ class ParseTree(object):
 class Parser(object):
     def __init__(self, environment, verbose=True):
         self.environment = environment
+        self.logger = environment.logger
         self.verbose = verbose
         self._skip_end_of_line = True
-        self._generate_refs = False   # ugly coupling, but generate refs or defs depending on which side of the binop
 
-    # syntactic sugar (use self.peek)
-    def __getattr__(self, item):
-        if item == 'token':
-            return self._peek()
-        return super().__getattr__(self, item)
+    @property
+    def token(self):
+        return self.peek()
 
     def __iter__(self):
         return self
 
     def __next__(self):
-        return self._advance(skip_end_of_line=False)
+        return self.advance()
 
     # -----------------------------------
     # Parser entry point
@@ -46,149 +47,273 @@ class Parser(object):
     def parse(self, text):
         self._init(text)
         while True:
-            node = self.expression()
-            if node is None or node.token.id == TK.EOF:
+            if not self._lexer.seek(0, Lexer.SEEK.NEXT):
                 break
-            nodes = [node] if type(node).__name__ != "list" else node
-            self.environment.trees += [ParseTree(_) for _ in nodes]
+            decl = self.declaration()
+            tkid = self.peek().id
+            if decl is not None:
+                decls = [decl] if type(decl).__name__ != "list" else decl
+                self.environment.trees += [ParseTree(_) for _ in decls]
+            elif tkid != TK.EOF:  # decl is None
+                continue
+            elif tkid == TK.EOF or decl.token.id == TK.EOF:
+                break
         return self.environment.trees
 
     def _init(self, text):
-        self._tk_stream = TokenStream(source=text)
+        self._lexer = Lexer(source=text)
         self.environment.source = text
         self.environment.lines = text.splitlines()
-        self.environment.tokens = self._tk_stream
+        self.environment.tokens = self._lexer
         self._skip_end_of_line = True
-#       self._tk_stream.seek(0, TokenStream.SEEK.NEXT)
 
     # -----------------------------------
     # Recursive Descent Parser Entry
     # -----------------------------------
-    def expression(self):
-        node = self.parse_command()
-        op = self._peek()
-        if op.id == TK.SEMI:
-            self._advance()
+    def declaration(self):
+        try:
+            if self.match1(TK.PCT2):
+                self.command()
+                return None
+            elif self.match1(TK.VAR):
+                return self.var()
+            elif self.match1(TK.DEFINE):
+                return self.definition()
+            return self.statement()
+        except SemtexException as se:
+            self.synchronize()
+            raise se
+        except Exception as e:
+            self.logger.report(e, loc=self.peek().location)
+            raise e
+
+    def statement(self):
+        node = self.block_expr()
+        if node is None:
+            self.logger.error(f'Unexpected token: {self.peek()}', self.peek().location)
+        if self.peek().id == TK.EOF:
+            return node
+        if self.match([TK.SEMI, TK.COMA]):
+            return node
         return node
 
     # -----------------------------------
-    # control language parsing at top
+    # Error Recovery
     # -----------------------------------
-    def parse_command(self):
-        tk = self._peek()
-        if tk.id == TK.PCT2:
-            commands = []
-            self._skip_end_of_line = False
-            self._advance()
-            while tk.id != TK.EOL:
-                command = Command(tk, self.expression())
-                commands.append(command)
-                tk = self._peek()
-                if tk.id in [TK.EOF, TK.EOL]:
-                    break
-            self.environment.commands += commands
-            self._skip_end_of_line = True
-            return self.expression()
-        return self.parse_definition()
+    def synchronize(self):
+        while True:
+            self.advance()
+            if self.peek(-1).id in [TK.SEMI, TK.EOF, TK.EOL]:  # just passed
+                return
+            tkid = self.peek().id  # just landed on
+            if tkid in [TK.BLOCK, TK.DEF, TK.DEFINE, TK.COMMAND, TK.VAR, TK.FUNCTION, TK.EOF]:
+                return
 
     # -----------------------------------
-    # Recursive Descent Parser States
+    # 'statement' parsing at top
     # -----------------------------------
-    def parse_definition(self):
-        op = self._peek()
-        if self._match([TK.DEFINE]):
-            self._generate_refs = True
-            node = UnaryOp(op, self.flow())
-            self._generate_refs = False
-            return node
-        elif op.id == TK.VAR:
-            self._generate_refs = True
-            self._advance()
-            node = UnaryOp(op, self.assignment())
-            self._generate_refs = False
-            return node
+    def block_expr(self):
+        tk = self.peek()
+        if tk.id == TK.LBRC:
+            node = self.expression()
+            if self.match1(TK.COLN):
+                op = self.peek(-1)
+                tid = self.peek().id
+                if tid == TK.LBRC:
+                    node = BinOp(node, op.set_id(TK.APPLY), self.statement())
+                elif tid == TK.LPRN:
+                    node = BinOp(node, op.set_id(TK.APPLY), self.tuple())
+                else:
+                    self.logger.error("Expected '{' or '(' after ':')"
+                                      f'{self.peek()}', self.peek().location)
+            if self.peek().id in _FLOW_TOKENS:
+                return self.parse_flow(node)
+            else:
+                return node
+        elif self.check(_SET_UNARY_TOKENS):
+            if self.peek(1).id != TK.COLN:
+                return self.expression()
+            self.consume(tk.id)
+            self.consume(TK.COLN)
+            if self.peek().id != TK.LBRC:
+                self.logger.expected(expected=f'TK.LRBC', found=self.peek())
+            return UnaryOp(tk, self.block_expr())
+        else:
+            return self.expression()
+
+    def command(self):
+        tk = self.peek()
+        commands = []
+        self._skip_end_of_line = False
+        self.advance()
+        while tk.id != TK.EOL:
+            command = Command(tk, self.expression())
+            if command is None:
+                self.logger.error(self.peek(), "Invalid token")
+                break
+            commands.append(command)
+            tk = self.peek()
+            if tk.id in [TK.EOF, TK.EOL]:
+                break
+            tk = self.consume(TK.SEMI, expect=False)  # optional semi-colon
+        self._skip_end_of_line = True
+        self.environment.commands += commands
+        return
+
+    def definition(self):
+        l_expr = self.statement()  # l-value cannot include flows
+        if isinstance(l_expr, Define):
+            op = l_expr.token
+        else:
+            op = self.advance()
+        if _is_valid_l_value(l_expr):
+            l_expr = _rewriteFnCall2Definition(l_expr)
+            if isinstance(l_expr, DefineFn):
+                return l_expr
+            elif isinstance(l_expr, FnCall) or isinstance(l_expr, DefineVarFn):  # keyword overrides other syntax
+                return DefineFn(l_expr.left, op, l_expr.right)
+            else:
+                return Define(l_expr.left, op, l_expr.right)
+        self.logger.error(f"Invalid assignment target {l_expr}", op.location)
+        return l_expr
+
+    def var(self):
+        l_expr = self.statement()  # l-value cannot include flows
+        if isinstance(l_expr, Define):
+            op = l_expr.token
+        else:
+            op = self.advance()
+        if _is_valid_l_value(l_expr):
+            l_expr = _rewriteFnCall2Definition(l_expr)
+            if isinstance(l_expr, DefineVar):
+                return l_expr
+            elif isinstance(l_expr, FnCall) or isinstance(l_expr, DefineFn):
+                return DefineVarFn(l_expr.left, op, l_expr.right)
+            else:
+                return DefineVar(l_expr.left, op, l_expr.right)
+        self.logger.error("Invalid assignment target", op.location)
+        return l_expr
+
+    # -----------------------------------
+    # Expression Entry
+    # -----------------------------------
+    def expression(self):
         return self.flow()
 
     def flow(self):
-        node = self.tuples()
-        op = copy(self._peek())  # need a copy or we modify the _lexer's token with op.map()
+        node = self.tuple()
+        if node is None:
+            return None
+        if self.peek().id in _FLOW_TOKENS:
+            return self.parse_flow(node)
+        return node
+
+    def parse_flow(self, node=None):
+        op = copy(self.peek())
         while op.id in _FLOW_TOKENS:
             sep = op.id
-            seq = List(op.map2binop(), [node])
-            while self._match([sep]):
-                node = self.tuples()
-                seq.append(node)
+            seq = Flow(op.map2binop(), [node] if node is not None else [])
+            while self.match([sep]):
+                node = self.assignment()
+                if node is not None:
+                    seq.append(node)
+                else:
+                    break
             node = seq
-            op = copy(self._peek())
+            last = seq.last
+            if isinstance(last, Get):
+                last = last.to_ref()
+                seq.last = ApplyChainProd(last, Token(tid=TK.APPLY, tcl=TCL.UNARY, loc=last.token.location))
+            op = copy(self.peek())
         return node
 
-    def tuples(self):
-        node = self.assignment()
-        op = self._peek()
+    def tuple(self):
+        l_expr = self.assignment()
+        op = self.peek()
         if op.id == TK.COLN:
-#            if node is None:
-#               _error("Expected lefthand side for binary operator", op.location)
-            tid = node.token.id
+            tid = l_expr.token.id
             if tid in _SET_UNARY_TOKENS:
                 op.id = tid
-                op.lexeme = node.token.lexeme + ':'
-                self._advance()
-                node = UnaryOp(op.map2unop(), self.tuples())
-                return node
-            while self._match([TK.COLN]):
-                node = BinOp(node, op.map2binop(), self.assignment())
-                op = self._peek()
-        return node
+                op.lexeme = l_expr.token.lexeme + ':'
+                self.advance()
+                l_expr = UnaryOp(op.map2unop(), self.tuple())
+                return l_expr
+            while self.match1(TK.COLN):
+                l_expr = _rewriteGets(l_expr)
+                if l_expr.token.id == TK.FUNCTION:
+                    l_expr = DefineFn(l_expr, op, self.tuple())
+                else:
+                    l_expr = Define(l_expr, op, self.tuple())
+                op = self.peek()
+        return l_expr
 
     def assignment(self):
-        node = self.logic_expr()
-        op = self._peek()
-        while self._match(_ASSIGNMENT_TOKENS):
-            self._generate_refs = True
-            tk = node.token
-            if tk.id not in [TK.DEF, TK.REF, TK.TUPLE]:
-                if node.token.t_class not in _IDENTIFIER_TYPES:
-                    _expected(expected='IDENTIFIER', found=node.token)
-            node = BinOp(left=node, op=op.map2binop(), right=self.assignment())
-        self._generate_refs = False
-        return node
+        l_expr = self.boolean_expr()  # l-value cannot include flows
+        if l_expr is None:
+            return None
+        op = self.peek()
+        if self.match(_ASSIGNMENT_TOKENS):
+            if l_expr.token.id in _IDENTIFIER_TOKENS_EX:
+                r_expr = self.block_expr()
+                return self.process_assignment(op=op, l_expr=l_expr, r_expr=r_expr)
+            self.logger.error(f'Invalid assignment target: {l_expr.token}', op.location)
+#        elif self.match1(TK.EQGT):
+#            r_expr = self.expression()
+#            return self.process_assignment(op=op, l_expr=r_expr, r_expr=l_expr)
+        return l_expr
 
-    def logic_expr(self):
+    def process_assignment(self, op, l_expr, r_expr):
+        if l_expr.token.id in _IDENTIFIER_TOKENS_EX or l_expr.token.t_class is TCL.IDENTIFIER:
+            if op.id in _ASSIGNMENT_TOKENS_REF:
+                l_expr = _rewriteFnCall2Definition(l_expr)
+            if op.id == TK.EQLS:
+                if isinstance(l_expr, FnCall) or isinstance(l_expr, DefineFn):
+                    return DefineFn(l_expr.left, op, r_expr)
+                else:
+                    return Define(l_expr, op, r_expr)
+            elif op.id == TK.COEQ:
+                return DefineVarFn(l_expr, op, r_expr)
+            else:
+                return Assign(l_expr, op, r_expr)
+        token = l_expr.token if not getattr(l_expr, 'left', False) else l_expr.left.token
+        self.logger.error(f'Invalid assignment target: {token}', op.location)
+
+    def boolean_expr(self):
         node = self.equality()
-        op = self._peek()
-        while self._match(_LOGIC_TOKENS):
+        op = self.peek()
+        while self.match(_LOGIC_TOKENS):
             node = BinOp(node, op.map2binop(), self.equality())
-            op = self._peek()
+            op = self.peek()
         return node
 
     def equality(self):
         node = self.comparison()
-        op = self._peek()
-        while self._match(_EQUALITY_TEST_TOKENS):
+        op = self.peek()
+        while self.match(_EQUALITY_TEST_TOKENS):
             node = BinOp(node, op.map2binop(), self.comparison())
-            op = self._peek()
+            op = self.peek()
         return node
 
     def comparison(self):
         node = self.term()
-        op = self._peek()
-        while self._match(_COMPARISON_TOKENS):
+        op = self.peek()
+        while self.match(_COMPARISON_TOKENS):
             node = BinOp(node, op.map2binop(), self.term())
-            op = self._peek()
+            op = self.peek()
         return node
 
     def term(self):
         node = self.factor()
-        op = self._peek()
-        while self._match(_ADDITION_TOKENS):
+        op = self.peek()
+        while self.match(_ADDITION_TOKENS):
             node = BinOp(node, op.map2binop(), self.factor())
-            op = self._peek()
+            op = self.peek()
         return node
 
     def factor(self):
         l_node = self.unary()
-        op = self._peek()
-        while self._match(_MULTIPLICATION_TOKENS):
+        op = self.peek()
+        while self.match(_MULTIPLICATION_TOKENS):
             r_node = self.unary()
             # fixup for lack of 2-state lookahead: 1..2 scans as ['1.', '.', '2'] but scanner can only backup 1 token.
             if op.id == TK.DOT:
@@ -202,27 +327,25 @@ class Parser(object):
                     r_node.token.value = float(s_val)
                     l_node = Float(r_node.token)
                     return l_node
+            if l_node is None:
+                self.logger.error("Invalid assignment target", op.location)
             l_node = BinOp(l_node, op.map2binop(), r_node)
-            op = self._peek()
+            op = self.peek()
         return l_node
 
     def unary(self):
-        op = self._peek()
-        if self._match(_UNARY_TOKENS):
-            self._generate_refs = True
+        op = self.peek()
+        if self.match(_UNARY_TOKENS):
             node = UnaryOp(op.map2unop(), self.unary())
-            self._generate_refs = True
             return node
         node = self.prime()
         if node is not None and node.token.id in [TK.ANY, TK.ALL, TK.NONEOF]:
-            self._generate_refs = True
             node = UnaryOp(node.token, self.unary())
-            self._generate_refs = True
         return node
 
     def prime(self):
         node = None
-        token = self._peek()
+        token = self.peek()
         if token.id == TK.EOL:
             return node
         if token.id == TK.FALSE:
@@ -248,64 +371,91 @@ class Parser(object):
             node = Literal(token)
             token.t_class = TCL.LITERAL
         elif token.id == TK.LBRC:
-            self._advance()
-            node = Set(token, self.sequence(TK.COMA))
-            self._consume(TK.RBRC)
+            self.advance()
+            node = self.block()
+#           node = Set(token, self.sequence())
+            self.consume(TK.RBRC)
             return node
-        elif token.id == TK.LPRN:  # should probably be sequence / tuple literal and parse plists via 'identifier'
-            self._advance()
+        elif token.id == TK.LPRN:  # UNDONE: should probably be sequence / tuple literal and parse plists via 'identifier'
+            self.advance()
             node = self.expression()
-            if self._match([TK.COMA]):
+            if self.check1(TK.COMA):
                 node = self.plist(node)
             else:
-                self._consume(TK.RPRN)
+                self.consume(TK.RPRN)
             return node
-        elif token.id == TK.LBRK:  # should be list literal and parse indexing via 'identifier'
-            self._consume(TK.LBRK)
-            node = List(token.map2litval(), self.sequence(TK.COMA))
-            self._consume(TK.RBRK)
+        elif token.id == TK.LBRK:  # UNDONE: should be list literal and parse indexing via 'identifier'
+            self.consume(TK.LBRK)
+            node = List(token.map2litval(), self.sequence())
+            self.consume(TK.RBRK)
             return node
-        elif token.t_class in _IDENTIFIER_TYPES or token.id == TK.IDNT:
+        elif token.t_class in _IDENTIFIER_TYPES or token.id in [TK.IDNT, TK.ANON]:
             return self.identifier()
         else:
             return node
-        self._advance()
+        self.advance()
         return node
 
     # -----------------------------------
-    # Helpers
+    # leaf state helpers
     # -----------------------------------
+    def block(self):
+        seq = []
+        tk = self.peek()
+        loc = tk.location
+        is_l_value = True
+
+        # UNDONE: could be done via 'self.sequence()' helper
+        while self.peek().id != TK.EOF and self.peek().id != TK.RBRC:
+            decl = self.declaration()
+            seq.append(decl)
+            #            if self.peek().id == TK.RBRC:   # must check closure before (empty set) and after as decl can finish parsing
+            #                break
+            if is_l_value:
+                if getattr(decl, 'is_lvalue', None) is not None:
+                    is_l_value = decl.is_lvalue
+                elif not isinstance(decl, Literal) and not isinstance(decl, Get):
+                    if decl.token.id != TK.COLN:
+                        is_l_value = False
+        if len(seq) == 0:
+            return Set(TK_EMPTY, seq)
+        elif is_l_value:
+            return Set(Token(TK.SET, TCL.LITERAL, '{', loc=loc), seq)
+        else:
+            return Block(items=seq, loc=loc)
+
     def identifier(self):
         """
         identifier | identifier ( plist ) | identifier . identifier
         """
-        tk = self._advance()
-        token = self._peek()
+        tk = self.advance()
+        token = self.peek()
         if token.id == TK.DOT:
-            token = self._consume_next(TK.IDNT)
-            node = PropRef(tk, self.identifier(), ref=self._generate_refs)
-            if token.id == TK.LPRN:
-                node = PropCall(tk, node.member, self.plist())
+            token = self.consume_next(TK.IDNT)
+            node = PropRef(tk, self.identifier())
         elif token.id == TK.DOT2:
-            self._advance()
-            node = BinOp(left=Ident(tk), op=token.map2binop(), right=self.expression())
+            self.advance()
+            node = BinOp(left=Ref(tk), op=token.map2binop(), right=self.expression())
         elif token.id == TK.LPRN:
-            node = FnCall(tk, self.plist())
+            plist = self.plist()
+            plist.token.id = TK.TUPLE
+            node = FnCall(tk, plist)
         elif token.id == TK.LBRK:
             node = Index(tk, self.idx_list())
         else:
-            node = Ident(tk)
+            is_lval = self.check(_ASSIGNMENT_TOKENS_REF)
+            node = Ref(tk) if is_lval else Get(tk)
         return node
 
     def idx_list(self, node=None):
         """( EXPR ',' ... )"""
         seq = [] if node is None else [node]
-        self._match([TK.LBRK])
-        token = copy(self._peek())
+        self.match([TK.LBRK])
+        token = copy(self.peek())
         if token.id != TK.RBRK:
-            seq = self.sequence(TK.COMA, node)
-        self._consume(TK.RBRK)
-        token.t_class = TCL.LIST
+            seq = self.sequence(node)
+        self.consume(TK.RBRK)
+        token.t_class = TCL.TUPLE
         token.id = TK.TUPLE
         token.lexeme = '['  # fixup token.
         return List(token, seq)
@@ -313,81 +463,104 @@ class Parser(object):
     def plist(self, node=None):
         """( EXPR ',' ... )"""
         seq = [] if node is None else [node]
-        self._match([TK.LPRN])
-        token = copy(self._peek())
+        self.match1(TK.LPRN)
+        token = copy(self.peek())
+        is_tuple = self.match1(TK.COMA)
         if token.id != TK.RPRN:
-            seq = self.sequence(TK.COMA, node)
-        self._consume(TK.RPRN)
-        token.t_class = TCL.TUPLE
-        token.id = TK.TUPLE
+            seq = self.sequence(node)
+        self.consume(TK.RPRN)
+        if is_tuple or len(seq) > 1:
+            token.t_class = TCL.TUPLE
+            token.id = TK.TUPLE
+            if seq[len(seq) - 1] is None:
+                seq.pop()
+        else:
+            token.id = TK.LPRN
+            token.t_class = TCL.LITERAL
         token.lexeme = '('  # fixup token.
         return List(token, seq)
 
-    def sequence(self, sep, node=None):
-        """EXPR <sep> EXPR <sep> ..."""
+    def sequence(self, node=None):
+        """EXPR <sep> EX1PR <sep> ..."""
         seq = [] if node is None else [node]
         while True:
-            node = self.expression()
-            seq.append(node)
-            if self._peek().id != sep:
+            seq.append(self.expression())
+            if not self.match1(TK.COMA):
                 break
-            self._consume(sep)
         return seq
 
     # return current token with provision for fetching if there are none.
     # after the first token, self.token works fine for peek.
-    def _peek(self):
-        tk = self._tk_stream.peek()
+    def peek(self, rel=0):
+        tk = self._lexer.peek(rel=rel)
+#        if tk.id == TK.EOL:
+#            self.environment.print_line(tk.location.line)
         if not self._skip_end_of_line or tk.id != TK.EOL:
             return tk
-        self._tk_stream.seek(1, TokenStream.SEEK.NEXT)
-        return self._tk_stream.peek()
+        self._lexer.seek(1, Lexer.SEEK.NEXT)
+        return self._lexer.peek()
 
     # returns current token and advances
-    def _advance(self):
+    def advance(self):
         while True:
-            tk = self._tk_stream.read1()
-            if self._skip_end_of_line and tk.id == TK.EOL:
-                continue
+            tk = self._lexer.read1()
+            if tk.id == TK.EOL:
+                self.environment.print_line(tk.location.line)
+                if self._skip_end_of_line:
+                    continue
             break
         while True:
-            if self._skip_end_of_line and self._peek().id == TK.EOL:
-                self._tk_stream.read1()
+            if self._skip_end_of_line and self.peek().id == TK.EOL:
+                self._lexer.read1()
                 continue
             break
         return tk
 
     # if current token matches
-    def _check(self, ex_tid):
-        tkid = self._peek().id
+    def check1(self, ex_tid, rel=0):
+        tkid = self.peek(rel=rel).id
         return False if tkid == TK.EOF else tkid == ex_tid
 
+    def check(self, tl_list, rel=0):
+        return self.peek(rel=rel).id in tl_list
+
     # skip over the expected current token.
-    def _consume(self, ex_tid):
+    def consume(self, ex_tid, expect=True):
         while True:
-            tk = self._peek()
+            tk = self.peek()
             if self._skip_end_of_line and tk.id == TK.EOL:
-                self._advance()
+                self.advance()
                 continue
             break
-        if self._peek().id == ex_tid:
-            return self._advance()
-        _expected(expected=f'{ex_tid.name}', found=self._peek())
+        if self.peek().id == ex_tid:
+            self.advance()
+            return self.peek()
+        if expect:
+            self.logger.expected(expected=f'{ex_tid.name}', found=self.peek())
 
-    def _consume_next(self, ex_tid=None):
-        self._advance()
-        tk = self._peek()
+    def consume_next(self, ex_tid=None):
+        self.advance()
+        tk = self.peek()
         if tk.id == ex_tid:
             return tk
-        _expected(expected=f'{ex_tid.name}', found=self._peek())
+        self.logger.expected(expected=f'{ex_tid.name}', found=self.peek())
 
     # match if current token is any of the set.  advance if so.
-    def _match(self, tk_list):
-        tk = self._peek()
+    def match(self, tk_list):
+        tk = self.peek()
         if tk is None or tk.id == TK.EOF:
             return False
         if tk.id in tk_list:
-            self._advance()
+            self.advance()
+            return True
+        return False
+
+    def match1(self, tkid):
+        tk = self.peek()
+        if tk is None or tk.id == TK.EOF:
+            return False
+        if tk.id == tkid:
+            self.advance()
             return True
         return False
 
@@ -396,7 +569,29 @@ class Parser(object):
 
     @staticmethod
     def print_tree(node):
-        dt = DumpTree()
+        dt = TreePrint()
         viz = dt.apply(node)
         for v in viz:
             print(v)
+
+
+def _rewriteGets(node):
+    rewriter = RewriteGets2Refs()
+    return rewriter.apply(node)
+
+
+def _rewriteFnCall2Definition(node):
+    rewriter = RewriteFnCall2DefineFn()
+    rval = rewriter.apply(node)
+    return rval
+
+
+def _is_valid_l_value(l_expr):
+    if l_expr.token.id in _IDENTIFIER_TOKENS:
+        return True
+    elif isinstance(l_expr, Define):
+        return True
+    elif isinstance(l_expr, BinOp):
+        return _is_valid_l_value(l_expr.left)
+    else:
+        return False

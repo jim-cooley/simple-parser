@@ -1,29 +1,4 @@
 
 
-test: 8: "{close.sma(20) and close.sma(50)} | diff | sign | signal(how='cross')"
-
-tree1:  {close.sma(20) and close.sma(50)} | diff | sign | signal(how='cross')
-result: list([BinOp()])
-    1 : List TK.CHAIN(LIST, '|', V=[Set(), Ident(), Ident(), FnCall()])
-    2 :     Set TK.SET(SET, '{', V=[BinOp()])
-    3 :         BinOp TK.AND(BINOP, 'and', V=None)
-    4 :             PropRef TK.DEF(BINOP, '.', V=None)
-    5 :                 Ident TK.IDNT(DATASET, 'close', V=close)
-    6 :                 FnCall TK.FUNCTION(BINOP, '(', V=None)
-    7 :                     Ident TK.IDNT(FUNCTION, 'sma', V=sma)
-    8 :                     List TK.TUPLE(LIST, '(', V=[Int()])
-    9 :                         Int TK.INT(LITERAL, '20', V=20)
-   10 :             PropRef TK.DEF(BINOP, '.', V=None)
-   11 :                 Ident TK.IDNT(DATASET, 'close', V=close)
-   12 :                 FnCall TK.FUNCTION(BINOP, '(', V=None)
-   13 :                     Ident TK.IDNT(FUNCTION, 'sma', V=sma)
-   14 :                     List TK.TUPLE(LIST, '(', V=[Int()])
-   15 :                         Int TK.INT(LITERAL, '50', V=50)
-   16 :     Ident TK.IDNT(IDENTIFIER, 'diff', V=diff)
-   17 :     Ident TK.IDNT(IDENTIFIER, 'sign', V=sign)
-   18 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
-   19 :         Ident TK.SIGNAL(KEYWORD, 'signal', V=signal)
-   20 :         List TK.TUPLE(LIST, '(', V=[BinOp()])
-   21 :             BinOp TK.ASSIGN(BINOP, '=', V=None)
-   22 :                 Ident TK.IDNT(IDENTIFIER, 'how', V=how)
-   23 :                 Str TK.STR(LITERAL, 'cross', V=cross)
+test: 8:
+"# declaration:"

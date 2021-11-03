@@ -1,7 +1,7 @@
 
 
-test: 2: "abcdefghijklmnopqrstuvwxyz"
+test: 2:
+"abcdefghijklmnopqrstuvwxyz"
 
 tree1:  abcdefghijklmnopqrstuvwxyz
-result: str(abcdefghijklmnopqrstuvwxyz)
-    1 : Ident TK.IDNT(IDENTIFIER, 'abcdefghijklmnopqrstuvwxyz', V=abcdefghijklmnopqrstuvwxyz)
+result: Lit(None)

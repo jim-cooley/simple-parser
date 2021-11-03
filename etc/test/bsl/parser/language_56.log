@@ -1,0 +1,7 @@
+
+
+test: 56:
+"a | b | c >> d"
+
+tree1:  a | b | c >> d
+result: list([Flow(), ApplyChainProd()])

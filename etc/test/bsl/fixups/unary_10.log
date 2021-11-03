@@ -1,12 +1,10 @@
 
 
-test: 10: "--2"
+test: 10:
+"--2"
 
 tree1:  --2
-result: None
-    1 : UnaryOp TK.DECREMENT(UNARY, '--', V=None)
-    2 :     Int TK.INT(LITERAL, '2', V=2)
+result: Lit(None)
 
 tree1:(post)  --2
-result: None
-    1 : Int TK.INT(LITERAL, None, V=1)
+result: Lit(None)

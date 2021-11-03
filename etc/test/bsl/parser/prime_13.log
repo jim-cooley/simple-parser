@@ -1,0 +1,7 @@
+
+
+test: 13:
+"10%"
+
+tree1:  10%
+result: float(0.1)

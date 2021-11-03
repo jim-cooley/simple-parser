@@ -1,0 +1,227 @@
+
+
+test:
+"# var declarations
+var f = 5
+var f.a = 5
+var f = { a=5 }
+var f = { a(x):x*x }
+var f = { a(_):_*_ }
+var f = { 5 }
+var f := 5
+var f := { 5 }
+
+# def declarations
+def f(x) := x * 4;
+def f(x) = x * 4
+def f(x) := { x * 4 }
+def f(x) := {
+    x = 4
+    y = 7
+    x * y
+}
+
+# tuples
+(x, y, z)
+(1, 2, 3)
+(x:1, y:2, z:3)
+(x=1, y=2, z=3)
+(x, y, z) = (1, 2, 3)
+(x, y, z) = {q, r, s}:(1, 2, 3)
+(x, y, z) = {q, r, s}:{q=1, r=2, s=3}
+a = (1, 2, 3)
+a = {q, r, s}:(1, 2, 3)
+a = {q, r, s}:{q=1, r=2, s=3}
+
+# blocks
+{x, y, z}
+{1, 2, 3}
+{x:1, y:2, z:3}
+{x=1, y=2, z=3}
+{x=1, y=2, z=3*(x+y)}
+
+{x, y, z}
+{1, 2, 3}
+{x:1, y:2, z:3}
+{x=1, y=2, z=3}
+{x=1, y=2, z=3*(x+y)}:(x=1, y=2, z=3)
+
+# declarations 2
+a = (x, y, z)
+a = (1, 2, 3)
+a = (x:1, y:2, z:3)
+a = (x=1, y=2, z=3)
+
+b := {x, y, z}
+b := {1, 2, 3}
+b := {x:1, y:2, z:3}
+b := {x=1, y=2, z=3}
+b := {x=1, y=2, z=3*(x+y)}
+
+def c = {x, y, z}
+def c = {1, 2, 3}
+def c = {x:1, y:2, z:3}
+def c = {x=1, y=2, z=3}
+def c = {x=1, y=2, z=3*(x+y)}:(x=1, y=2, z=3)
+
+var c = {x, y, z}
+var c = {1, 2, 3}
+var c = {x:1, y:2, z:3}
+var c = {x=1, y=2, z=3}
+var c = {x=1, y=2, z=3*(x+y)}:(x=1, y=2, z=3)
+
+
+"
+
+tree1:  var f = 5
+result: Lit(None)
+
+tree2:  var f.a = 5
+result: Lit(None)
+
+tree3:  var f = { a=5 }
+result: Lit(None)
+
+tree4:  var f = { a(x):x*x }
+result: Lit(None)
+
+tree5:  var f = { a(_):_*_ }
+result: Lit(None)
+
+tree6:  var f = { 5 }
+result: Lit(None)
+
+tree7:  var f := 5
+result: Lit(None)
+
+tree8:  var f := { 5 }
+result: Lit(None)
+
+tree9:  def f(x) := x * 4;
+result: Lit(None)
+
+tree10:  def f(x) = x * 4
+result: Lit(None)
+
+tree11:  def f(x) := { x * 4 }
+result: Lit(None)
+
+tree12:  def f(x) := {
+result: Lit(None)
+
+tree13:  (x, y, z)
+result: list([Get(), Get(), Get()])
+
+tree14:  (1, 2, 3)
+result: list([Int(), Int(), Int()])
+
+tree15:  (x:1, y:2, z:3)
+result: list([Define(), Define(), Define()])
+
+tree16:  (x=1, y=2, z=3)
+result: list([Define(), Define(), Define()])
+
+tree17:  (x, y, z) = (1, 2, 3)
+result: Lit(None)
+
+tree18:  (x, y, z) = {q, r, s}:(1, 2, 3)
+result: Lit(None)
+
+tree19:  (x, y, z) = {q, r, s}:{q=1, r=2, s=3}
+result: Lit(None)
+
+tree20:  a = (1, 2, 3)
+result: Lit(None)
+
+tree21:  a = {q, r, s}:(1, 2, 3)
+result: Lit(None)
+
+tree22:  a = {q, r, s}:{q=1, r=2, s=3}
+result: Lit(None)
+
+tree23:  {x, y, z}
+result: list([Get(), Get(), Get()])
+
+tree24:  {1, 2, 3}
+result: list([Int(), Int(), Int()])
+
+tree25:  {x:1, y:2, z:3}
+result: list([Define(), Define(), Define()])
+
+tree26:  {x=1, y=2, z=3}
+result: list([Define(), Define(), Define()])
+
+tree27:  {x=1, y=2, z=3*(x+y)}
+result: list([Define(), Define(), Define()])
+
+tree28:  {x, y, z}
+result: list([Get(), Get(), Get()])
+
+tree29:  {1, 2, 3}
+result: list([Int(), Int(), Int()])
+
+tree30:  {x:1, y:2, z:3}
+result: list([Define(), Define(), Define()])
+
+tree31:  {x=1, y=2, z=3}
+result: list([Define(), Define(), Define()])
+
+tree32:  {x=1, y=2, z=3*(x+y)}:(x=1, y=2, z=3)
+result: Lit(None)
+
+tree33:  a = (x, y, z)
+result: Lit(None)
+
+tree34:  a = (1, 2, 3)
+result: Lit(None)
+
+tree35:  a = (x:1, y:2, z:3)
+result: Lit(None)
+
+tree36:  a = (x=1, y=2, z=3)
+result: Lit(None)
+
+tree37:  b := {x, y, z}
+result: Lit(None)
+
+tree38:  b := {1, 2, 3}
+result: Lit(None)
+
+tree39:  b := {x:1, y:2, z:3}
+result: Lit(None)
+
+tree40:  b := {x=1, y=2, z=3}
+result: Lit(None)
+
+tree41:  b := {x=1, y=2, z=3*(x+y)}
+result: Lit(None)
+
+tree42:  def c = {x, y, z}
+result: Lit(None)
+
+tree43:  def c = {1, 2, 3}
+result: Lit(None)
+
+tree44:  def c = {x:1, y:2, z:3}
+result: Lit(None)
+
+tree45:  def c = {x=1, y=2, z=3}
+result: Lit(None)
+
+tree46:  def c = {x=1, y=2, z=3*(x+y)}:(x=1, y=2, z=3)
+result: Lit(None)
+
+tree47:  var c = {x, y, z}
+result: Lit(None)
+
+tree48:  var c = {1, 2, 3}
+result: Lit(None)
+
+tree49:  var c = {x:1, y:2, z:3}
+result: Lit(None)
+
+tree50:  var c = {x=1, y=2, z=3}
+result: Lit(None)
+
+tree51:  var c = {x=1, y=2, z=3*(x+y)}:(x=1, y=2, z=3)
+result: Lit(None)

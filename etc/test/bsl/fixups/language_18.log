@@ -1,0 +1,10 @@
+
+
+test: 18:
+"var (a, b, c) = (4, 5, 6)"
+
+tree1:  var (a, b, c) = (4, 5, 6)
+result: Lit(None)
+
+tree1:(post)  var (a, b, c) = (4, 5, 6)
+result: Lit(None)

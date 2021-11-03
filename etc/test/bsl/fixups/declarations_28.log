@@ -1,0 +1,38 @@
+
+
+test: 28:
+"f(x) = { a(x):x*x }"
+
+tree1:  f(x) = { a(x):x*x }
+result: None
+    1 : Define TK.EQLS(BINOP, '=', V=None)
+    2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
+    3 :         Ref TK.IDNT(IDENTIFIER, 'f', V=None)
+    4 :         List TK.TUPLE(LITERAL, '(', V=[Ref()])
+    5 :             Ref TK.IDNT(IDENTIFIER, 'x', V=None)
+    6 :     Set TK.SET(LITERAL, '{', V=[DefineFn()])
+    7 :         DefineFn TK.COLN(NONE, ':', V=None)
+    8 :             FnCall TK.FUNCTION(BINOP, '(', V=None)
+    9 :                 Ref TK.IDNT(IDENTIFIER, 'a', V=None)
+   10 :                 List TK.TUPLE(LITERAL, '(', V=[Ref()])
+   11 :                     Ref TK.IDNT(IDENTIFIER, 'x', V=None)
+   12 :             BinOp TK.MUL(BINOP, '*', V=None)
+   13 :                 Get TK.IDNT(IDENTIFIER, 'x', V=None)
+   14 :                 Get TK.IDNT(IDENTIFIER, 'x', V=None)
+
+tree1:(post)  f(x) = { a(x):x*x }
+result: None
+    1 : DefineFn TK.EQLS(BINOP, '=', V=None)
+    2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
+    3 :         Ref TK.IDNT(IDENTIFIER, 'f', V=None)
+    4 :         List TK.TUPLE(LITERAL, '(', V=[Ref()])
+    5 :             Ref TK.IDNT(IDENTIFIER, 'x', V=None)
+    6 :     Set TK.SET(LITERAL, '{', V=[DefineFn()])
+    7 :         DefineFn TK.COLN(NONE, ':', V=None)
+    8 :             FnCall TK.FUNCTION(BINOP, '(', V=None)
+    9 :                 Ref TK.IDNT(IDENTIFIER, 'a', V=None)
+   10 :                 List TK.TUPLE(LITERAL, '(', V=[Ref()])
+   11 :                     Ref TK.IDNT(IDENTIFIER, 'x', V=None)
+   12 :             BinOp TK.MUL(BINOP, '*', V=None)
+   13 :                 Get TK.IDNT(IDENTIFIER, 'x', V=None)
+   14 :                 Get TK.IDNT(IDENTIFIER, 'x', V=None)

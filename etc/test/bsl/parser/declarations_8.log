@@ -1,0 +1,18 @@
+
+
+test: 8:
+"var f = { a(x):x*x }"
+
+tree1:  var f = { a(x):x*x }
+result: None
+    1 : DefineVar TK.EQLS(BINOP, '=', V=None)
+    2 :     Ref TK.IDNT(IDENTIFIER, 'f', V=None)
+    3 :     Block TK.BLOCK(SCOPE, '', V=[Define()])
+    4 :         Define TK.COLN(NONE, ':', V=None)
+    5 :             FnCall TK.FUNCTION(BINOP, '(', V=None)
+    6 :                 Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    7 :                 List TK.TUPLE(LITERAL, '(', V=[Get()])
+    8 :                     Get TK.IDNT(IDENTIFIER, 'x', V=None)
+    9 :             BinOp TK.MUL(BINOP, '*', V=None)
+   10 :                 Get TK.IDNT(IDENTIFIER, 'x', V=None)
+   11 :                 Get TK.IDNT(IDENTIFIER, 'x', V=None)

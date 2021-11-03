@@ -1,9 +1,7 @@
 
 
-test: 160: "true == true"
+test: 160:
+"true == true"
 
 tree1:  true == true
-result: None
-    1 : BinOp TK.ISEQ(BINOP, '==', V=None)
-    2 :     Bool TK.TRUE(LITERAL, 'true', V=True)
-    3 :     Bool TK.TRUE(LITERAL, 'true', V=True)
+result: Lit(None)

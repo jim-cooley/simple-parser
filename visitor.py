@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 
+ASSIGNMENT_NODE = 'visit_assignment_node'
 BINARY_NODE = 'visit_binary_node'
 DEFAULT_NODE = 'visit_node'
 NATIVE_VALUE = 'visit_intrinsic'
@@ -9,16 +10,24 @@ UNARY_NODE = 'visit_unary_node'
 VALUE_NODE = 'visit_value'
 
 _defaultNodeTypeMappings = {
+    'ApplyChainProd': BINARY_NODE,
+    'Assign': BINARY_NODE,
     'BinOp': BINARY_NODE,
+    'Block': SEQUENCE_NODE,
     'Command': UNARY_NODE,
+    'Define': BINARY_NODE,
+    'DefineChainProd': BINARY_NODE,
+    'DefineFn': BINARY_NODE,
+    'DefineVar': BINARY_NODE,
+    'DefineVarFn': BINARY_NODE,
     'FnCall': BINARY_NODE,
+    'Flow': SEQUENCE_NODE,
     'Index': BINARY_NODE,
     'List': SEQUENCE_NODE,
     'PropCall': BINARY_NODE,
     'PropRef': BINARY_NODE,
     'Set': SEQUENCE_NODE,
     'UnaryOp': UNARY_NODE,
-    'list': NATIVE_LIST,
 }
 
 

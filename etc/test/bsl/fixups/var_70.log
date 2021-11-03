@@ -1,0 +1,10 @@
+
+
+test: 70:
+"f(x) = { a(x):x*x }"
+
+tree1:  f(x) = { a(x):x*x }
+result: Lit(None)
+
+tree1:(post)  f(x) = { a(x):x*x }
+result: Lit(None)

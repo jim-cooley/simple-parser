@@ -1,6 +1,4 @@
-from exceptions import _runtime_error, _error
 from tokens import TK
-from literals import LIT_NONE
 from environment import Environment
 
 _INTRINSIC_VALUE_TYPES = ['int', 'float', 'bool', 'str', 'timedelta', 'time']
@@ -102,31 +100,31 @@ def _mod__int_int(l_value, r_value):
 
 
 def _invalid_add(left, right):
-    _runtime_error(f'Type mismatch for operator add({type(left)}, {type(right)})', loc=None)
+    Environment.get_logger().runtime_error(f'Type mismatch for operator add({type(left)}, {type(right)})', loc=None)
 
 
 def _invalid_sub(left, right):
-    _runtime_error(f'Type mismatch for operator sub({type(left)}, {type(right)})', loc=None)
+    Environment.get_logger().runtime_error(f'Type mismatch for operator sub({type(left)}, {type(right)})', loc=None)
 
 
 def _invalid_div(left, right):
-    _runtime_error(f'Type mismatch for operator div({type(left)}, {type(right)})', loc=None)
+    Environment.get_logger().runtime_error(f'Type mismatch for operator div({type(left)}, {type(right)})', loc=None)
 
 
 def _invalid_idiv(left, right):
-    _runtime_error(f'Type mismatch for operator idiv({type(left)}, {type(right)})', loc=None)
+    Environment.get_logger().runtime_error(f'Type mismatch for operator idiv({type(left)}, {type(right)})', loc=None)
 
 
 def _invalid_pow(left, right):
-    _runtime_error(f'Type mismatch for operator pow({type(left)}, {type(right)})', loc=None)
+    Environment.get_logger().runtime_error(f'Type mismatch for operator pow({type(left)}, {type(right)})', loc=None)
 
 
 def _invalid_mul(left, right):
-    _runtime_error(f'Type mismatch for operator mul({type(left)}, {type(right)})', loc=None)
+    Environment.get_logger().runtime_error(f'Type mismatch for operator mul({type(left)}, {type(right)})', loc=None)
 
 
 def _invalid_mod(left, right):
-    _runtime_error(f'Type mismatch for operator mod({type(left)}, {type(right)})', loc=None)
+    Environment.get_logger().runtime_error(f'Type mismatch for operator mod({type(left)}, {type(right)})', loc=None)
 
 
 _binops_dispatch_table = {

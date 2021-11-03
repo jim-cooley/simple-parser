@@ -1,5 +1,6 @@
 
 
+
 # old, left for reference
 expression :=   literal
                 | unary
@@ -12,11 +13,17 @@ expression :=   literal
 
 # new precedence influenced states
 
-expression :=   flow_expression
+#
+# add: statements / blocks, ':' apply to blocks
+#
 
-flow_expression := logical_expression [ '|' logical_expression ]*
+declaration := 'var' expression | 'def' expression | '%%' expression | statement
 
-logical_expression := equality [[ 'and' | 'or' ] equality ]*
+statement := expression | '{' block '}' | statement [ ';' statement ]+
+
+expression :=   boolean_expression | boolean_expression [ ['|', '>>'] boolean_expression ]*
+
+boolean_expression := equality [[ 'and' | 'or' ] equality ]*
 
 equality := comparison [[ '!=' | '==' ] comparison ]*
 
@@ -24,7 +31,7 @@ comparison := term [[ '>' | '>=' | '<' | '<=' | 'in' ] term ]*
 
 term := factor [[ '-' | '+' ] factor ]*
 
-factor := unary [[ '/' | '*' ] factpr ]*
+factor := unary [[ '/' | '*' | 'div' | 'mod' ] factor ]*
 
 unary := [ '-' | '!' | 'not' ] unary 
          | primary

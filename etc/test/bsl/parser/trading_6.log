@@ -1,7 +1,7 @@
 
 
-test: 6: "trades"
+test: 6:
+"trades"
 
 tree1:  trades
-result: str(trades)
-    1 : Ident TK.IDNT(IDENTIFIER, 'trades', V=trades)
+result: Lit(None)

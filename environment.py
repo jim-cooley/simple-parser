@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from enum import Enum
 
+from exceptions import ExceptionReporter
 from keywords import Keywords
 from scope import Scope
 
@@ -35,6 +36,7 @@ class Environment(object):
         self.source = self.set_source(source) if source is not None else None
         self.tokens = None
         self.options = options if options is not None else {}
+        self.logger = ExceptionReporter(self)
         Environment.current = self
 
     def __getitem__(self, key):
@@ -50,6 +52,13 @@ class Environment(object):
             self.options[key] = value
         else:
             super().__setattr__(key, value)
+
+    def get_logger(self):
+        return self.logger
+
+    @staticmethod
+    def get_logger():
+        return Environment.current.get_logger()
 
     def _get_option(self, key, default):
         if key not in self.options:
@@ -73,6 +82,14 @@ class Environment(object):
         Environment.current.symbols = parent
         return scope.unlink()
 
+    def get_line(self, line):
+        if line < len(self.lines):
+            return self.lines[line]
+        return ''
+
+    def print_line(self, line):
+        print(self.get_line(line))
+
 
 _option_defaults = {
     Environment.OPTIONS.STRICT: DEFAULT_OPTION_STRICT,
@@ -82,3 +99,9 @@ _option_defaults = {
 
 def _get_default(key, default):
     return default if key not in _option_defaults else _option_defaults[key]
+
+
+def _get_line(loc, lines):
+    if loc.line < len(lines):
+        return lines[loc.line]
+    return ''

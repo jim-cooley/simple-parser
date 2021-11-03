@@ -1,14 +1,4 @@
 
 
-test: 9: "open.delay(1d) | buy"
-
-tree1:  open.delay(1d) | buy
-result: PropRef(BinOp(TK.DEF(BINOP, '.', V=None): l=Ident(open), r=BinOp(TK.FUNCTION(BINOP, '(', V=None): l=Ident(delay), r=[1 day, 0:00:00])
-    1 : List TK.CHAIN(LIST, '|', V=[PropRef(), Ident()])
-    2 :     PropRef TK.DEF(BINOP, '.', V=None)
-    3 :         Ident TK.IDNT(DATASET, 'open', V=open)
-    4 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
-    5 :             Ident TK.IDNT(IDENTIFIER, 'delay', V=delay)
-    6 :             List TK.TUPLE(LIST, '(', V=[Duration()])
-    7 :                 Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
-    8 :     Ident TK.BUY(KEYWORD, 'buy', V=buy)
+test: 9:
+"#   _statement_"

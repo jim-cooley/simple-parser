@@ -1,13 +1,7 @@
 
 
-test: 17: "{a,b,c}:(-1)"
+test: 17:
+"{a,b,c}:(-1)"
 
 tree1:  {a,b,c}:(-1)
-result: None
-    1 : BinOp TK.TUPLE(BINOP, ':', V=None)
-    2 :     Set TK.SET(SET, '{', V=[Ident(), Ident(), Ident()])
-    3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=b)
-    5 :         Ident TK.IDNT(IDENTIFIER, 'c', V=c)
-    6 :     UnaryOp TK.NEG(UNARY, '-', V=None)
-    7 :         Int TK.INT(LITERAL, '1', V=1)
+result: Lit(None)

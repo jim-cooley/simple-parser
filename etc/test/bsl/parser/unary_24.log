@@ -1,8 +1,7 @@
 
 
-test: 24: "++1M"
+test: 24:
+"++1M"
 
 tree1:  ++1M
-result: None
-    1 : UnaryOp TK.INCREMENT(UNARY, '++', V=None)
-    2 :     Duration TK.DUR(LITERAL, '1M', V=28 days, 0:00:00)
+result: Lit(None)

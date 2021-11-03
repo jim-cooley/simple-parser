@@ -1,0 +1,7 @@
+
+
+test: 59:
+"{ b } => buy"
+
+tree1:  { b } => buy
+result: list([Set(), ApplyChainProd()])

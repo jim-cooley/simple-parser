@@ -1,14 +1,6 @@
 
 
-test: 3: "%%report { report >> rules }"
+test: 3:
+"%%report { report >> rules }"
 
 tree1:  %%report { report >> rules }
-    1 : Command TK.PCT2(UNARY, '%%', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'report', V=report)
-
-tree2:  %%report { report >> rules }
-    1 : Command TK.SET(UNARY, '{', V=[List()])
-    2 :     Set TK.SET(UNARY, '{', V=[List()])
-    3 :         List TK.APPLY(LIST, '>>', V=[Ident(), Ident()])
-    4 :             Ident TK.IDNT(IDENTIFIER, 'report', V=report)
-    5 :             Ident TK.IDNT(IDENTIFIER, 'rules', V=rules)

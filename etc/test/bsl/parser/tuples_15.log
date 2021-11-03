@@ -1,0 +1,7 @@
+
+
+test: 15:
+"((a, b), c)                  # tuple in a tuple"
+
+tree1:  ((a, b), c)                  # tuple in a tuple
+result: list([List(), Get()])

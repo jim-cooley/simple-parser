@@ -1,15 +1,10 @@
 
 
-test: 132: ""a" >= "b""
+test: 132:
+""a" >= "b""
 
 tree1:  "a" >= "b"
-result: None
-    1 : BinOp TK.GTE(BINOP, '>=', V=None)
-    2 :     Str TK.STR(LITERAL, 'a', V=a)
-    3 :     Str TK.STR(LITERAL, 'b', V=b)
+result: Lit(None)
 
 tree1:(post)  "a" >= "b"
-result: None
-    1 : BinOp TK.GTE(BINOP, '>=', V=None)
-    2 :     Str TK.STR(LITERAL, 'a', V=a)
-    3 :     Str TK.STR(LITERAL, 'b', V=b)
+result: Lit(None)

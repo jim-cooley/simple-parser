@@ -1,17 +1,10 @@
 
 
-test: 3: "a[1]"
+test: 3:
+"a[1]"
 
 tree1:  a[1]
-result: None
-    1 : Index TK.INDEX(BINOP, '[', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    3 :     List TK.TUPLE(LIST, '[', V=[Int()])
-    4 :         Int TK.INT(LITERAL, '1', V=1)
+result: Lit(None)
 
 tree1:(post)  a[1]
-result: None
-    1 : Index TK.INDEX(BINOP, '[', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    3 :     List TK.TUPLE(LIST, '[', V=[Int()])
-    4 :         Int TK.INT(LITERAL, '1', V=1)
+result: Lit(None)

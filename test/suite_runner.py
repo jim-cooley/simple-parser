@@ -2,9 +2,11 @@ import os
 import traceback
 from abc import abstractmethod, ABC
 
+from exceptions import _t_print
+from environment import _get_line
 from notation import NotationPrinter
-from tokens import TCL
-from treedump import DumpTree
+from scope import _dump_symbols
+from treeprint import print_forest, print_node
 
 _LOG_DIRECTORY = "./etc/test/log"
 _SCRIPT_SEARCH_PATH = [
@@ -17,11 +19,12 @@ _SCRIPT_SEARCH_PATH = [
 
 class TestSuiteRunner(ABC):
 
-    def __init__(self, test_data, skip_tests=None, prefix='', log_dir=None):
+    def __init__(self, test_data, skip_tests=None, prefix='', log_dir=None, env=None):
         self.tests = test_data
         self.skip_tests = skip_tests if skip_tests is not None else []
         self.prefix = prefix
         self.interactive = False
+        self.environment = env
         self.logs_dir = log_dir if log_dir is not None else _LOG_DIRECTORY
 
     @abstractmethod
@@ -45,32 +48,38 @@ class TestSuiteRunner(ABC):
 
     def run_suite(self, name):
         if name not in self.tests:
-            self._generate_empty_log(name, name, f'invalid test suite: {name}, skipping.\n\n')
+            fname = _find_test_file(name, _SCRIPT_SEARCH_PATH)
+            self.run_test_script(fname)
             return
         print(f'\n\nsuite: {name}')
         cases = self.tests[name]
-        idx = 0
         if type(cases).__name__ == "list":
+            idx = 0
             for test in cases:
                 idx += 1
                 self._run_single_test(name, test, idx)
             return
         else:
             fname = _find_test_file(name, _SCRIPT_SEARCH_PATH)
-            tt = os.path.splitext(fname)[1]
-            with open(fname, 'r') as file:
-                print(f'{fname}')
-                test = file.read()
-                if tt == '.t':
-                    for line in test.splitlines():
-                        idx += 1
-                        self._run_single_test(name, line, idx)
-                else:
-                    self._run_single_test(name, test)
+            self.run_test_script(fname)
+
+    def run_test_script(self, fname):
+        name = os.path.splitext(os.path.basename(fname))[0]
+        tt = os.path.splitext(fname)[1]
+        idx = 0
+        with open(fname, 'r') as file:
+            print(f'{fname}')
+            test = file.read()
+            if tt == '.t':
+                for line in test.splitlines():
+                    idx += 1
+                    self._run_single_test(name, line, idx)
+            else:
+                self._run_single_test(name, test)
 
     def _run_single_test(self, name, test, idx=None):
         fn = f'{name}.log' if idx is None else f'{name}_{idx}.log'
-        label = f'test: "{test}"' if idx is None else f'test: {idx}: "{test}"'
+        label = f'test:\n"{test}"' if idx is None else f'test: {idx}:\n"{test}"'
         fname = f'{self.logs_dir}/{self.prefix}{fn}'
         with open(fname, 'w') as log:
             _t_print(log, f'\n\n{label}')
@@ -81,7 +90,7 @@ class TestSuiteRunner(ABC):
 
     def _generate_empty_log(self, name, test, message='', idx=None):
         fname = f'{name}.log' if idx is None else f'{name}_{idx}.log'
-        label = f'test: "{test}"' if idx is None else f'test: {idx}: "{test}"'
+        label = f'test:\n"{test}"' if idx is None else f'test: {idx}:\n"{test}"'
         with open(f'{self.logs_dir}/{fname}', 'w') as log:
             _t_print(log, message)
 
@@ -95,6 +104,8 @@ def _find_test_file(name, search_paths):
             return f'{fname}.p'
         if os.path.isfile(f'{fname}.t'):
             return f'{fname}.t'
+        if os.path.isfile(f'{fname}.f'):
+            return f'{fname}.f'
     raise IOError(f'invalid test suite: {name}, is not a test file')
 
 
@@ -105,39 +116,33 @@ def _log_exception(e, log, name):
         print(f'{trace}')
 
 
-def _dump_environment(env, log=None, label=None):
-    _dump_tokens(env)
-    _dump_trees(env, log, label)
-    _dump_commands(env, log)
-    _dump_symbols(env, label)
+def _dump_environment(env, log=None, label=None,
+                      print_results=True,
+                      print_commands=True,
+                      print_tokens=True,
+                      print_trees=True,
+                      print_symbols=True):
+    if print_tokens:
+        _dump_tokens(env)
+    if print_trees:
+        print_forest(env, log, label, print_results)
+    if print_commands:
+        _print_commands(env, env.commands, log)
+    if print_symbols:
+        _dump_symbols(env.symbols)
 
 
-def _dump_commands(env, log=None, label=None):
-    printer = NotationPrinter()
+def _print_commands(env, commands, log=None, label=None):
     idx = 0
-    for i in range(0, len(env.commands)):
-        t = env.commands[i]
+    for i in range(0, len(commands)):
+        t = commands[i]
         if t is None:
             continue
         idx += 1
-        line = _get_line(t.token.location, env.lines).strip()
+        line = env.get_line(t.token.location.line).strip()
         ll = f'({label})' if label is not None else ''
         _t_print(log, f'\ntree{idx}:{ll}  {line}')
-        print(f'notation: {printer.apply(t)}')
-        dt = DumpTree()
-        viz = dt.apply(t)
-        for v in viz:
-            _t_print(log, v)
-
-
-def _dump_symbols(env, label=None):
-    print("\n\nsymbols: ")
-    idx = 0
-    for k in env.symbols._symbols.keys():
-        v = env.symbols._symbols[k]
-        if type(v).__name__ == 'Ident':
-            print(f'{idx:5d}:  {k} : Ident({v.token})')
-            idx += 1
+        print_node(t)
 
 
 def _dump_tokens(env):
@@ -145,43 +150,4 @@ def _dump_tokens(env):
     env.tokens.printall()
 
 
-def _dump_trees(env, log=None, label=None):
-    printer = NotationPrinter()
-    idx = 0
-    trees = env.trees
-    for i in range(0, len(trees)):
-        t = trees[i]
-        if t is None or t.root is None:
-            continue
-        idx += 1
-        line = _get_line(t.root.token.location, env.lines).strip()
-        ll = f'({label})' if label is not None else ''
-        _t_print(log, f'\ntree{idx}:{ll}  {line}')
-        print(f'notation: {printer.apply(t.root)}')
-        if t.values is not None:
-            v = t.values if type(t.values).__name__ != 'list' else t.values[0]
-            if getattr(v, 'value', False):
-                v = v.value
-            ty = type(v).__name__
-            if v is None:
-                ty = 'Lit'
-            _t_print(log, f'result: {ty}({v})')
-        else:
-            _t_print(log, f'result: None')
-        dt = DumpTree()
-        viz = dt.apply(t.root)
-        for v in viz:
-            _t_print(log, v)
 
-
-# helpers
-def _get_line(loc, lines):
-    if loc.line < len(lines):
-        return lines[loc.line]
-    return ''
-
-
-def _t_print(f, message):
-    print(message)
-    if f is not None:
-        f.write(f'{message}\n')

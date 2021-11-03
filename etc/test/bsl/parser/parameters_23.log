@@ -1,0 +1,7 @@
+
+
+test: 23:
+"{a,b,c}:{a = 5}"
+
+tree1:  {a,b,c}:{a = 5}
+result: Lit(None)

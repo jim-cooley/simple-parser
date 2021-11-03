@@ -1,0 +1,7 @@
+
+
+test: 3:
+"(a) = 5                      # grouping"
+
+tree1:  (a) = 5                      # grouping
+result: Lit(None)

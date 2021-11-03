@@ -1,0 +1,10 @@
+
+
+test: 34:
+"f.a.b.c(x) = x*x # vars in parameter list need to be Ref, not Get's"
+
+tree1:  f.a.b.c(x) = x*x # vars in parameter list need to be Ref, not Get's
+result: Lit(None)
+
+tree1:(post)  f.a.b.c(x) = x*x # vars in parameter list need to be Ref, not Get's
+result: Lit(None)

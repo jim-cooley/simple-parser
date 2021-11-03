@@ -1,3 +1,10 @@
 
 
-test: 7: "# :(a = 5) - syntax error"
+test: 7:
+"{a = 5}"
+
+tree1:  {a = 5}
+result: list([Define()])
+
+tree1:(post)  {a = 5}
+result: list([Define()])

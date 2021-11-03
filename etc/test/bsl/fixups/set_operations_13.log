@@ -1,17 +1,10 @@
 
 
-test: 13: "not {a, b}"
+test: 13:
+"not {a, b}"
 
 tree1:  not {a, b}
-result: None
-    1 : UnaryOp TK.NOT(UNARY, 'not', V=None)
-    2 :     Set TK.SET(SET, '{', V=[Ident(), Ident()])
-    3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=b)
+result: Lit(None)
 
 tree1:(post)  not {a, b}
-result: None
-    1 : UnaryOp TK.NOT(UNARY, 'not', V=None)
-    2 :     Set TK.SET(SET, '{', V=[Ident(), Ident()])
-    3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=b)
+result: Lit(None)

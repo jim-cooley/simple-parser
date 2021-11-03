@@ -1,0 +1,10 @@
+
+
+test: 21:
+"def f = x"
+
+tree1:  def f = x
+result: Lit(None)
+
+tree1:(post)  def f = x
+result: Lit(None)

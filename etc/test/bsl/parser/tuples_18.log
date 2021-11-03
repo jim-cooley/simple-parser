@@ -1,0 +1,7 @@
+
+
+test: 18:
+"(a, b, c,)                   # tuple"
+
+tree1:  (a, b, c,)                   # tuple
+result: list([Get(), Get(), Get()])

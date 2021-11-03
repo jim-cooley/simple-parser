@@ -1,12 +1,7 @@
 
 
-test: 2: "def trade_size = postition * 10%"
+test: 2:
+"def trade_size = postition * 10%"
 
 tree1:  def trade_size = postition * 10%
-result: None
-    1 : UnaryOp TK.DEFINE(UNARY, 'def', V=None)
-    2 :     BinOp TK.ASSIGN(BINOP, '=', V=None)
-    3 :         Ident TK.IDNT(IDENTIFIER, 'trade_size', V=trade_size)
-    4 :         BinOp TK.MUL(BINOP, '*', V=None)
-    5 :             Ident TK.IDNT(IDENTIFIER, 'postition', V=postition)
-    6 :             Percent TK.PCT(LITERAL, '10%', V=0.1)
+result: Lit(None)

@@ -1,15 +1,7 @@
 
 
-test: 25: "a.b()*c()"
+test: 25:
+"a.b()*c()"
 
 tree1:  a.b()*c()
-result: None
-    1 : BinOp TK.MUL(BINOP, '*', V=None)
-    2 :     PropRef TK.DEF(BINOP, '.', V=None)
-    3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    4 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
-    5 :             Ident TK.IDNT(IDENTIFIER, 'b', V=b)
-    6 :             List TK.TUPLE(LIST, '(', V=[])
-    7 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
-    8 :         Ident TK.IDNT(IDENTIFIER, 'c', V=c)
-    9 :         List TK.TUPLE(LIST, '(', V=[])
+result: Lit(None)

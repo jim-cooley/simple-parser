@@ -1,9 +1,7 @@
 
 
-test: 28: "365d div 12d"
+test: 28:
+"365d div 12d"
 
 tree1:  365d div 12d
-result: None
-    1 : BinOp TK.IDIV(BINOP, 'div', V=None)
-    2 :     Duration TK.DUR(LITERAL, '365d', V=365 days, 0:00:00)
-    3 :     Duration TK.DUR(LITERAL, '12d', V=12 days, 0:00:00)
+result: Lit(None)

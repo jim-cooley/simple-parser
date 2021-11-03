@@ -1,0 +1,7 @@
+
+
+test: 18:
+"a.b.c.d() = 1"
+
+tree1:  a.b.c.d() = 1
+result: Lit(None)

@@ -1,0 +1,10 @@
+
+
+test: 9:
+"open.delay(1d) | buy"
+
+tree1:  open.delay(1d) | buy
+result: list([PropRef(), ApplyChainProd()])
+
+tree1:(post)  open.delay(1d) | buy
+result: list([PropRef(), ApplyChainProd()])

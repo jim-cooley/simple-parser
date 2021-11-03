@@ -1,11 +1,7 @@
 
 
-test: 17: "3.0 * (2.0 + 1.0)"
+test: 17:
+"3.0 * (2.0 + 1.0)"
 
 tree1:  3.0 * (2.0 + 1.0)
-result: None
-    1 : BinOp TK.MUL(BINOP, '*', V=None)
-    2 :     Float TK.FLOT(LITERAL, '3.0', V=3.0)
-    3 :     BinOp TK.ADD(BINOP, '+', V=None)
-    4 :         Float TK.FLOT(LITERAL, '2.0', V=2.0)
-    5 :         Float TK.FLOT(LITERAL, '1.0', V=1.0)
+result: Lit(None)

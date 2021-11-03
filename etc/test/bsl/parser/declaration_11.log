@@ -1,0 +1,7 @@
+
+
+test: 11:
+"var f := 5"
+
+tree1:  var f := 5
+result: Lit(None)

@@ -1,0 +1,26 @@
+
+
+test: 26:
+"f(x) = x * 4"
+
+tree1:  f(x) = x * 4
+result: None
+    1 : Define TK.EQLS(BINOP, '=', V=None)
+    2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
+    3 :         Ref TK.IDNT(IDENTIFIER, 'f', V=None)
+    4 :         List TK.TUPLE(LITERAL, '(', V=[Ref()])
+    5 :             Ref TK.IDNT(IDENTIFIER, 'x', V=None)
+    6 :     BinOp TK.MUL(BINOP, '*', V=None)
+    7 :         Get TK.IDNT(IDENTIFIER, 'x', V=None)
+    8 :         Int TK.INT(LITERAL, '4', V=4)
+
+tree1:(post)  f(x) = x * 4
+result: None
+    1 : DefineFn TK.EQLS(BINOP, '=', V=None)
+    2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
+    3 :         Ref TK.IDNT(IDENTIFIER, 'f', V=None)
+    4 :         List TK.TUPLE(LITERAL, '(', V=[Ref()])
+    5 :             Ref TK.IDNT(IDENTIFIER, 'x', V=None)
+    6 :     BinOp TK.MUL(BINOP, '*', V=None)
+    7 :         Get TK.IDNT(IDENTIFIER, 'x', V=None)
+    8 :         Int TK.INT(LITERAL, '4', V=4)

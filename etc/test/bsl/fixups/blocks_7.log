@@ -1,0 +1,10 @@
+
+
+test: 7:
+"{ _ : _.left = _.right}:(node)"
+
+tree1:  { _ : _.left = _.right}:(node)
+result: Lit(None)
+
+tree1:(post)  { _ : _.left = _.right}:(node)
+result: Lit(None)

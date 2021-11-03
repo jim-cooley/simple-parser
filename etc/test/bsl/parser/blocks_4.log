@@ -1,0 +1,7 @@
+
+
+test: 4:
+"any:{a=False, b=False, c=False}:(a=True)"
+
+tree1:  any:{a=False, b=False, c=False}:(a=True)
+result: Lit(None)

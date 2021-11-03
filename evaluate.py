@@ -1,10 +1,8 @@
 from environment import Environment
-from eval_binops import eval_binops_dispatch, _binops_dispatch_table, eval_binops_dispatch2
+from eval_binops import eval_binops_dispatch, _binops_dispatch_table
 from eval_unary import not_literal, increment_literal, decrement_literal, negate_literal
-from exceptions import _runtime_error, _error
 from literals import LIT_NONE
 from tokens import TK, TCL
-from tree import AST
 
 _INTRINSIC_VALUE_TYPES = ['int', 'float', 'bool', 'timedelta']
 _INTRINSIC_STR_TYPE = 'str'
@@ -15,6 +13,10 @@ _unary2binop = {
     TK.PLEQ:    TK.ADD,
     TK.MNEQ:    TK.SUB,
 }
+
+
+def get_logger():
+    return Environment.current.logger
 
 
 def evaluate_literal(node):
@@ -30,6 +32,17 @@ def evaluate_binary_operation(node, left, right):
     op = node.op
     if op in _binops_dispatch_table:
         return eval_binops_dispatch(node, left, right)
+    elif op == TK.DEF:
+        scope = Environment.current.symbols
+        symbol = scope.find_add(left.token)
+        scope = Environment.current.enter_scope(symbol)
+        ref = scope.find_add_local(right.token)
+        Environment.current.leave_scope(scope)
+        return ref if ref is not None else LIT_NONE
+    else:
+        get_logger().error(f'Invalid operation {op.id.name}', loc=op.location)
+    return None  # fixups uses this code as well.  probably want option_strict enablement
+    """
     elif op == TK.REF:
         scope = Environment.current.symbols
         symbol = scope.find(left.token)
@@ -56,20 +69,11 @@ def evaluate_binary_operation(node, left, right):
             op = _unary2binop[op]
             left.value = eval_binops_dispatch2(op, left.value, right.value)
             return left.value
-        _runtime_error(f'Variable ({left.token.lexeme}) used before being initialized', loc=token.location)
-    elif op == TK.DEF:
-        scope = Environment.current.symbols
-        symbol = scope.find_add(left.token)
-        scope = Environment.current.enter_scope(symbol)
-        ref = scope.find_add_local(right.token)
-        Environment.current.leave_scope(scope)
-        return ref if ref is not None else LIT_NONE
-    return None  # fixups uses this code as well.  probably want option_strict enablement
-    _error(f'Invalid operation {token.id.name}', loc=token.location)
+        get_logger().runtime_error(
+            f'Variable ({left.token.lexeme}) used before being initialized', loc=left.token.location)
+    """
 
 
-# undone: some set attributes (formulae, chain calculations) will need to be dynamically evaluated
-# the same goes for 'definitions'
 def evaluate_set(node, visitor=None):
     if node is None:
         return None

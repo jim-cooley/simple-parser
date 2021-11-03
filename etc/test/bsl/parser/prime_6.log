@@ -1,0 +1,7 @@
+
+
+test: 6:
+"1d"
+
+tree1:  1d
+result: timedelta(1 day, 0:00:00)

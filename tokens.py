@@ -14,19 +14,14 @@ ST_MAX = 31  # ST.MAX
 class TCL(IntEnum):
     NONE = 0
     BINOP = auto()
-    COMMAND = auto()
     DATASET = auto()  # dataset, panda
-    DICT = auto()  # k-v pairs
     FUNCTION = auto()
     KEYWORD = auto()
-    LIST = auto()  # ordered
     LITERAL = auto()
-    LOGICAL = auto()
     IDENTIFIER = auto()
-    SET = auto()  # unordered, set operations
+    SCOPE = auto()
     TUPLE = auto()
     UNARY = auto()
-    WHITE = auto()
     ERROR = auto()
 
 
@@ -123,9 +118,11 @@ class TK(IntEnum):
     ADD = auto()  # +
     ALL = auto()  # all:
     AND = auto()
+    ANON = auto()  # anonymous parameter '_'
     ANY = auto()  # any:
     APPLY = auto()  # >>
     ASSIGN = auto()  # =
+    BLOCK = auto()
     BOOL = auto()
     BUY = auto()
     CHAIN = auto()
@@ -145,6 +142,7 @@ class TK(IntEnum):
     INCREMENT = auto()
     INDEX = auto()  # indexing expression
     ISEQ = auto()  # ==
+    KVPAIR = auto()  # key:value
     LIST = auto()
     MOD = auto()
     MUL = auto()  # *
@@ -157,7 +155,7 @@ class TK(IntEnum):
     OR = auto()
     POS = auto()  # unary +
     POW = auto()  # ^
-    RAISE = auto()  # =>
+    PRODUCE = auto()  # => signal
     RANGE = auto()
     REF = auto()
     RISE_ABOVE = auto()  # >|
@@ -178,13 +176,13 @@ _tk2binop = {
     TK.AMPS: TK.AND,
     TK.AND: TK.AND,
     TK.BAR: TK.CHAIN,
-    TK.CLN2: TK.EVENT,
+    TK.CLN2: TK.DEF,
     TK.COEQ: TK.DEFINE,
-    TK.COLN: TK.TUPLE,
+    TK.COLN: TK.KVPAIR,
     TK.DOT2: TK.RANGE,
     TK.DOT: TK.DOT,
     TK.EQEQ: TK.ISEQ,  # ==
-    TK.EQGT: TK.RAISE,
+    TK.EQGT: TK.PRODUCE,
     TK.EQLS: TK.ASSIGN,
     TK.EXCL: TK.NOT,
     TK.EXPN: TK.POW,
@@ -203,7 +201,7 @@ _tk2binop = {
     TK.PCT: TK.PCT,
     TK.PLUS: TK.ADD,
     TK.QSTN: TK.COMPARE,
-    TK.RARR: TK.RAISE,
+    TK.RARR: TK.PRODUCE,
     TK.RBAR: TK.RISE_ABOVE,
     TK.SLSH: TK.DIV,
     TK.STAR: TK.MUL,
@@ -229,34 +227,100 @@ _tk2type = {
     TK.DLRS: TCL.UNARY,
     TK.DUR: TCL.LITERAL,
     TK.EQLS: TCL.BINOP,
-    TK.EXCL: TCL.LOGICAL,
+    TK.EXCL: TCL.BINOP,
     TK.EXPN: TCL.BINOP,
     TK.FLOT: TCL.LITERAL,
-    TK.GTE: TCL.LOGICAL,
-    TK.GTR: TCL.LOGICAL,
+    TK.GTE: TCL.BINOP,
+    TK.GTR: TCL.BINOP,
     TK.INT: TCL.LITERAL,
     TK.LBAR: TCL.BINOP,
-    TK.LESS: TCL.LOGICAL,
+    TK.LESS: TCL.BINOP,
     TK.LIST: TCL.TUPLE,
-    TK.LTE: TCL.LOGICAL,
+    TK.LTE: TCL.BINOP,
     TK.MNU2: TCL.UNARY,
     TK.MNUS: TCL.UNARY,
-    TK.NEQ: TCL.LOGICAL,
+    TK.NEQ: TCL.BINOP,
     TK.NOW: TCL.FUNCTION,
     TK.OBJECT: TCL.LITERAL,
     TK.PCT: TCL.UNARY,
     TK.PLUS: TCL.UNARY,
-    TK.REF: TCL.IDENTIFIER,
     TK.RBAR: TCL.BINOP,
+    TK.REF: TCL.IDENTIFIER,
     TK.SLSH: TCL.BINOP,
     TK.STAR: TCL.BINOP,
     TK.STR: TCL.LITERAL,
-    TK.TODAY: TCL.FUNCTION,
     TK.TIME: TCL.LITERAL,
+    TK.TODAY: TCL.FUNCTION,
     TK.TUPLE: TCL.TUPLE,
     TK.VAR: TCL.UNARY,
     TK.WHT: TCL.NONE,
 }
+# token to glyph
+_tk2glyph = {
+    TK.ADD: '+',  # +
+    TK.ALL: 'all',  # all:
+    TK.AND: 'and',
+    TK.ANY: 'any',  # any:
+    TK.APPLY: 'apply',  # >>
+    TK.ASSIGN: '=',  # =
+    TK.BUY: 'buy',
+    TK.CHAIN: '|',
+    TK.COEQ: ':=',
+    TK.COLN: ':',
+    TK.COMMAND: 'command',
+    TK.COMPARE: '?',
+    TK.DECREMENT: '--',
+    TK.DEFINE: 'def',
+    TK.DIV: '/',
+    TK.DUR: 'dur',
+    TK.EMPTY: 'Ø',  # empty set
+    TK.EQLS: '=',
+    TK.EQGT: '=>',
+    TK.EVENT: '=>',
+    TK.FALL_BELOW: '<|',
+    TK.FALSE: 'false',
+#   TK.FUNCTION: 'fn',
+    TK.GTE: '>=',
+    TK.GTR: '>',
+    TK.IDIV: 'div',
+    TK.IN: 'in',
+    TK.INCREMENT: '++',
+    TK.INDEX: '[]',  # indexing expression
+    TK.INT: 'i',
+    TK.ISEQ: '==',
+    TK.KVPAIR: ':',
+    TK.LESS: '<',
+    TK.LTE: '<=',
+    TK.MNEQ: '-=',
+    TK.MUL: '*',
+    TK.NEG: '-',
+    TK.NEQ: '!=',
+    TK.NONE: 'none',
+    TK.NONEOF: 'noneof',  # none:
+    TK.NOT: 'not',
+    TK.NOW: 'now',
+    TK.OR: 'or',
+    TK.PCT: '%',
+    TK.PLEQ: '+=',
+    TK.POS: '+',
+    TK.POW: '^',
+    TK.PRODUCE: '=>',
+    TK.RANGE: 'range',
+    TK.RBRC: '}',
+    TK.REF: 'ref',
+    TK.RISE_ABOVE: '>|',  # >|
+    TK.SELL: 'sell',
+    TK.SET: 'set',
+    TK.SIGNAL: 'signal',
+    TK.STR: 'str',
+    TK.SUB: '-',  # - (subtract)
+    TK.TODAY: 'today',
+    TK.TRUE: 'true',
+    TK.TUPLE: '',
+    TK.VAR: 'var',
+}
+
+
 # maps extended special characters directly to tokens
 u16_to_tkid = {
     '•': TK.DOTPROD,
@@ -266,6 +330,8 @@ u16_to_tkid = {
 # token sets for the parser
 _ADDITION_TOKENS = [TK.PLUS, TK.MNUS]
 _ASSIGNMENT_TOKENS = [TK.COEQ, TK.EQLS, TK.ASSIGN, TK.MNEQ, TK.PLEQ]
+_ASSIGNMENT_TOKENS_EX = [TK.COEQ, TK.EQLS, TK.ASSIGN, TK.MNEQ, TK.PLEQ, TK.COLN]
+_ASSIGNMENT_TOKENS_REF = [TK.COEQ, TK.EQLS, TK.ASSIGN, TK.COLN]
 _COMPARISON_TOKENS = [TK.LESS, TK.LTE, TK.GTR, TK.GTE, TK.IN, TK.LBAR, TK.RBAR]
 _FLOW_TOKENS = [TK.BAR, TK.EQGT, TK.GTR2, TK.RARR]
 _EQUALITY_TEST_TOKENS = [TK.EQEQ, TK.NEQ]
@@ -274,6 +340,8 @@ _MULTIPLICATION_TOKENS = [TK.SLSH, TK.STAR, TK.EXPN, TK.DOT, TK.DOT2, TK.IDIV, T
 _UNARY_TOKENS = [TK.PLUS, TK.MNUS, TK.NOT, TK.EXCL, TK.MNU2, TK.PLU2]
 _SET_UNARY_TOKENS = [TK.NONE, TK.ALL, TK.ANY]
 _IDENTIFIER_TYPES = [TCL.KEYWORD, TCL.DATASET, TCL.IDENTIFIER, TCL.TUPLE]
+_IDENTIFIER_TOKENS = [TK.IDNT, TK.ANON, TK.REF, TK.DOT, TK.TUPLE, TK.FUNCTION]
+_IDENTIFIER_TOKENS_EX = [TK.IDNT, TK.ANON, TK.REF, TK.DOT, TK.TUPLE, TK.FUNCTION, TK.COLN, TK.BLOCK, TK.BUY, TK.SELL, TK.CHAIN]
 
 
 @dataclass
@@ -285,7 +353,7 @@ class Token:
             self.offset = offset
 
     def __init__(self, tid, tcl=None, lex="", val=None, loc=None):
-        self.id: TK = tid
+        self.id = tid
         self.t_class: TCL = TCL(tcl) if tcl is not None else TCL.NONE
         self.lexeme = lex
         self.value = val
@@ -304,8 +372,21 @@ class Token:
                     return True
         return False
 
-    def to_string(self):
-        return self.id.name
+    def set_id(self, tid):
+        self.id = tid
+        return self
+
+    def map2binop(self):
+        return self._map(_tk2binop)
+
+    def map2unop(self):
+        return self._map(_tk2unop)
+
+    def map2litval(self):
+        return self._map(_tk2lit)
+
+    def map2tclass(self):
+        return self._map_cl(_tk2type)
 
     def format(self):
         _tn = f'.{self.id.name}(' if hasattr(self.id, "name") else f'({self.id}, '
@@ -327,18 +408,6 @@ class Token:
             self.t_class = tcl_map[self.id]
         return self
 
-    def map2binop(self):
-        return self._map(_tk2binop)
-
-    def map2unop(self):
-        return self._map(_tk2unop)
-
-    def map2litval(self):
-        return self._map(_tk2lit)
-
-    def map2tclass(self):
-        return self._map_cl(_tk2type)
-
     @staticmethod
     def format_token(tk):
         return tk.format()
@@ -350,3 +419,10 @@ class Token:
     @staticmethod
     def format_tt(tt):
         return f'TT.{tt.name}' if hasattr(tt, "name") else f'TT({tt})'
+
+
+TK_EOF = Token(TK.EOF, TCL.LITERAL, '', None)
+TK_EMPTY = Token(TK.EMPTY, TCL.LITERAL, '{}', {})
+TK_SET = Token(TK.SET, TCL.LITERAL, '{', None)
+TK_ASSIGN = Token(TK.ASSIGN, TCL.FUNCTION)
+TK_DEFINE = Token(TK.DEFINE, TCL.FUNCTION)

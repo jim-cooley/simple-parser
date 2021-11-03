@@ -1,35 +1,4 @@
 
 
-test: 4: "any:{ close >| sma(10), close <| sma(20) }:(threshold=0.01) | signal >> atr | delay(1d) => buy"
-
-tree1:  any:{ close >| sma(10), close <| sma(20) }:(threshold=0.01) | signal >> atr | delay(1d) => buy
-result: list([List(), FnCall()])
-    1 : List TK.RAISE(LIST, '=>', V=[List(), Ident()])
-    2 :     List TK.CHAIN(LIST, '|', V=[List(), FnCall()])
-    3 :         List TK.APPLY(LIST, '>>', V=[List(), Ident()])
-    4 :             List TK.CHAIN(LIST, '|', V=[UnaryOp(), Ident()])
-    5 :                 UnaryOp TK.ANY(UNARY, 'any:', V=None)
-    6 :                     BinOp TK.TUPLE(BINOP, ':', V=None)
-    7 :                         Set TK.SET(SET, '{', V=[BinOp(), BinOp()])
-    8 :                             BinOp TK.RISE_ABOVE(BINOP, '>|', V=None)
-    9 :                                 Ident TK.IDNT(DATASET, 'close', V=close)
-   10 :                                 FnCall TK.FUNCTION(BINOP, '(', V=None)
-   11 :                                     Ident TK.IDNT(FUNCTION, 'sma', V=sma)
-   12 :                                     List TK.TUPLE(LIST, '(', V=[Int()])
-   13 :                                         Int TK.INT(LITERAL, '10', V=10)
-   14 :                             BinOp TK.FALL_BELOW(BINOP, '<|', V=None)
-   15 :                                 Ident TK.IDNT(DATASET, 'close', V=close)
-   16 :                                 FnCall TK.FUNCTION(BINOP, '(', V=None)
-   17 :                                     Ident TK.IDNT(FUNCTION, 'sma', V=sma)
-   18 :                                     List TK.TUPLE(LIST, '(', V=[Int()])
-   19 :                                         Int TK.INT(LITERAL, '20', V=20)
-   20 :                         BinOp TK.ASSIGN(BINOP, '=', V=None)
-   21 :                             Ident TK.IDNT(IDENTIFIER, 'threshold', V=threshold)
-   22 :                             Float TK.FLOT(LITERAL, '0.01', V=0.01)
-   23 :                 Ident TK.SIGNAL(KEYWORD, 'signal', V=signal)
-   24 :             Ident TK.IDNT(IDENTIFIER, 'atr', V=atr)
-   25 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
-   26 :             Ident TK.IDNT(IDENTIFIER, 'delay', V=delay)
-   27 :             List TK.TUPLE(LIST, '(', V=[Duration()])
-   28 :                 Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
-   29 :     Ident TK.BUY(KEYWORD, 'buy', V=buy)
+test: 4:
+""

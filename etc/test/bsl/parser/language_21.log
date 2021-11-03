@@ -1,0 +1,7 @@
+
+
+test: 21:
+"def f = x"
+
+tree1:  def f = x
+result: Lit(None)

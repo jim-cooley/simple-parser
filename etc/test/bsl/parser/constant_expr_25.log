@@ -1,11 +1,7 @@
 
 
-test: 25: "2 * (1d + 1h)"
+test: 25:
+"2 * (1d + 1h)"
 
 tree1:  2 * (1d + 1h)
-result: None
-    1 : BinOp TK.MUL(BINOP, '*', V=None)
-    2 :     Int TK.INT(LITERAL, '2', V=2)
-    3 :     BinOp TK.ADD(BINOP, '+', V=None)
-    4 :         Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
-    5 :         Duration TK.DUR(LITERAL, '1h', V=1:00:00)
+result: Lit(None)

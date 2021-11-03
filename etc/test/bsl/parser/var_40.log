@@ -1,0 +1,7 @@
+
+
+test: 40:
+"f.a = 5"
+
+tree1:  f.a = 5
+result: Lit(None)

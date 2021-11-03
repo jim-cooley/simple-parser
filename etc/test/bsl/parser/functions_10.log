@@ -1,15 +1,4 @@
 
 
-test: 10: "a{}.b.c"
-
-tree1:  a{}.b.c
-result: str(a)
-    1 : Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-
-tree2:  a{}.b.c
-result: None
-    1 : BinOp TK.DOT(BINOP, '.', V=None)
-    2 :     Set TK.SET(SET, '{', V=[None])
-    3 :     PropRef TK.DEF(BINOP, '.', V=None)
-    4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=b)
-    5 :         Ident TK.IDNT(IDENTIFIER, 'c', V=c)
+test: 10:
+"# a{}.b.c  # invalid assignment target"

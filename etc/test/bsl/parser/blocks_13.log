@@ -1,0 +1,7 @@
+
+
+test: 13:
+"{ b }:{node} => {b.left = b.right}"
+
+tree1:  { b }:{node} => {b.left = b.right}
+result: list([Define(), Block()])

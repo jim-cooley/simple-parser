@@ -1,15 +1,13 @@
 
 
-test: 1: "a b c"
+test: 1:
+"a b c"
 
 tree1:  a b c
-result: str(a)
-    1 : Ident TK.IDNT(IDENTIFIER, 'a', V=a)
+result: Lit(None)
 
 tree2:  a b c
-result: str(b)
-    1 : Ident TK.IDNT(IDENTIFIER, 'b', V=b)
+result: Lit(None)
 
 tree3:  a b c
-result: str(c)
-    1 : Ident TK.IDNT(IDENTIFIER, 'c', V=c)
+result: Lit(None)

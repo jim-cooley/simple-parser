@@ -1,0 +1,10 @@
+
+
+test: 5:
+"(a,)                         # tuple"
+
+tree1:  (a,)                         # tuple
+result: list([Get()])
+
+tree1:(post)  (a,)                         # tuple
+result: list([Get()])

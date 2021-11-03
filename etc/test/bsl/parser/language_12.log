@@ -1,21 +1,4 @@
 
 
-test: 12: "close >| sma(10) and close <| sma(20) | signal"
-
-tree1:  close >| sma(10) and close <| sma(20) | signal
-result: BinOp(BinOp(TK.AND(BINOP, 'and', V=None): l=BinOp(TK.RISE_ABOVE(BINOP, '>|', V=None): l=Ident(close), r=BinOp(TK.FUNCTION(BINOP, '(', V=None): l=Ident(sma), r=[10], r=BinOp(TK.FALL_BELOW(BINOP, '<|', V=None): l=Ident(close), r=BinOp(TK.FUNCTION(BINOP, '(', V=None): l=Ident(sma), r=[20])
-    1 : List TK.CHAIN(LIST, '|', V=[BinOp(), Ident()])
-    2 :     BinOp TK.AND(BINOP, 'and', V=None)
-    3 :         BinOp TK.RISE_ABOVE(BINOP, '>|', V=None)
-    4 :             Ident TK.IDNT(DATASET, 'close', V=close)
-    5 :             FnCall TK.FUNCTION(BINOP, '(', V=None)
-    6 :                 Ident TK.IDNT(FUNCTION, 'sma', V=sma)
-    7 :                 List TK.TUPLE(LIST, '(', V=[Int()])
-    8 :                     Int TK.INT(LITERAL, '10', V=10)
-    9 :         BinOp TK.FALL_BELOW(BINOP, '<|', V=None)
-   10 :             Ident TK.IDNT(DATASET, 'close', V=close)
-   11 :             FnCall TK.FUNCTION(BINOP, '(', V=None)
-   12 :                 Ident TK.IDNT(FUNCTION, 'sma', V=sma)
-   13 :                 List TK.TUPLE(LIST, '(', V=[Int()])
-   14 :                     Int TK.INT(LITERAL, '20', V=20)
-   15 :     Ident TK.SIGNAL(KEYWORD, 'signal', V=signal)
+test: 12:
+"#   '%%' _command"

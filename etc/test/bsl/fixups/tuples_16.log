@@ -1,0 +1,10 @@
+
+
+test: 16:
+"((a, b), (c))                # tuple in a tuple with grouping"
+
+tree1:  ((a, b), (c))                # tuple in a tuple with grouping
+result: list([List(), Get()])
+
+tree1:(post)  ((a, b), (c))                # tuple in a tuple with grouping
+result: list([List(), Get()])

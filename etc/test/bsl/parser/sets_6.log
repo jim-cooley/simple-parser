@@ -1,11 +1,7 @@
 
 
-test: 6: "{a, {b, c}}"
+test: 6:
+"{a, {b, c}}"
 
 tree1:  {a, {b, c}}
-result: str(a)
-    1 : Set TK.SET(SET, '{', V=[Ident(), Set()])
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    3 :     Set TK.SET(SET, '{', V=[Ident(), Ident()])
-    4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=b)
-    5 :         Ident TK.IDNT(IDENTIFIER, 'c', V=c)
+result: list([Get(), Set()])

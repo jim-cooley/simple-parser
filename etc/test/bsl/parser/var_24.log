@@ -1,0 +1,7 @@
+
+
+test: 24:
+"var f = { a(x):x*x }"
+
+tree1:  var f = { a(x):x*x }
+result: Lit(None)

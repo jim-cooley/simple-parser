@@ -1,0 +1,10 @@
+
+
+test: 10:
+"a | b | c | d >> e | f | g >> h"
+
+tree1:  a | b | c | d >> e | f | g >> h
+result: list([Flow(), ApplyChainProd()])
+
+tree1:(post)  a | b | c | d >> e | f | g >> h
+result: list([Flow(), ApplyChainProd()])

@@ -1,19 +1,10 @@
 
 
-test: 3: "a | b | c | d"
+test: 3:
+"a | b | c | d"
 
 tree1:  a | b | c | d
-result: str(a)
-    1 : List TK.CHAIN(LIST, '|', V=[Ident(), Ident(), Ident(), Ident()])
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    3 :     Ident TK.IDNT(IDENTIFIER, 'b', V=b)
-    4 :     Ident TK.IDNT(IDENTIFIER, 'c', V=c)
-    5 :     Ident TK.IDNT(IDENTIFIER, 'd', V=d)
+result: list([Get(), Get(), Get(), ApplyChainProd()])
 
 tree1:(post)  a | b | c | d
-result: str(a)
-    1 : List TK.CHAIN(LIST, '|', V=[Ident(), Ident(), Ident(), Ident()])
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    3 :     Ident TK.IDNT(IDENTIFIER, 'b', V=b)
-    4 :     Ident TK.IDNT(IDENTIFIER, 'c', V=c)
-    5 :     Ident TK.IDNT(IDENTIFIER, 'd', V=d)
+result: list([Get(), Get(), Get(), ApplyChainProd()])

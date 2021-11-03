@@ -1,0 +1,10 @@
+
+
+test: 3:
+"var f.a.b.c(x) = x*x"
+
+tree1:  var f.a.b.c(x) = x*x
+result: Lit(None)
+
+tree1:(post)  var f.a.b.c(x) = x*x
+result: Lit(None)

@@ -1,0 +1,7 @@
+
+
+test: 14:
+"close >| sma(10) and close <| sma(20) | signal >> open.delay(1d) | buy"
+
+tree1:  close >| sma(10) and close <| sma(20) | signal >> open.delay(1d) | buy
+result: list([Flow(), ApplyChainProd()])

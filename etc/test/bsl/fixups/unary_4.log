@@ -1,12 +1,10 @@
 
 
-test: 4: "not False"
+test: 4:
+"not False"
 
 tree1:  not False
-result: None
-    1 : UnaryOp TK.NOT(UNARY, 'not', V=None)
-    2 :     Bool TK.FALSE(LITERAL, 'False', V=False)
+result: Lit(None)
 
 tree1:(post)  not False
-result: None
-    1 : Bool TK.BOOL(LITERAL, None, V=True)
+result: Lit(None)

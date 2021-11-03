@@ -1,0 +1,10 @@
+
+
+test: 14:
+"node | { _ : _.left = _.right}"
+
+tree1:  node | { _ : _.left = _.right}
+result: list([Get(), Block()])
+
+tree1:(post)  node | { _ : _.left = _.right}
+result: list([Get(), Block()])

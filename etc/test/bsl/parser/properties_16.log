@@ -1,14 +1,7 @@
 
 
-test: 16: "a.b(1, 2, z)"
+test: 16:
+"a.b(1, 2, z)"
 
 tree1:  a.b(1, 2, z)
-result: None
-    1 : PropRef TK.DEF(BINOP, '.', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    3 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
-    4 :         Ident TK.IDNT(IDENTIFIER, 'b', V=b)
-    5 :         List TK.TUPLE(LIST, '(', V=[Int(), Int(), Ident()])
-    6 :             Int TK.INT(LITERAL, '1', V=1)
-    7 :             Int TK.INT(LITERAL, '2', V=2)
-    8 :             Ident TK.IDNT(IDENTIFIER, 'z', V=z)
+result: Lit(None)

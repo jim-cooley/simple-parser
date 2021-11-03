@@ -1,75 +1,10 @@
 
 
-test: 16: "close >| sma(20) | signal | open.delay(1d) | buy; close <| sma(10) | signal | open.delay(1d) | sell"
+test: 16:
+"var f.a.b.c = 5"
 
-tree1:  close >| sma(20) | signal | open.delay(1d) | buy; close <| sma(10) | signal | open.delay(1d) | sell
-result: BinOp(BinOp(TK.RISE_ABOVE(BINOP, '>|', V=None): l=Ident(close), r=BinOp(TK.FUNCTION(BINOP, '(', V=None): l=Ident(sma), r=[20])
-    1 : List TK.CHAIN(LIST, '|', V=[BinOp(), Ident(), PropRef(), Ident()])
-    2 :     BinOp TK.RISE_ABOVE(BINOP, '>|', V=None)
-    3 :         Ident TK.IDNT(DATASET, 'close', V=close)
-    4 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
-    5 :             Ident TK.IDNT(FUNCTION, 'sma', V=sma)
-    6 :             List TK.TUPLE(LIST, '(', V=[Int()])
-    7 :                 Int TK.INT(LITERAL, '20', V=20)
-    8 :     Ident TK.SIGNAL(KEYWORD, 'signal', V=signal)
-    9 :     PropRef TK.DEF(BINOP, '.', V=None)
-   10 :         Ident TK.IDNT(DATASET, 'open', V=open)
-   11 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
-   12 :             Ident TK.IDNT(IDENTIFIER, 'delay', V=delay)
-   13 :             List TK.TUPLE(LIST, '(', V=[Duration()])
-   14 :                 Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
-   15 :     Ident TK.BUY(KEYWORD, 'buy', V=buy)
+tree1:  var f.a.b.c = 5
+result: Lit(None)
 
-tree2:  close >| sma(20) | signal | open.delay(1d) | buy; close <| sma(10) | signal | open.delay(1d) | sell
-result: BinOp(BinOp(TK.FALL_BELOW(BINOP, '<|', V=None): l=Ident(close), r=BinOp(TK.FUNCTION(BINOP, '(', V=None): l=Ident(sma), r=[10])
-    1 : List TK.CHAIN(LIST, '|', V=[BinOp(), Ident(), PropRef(), Ident()])
-    2 :     BinOp TK.FALL_BELOW(BINOP, '<|', V=None)
-    3 :         Ident TK.IDNT(DATASET, 'close', V=close)
-    4 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
-    5 :             Ident TK.IDNT(FUNCTION, 'sma', V=sma)
-    6 :             List TK.TUPLE(LIST, '(', V=[Int()])
-    7 :                 Int TK.INT(LITERAL, '10', V=10)
-    8 :     Ident TK.SIGNAL(KEYWORD, 'signal', V=signal)
-    9 :     PropRef TK.DEF(BINOP, '.', V=None)
-   10 :         Ident TK.IDNT(DATASET, 'open', V=open)
-   11 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
-   12 :             Ident TK.IDNT(IDENTIFIER, 'delay', V=delay)
-   13 :             List TK.TUPLE(LIST, '(', V=[Duration()])
-   14 :                 Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
-   15 :     Ident TK.SELL(KEYWORD, 'sell', V=sell)
-
-tree1:(post)  close >| sma(20) | signal | open.delay(1d) | buy; close <| sma(10) | signal | open.delay(1d) | sell
-result: BinOp(BinOp(TK.RISE_ABOVE(BINOP, '>|', V=None): l=Ident(close), r=BinOp(TK.FUNCTION(BINOP, '(', V=None): l=Ident(sma), r=[20])
-    1 : List TK.CHAIN(LIST, '|', V=[BinOp(), Ident(), PropRef(), Ident()])
-    2 :     BinOp TK.RISE_ABOVE(BINOP, '>|', V=None)
-    3 :         Ident TK.IDNT(DATASET, 'close', V=close)
-    4 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
-    5 :             Ident TK.IDNT(FUNCTION, 'sma', V=sma)
-    6 :             List TK.TUPLE(LIST, '(', V=[Int()])
-    7 :                 Int TK.INT(LITERAL, '20', V=20)
-    8 :     Ident TK.SIGNAL(KEYWORD, 'signal', V=signal)
-    9 :     PropRef TK.DEF(BINOP, '.', V=None)
-   10 :         Ident TK.IDNT(DATASET, 'open', V=open)
-   11 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
-   12 :             Ident TK.IDNT(IDENTIFIER, 'delay', V=delay)
-   13 :             List TK.TUPLE(LIST, '(', V=[Duration()])
-   14 :                 Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
-   15 :     Ident TK.BUY(KEYWORD, 'buy', V=buy)
-
-tree2:(post)  close >| sma(20) | signal | open.delay(1d) | buy; close <| sma(10) | signal | open.delay(1d) | sell
-result: BinOp(BinOp(TK.FALL_BELOW(BINOP, '<|', V=None): l=Ident(close), r=BinOp(TK.FUNCTION(BINOP, '(', V=None): l=Ident(sma), r=[10])
-    1 : List TK.CHAIN(LIST, '|', V=[BinOp(), Ident(), PropRef(), Ident()])
-    2 :     BinOp TK.FALL_BELOW(BINOP, '<|', V=None)
-    3 :         Ident TK.IDNT(DATASET, 'close', V=close)
-    4 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
-    5 :             Ident TK.IDNT(FUNCTION, 'sma', V=sma)
-    6 :             List TK.TUPLE(LIST, '(', V=[Int()])
-    7 :                 Int TK.INT(LITERAL, '10', V=10)
-    8 :     Ident TK.SIGNAL(KEYWORD, 'signal', V=signal)
-    9 :     PropRef TK.DEF(BINOP, '.', V=None)
-   10 :         Ident TK.IDNT(DATASET, 'open', V=open)
-   11 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
-   12 :             Ident TK.IDNT(IDENTIFIER, 'delay', V=delay)
-   13 :             List TK.TUPLE(LIST, '(', V=[Duration()])
-   14 :                 Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
-   15 :     Ident TK.SELL(KEYWORD, 'sell', V=sell)
+tree1:(post)  var f.a.b.c = 5
+result: Lit(None)

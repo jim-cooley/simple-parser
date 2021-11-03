@@ -1,0 +1,7 @@
+
+
+test: 19:
+"None"
+
+tree1:  None
+result: Lit(None)

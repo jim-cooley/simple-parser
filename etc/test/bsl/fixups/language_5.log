@@ -1,45 +1,4 @@
 
 
-test: 5: "any:{ cross(close, sma(20), delay=1, threshold=0.01) } | buy"
-
-tree1:  any:{ cross(close, sma(20), delay=1, threshold=0.01) } | buy
-result: UnaryOp(UnaryOp())
-    1 : List TK.CHAIN(LIST, '|', V=[UnaryOp(), Ident()])
-    2 :     UnaryOp TK.ANY(UNARY, 'any:', V=None)
-    3 :         Set TK.SET(SET, '{', V=[FnCall()])
-    4 :             FnCall TK.FUNCTION(BINOP, '(', V=None)
-    5 :                 Ident TK.IDNT(IDENTIFIER, 'cross', V=cross)
-    6 :                 List TK.TUPLE(LIST, '(', V=[Ident(), FnCall(), BinOp(), BinOp()])
-    7 :                     Ident TK.IDNT(DATASET, 'close', V=close)
-    8 :                     FnCall TK.FUNCTION(BINOP, '(', V=None)
-    9 :                         Ident TK.IDNT(FUNCTION, 'sma', V=sma)
-   10 :                         List TK.TUPLE(LIST, '(', V=[Int()])
-   11 :                             Int TK.INT(LITERAL, '20', V=20)
-   12 :                     BinOp TK.ASSIGN(BINOP, '=', V=None)
-   13 :                         Ident TK.IDNT(IDENTIFIER, 'delay', V=delay)
-   14 :                         Int TK.INT(LITERAL, '1', V=1)
-   15 :                     BinOp TK.ASSIGN(BINOP, '=', V=None)
-   16 :                         Ident TK.IDNT(IDENTIFIER, 'threshold', V=threshold)
-   17 :                         Float TK.FLOT(LITERAL, '0.01', V=0.01)
-   18 :     Ident TK.BUY(KEYWORD, 'buy', V=buy)
-
-tree1:(post)  any:{ cross(close, sma(20), delay=1, threshold=0.01) } | buy
-result: UnaryOp(UnaryOp())
-    1 : List TK.CHAIN(LIST, '|', V=[UnaryOp(), Ident()])
-    2 :     UnaryOp TK.ANY(UNARY, 'any:', V=None)
-    3 :         Set TK.SET(SET, '{', V=[FnCall()])
-    4 :             FnCall TK.FUNCTION(BINOP, '(', V=None)
-    5 :                 Ident TK.IDNT(IDENTIFIER, 'cross', V=cross)
-    6 :                 List TK.TUPLE(LIST, '(', V=[Ident(), FnCall(), BinOp(), BinOp()])
-    7 :                     Ident TK.IDNT(DATASET, 'close', V=close)
-    8 :                     FnCall TK.FUNCTION(BINOP, '(', V=None)
-    9 :                         Ident TK.IDNT(FUNCTION, 'sma', V=sma)
-   10 :                         List TK.TUPLE(LIST, '(', V=[Int()])
-   11 :                             Int TK.INT(LITERAL, '20', V=20)
-   12 :                     BinOp TK.TUPLE(BINOP, '=', V=None)
-   13 :                         Ident TK.IDNT(IDENTIFIER, 'delay', V=delay)
-   14 :                         Int TK.INT(LITERAL, '1', V=1)
-   15 :                     BinOp TK.TUPLE(BINOP, '=', V=None)
-   16 :                         Ident TK.IDNT(IDENTIFIER, 'threshold', V=threshold)
-   17 :                         Float TK.FLOT(LITERAL, '0.01', V=0.01)
-   18 :     Ident TK.BUY(KEYWORD, 'buy', V=buy)
+test: 5:
+"# prime:"

@@ -1,23 +1,10 @@
 
 
-test: 6: "a | b >> c | d"
+test: 6:
+"a | b >> c | d"
 
 tree1:  a | b >> c | d
-result: list([List(), Ident()])
-    1 : List TK.CHAIN(LIST, '|', V=[List(), Ident()])
-    2 :     List TK.APPLY(LIST, '>>', V=[List(), Ident()])
-    3 :         List TK.CHAIN(LIST, '|', V=[Ident(), Ident()])
-    4 :             Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    5 :             Ident TK.IDNT(IDENTIFIER, 'b', V=b)
-    6 :         Ident TK.IDNT(IDENTIFIER, 'c', V=c)
-    7 :     Ident TK.IDNT(IDENTIFIER, 'd', V=d)
+result: list([Flow(), ApplyChainProd()])
 
 tree1:(post)  a | b >> c | d
-result: list([List(), Ident()])
-    1 : List TK.CHAIN(LIST, '|', V=[List(), Ident()])
-    2 :     List TK.APPLY(LIST, '>>', V=[List(), Ident()])
-    3 :         List TK.CHAIN(LIST, '|', V=[Ident(), Ident()])
-    4 :             Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    5 :             Ident TK.IDNT(IDENTIFIER, 'b', V=b)
-    6 :         Ident TK.IDNT(IDENTIFIER, 'c', V=c)
-    7 :     Ident TK.IDNT(IDENTIFIER, 'd', V=d)
+result: list([Flow(), ApplyChainProd()])

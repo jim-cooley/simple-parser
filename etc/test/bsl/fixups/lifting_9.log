@@ -1,14 +1,10 @@
 
 
-test: 9: "{-1}"
+test: 9:
+"{-1}"
 
 tree1:  {-1}
-result: UnaryOp(UnaryOp())
-    1 : Set TK.SET(SET, '{', V=[UnaryOp()])
-    2 :     UnaryOp TK.NEG(UNARY, '-', V=None)
-    3 :         Int TK.INT(LITERAL, '1', V=1)
+result: list([UnaryOp()])
 
 tree1:(post)  {-1}
-result: int(-1)
-    1 : Set TK.SET(SET, '{', V=[Int()])
-    2 :     Int TK.INT(LITERAL, '1', V=-1)
+result: list([Int()])

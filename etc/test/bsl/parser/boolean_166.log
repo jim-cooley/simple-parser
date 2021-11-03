@@ -1,9 +1,7 @@
 
 
-test: 166: "1 == 0"
+test: 166:
+"1 == 0"
 
 tree1:  1 == 0
-result: None
-    1 : BinOp TK.ISEQ(BINOP, '==', V=None)
-    2 :     Int TK.INT(LITERAL, '1', V=1)
-    3 :     Int TK.INT(LITERAL, '0', V=0)
+result: Lit(None)

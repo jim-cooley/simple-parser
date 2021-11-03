@@ -1,11 +1,10 @@
 
 
-test: 2: "a; b"
+test: 2:
+"a; b"
 
 tree1:  a; b
-result: str(a)
-    1 : Ident TK.IDNT(IDENTIFIER, 'a', V=a)
+result: Lit(None)
 
 tree2:  a; b
-result: str(b)
-    1 : Ident TK.IDNT(IDENTIFIER, 'b', V=b)
+result: Lit(None)

@@ -1,5 +1,5 @@
 from conversion import c_node2float, c_node2int, c_node2bool
-from exceptions import _runtime_error
+from environment import Environment
 from tokens import TK
 
 
@@ -44,7 +44,7 @@ def negate_literal(node):
             pass
     elif tid == TK.EMPTY:
         return node
-    _runtime_error("Unsupported type for Unary minus", loc=token.location)
+    Environment.get_logger().runtime_error("Unsupported type for Unary minus", loc=token.location)
 
 
 def not_literal(node):

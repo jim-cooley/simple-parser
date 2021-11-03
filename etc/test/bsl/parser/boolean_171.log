@@ -1,11 +1,7 @@
 
 
-test: 171: "-1 == -2"
+test: 171:
+"-1 == -2"
 
 tree1:  -1 == -2
-result: None
-    1 : BinOp TK.ISEQ(BINOP, '==', V=None)
-    2 :     UnaryOp TK.NEG(UNARY, '-', V=None)
-    3 :         Int TK.INT(LITERAL, '1', V=1)
-    4 :     UnaryOp TK.NEG(UNARY, '-', V=None)
-    5 :         Int TK.INT(LITERAL, '2', V=2)
+result: Lit(None)

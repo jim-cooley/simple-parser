@@ -1,0 +1,7 @@
+
+
+test: 20:
+"(a, b, c) := (4, 5, 6)       # tuple assignment (var)"
+
+tree1:  (a, b, c) := (4, 5, 6)       # tuple assignment (var)
+result: Lit(None)

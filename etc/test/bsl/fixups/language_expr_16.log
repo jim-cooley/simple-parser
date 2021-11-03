@@ -1,0 +1,16 @@
+
+
+test: 16:
+"close >| sma(20) | signal | open.delay(1d) | buy; close <| sma(10) | signal | open.delay(1d) | sell"
+
+tree1:  close >| sma(20) | signal | open.delay(1d) | buy; close <| sma(10) | signal | open.delay(1d) | sell
+result: list([BinOp(), Get(), PropRef(), ApplyChainProd()])
+
+tree2:  close >| sma(20) | signal | open.delay(1d) | buy; close <| sma(10) | signal | open.delay(1d) | sell
+result: list([BinOp(), Get(), PropRef(), ApplyChainProd()])
+
+tree1:(post)  close >| sma(20) | signal | open.delay(1d) | buy; close <| sma(10) | signal | open.delay(1d) | sell
+result: list([BinOp(), Get(), PropRef(), ApplyChainProd()])
+
+tree2:(post)  close >| sma(20) | signal | open.delay(1d) | buy; close <| sma(10) | signal | open.delay(1d) | sell
+result: list([BinOp(), Get(), PropRef(), ApplyChainProd()])

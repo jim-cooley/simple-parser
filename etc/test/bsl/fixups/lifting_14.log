@@ -1,16 +1,10 @@
 
 
-test: 14: "(-1, 1)"
+test: 14:
+"(-1, 1)"
 
 tree1:  (-1, 1)
-result: UnaryOp(UnaryOp())
-    1 : List TK.TUPLE(LIST, '(', V=[UnaryOp(), Int()])
-    2 :     UnaryOp TK.NEG(UNARY, '-', V=None)
-    3 :         Int TK.INT(LITERAL, '1', V=1)
-    4 :     Int TK.INT(LITERAL, '1', V=1)
+result: list([UnaryOp(), Int()])
 
 tree1:(post)  (-1, 1)
-result: int(-1)
-    1 : List TK.TUPLE(LIST, '(', V=[Int(), Int()])
-    2 :     Int TK.INT(LITERAL, '1', V=-1)
-    3 :     Int TK.INT(LITERAL, '1', V=1)
+result: list([Int(), Int()])

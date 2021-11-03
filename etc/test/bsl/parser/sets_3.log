@@ -1,10 +1,7 @@
 
 
-test: 3: "{{{a}}}"
+test: 3:
+"{{{a}}}"
 
 tree1:  {{{a}}}
 result: list([Set()])
-    1 : Set TK.SET(SET, '{', V=[Set()])
-    2 :     Set TK.SET(SET, '{', V=[Set()])
-    3 :         Set TK.SET(SET, '{', V=[Ident()])
-    4 :             Ident TK.IDNT(IDENTIFIER, 'a', V=a)

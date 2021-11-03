@@ -1,13 +1,10 @@
 
 
-test: 2: "{{}}"
+test: 2:
+"{{}}"
 
 tree1:  {{}}
-result: list([None])
-    1 : Set TK.SET(SET, '{', V=[Set()])
-    2 :     Set TK.SET(SET, '{', V=[None])
+result: list([Set()])
 
 tree1:(post)  {{}}
-result: list([None])
-    1 : Set TK.SET(SET, '{', V=[Set()])
-    2 :     Set TK.SET(SET, '{', V=[None])
+result: list([Set()])

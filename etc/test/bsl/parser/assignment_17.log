@@ -1,0 +1,7 @@
+
+
+test: 17:
+"a.b().c = 2"
+
+tree1:  a.b().c = 2
+result: Lit(None)

@@ -1,0 +1,7 @@
+
+
+test: 17:
+"(((a), (b)), (c))            # tuple in a tuple with more grouping"
+
+tree1:  (((a), (b)), (c))            # tuple in a tuple with more grouping
+result: list([List(), Get()])

@@ -1,0 +1,10 @@
+
+
+test: 30:
+"var f = { a=5 }      # should be block, not set"
+
+tree1:  var f = { a=5 }      # should be block, not set
+result: Lit(None)
+
+tree1:(post)  var f = { a=5 }      # should be block, not set
+result: Lit(None)

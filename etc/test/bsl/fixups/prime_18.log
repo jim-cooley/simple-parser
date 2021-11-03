@@ -1,0 +1,10 @@
+
+
+test: 18:
+"false"
+
+tree1:  false
+result: bool(False)
+
+tree1:(post)  false
+result: bool(False)

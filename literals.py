@@ -87,23 +87,29 @@ class Int(Literal):
 
 @dataclass
 class List(Literal):
-    def __init__(self, token, llist=None):
+    def __init__(self, token, items=None):
         super().__init__(token=token)
-        token.t_class = TCL.LIST
-        token.value = None if llist is None else llist
-        self.value = llist
+        token.t_class = TCL.LITERAL
+        token.value = None if items is None else items
+        self.value = items
 
-    def __getitem__(self, item):
-        return self.values()[item]
+    def __getitem__(self, index):
+        return self.values()[index]
+
+    def __setitem__(self, index, value):
+        self.value[index] = value
 
     def is_empty(self):
         return self.value is not None and len(self.values()) > 0
 
-    def values(self):
-        return self.value
-
     def append(self, o):
         self.value.append(o)
+
+    def len(self):
+        return len(self.values)
+
+    def values(self):
+        return self.value
 
     def format(self):
         if self.value is None:
@@ -128,13 +134,13 @@ class Percent(Literal):
 
 
 @dataclass
-class Set(List):
-    def __init__(self, token, dict=None):
-        super().__init__(token=token, llist=dict)
-        dict = {} if dict is None else dict
-        token.value = None if dict is None else dict
-        token.id = TK.SET
-        token.t_class = TCL.SET
+class Set(Literal):
+    def __init__(self, token, items=None):
+        super().__init__(token=token)
+        self.items = items if items is not None else {}
+        self.value = self.items
+        token.id = TK.SET if len(self.items) > 0 else TK.EMPTY
+        token.t_class = TCL.LITERAL
 
     def __getitem__(self, item):
         if type(item).name == 'int':
@@ -150,15 +156,15 @@ class Set(List):
     def keys(self):
         return list(self.value.keys())
 
+    def tuples(self):
+        return list(self.value.items())
+
     def values(self):
         if self.value is None:
             return None
         if type(self.value).__name__ == "list":
             return self.value
         return list(self._symbols.values())
-
-    def tuples(self):
-        return list(self.value.items())
 
     def format(self):
         if self.value is None:

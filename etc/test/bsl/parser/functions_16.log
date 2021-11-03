@@ -1,14 +1,7 @@
 
 
-test: 16: "def atr = (high + low) / 2"
+test: 16:
+"def atr = (high + low) / 2"
 
 tree1:  def atr = (high + low) / 2
-result: None
-    1 : UnaryOp TK.DEFINE(UNARY, 'def', V=None)
-    2 :     BinOp TK.ASSIGN(BINOP, '=', V=None)
-    3 :         Ident TK.IDNT(IDENTIFIER, 'atr', V=atr)
-    4 :         BinOp TK.DIV(BINOP, '/', V=None)
-    5 :             BinOp TK.ADD(BINOP, '+', V=None)
-    6 :                 Ident TK.IDNT(DATASET, 'high', V=high)
-    7 :                 Ident TK.IDNT(DATASET, 'low', V=low)
-    8 :             Int TK.INT(LITERAL, '2', V=2)
+result: Lit(None)

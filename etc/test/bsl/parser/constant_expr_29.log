@@ -1,9 +1,7 @@
 
 
-test: 29: "365d / 12d"
+test: 29:
+"365d / 12d"
 
 tree1:  365d / 12d
-result: None
-    1 : BinOp TK.DIV(BINOP, '/', V=None)
-    2 :     Duration TK.DUR(LITERAL, '365d', V=365 days, 0:00:00)
-    3 :     Duration TK.DUR(LITERAL, '12d', V=12 days, 0:00:00)
+result: Lit(None)

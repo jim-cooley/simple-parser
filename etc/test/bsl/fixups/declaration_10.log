@@ -1,0 +1,10 @@
+
+
+test: 10:
+"var f = { 5 }"
+
+tree1:  var f = { 5 }
+result: Lit(None)
+
+tree1:(post)  var f = { 5 }
+result: Lit(None)

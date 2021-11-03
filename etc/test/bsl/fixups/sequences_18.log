@@ -1,25 +1,10 @@
 
 
-test: 18: "open.b(1d) | c"
+test: 18:
+"open.b(1d) | c"
 
 tree1:  open.b(1d) | c
-result: PropRef(BinOp(TK.DEF(BINOP, '.', V=None): l=Ident(open), r=BinOp(TK.FUNCTION(BINOP, '(', V=None): l=Ident(b), r=[1 day, 0:00:00])
-    1 : List TK.CHAIN(LIST, '|', V=[PropRef(), Ident()])
-    2 :     PropRef TK.DEF(BINOP, '.', V=None)
-    3 :         Ident TK.IDNT(DATASET, 'open', V=open)
-    4 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
-    5 :             Ident TK.IDNT(IDENTIFIER, 'b', V=b)
-    6 :             List TK.TUPLE(LIST, '(', V=[Duration()])
-    7 :                 Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
-    8 :     Ident TK.IDNT(IDENTIFIER, 'c', V=c)
+result: list([PropRef(), ApplyChainProd()])
 
 tree1:(post)  open.b(1d) | c
-result: PropRef(BinOp(TK.DEF(BINOP, '.', V=None): l=Ident(open), r=BinOp(TK.FUNCTION(BINOP, '(', V=None): l=Ident(b), r=[1 day, 0:00:00])
-    1 : List TK.CHAIN(LIST, '|', V=[PropRef(), Ident()])
-    2 :     PropRef TK.DEF(BINOP, '.', V=None)
-    3 :         Ident TK.IDNT(DATASET, 'open', V=open)
-    4 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
-    5 :             Ident TK.IDNT(IDENTIFIER, 'b', V=b)
-    6 :             List TK.TUPLE(LIST, '(', V=[Duration()])
-    7 :                 Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
-    8 :     Ident TK.IDNT(IDENTIFIER, 'c', V=c)
+result: list([PropRef(), ApplyChainProd()])

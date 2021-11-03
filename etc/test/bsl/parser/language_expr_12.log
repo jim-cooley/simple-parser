@@ -1,0 +1,7 @@
+
+
+test: 12:
+"close >| sma(10) and close <| sma(20) | signal"
+
+tree1:  close >| sma(10) and close <| sma(20) | signal
+result: list([BinOp(), ApplyChainProd()])

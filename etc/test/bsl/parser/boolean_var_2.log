@@ -1,9 +1,7 @@
 
 
-test: 2: "a or b"
+test: 2:
+"a or b"
 
 tree1:  a or b
-result: None
-    1 : BinOp TK.OR(BINOP, 'or', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    3 :     Ident TK.IDNT(IDENTIFIER, 'b', V=b)
+result: Lit(None)

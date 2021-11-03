@@ -1,29 +1,4 @@
 
 
-test: 10: "start: open.delay(1d) | buy"
-
-tree1:  start: open.delay(1d) | buy
-result: BinOp(BinOp(TK.TUPLE(BINOP, ':', V=None): l=Ident(start), r=BinOp(TK.DEF(BINOP, '.', V=None): l=Ident(open), r=BinOp(TK.FUNCTION(BINOP, '(', V=None): l=Ident(delay), r=[1 day, 0:00:00])
-    1 : List TK.CHAIN(LIST, '|', V=[BinOp(), Ident()])
-    2 :     BinOp TK.TUPLE(BINOP, ':', V=None)
-    3 :         Ident TK.IDNT(IDENTIFIER, 'start', V=start)
-    4 :         PropRef TK.DEF(BINOP, '.', V=None)
-    5 :             Ident TK.IDNT(DATASET, 'open', V=open)
-    6 :             FnCall TK.FUNCTION(BINOP, '(', V=None)
-    7 :                 Ident TK.IDNT(IDENTIFIER, 'delay', V=delay)
-    8 :                 List TK.TUPLE(LIST, '(', V=[Duration()])
-    9 :                     Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
-   10 :     Ident TK.BUY(KEYWORD, 'buy', V=buy)
-
-tree1:(post)  start: open.delay(1d) | buy
-result: BinOp(BinOp(TK.TUPLE(BINOP, ':', V=None): l=Ident(start), r=BinOp(TK.DEF(BINOP, '.', V=None): l=Ident(open), r=BinOp(TK.FUNCTION(BINOP, '(', V=None): l=Ident(delay), r=[1 day, 0:00:00])
-    1 : List TK.CHAIN(LIST, '|', V=[BinOp(), Ident()])
-    2 :     BinOp TK.TUPLE(BINOP, ':', V=None)
-    3 :         Ident TK.IDNT(IDENTIFIER, 'start', V=start)
-    4 :         PropRef TK.DEF(BINOP, '.', V=None)
-    5 :             Ident TK.IDNT(DATASET, 'open', V=open)
-    6 :             FnCall TK.FUNCTION(BINOP, '(', V=None)
-    7 :                 Ident TK.IDNT(IDENTIFIER, 'delay', V=delay)
-    8 :                 List TK.TUPLE(LIST, '(', V=[Duration()])
-    9 :                     Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
-   10 :     Ident TK.BUY(KEYWORD, 'buy', V=buy)
+test: 10:
+"#   'def' _var_declaration_"

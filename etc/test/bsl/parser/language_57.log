@@ -1,0 +1,7 @@
+
+
+test: 57:
+"{ b => b.left = b.right}:(node)"
+
+tree1:  { b => b.left = b.right}:(node)
+result: Lit(None)

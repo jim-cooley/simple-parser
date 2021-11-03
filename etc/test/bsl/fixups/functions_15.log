@@ -1,29 +1,10 @@
 
 
-test: 15: "f(a=5, b='c', d)"
+test: 15:
+"f(a=5, b='c', d)"
 
 tree1:  f(a=5, b='c', d)
-result: None
-    1 : FnCall TK.FUNCTION(BINOP, '(', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'f', V=f)
-    3 :     List TK.TUPLE(LIST, '(', V=[BinOp(), BinOp(), Ident()])
-    4 :         BinOp TK.ASSIGN(BINOP, '=', V=None)
-    5 :             Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    6 :             Int TK.INT(LITERAL, '5', V=5)
-    7 :         BinOp TK.ASSIGN(BINOP, '=', V=None)
-    8 :             Ident TK.IDNT(IDENTIFIER, 'b', V=b)
-    9 :             Str TK.STR(LITERAL, 'c', V=c)
-   10 :         Ident TK.IDNT(IDENTIFIER, 'd', V=d)
+result: Lit(None)
 
 tree1:(post)  f(a=5, b='c', d)
-result: None
-    1 : FnCall TK.FUNCTION(BINOP, '(', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'f', V=f)
-    3 :     List TK.TUPLE(LIST, '(', V=[BinOp(), BinOp(), Ident()])
-    4 :         BinOp TK.TUPLE(BINOP, '=', V=None)
-    5 :             Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    6 :             Int TK.INT(LITERAL, '5', V=5)
-    7 :         BinOp TK.TUPLE(BINOP, '=', V=None)
-    8 :             Ident TK.IDNT(IDENTIFIER, 'b', V=b)
-    9 :             Str TK.STR(LITERAL, 'c', V=c)
-   10 :         Ident TK.IDNT(IDENTIFIER, 'd', V=d)
+result: Lit(None)

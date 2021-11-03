@@ -1,9 +1,7 @@
 
 
-test: 11: "{a, b}"
+test: 11:
+"{a, b}"
 
 tree1:  {a, b}
-result: str(a)
-    1 : Set TK.SET(SET, '{', V=[Ident(), Ident()])
-    2 :     Ident TK.IDNT(IDENTIFIER, 'a', V=a)
-    3 :     Ident TK.IDNT(IDENTIFIER, 'b', V=b)
+result: list([Get(), Get()])
