@@ -4,4 +4,4 @@ test: 4:
 "{a, b, c}"
 
 tree1:  {a, b, c}
-result: list([Get(), Get(), Get()])
+result: Lit(None)

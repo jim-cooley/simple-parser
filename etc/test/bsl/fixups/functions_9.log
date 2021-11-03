@@ -7,10 +7,10 @@ tree1:  a{}
 result: Lit(None)
 
 tree2:  a{}
-result: list([])
+result: dict({})
 
 tree1:(post)  a{}
 result: Lit(None)
 
 tree2:(post)  a{}
-result: list([])
+result: dict({})

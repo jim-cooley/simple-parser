@@ -4,4 +4,4 @@ test: 8:
 "{ 'train': (today-2y)..today }"
 
 tree1:  { 'train': (today-2y)..today }
-result: list([Define()])
+result: Lit(None)

@@ -150,7 +150,7 @@ def print_tree(tree, log=None, label=None, print_notation=True, print_results=Tr
     if tree is None or tree.root is None:
         return
     print(f'notation: {printer.apply(tree.root)}')
-    if tree.values is not None and len(tree.values) > 0 and print_results:
+    if tree.values is not None and print_results:
         v = tree.values if type(tree.values).__name__ != 'list' else tree.values[0]
         if getattr(v, 'value', False):
             v = v.value

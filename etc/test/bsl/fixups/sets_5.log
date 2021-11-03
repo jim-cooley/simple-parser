@@ -4,7 +4,7 @@ test: 5:
 "{{a}, {b}, {c}}"
 
 tree1:  {{a}, {b}, {c}}
-result: list([Set(), Set(), Set()])
+result: Lit(None)
 
 tree1:(post)  {{a}, {b}, {c}}
-result: list([Set(), Set(), Set()])
+result: Lit(None)

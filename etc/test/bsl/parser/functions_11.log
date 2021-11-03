@@ -7,4 +7,4 @@ tree1:  a{x, y, z}
 result: Lit(None)
 
 tree2:  a{x, y, z}
-result: list([Get(), Get(), Get()])
+result: Lit(None)

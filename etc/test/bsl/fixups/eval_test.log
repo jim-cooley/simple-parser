@@ -1,7 +1,14 @@
 
 
 test:
-"a = 4
+"#4
+#4 * 3
+a = 4
+s = { a=5 }
+s.a
+s.b = s.a * a
+s.b
+#
 b = a * 3
 c = b
 s = { a=5 }
@@ -14,41 +21,65 @@ s.b
 tree1:  a = 4
 result: Lit(None)
 
-tree2:  b = a * 3
+tree2:  s = { a=5 }
 result: Lit(None)
 
-tree3:  c = b
+tree3:  s.a
 result: Lit(None)
 
-tree4:  s = { a=5 }
+tree4:  s.b = s.a * a
 result: Lit(None)
 
-tree5:  s.b = s.a * a
+tree5:  s.b
 result: Lit(None)
 
-tree6:  s.b
+tree6:  b = a * 3
 result: Lit(None)
 
-tree7:  ++s.b
+tree7:  c = b
+result: Lit(None)
+
+tree8:  s = { a=5 }
+result: Lit(None)
+
+tree9:  s.b = s.a * a
+result: Lit(None)
+
+tree10:  s.b
+result: Lit(None)
+
+tree11:  ++s.b
 result: Lit(None)
 
 tree1:(post)  a = 4
 result: Lit(None)
 
-tree2:(post)  b = a * 3
+tree2:(post)  s = { a=5 }
 result: Lit(None)
 
-tree3:(post)  c = b
+tree3:(post)  s.a
 result: Lit(None)
 
-tree4:(post)  s = { a=5 }
+tree4:(post)  s.b = s.a * a
 result: Lit(None)
 
-tree5:(post)  s.b = s.a * a
+tree5:(post)  s.b
 result: Lit(None)
 
-tree6:(post)  s.b
+tree6:(post)  b = a * 3
 result: Lit(None)
 
-tree7:(post)  ++s.b
+tree7:(post)  c = b
+result: Lit(None)
+
+tree8:(post)  s = { a=5 }
+result: Lit(None)
+
+tree9:(post)  s.b = s.a * a
+result: Lit(None)
+
+tree10:(post)  s.b
+result: Lit(None)
+
+tree11:(post)  ++s.b
 result: Lit(None)

@@ -7,4 +7,4 @@ tree1:  f{a:5, b:'c', d}
 result: Lit(None)
 
 tree2:  f{a:5, b:'c', d}
-result: list([Define(), Define(), Get()])
+result: Lit(None)

@@ -4,7 +4,7 @@ test: 41:
 "{ b };"
 
 tree1:  { b };
-result: list([Get()])
+result: Lit(None)
 
 tree1:(post)  { b };
-result: list([Get()])
+result: Lit(None)

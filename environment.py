@@ -58,7 +58,7 @@ class Environment(object):
 
     @staticmethod
     def get_logger():
-        return Environment.current.get_logger()
+        return Environment.current.logger
 
     def _get_option(self, key, default):
         if key not in self.options:
@@ -70,17 +70,17 @@ class Environment(object):
         self.lines = source.splitlines(True)
         return source
 
-    def enter_scope(self, scope=None):
+    def enter(self, scope=None):
         if scope is None:
             scope = Scope()
         scope.link(Environment.current.symbols)
         Environment.current.symbols = scope
         return scope
 
-    def leave_scope(self, scope):
+    def leave(self, scope):
         parent = scope.parent_scope
         Environment.current.symbols = parent
-        return scope.unlink()
+        return scope
 
     def get_line(self, line):
         if line < len(self.lines):

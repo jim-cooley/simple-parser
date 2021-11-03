@@ -4,4 +4,4 @@ test: 11:
 "{a:5, b:{c, d}}"
 
 tree1:  {a:5, b:{c, d}}
-result: list([Define(), Define()])
+result: Lit(None)

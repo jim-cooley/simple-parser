@@ -4,4 +4,4 @@ test: 3:
 "{{{}}}"
 
 tree1:  {{{}}}
-result: list([Set()])
+result: Lit(None)

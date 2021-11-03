@@ -7,10 +7,10 @@ tree1:  none {a, b, c}
 result: Lit(None)
 
 tree2:  none {a, b, c}
-result: list([Get(), Get(), Get()])
+result: Lit(None)
 
 tree1:(post)  none {a, b, c}
 result: Lit(None)
 
 tree2:(post)  none {a, b, c}
-result: list([Get(), Get(), Get()])
+result: Lit(None)

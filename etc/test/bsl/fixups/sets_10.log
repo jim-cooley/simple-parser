@@ -4,7 +4,7 @@ test: 10:
 "{a:5, b:{c}, d}"
 
 tree1:  {a:5, b:{c}, d}
-result: list([Define(), Define(), Get()])
+result: Lit(None)
 
 tree1:(post)  {a:5, b:{c}, d}
-result: list([Define(), Define(), Get()])
+result: Lit(None)

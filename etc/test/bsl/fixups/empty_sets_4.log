@@ -4,7 +4,7 @@ test: 4:
 "{{},{},{}}"
 
 tree1:  {{},{},{}}
-result: list([Set(), Set(), Set()])
+result: Lit(None)
 
 tree1:(post)  {{},{},{}}
-result: list([Set(), Set(), Set()])
+result: Lit(None)

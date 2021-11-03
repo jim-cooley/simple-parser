@@ -3,6 +3,7 @@ from eval_binops import eval_binops_dispatch, _binops_dispatch_table
 from eval_unary import not_literal, increment_literal, decrement_literal, negate_literal
 from literals import LIT_NONE
 from tokens import TK, TCL
+from tree import Ref
 
 _INTRINSIC_VALUE_TYPES = ['int', 'float', 'bool', 'timedelta']
 _INTRINSIC_STR_TYPE = 'str'
@@ -30,17 +31,24 @@ def evaluate_identifier(node):
 
 def evaluate_binary_operation(node, left, right):
     op = node.op
+    if isinstance(left, Ref):
+        left = reduce_ref(scope=Environment.current.symbols, ref=left)
+    if isinstance(right, Ref):
+        right = reduce_ref(scope=Environment.current.symbols, ref=right)
     if op in _binops_dispatch_table:
         return eval_binops_dispatch(node, left, right)
-    elif op == TK.DEF:
+    elif op in [TK.DEF, TK.REF]:
         scope = Environment.current.symbols
         symbol = scope.find_add(left.token)
-        scope = Environment.current.enter_scope(symbol)
+        scope = Environment.current.enter(symbol)
         ref = scope.find_add_local(right.token)
-        Environment.current.leave_scope(scope)
+        Environment.current.leave(scope)
         return ref if ref is not None else LIT_NONE
+    elif op in [TK.ASSIGN, TK.DEFINE]:
+        left.value = right
+        return left  # UNDONE: return the object or its value?
     else:
-        get_logger().error(f'Invalid operation {op.id.name}', loc=op.location)
+        get_logger().error(f'Invalid operation {op.name}', loc=node.token.location)
     return None  # fixups uses this code as well.  probably want option_strict enablement
     """
     elif op == TK.REF:
@@ -74,20 +82,54 @@ def evaluate_binary_operation(node, left, right):
     """
 
 
+def reduce_ref(scope=None, ref=None):
+    scope = Environment.current.symbols if scope is None else scope
+    symbol = scope.find_add_local(ref.token)
+    return symbol   # should be Object type
+
+
+def reduce_get(scope=None, get=None):
+    scope = Environment.current.symbols if scope is None else scope
+    symbol = scope.find(get.token)
+    if symbol is None:
+        Environment.get_logger().runtime_error(f'Symbol `{get.token.lexeme}` does not exist', loc=get.token.location)
+    return symbol
+
+
+def reduce_propref(left=None, right=None):
+    scope = Environment.current.symbols
+    symbol = scope.find(left.token)
+    if symbol is None:
+        Environment.get_logger().runtime_error(f'Symbol `{left.token.lexeme}` does not exist', loc=left.token.location)
+    prop = symbol.find_add_local(right.token)
+    return prop
+
+
+def reduce_propget(left=None, right=None):
+    scope = Environment.current.symbols
+    symbol = scope.find(left.token)
+    if symbol is None:
+        Environment.get_logger().runtime_error(f'Symbol `{left.token.lexeme}` does not exist', loc=left.token.location)
+    prop = symbol.find(right.token)
+    if prop is None:
+        Environment.get_logger().runtime_error(f'Symbol `{right.token.lexeme}` does not exist', loc=right.token.location)
+    return prop
+
+
 def evaluate_set(node, visitor=None):
     if node is None:
         return None
     values = node.values()
     if values is None:
         return None
-    scope = Environment.current.enter_scope(node)
+    scope = Environment.current.enter(node)
     node.value = scope
     for idx in range(0, len(values)):
         n = values[idx]
         if n is None:
             continue
         visitor.visit(n)
-    Environment.current.leave_scope(scope)
+    Environment.current.leave(scope)
     return node
 
 

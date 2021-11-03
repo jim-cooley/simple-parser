@@ -38,10 +38,14 @@ def eval_binops_dispatch_fixup(node):
 
 
 def eval_binops_dispatch(node, left, right):
-    l_value = left.value
-    l_ty = type(left).__name__
-    r_value = right.value
-    r_ty = type(right).__name__
+    l_value = left
+    if getattr(left, 'value', False):
+        l_value = left.value
+    l_ty = type(l_value).__name__
+    r_value = right
+    if getattr(right, 'value', False):
+        r_value = right.value
+    r_ty = type(r_value).__name__
     if l_ty == 'Ident':
         l_value = Environment.current.symbols.find(left.token).value
     if r_ty == 'Ident':
@@ -134,7 +138,7 @@ _binops_dispatch_table = {
         [_add__int_int, _add__int_int, _add__int_int, _add__str_int, _add__int_int],   # int
         [_add__int_int, _add__int_int, _add__int_int, _add__str_int, _add__int_int],   # float
         [_add__int_int, _add__int_int, _add__int_int, _add__str_int, _add__int_int],   # bool
-        [_add__int_str, _add__int_str, _add__int_str, _invalid_add,  _invalid_add],   # str
+        [_add__int_str, _add__int_str, _add__int_str, _invalid_add,  _invalid_add],    # str
         [_add__int_int, _add__int_int, _add__int_int, _add__str_int, _add__int_int],   # timedelta
 
     ],
@@ -143,7 +147,7 @@ _binops_dispatch_table = {
         [_sub__int_int, _sub__int_int, _sub__int_int, _invalid_sub, _sub__int_int],   # int
         [_sub__int_int, _sub__int_int, _sub__int_int, _invalid_sub, _sub__int_int],   # float
         [_sub__int_int, _sub__int_int, _sub__int_int, _invalid_sub, _sub__int_int],   # bool
-        [_invalid_sub, _invalid_sub, _invalid_sub, _invalid_sub, _sub__int_int],   # str
+        [_invalid_sub, _invalid_sub, _invalid_sub, _invalid_sub, _sub__int_int],      # str
         [_sub__int_int, _sub__int_int, _sub__int_int, _invalid_sub, _sub__int_int],   # timedelta
 
     ],
@@ -161,17 +165,17 @@ _binops_dispatch_table = {
         [_idiv__int_int, _idiv__int_int, _idiv__int_int, _invalid_idiv, _idiv__int_int],   # int
         [_idiv__int_int, _idiv__int_int, _idiv__int_int, _invalid_idiv, _idiv__int_int],   # float
         [_idiv__int_int, _idiv__int_int, _idiv__int_int, _invalid_idiv, _idiv__int_int],   # bool
-        [_invalid_idiv, _invalid_idiv, _invalid_idiv, _invalid_idiv, _idiv__int_int],   # str
+        [_invalid_idiv, _invalid_idiv, _invalid_idiv, _invalid_idiv, _idiv__int_int],      # str
         [_idiv__int_int, _idiv__int_int, _idiv__int_int, _invalid_idiv, _idiv__int_int],   # timedelta
 
     ],
     TK.POW: [
         #      int           float           bool           str           timedelta
-        [_pow__int_int, _pow__int_int, _pow__int_int, _invalid_pow, _pow__int_int],   # int
-        [_pow__int_int, _pow__int_int, _pow__int_int, _invalid_pow, _pow__int_int],   # float
-        [_pow__int_int, _pow__int_int, _pow__int_int, _invalid_pow, _pow__int_int],   # bool
-        [_invalid_pow, _invalid_pow, _invalid_pow, _invalid_pow, _pow__int_int],   # str
-        [_pow__int_int, _pow__int_int, _pow__int_int, _invalid_pow, _pow__int_int],   # timedelta
+        [_pow__int_int, _pow__int_int, _pow__int_int, _invalid_pow, _pow__int_int],    # int
+        [_pow__int_int, _pow__int_int, _pow__int_int, _invalid_pow, _pow__int_int],    # float
+        [_pow__int_int, _pow__int_int, _pow__int_int, _invalid_pow, _pow__int_int],    # bool
+        [_invalid_pow, _invalid_pow, _invalid_pow, _invalid_pow, _pow__int_int],       # str
+        [_pow__int_int, _pow__int_int, _pow__int_int, _invalid_pow, _pow__int_int],    # timedelta
 
     ],
     TK.MUL: [

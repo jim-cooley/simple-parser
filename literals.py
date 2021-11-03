@@ -137,9 +137,9 @@ class Percent(Literal):
 class Set(Literal):
     def __init__(self, token, items=None):
         super().__init__(token=token)
-        self.items = items if items is not None else {}
-        self.value = self.items
-        token.id = TK.SET if len(self.items) > 0 else TK.EMPTY
+#       self.items = items if items is not None else {}
+#       self.value = self.items
+#       token.id = TK.SET if len(self.items) > 0 else TK.EMPTY
         token.t_class = TCL.LITERAL
 
     def __getitem__(self, item):

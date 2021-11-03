@@ -14,9 +14,6 @@ class AST:
         if token is not None and value is not None:
             token.value = value
 
-    def __get__(self):
-        return self.value
-
     @property
     def value(self):
         return self.token.value if self.token is not None else None
@@ -31,15 +28,40 @@ class AST:
         return self.__repr__()
 
 
+# a compound node containing a sequence of 'items'
 @dataclass
-class Expression(AST):
+class ASTCompound(AST):
+    def __init__(self, token=None, value=None, parent=None, **kwargs):
+        super().__init__(token=token, value=value, parent=parent, **kwargs)
+        self.items = []
+
+    @property
+    def last(self):
+        return self.items[len(self.items) - 1]
+
+    @last.setter
+    def last(self, value):
+        self.items[len(self.items) - 1] = value
+
+    def append(self, item):
+        self.items.append(item)
+
+    def len(self):
+        return len(self.items)
+
+    def values(self):
+        return self.items
+
+
+@dataclass
+class Expression(ASTCompound):
     def __init__(self, token=None, value=None, parent=None, is_lvalue=True, **kwargs):
         super().__init__(token=token, value=value, parent=parent, **kwargs)
         self.is_lvalue = is_lvalue
 
 
 @dataclass
-class Statement(AST):
+class Statement(ASTCompound):
     def __init__(self, token=None, value=None, parent=None, is_lvalue=True,  **kwargs):
         super().__init__(token=token, value=value, parent=parent, **kwargs)
         self.is_lvalue = is_lvalue
@@ -55,7 +77,7 @@ class Assign(Expression):
 #       self.token = left.token
         self.left = left
         self.right = right
-        self.op = op.id
+        self.op = TK.ASSIGN
         if right is not None:
             right.parent = self
 
@@ -92,6 +114,7 @@ class Define(Assign):
     def __init__(self, left, op, right, is_lvalue=None):
         is_lvalue = False if op.id != TK.COLN else is_lvalue
         super().__init__(left=left, op=op, right=right, is_lvalue=True if is_lvalue is None else is_lvalue)
+        self.op = TK.DEFINE
         if right is not None:
             self.is_lvalue = False if not right.is_lvalue else self.is_lvalue
 

@@ -4,7 +4,7 @@ test: 1:
 "{}"
 
 tree1:  {}
-result: list([])
+result: dict({})
 
 tree1:(post)  {}
-result: list([])
+result: dict({})

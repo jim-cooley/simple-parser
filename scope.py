@@ -3,6 +3,7 @@
 # inherit from AST so that we can see where this goes.
 from copy import copy, deepcopy
 from dataclasses import dataclass
+from queue import Queue, SimpleQueue
 
 from tokens import Token, TCL, TK
 from tree import AST, Expression
@@ -15,13 +16,13 @@ class Scope:
         self.parent_scope = parent_scope
         self._symbols = {}
 
-    @property
-    def value(self):
-        return self._symbols
+#    @property
+#    def items(self):
+#        return self._symbols
 
-    @value.setter
-    def value(self, value):
-        self.token.value += value
+#    @items.setter
+#    def items(self, items):
+#        self._symbols.update(items)
 
     @property
     def name(self):
@@ -64,7 +65,7 @@ class Scope:
     def find_add(self, token, value=None):
         symbol = self.find(token)
         if symbol is None:
-            symbol = Ident(copy(token))
+            symbol = Object(copy(token))
             symbol.value = value
             self._symbols[token.lexeme] = symbol
         return symbol
@@ -72,7 +73,7 @@ class Scope:
     def find_add_local(self, token, value=None):
         symbol = self.find_local(token)
         if symbol is None:
-            symbol = Ident(deepcopy(token))
+            symbol = Object(deepcopy(token))
             symbol.parent_scope = self
             if getattr(value, '_symbols', False):
                 symbol._symbols = deepcopy(value._symbols)
@@ -98,9 +99,17 @@ class Object(AST, Scope):
         super().__init__(token=token, value=value, parent=parent, parent_scope=None)
         self.is_lvalue = True
 
+    @property
+    def value(self):
+        return self.token.value
+
+    @value.setter
+    def value(self, value):
+        self.token.value = value
+
     def format(self):
         tk = self.token
-        return f'{tk.value}' if tk.value is not None and tk.value else 'None'
+        return f'{tk.lexeme} = ' + (f'{tk.value}' if tk.value is not None else 'None')
 
 
 # -----------------------------------
@@ -112,31 +121,13 @@ class Block(Expression, Object):
         op = Token(tid=TK.BLOCK, tcl=TCL.SCOPE, loc=loc)
         super().__init__(token=op, is_lvalue=False)
         self.items = items if items is not None else []
-        self.value = self.items
+#       self.value = self.items
 
-    def __getitem__(self, index):
-        return self.items[index]
+#   def __getitem__(self, index):
+#       return self._items[index]
 
-    def __setitem__(self, index, value):
-        self.items[index] = value
-
-    @property
-    def last(self):
-        return self.items[len(self.items) - 1]
-
-    @last.setter
-    def last(self, value):
-        self.items[len(self.items) - 1] = value
-
-    def append(self, item):
-        self.items.append(item)
-
-    def len(self):
-        return len(self.items)
-
-    def values(self):
-        return self.items
-
+#   def __setitem__(self, index, value):
+#       self._items[index] = value
     def format(self):
         if self.value is None:
             return '{}'
@@ -158,16 +149,6 @@ class Flow(Block):
 
 
 @dataclass
-class Ident(Object):
-    def __init__(self, token=None, parent=None):
-        super().__init__(token=token, parent=parent)
-        self.value = token.lexeme
-
-    def format(self):
-        return f'Ident({self.name})'
-
-
-@dataclass
 class Literal(Object):
     def __init__(self, token=None, value=None, parent=None):
         super().__init__(token=token, value=value, parent=parent)
@@ -181,8 +162,19 @@ class Literal(Object):
 def _dump_symbols(scope):
     print("\n\nsymbols: ")
     idx = 0
-    for k in scope._symbols.keys():
-        v = scope._symbols[k]
-        if type(v).__name__ == 'Ident':
-            print(f'{idx:5d}:  {k} : Ident({v.token})')
-            idx += 1
+    q = SimpleQueue()
+    q.put(scope)
+    while not q.empty():
+        s = q.get()
+        if s._symbols is None or len(s._symbols) == 0:
+            continue
+        if getattr(s, 'token', False):
+            print(f'\nscope: {s.token.lexeme}')
+        else:
+            print(f'\nglobal scope:')
+        for k in s._symbols.keys():
+            v = s._symbols[k]
+            if type(v).__name__ == 'Object':
+                q.put(v)
+                print(f'{idx:5d}:  {k} : Object({v.token})')
+                idx += 1

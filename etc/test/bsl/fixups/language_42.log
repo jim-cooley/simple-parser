@@ -4,7 +4,7 @@ test: 42:
 "{ a(x):x*x }"
 
 tree1:  { a(x):x*x }
-result: list([DefineFn()])
+result: Lit(None)
 
 tree1:(post)  { a(x):x*x }
-result: list([DefineFn()])
+result: Lit(None)

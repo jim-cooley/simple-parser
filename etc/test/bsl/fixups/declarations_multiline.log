@@ -140,31 +140,31 @@ tree22:  a = {q, r, s}:{q=1, r=2, s=3}
 result: Lit(None)
 
 tree23:  {x, y, z}
-result: list([Get(), Get(), Get()])
+result: Lit(None)
 
 tree24:  {1, 2, 3}
-result: list([Int(), Int(), Int()])
+result: Lit(None)
 
 tree25:  {x:1, y:2, z:3}
-result: list([Define(), Define(), Define()])
+result: Lit(None)
 
 tree26:  {x=1, y=2, z=3}
-result: list([Define(), Define(), Define()])
+result: Lit(None)
 
 tree27:  {x=1, y=2, z=3*(x+y)}
-result: list([Define(), Define(), Define()])
+result: Lit(None)
 
 tree28:  {x, y, z}
-result: list([Get(), Get(), Get()])
+result: Lit(None)
 
 tree29:  {1, 2, 3}
-result: list([Int(), Int(), Int()])
+result: Lit(None)
 
 tree30:  {x:1, y:2, z:3}
-result: list([Define(), Define(), Define()])
+result: Lit(None)
 
 tree31:  {x=1, y=2, z=3}
-result: list([Define(), Define(), Define()])
+result: Lit(None)
 
 tree32:  {x=1, y=2, z=3*(x+y)}:(x=1, y=2, z=3)
 result: Lit(None)
@@ -293,31 +293,31 @@ tree22:(post)  a = {q, r, s}:{q=1, r=2, s=3}
 result: Lit(None)
 
 tree23:(post)  {x, y, z}
-result: list([Get(), Get(), Get()])
+result: Lit(None)
 
 tree24:(post)  {1, 2, 3}
-result: list([Int(), Int(), Int()])
+result: Lit(None)
 
 tree25:(post)  {x:1, y:2, z:3}
-result: list([Define(), Define(), Define()])
+result: Lit(None)
 
 tree26:(post)  {x=1, y=2, z=3}
-result: list([Define(), Define(), Define()])
+result: Lit(None)
 
 tree27:(post)  {x=1, y=2, z=3*(x+y)}
-result: list([Define(), Define(), Define()])
+result: Lit(None)
 
 tree28:(post)  {x, y, z}
-result: list([Get(), Get(), Get()])
+result: Lit(None)
 
 tree29:(post)  {1, 2, 3}
-result: list([Int(), Int(), Int()])
+result: Lit(None)
 
 tree30:(post)  {x:1, y:2, z:3}
-result: list([Define(), Define(), Define()])
+result: Lit(None)
 
 tree31:(post)  {x=1, y=2, z=3}
-result: list([Define(), Define(), Define()])
+result: Lit(None)
 
 tree32:(post)  {x=1, y=2, z=3*(x+y)}:(x=1, y=2, z=3)
 result: Lit(None)
