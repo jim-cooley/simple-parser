@@ -12,17 +12,16 @@ from modifytree import TreeModifier
 from tokens import TK, TCL, Token
 from visitor import BINARY_NODE, NATIVE_LIST, DEFAULT_NODE, VALUE_NODE, SEQUENCE_NODE
 
-_DEFINITION_NODE = 'process_definition'
 _FUNCTION_NODE = BINARY_NODE
 _IDENT_NODE = 'visit_identifier'
 _NATIVE_VALUE = 'visit_node'
 _VISIT_DEFINITION = 'visit_definition'
+ASSIGNMENT_NODE = 'visit_assignment'
 
-ASSIGNMENT_NODE = 'visit_assignment_node'
 BINARY_NODE = 'process_binops'
 
 _fixupNodeTypeMappings = {
-    'ApplyChainProd': _DEFINITION_NODE,
+    'ApplyChainProd': _VISIT_DEFINITION,
     'Assign': ASSIGNMENT_NODE,
     'BinOp': BINARY_NODE,
     'Block': SEQUENCE_NODE,
@@ -30,10 +29,10 @@ _fixupNodeTypeMappings = {
     'Command': 'process_command',
     'DateDiff': VALUE_NODE,
     'DateTime': VALUE_NODE,
-    'Define': _DEFINITION_NODE,
-    'DefineChainProd': _DEFINITION_NODE,
+    'Define': _VISIT_DEFINITION,
+    'DefineChainProd': _VISIT_DEFINITION,
     'DefineFn': _VISIT_DEFINITION,
-    'DefineVar': _DEFINITION_NODE,
+    'DefineVar': _VISIT_DEFINITION,
     'DefineVarFn': _VISIT_DEFINITION,
     'Duration': VALUE_NODE,
     'Float': VALUE_NODE,
@@ -92,6 +91,9 @@ class Fixups(TreeModifier, ABC):
         return node
 
     # non-converting visitation
+    def visit_assignment(self, node, label=None):
+        return self.visit_binary_node(node, label)
+
     def visit_definition(self, node, label=None):
         return self.visit_binary_node(node, label)
 
@@ -147,26 +149,6 @@ class Fixups(TreeModifier, ABC):
                 node.token.lexeme = f'%%{command}'
                 node.token.value = command
         return self.visit_unary_node(node, label)
-
-    # `Define` + FnCall -> DefineFn
-    # DefineVar + FnCall -> DefineVarFn
-    # TODO: may not be needed anymore as attempted to fix in parser
-    def process_definition(self, node, label=None):
-        rnode = self.visit_binary_node(node, label)
-        op = node.op
-        l_token = node.left.token
-        if l_token.id == TK.FUNCTION:
-            if isinstance(node, DefineVar):
-                n = DefineVarFn(left=node.left, op=node.token, right=node.right)
-                n.parent = node.parent
-                print("fixup applied: DefineVar -> DefineVarFn")
-                return n
-            elif isinstance(node, Define):
-                n = DefineFn(left=node.left, op=node.token, right=node.right)
-                n.parent = node.parent
-                print("fixup applied: Define -> DefineFn")
-                return n
-        return rnode
 
     def process_unops(self, node, label=None):
         if node is None:
@@ -235,7 +217,6 @@ def _fixup_binary_operation(node):
     r_value = node.right.value
     r_ty = type(r_value).__name__
 
-    # UNDONE: need dynamic dispatch here
     if l_value is None or r_value is None:
         return node
 

@@ -376,7 +376,7 @@ class Parser(object):
 #           node = Set(token, self.sequence())
             self.consume(TK.RBRC)
             return node
-        elif token.id == TK.LPRN:  # UNDONE: should probably be sequence / tuple literal and parse plists via 'identifier'
+        elif token.id == TK.LPRN:
             self.advance()
             node = self.expression()
             if self.check1(TK.COMA):
@@ -384,7 +384,7 @@ class Parser(object):
             else:
                 self.consume(TK.RPRN)
             return node
-        elif token.id == TK.LBRK:  # UNDONE: should be list literal and parse indexing via 'identifier'
+        elif token.id == TK.LBRK:
             self.consume(TK.LBRK)
             node = List(token.map2litval(), self.sequence())
             self.consume(TK.RBRK)
@@ -405,7 +405,6 @@ class Parser(object):
         loc = tk.location
         is_l_value = True
 
-        # UNDONE: could be done via 'self.sequence()' helper
         while self.peek().id != TK.EOF and self.peek().id != TK.RBRC:
             decl = self.declaration()
             seq.append(decl)
