@@ -16,14 +16,6 @@ class Scope:
         self.parent_scope = parent_scope
         self._symbols = {}
 
-#    @property
-#    def items(self):
-#        return self._symbols
-
-#    @items.setter
-#    def items(self, items):
-#        self._symbols.update(items)
-
     @property
     def name(self):
         if self.token is None or self.token.lexeme is None:
@@ -121,28 +113,11 @@ class Block(Expression, Object):
         op = Token(tid=TK.BLOCK, tcl=TCL.SCOPE, loc=loc)
         super().__init__(token=op, is_lvalue=False)
         self.items = items if items is not None else []
-#       self.value = self.items
-
-#   def __getitem__(self, index):
-#       return self._items[index]
-
-#   def __setitem__(self, index, value):
-#       self._items[index] = value
-    def format(self):
-        if self.value is None:
-            return '{}'
-        else:
-            fstr = ''
-            max = (len(self.value)-1)
-            for idx in range(0, len(self.value)):
-                fstr += f'{self.items[idx]}'
-                fstr += ',' if idx < max else ''
-            return '{' + f'{fstr}' + '}'
 
 
 @dataclass
 class Flow(Block):
-    def __init__(self, token=None, llist=None):
+    def __init__(self, token=None,llist=None):
         super().__init__(items=llist)
         token.value = llist
         self.token = token

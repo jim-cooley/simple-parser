@@ -52,6 +52,17 @@ class ASTCompound(AST):
     def values(self):
         return self.items
 
+    def format(self):
+        if self.value is None:
+            return '{}'
+        else:
+            fstr = ''
+            max = (len(self.value)-1)
+            for idx in range(0, len(self.value)):
+                fstr += f'{self.items[idx]}'
+                fstr += ',' if idx < max else ''
+            return '{' + f'{fstr}' + '}'
+
 
 @dataclass
 class Expression(ASTCompound):
