@@ -1,7 +1,0 @@
-
-
-test: 22: "--1d"
-
-tree1:  "--1d"
-result: timedelta(0:00:00)
-    1 : Duration TK.DUR(LITERAL, '1d', V=0:00:00)

@@ -5,3 +5,9 @@ test: 11:
 
 tree1:  a - -b + c
 result: Lit(None)
+    1 : BinOp TK.ADD(BINOP, '+', V=None)
+    2 :     BinOp TK.SUB(BINOP, '-', V=None)
+    3 :         Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    4 :         UnaryOp TK.NEG(UNARY, '-', V=None)
+    5 :             Get TK.IDNT(IDENTIFIER, 'b', V=None)
+    6 :     Get TK.IDNT(IDENTIFIER, 'c', V=None)

@@ -5,6 +5,12 @@ test: 6:
 
 tree1:  (a, b)                       # tuple
 result: list([Get(), Get()])
+    1 : List TK.TUPLE(LITERAL, '(', V=[Get(), Get()])
+    2 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    3 :     Get TK.IDNT(IDENTIFIER, 'b', V=None)
 
 tree1:(post)  (a, b)                       # tuple
 result: list([Get(), Get()])
+    1 : List TK.TUPLE(LITERAL, '(', V=[Get(), Get()])
+    2 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    3 :     Get TK.IDNT(IDENTIFIER, 'b', V=None)

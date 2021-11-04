@@ -5,6 +5,10 @@ test: 3:
 
 tree1:  all:{a, b, c}
 result: Lit(None)
+    1 : UnaryOp TK.ALL(UNARY, 'all', V=None)
+    2 :     Set TK.SET(LITERAL, '{', V=None)
 
 tree1:(post)  all:{a, b, c}
 result: Lit(None)
+    1 : UnaryOp TK.ALL(UNARY, 'all', V=None)
+    2 :     Set TK.SET(LITERAL, '{', V=None)

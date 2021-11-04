@@ -5,6 +5,18 @@ test: 22:
 
 tree1:  {a, b, c}:(4, 5, 6)          # set parameterization
 result: Lit(None)
+    1 : Define TK.COLN(NONE, ':', V=None)
+    2 :     Set TK.SET(LITERAL, '{', V=None)
+    3 :     List TK.TUPLE(LITERAL, '(', V=[Int(), Int(), Int()])
+    4 :         Int TK.INT(LITERAL, '4', V=4)
+    5 :         Int TK.INT(LITERAL, '5', V=5)
+    6 :         Int TK.INT(LITERAL, '6', V=6)
 
 tree1:(post)  {a, b, c}:(4, 5, 6)          # set parameterization
 result: Lit(None)
+    1 : Define TK.COLN(NONE, ':', V=None)
+    2 :     Set TK.SET(LITERAL, '{', V=None)
+    3 :     List TK.TUPLE(LITERAL, '(', V=[Int(), Int(), Int()])
+    4 :         Int TK.INT(LITERAL, '4', V=4)
+    5 :         Int TK.INT(LITERAL, '5', V=5)
+    6 :         Int TK.INT(LITERAL, '6', V=6)

@@ -5,6 +5,12 @@ test: 16:
 
 tree1:  +++b
 result: Lit(None)
+    1 : UnaryOp TK.INCREMENT(UNARY, '++', V=None)
+    2 :     UnaryOp TK.POS(UNARY, '+', V=None)
+    3 :         Get TK.IDNT(IDENTIFIER, 'b', V=None)
 
 tree1:(post)  +++b
 result: Lit(None)
+    1 : UnaryOp TK.INCREMENT(UNARY, '++', V=None)
+    2 :     UnaryOp TK.POS(UNARY, '+', V=None)
+    3 :         Get TK.IDNT(IDENTIFIER, 'b', V=None)

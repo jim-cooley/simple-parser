@@ -5,6 +5,12 @@ test: 1:
 
 tree1:  {a} - {b}
 result: Lit(None)
+    1 : BinOp TK.SUB(BINOP, '-', V=None)
+    2 :     Set TK.SET(LITERAL, '{', V=None)
+    3 :     Set TK.SET(LITERAL, '{', V=None)
 
 tree1:(post)  {a} - {b}
 result: Lit(None)
+    1 : BinOp TK.SUB(BINOP, '-', V=None)
+    2 :     Set TK.SET(LITERAL, '{', V=None)
+    3 :     Set TK.SET(LITERAL, '{', V=None)

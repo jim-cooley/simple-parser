@@ -1,7 +1,0 @@
-
-
-test: 4: ""abced""
-
-tree1:(post)  "abced"
-result: str(abced)
-    1 : Str TK.STR(LITERAL, 'abced', V=abced)

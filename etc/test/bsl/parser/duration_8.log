@@ -5,3 +5,4 @@ test: 8:
 
 tree1:  1.5s
 result: timedelta(0:00:01.500000)
+    1 : Duration TK.DUR(LITERAL, '1.5s', V=0:00:01.500000)

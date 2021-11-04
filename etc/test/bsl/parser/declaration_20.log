@@ -5,3 +5,9 @@ test: 20:
 
 tree1:  def f(x) := { x * 4 }
 result: Lit(None)
+    1 : DefineFn TK.COEQ(NONE, ':=', V=None)
+    2 :     DefineFn TK.FUNCTION(BINOP, '(', V=None)
+    3 :         Ref TK.IDNT(IDENTIFIER, 'f', V=None)
+    4 :         List TK.TUPLE(LITERAL, '(', V=[Ref()])
+    5 :             Ref TK.IDNT(IDENTIFIER, 'x', V=None)
+    6 :     Set TK.SET(LITERAL, '{', V=None)

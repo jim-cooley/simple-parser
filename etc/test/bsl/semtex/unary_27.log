@@ -1,7 +1,0 @@
-
-
-test: 27: "++1.5m"
-
-tree1:  "++1.5m"
-result: timedelta(0:02:30)
-    1 : Duration TK.DUR(LITERAL, '1.5m', V=0:02:30)

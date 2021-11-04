@@ -1,9 +1,0 @@
-
-
-test: 14: "----a"
-
-tree1:  "----a"
-result: Lit(None)
-    1 : UnaryOp TK.DECREMENT(UNARY, '--', V=None)
-    2 :     UnaryOp TK.DECREMENT(UNARY, '--', V=None)
-    3 :         Ident TK.IDNT(IDENTIFIER, 'a', V=a)

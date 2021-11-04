@@ -5,3 +5,9 @@ test: 9:
 
 tree1:  f(a = 5)
 result: Lit(None)
+    1 : FnCall TK.FUNCTION(BINOP, '(', V=None)
+    2 :     Get TK.IDNT(IDENTIFIER, 'f', V=None)
+    3 :     List TK.TUPLE(LITERAL, '(', V=[Define()])
+    4 :         Define TK.EQLS(BINOP, '=', V=None)
+    5 :             Ref TK.IDNT(IDENTIFIER, 'a', V=None)
+    6 :             Int TK.INT(LITERAL, '5', V=5)

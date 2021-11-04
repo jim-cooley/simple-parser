@@ -5,6 +5,16 @@ test: 5:
 
 tree1:  any:{ cross(close, sma(20), delay=1, threshold=0.01) } | buy
 result: Lit(None)
+    1 : UnaryOp TK.ANY(UNARY, 'any', V=None)
+    2 :     Flow TK.CHAIN(NONE, '|', V=[Block(), ApplyChainProd()])
+    3 :         Block TK.BLOCK(SCOPE, '', V=None)
+    4 :         ApplyChainProd TK.APPLY(UNARY, '', V=None)
+    5 :             Ref TK.BUY(IDENTIFIER, 'buy', V=None)
 
 tree1:(post)  any:{ cross(close, sma(20), delay=1, threshold=0.01) } | buy
 result: Lit(None)
+    1 : UnaryOp TK.ANY(UNARY, 'any', V=None)
+    2 :     Flow TK.CHAIN(NONE, '|', V=[Block(), ApplyChainProd()])
+    3 :         Block TK.BLOCK(SCOPE, '', V=None)
+    4 :         ApplyChainProd TK.APPLY(UNARY, '', V=None)
+    5 :             Ref TK.BUY(IDENTIFIER, 'buy', V=None)

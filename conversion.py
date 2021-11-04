@@ -6,7 +6,7 @@ from copy import copy
 from datetime import timedelta
 
 from literals import Bool, Int, Float, _parse_duration
-from tokens import TK
+from tokens import TK, native2tkid
 
 
 # --------------------------------
@@ -48,10 +48,38 @@ def c_node2float(node):
 # --------------------------------
 # General Value conversion helpers
 # --------------------------------
+def c_box(u, val):
+    if hasattr(u, 'value'):
+        u.value = val
+    else:
+        u = val
+    return u
+
+
+def c_unbox(u):
+    if getattr(u, 'value', False):
+        u = u.value
+    return u
+
+
+def c_type(u):
+    tid = TK.NONE
+    if getattr(u, 'token', False):
+        tid = u.token.id
+        return tid
+    v = c_unbox(u)
+    ty = type(v).__name__
+    if ty in native2tkid:
+        tid = native2tkid[ty]
+    return tid
+
+
 def c_to_bool(val, tid):
     if val is None:
         return False
-    if tid in [TK.BOOL, TK.TRUE, TK.FALSE]:
+    if tid in [TK.NATIVE, TK.IDNT]:
+        return val is True
+    elif tid in [TK.BOOL, TK.TRUE, TK.FALSE]:
         return val
     elif tid in [TK.INT, TK.FLOT, TK.PCT]:
         return val != 0
@@ -66,12 +94,20 @@ def c_to_bool(val, tid):
 def c_to_dur(val, tid):
     if val is None:
         return timedelta(seconds=0)
-    if tid == TK.DUR:
+    if tid in [TK.NATIVE, TK.IDNT]:
+        ty = type(val).__name__
+        if ty == 'timedelta':
+            return val
+        elif ty == 'int' or ty == 'float':
+            return timedelta(days=val)
+        elif ty == 'str':
+            return _parse_duration(val)
+    elif tid == TK.DUR:
         return val
     elif tid in [TK.FLOT, TK.INT, TK.PCT]:
-        return timedelta(seconds=val)
+        return timedelta(days=val)
     elif tid in [TK.EMPTY, TK.NONE, TK.FALSE]:
-        return timedelta(seconds=0)
+        return timedelta(days=0)
     elif tid == TK.STR:
         try:
             v, units = _parse_duration(val)
@@ -84,14 +120,24 @@ def c_to_dur(val, tid):
 def c_to_float(val, tid):
     if val is None:
         return float(0)
-    if tid in [TK.FLOT, TK.PCT]:
+    if tid in [TK.NATIVE, TK.IDNT]:
+        ty = type(val).__name__
+        if ty == 'float':
+            return val
+        else:
+            try:
+                v = float(val)
+                return v
+            except ValueError as e:
+                pass
+    elif tid in [TK.FLOT, TK.PCT]:
         return val
     elif tid in [TK.EMPTY, TK.NONE, TK.FALSE]:
         return float(0)
     elif tid in [TK.BOOL, TK.INT, TK.TRUE]:
         return float(val)
     elif tid == TK.DUR:
-        return float(val.total_seconds())
+        return float(val.total_seconds()) / 86400
     elif tid == TK.STR:
         try:
             v = float(val)
@@ -104,7 +150,17 @@ def c_to_float(val, tid):
 def c_to_int(val, tid):
     if val is None:
         return 0
-    if tid == TK.INT:
+    if tid in [TK.NATIVE, TK.IDNT]:
+        ty = type(val).__name__
+        if ty == 'int':
+            return val
+        else:
+            try:
+                v = int(val)
+                return v
+            except ValueError as e:
+                pass
+    elif tid == TK.INT:
         return val
     elif tid in [TK.EMPTY, TK.NONE, TK.FALSE]:
         return 0

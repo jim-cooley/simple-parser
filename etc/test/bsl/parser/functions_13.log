@@ -5,3 +5,13 @@ test: 13:
 
 tree1:  f(a:5, b:'c', d)
 result: Lit(None)
+    1 : FnCall TK.FUNCTION(BINOP, '(', V=None)
+    2 :     Get TK.IDNT(IDENTIFIER, 'f', V=None)
+    3 :     List TK.TUPLE(LITERAL, '(', V=[Define(), Define(), Get()])
+    4 :         Define TK.COLN(NONE, ':', V=None)
+    5 :             Ref TK.IDNT(IDENTIFIER, 'a', V=None)
+    6 :             Int TK.INT(LITERAL, '5', V=5)
+    7 :         Define TK.COLN(NONE, ':', V=None)
+    8 :             Ref TK.IDNT(IDENTIFIER, 'b', V=None)
+    9 :             Str TK.STR(LITERAL, 'c', V=c)
+   10 :         Get TK.IDNT(IDENTIFIER, 'd', V=None)

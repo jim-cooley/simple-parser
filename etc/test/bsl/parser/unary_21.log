@@ -5,3 +5,5 @@ test: 21:
 
 tree1:  ++1h
 result: Lit(None)
+    1 : UnaryOp TK.INCREMENT(UNARY, '++', V=None)
+    2 :     Duration TK.DUR(LITERAL, '1h', V=1:00:00)

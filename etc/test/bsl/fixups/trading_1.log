@@ -5,12 +5,40 @@ test: 1:
 
 tree1:  def atr = (high + low) / 2; median = (close + open) /2
 result: Lit(None)
+    1 : Define TK.EQLS(BINOP, '=', V=None)
+    2 :     Ref TK.IDNT(IDENTIFIER, 'atr', V=None)
+    3 :     BinOp TK.DIV(BINOP, '/', V=None)
+    4 :         BinOp TK.ADD(BINOP, '+', V=None)
+    5 :             Ref TK.IDNT(IDENTIFIER, 'high', V=None)
+    6 :             Ref TK.IDNT(IDENTIFIER, 'low', V=None)
+    7 :         Int TK.INT(LITERAL, '2', V=2)
 
 tree2:  def atr = (high + low) / 2; median = (close + open) /2
 result: Lit(None)
+    1 : Define TK.EQLS(BINOP, '=', V=None)
+    2 :     Ref TK.IDNT(IDENTIFIER, 'median', V=None)
+    3 :     BinOp TK.DIV(BINOP, '/', V=None)
+    4 :         BinOp TK.ADD(BINOP, '+', V=None)
+    5 :             Get TK.IDNT(IDENTIFIER, 'close', V=None)
+    6 :             Get TK.IDNT(IDENTIFIER, 'open', V=None)
+    7 :         Int TK.INT(LITERAL, '2', V=2)
 
 tree1:(post)  def atr = (high + low) / 2; median = (close + open) /2
 result: Lit(None)
+    1 : Define TK.EQLS(BINOP, '=', V=None)
+    2 :     Ref TK.IDNT(IDENTIFIER, 'atr', V=None)
+    3 :     BinOp TK.DIV(BINOP, '/', V=None)
+    4 :         BinOp TK.ADD(BINOP, '+', V=None)
+    5 :             Ref TK.IDNT(IDENTIFIER, 'high', V=None)
+    6 :             Ref TK.IDNT(IDENTIFIER, 'low', V=None)
+    7 :         Int TK.INT(LITERAL, '2', V=2)
 
 tree2:(post)  def atr = (high + low) / 2; median = (close + open) /2
 result: Lit(None)
+    1 : Define TK.EQLS(BINOP, '=', V=None)
+    2 :     Ref TK.IDNT(IDENTIFIER, 'median', V=None)
+    3 :     BinOp TK.DIV(BINOP, '/', V=None)
+    4 :         BinOp TK.ADD(BINOP, '+', V=None)
+    5 :             Get TK.IDNT(IDENTIFIER, 'close', V=None)
+    6 :             Get TK.IDNT(IDENTIFIER, 'open', V=None)
+    7 :         Int TK.INT(LITERAL, '2', V=2)

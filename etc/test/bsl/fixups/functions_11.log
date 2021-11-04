@@ -5,12 +5,16 @@ test: 11:
 
 tree1:  a{x, y, z}
 result: Lit(None)
+    1 : Get TK.IDNT(IDENTIFIER, 'a', V=None)
 
 tree2:  a{x, y, z}
 result: Lit(None)
+    1 : Set TK.SET(LITERAL, '{', V=None)
 
 tree1:(post)  a{x, y, z}
 result: Lit(None)
+    1 : Get TK.IDNT(IDENTIFIER, 'a', V=None)
 
 tree2:(post)  a{x, y, z}
 result: Lit(None)
+    1 : Set TK.SET(LITERAL, '{', V=None)

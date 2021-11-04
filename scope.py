@@ -3,40 +3,53 @@
 # inherit from AST so that we can see where this goes.
 from copy import copy, deepcopy
 from dataclasses import dataclass
-from queue import Queue, SimpleQueue
+from queue import SimpleQueue
 
+from exceptions import runtime_error
 from tokens import Token, TCL, TK
 from tree import AST, Expression
 
 
 @dataclass
 class Scope:
-    def __init__(self, parent_scope=None, **kwargs):
+    def __init__(self, parent_scope=None, name=None, **kwargs):
         super().__init__(**kwargs)
         self.parent_scope = parent_scope
+        self._name = name
+        self._fqname = self._calc_fqname()
         self._symbols = {}
 
     @property
     def name(self):
-        if self.token is None or self.token.lexeme is None:
-            return ''
-        return self.token.lexeme
+        return self._name
+
+    @property
+    def qualname(self):
+        return self._name if self._fqname is None else self._fqname
 
     def assign(self, token, expr):
-        self._find_add(token, expr)
-
-    def define(self, token, expr):
-        self._find_add(token, expr)
+        sym = self.find(token)
+        if sym is None:
+            runtime_error(f'Symbol `{token.lexeme}` does not exist', loc=token.location)
+        sym.from_value(expr)
+        return sym
 
     def contains(self, token):
         return token.lexeme in self._symbols
 
+    def define(self, token, expr):
+        sym = self._find_add_local(token, expr)
+        sym._calc_qualname()
+        return sym
+
     def link(self, scope):
         self.parent_scope = scope
+        self._fqname = self._calc_fqname()
         return self
 
     def unlink(self):
         self.parent_scope = None
+        self._fqname = self._name
         return self
 
     def find(self, token, default=None):
@@ -67,6 +80,7 @@ class Scope:
         if symbol is None:
             symbol = Object(deepcopy(token))
             symbol.parent_scope = self
+            symbol._calc_fqname()
             if getattr(value, '_symbols', False):
                 symbol._symbols = deepcopy(value._symbols)
                 symbol.value = symbol
@@ -79,6 +93,17 @@ class Scope:
         tk = Token(tid=tkid, tcl=tcl, lex=lex, loc=Token.Loc())
         self._symbols[lex] = tk
 
+    def _calc_fqname(self):
+        if self._name is None:
+            self._fqname = self._name = ''
+        elif self.parent_scope is None:
+            self._fqname = self._name
+        else:
+            pname = self.parent_scope._calc_fqname()
+            pname = '' if pname is None or pname == '.' else f'{pname}.'
+            self._fqname = f'{pname}{self._name}'
+        return self._fqname
+
     def print(self, indent=0):
         spaces = '' if indent < 1 else ' '.ljust(indent * 4)
         for k in self._symbols.keys():
@@ -90,18 +115,37 @@ class Object(AST, Scope):
     def __init__(self, token=None, value=None, parent=None):
         super().__init__(token=token, value=value, parent=parent, parent_scope=None)
         self.is_lvalue = True
+        self._value = token.value
+        if self.token is None or self.token.lexeme is None:
+            self._name = ''
+        else:
+            self._name = self.token.lexeme
+            self._calc_fqname()
 
-    @property
-    def value(self):
-        return self.token.value
+    # CONSIDER: deepcopy block from stack or deepcopy onto stack?
+    def from_block(self, block):
+        self._symbols = block._symbols
+        for s in self._symbols.values():
+            s.parent_scope = self
+            s._calc_fqname()
+        return self
 
-    @value.setter
-    def value(self, value):
-        self.token.value = value
+    def from_value(self, value):
+        eval_assignment_dispatch(self, value)
+        return self
+
+    #    @property
+    #    def value(self):
+    #        return self._value
+
+    #    @value.setter
+    #    def value(self, value):
+    #        self._value = value
 
     def format(self):
         tk = self.token
-        return f'{tk.lexeme} = ' + (f'{tk.value}' if tk.value is not None else 'None')
+        v = f'{tk.value}' if tk.value is not None else 'None'
+        return f'{self.qualname} = {v}'
 
 
 # -----------------------------------
@@ -117,7 +161,7 @@ class Block(Expression, Object):
 
 @dataclass
 class Flow(Block):
-    def __init__(self, token=None,llist=None):
+    def __init__(self, token=None, llist=None):
         super().__init__(items=llist)
         token.value = llist
         self.token = token
@@ -151,5 +195,5 @@ def _dump_symbols(scope):
             v = s._symbols[k]
             if type(v).__name__ == 'Object':
                 q.put(v)
-                print(f'{idx:5d}:  {k} : Object({v.token})')
+                print(f'{idx:5d}:  `{k}`: {v.qualname} : Object({v.token})')
                 idx += 1

@@ -1,11 +1,9 @@
 import os
 import traceback
 from abc import abstractmethod, ABC
+from multiprocessing import SimpleQueue
 
 from exceptions import _t_print
-from environment import _get_line
-from notation import NotationPrinter
-from scope import _dump_symbols
 from treeprint import print_forest, print_node
 
 _LOG_DIRECTORY = "./etc/test/log"
@@ -117,19 +115,23 @@ def _log_exception(e, log, name):
 
 
 def _dump_environment(env, log=None, label=None,
-                      print_results=True,
+                      print_results=False,
                       print_commands=True,
                       print_tokens=True,
                       print_trees=True,
-                      print_symbols=True):
+                      print_symbols=False):
     if print_tokens:
         _dump_tokens(env)
+        log.flush()
     if print_trees:
         print_forest(env, log, label, print_results)
+        log.flush()
     if print_commands:
-        _print_commands(env, env.commands, log)
+        _print_commands(env, env.commands, log=log)
+        log.flush()
     if print_symbols:
-        _dump_symbols(env.symbols)
+        _dump_symbols(log, env.scope)
+        log.flush()
 
 
 def _print_commands(env, commands, log=None, label=None):
@@ -150,4 +152,22 @@ def _dump_tokens(env):
     env.tokens.printall()
 
 
-
+def _dump_symbols(log, scope):
+    _t_print(f=log, message="\n\nsymbols: ")
+    idx = 0
+    q = SimpleQueue()
+    q.put(scope)
+    while not q.empty():
+        s = q.get()
+        if s._symbols is None or len(s._symbols) == 0:
+            continue
+        if getattr(s, 'token', False):
+            _t_print(f=log, message=f'\nscope: {s.token.lexeme}')
+        else:
+            _t_print(f=log, message=f'\nglobal scope:')
+        for k in s._symbols.keys():
+            v = s._symbols[k]
+            if type(v).__name__ == 'Object':
+                q.put(v)
+                _t_print(f=log, message=f'{idx:5d}:  `{k}`: {v.qualname} : Object({v.token})')
+                idx += 1

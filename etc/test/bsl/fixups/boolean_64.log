@@ -5,6 +5,12 @@ test: 64:
 
 tree1:  0 or "0"
 result: Lit(None)
+    1 : BinOp TK.OR(BINOP, 'or', V=None)
+    2 :     Int TK.INT(LITERAL, '0', V=0)
+    3 :     Str TK.STR(LITERAL, '0', V=0)
 
 tree1:(post)  0 or "0"
 result: Lit(None)
+    1 : BinOp TK.OR(BINOP, 'or', V=None)
+    2 :     Int TK.INT(LITERAL, '0', V=0)
+    3 :     Str TK.STR(LITERAL, '0', V=0)

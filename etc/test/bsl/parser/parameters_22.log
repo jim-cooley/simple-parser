@@ -5,3 +5,10 @@ test: 22:
 
 tree1:  a:{a,b,c}:(a = 5)
 result: Lit(None)
+    1 : Define TK.COLN(NONE, ':', V=None)
+    2 :     Ref TK.IDNT(IDENTIFIER, 'a', V=None)
+    3 :     Define TK.COLN(NONE, ':', V=None)
+    4 :         Set TK.SET(LITERAL, '{', V=None)
+    5 :         Define TK.EQLS(BINOP, '=', V=None)
+    6 :             Ref TK.IDNT(IDENTIFIER, 'a', V=None)
+    7 :             Int TK.INT(LITERAL, '5', V=5)

@@ -5,6 +5,20 @@ test: 5:
 
 tree1:  a | b >> c
 result: list([Flow(), ApplyChainProd()])
+    1 : Flow TK.APPLY(NONE, '>>', V=[Flow(), ApplyChainProd()])
+    2 :     Flow TK.CHAIN(NONE, '|', V=[Get(), ApplyChainProd()])
+    3 :         Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    4 :         ApplyChainProd TK.APPLY(UNARY, '', V=None)
+    5 :             Ref TK.IDNT(IDENTIFIER, 'b', V=None)
+    6 :     ApplyChainProd TK.APPLY(UNARY, '', V=None)
+    7 :         Ref TK.IDNT(IDENTIFIER, 'c', V=None)
 
 tree1:(post)  a | b >> c
 result: list([Flow(), ApplyChainProd()])
+    1 : Flow TK.APPLY(NONE, '>>', V=[Flow(), ApplyChainProd()])
+    2 :     Flow TK.CHAIN(NONE, '|', V=[Get(), ApplyChainProd()])
+    3 :         Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    4 :         ApplyChainProd TK.APPLY(UNARY, '', V=None)
+    5 :             Ref TK.IDNT(IDENTIFIER, 'b', V=None)
+    6 :     ApplyChainProd TK.APPLY(UNARY, '', V=None)
+    7 :         Ref TK.IDNT(IDENTIFIER, 'c', V=None)

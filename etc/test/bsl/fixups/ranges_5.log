@@ -5,6 +5,16 @@ test: 5:
 
 tree1:  today-2y..today
 result: Lit(None)
+    1 : BinOp TK.SUB(BINOP, '-', V=None)
+    2 :     Get TK.TODAY(IDENTIFIER, 'today', V=None)
+    3 :     BinOp TK.RANGE(BINOP, '..', V=None)
+    4 :         Duration TK.DUR(LITERAL, '2y', V=730 days, 0:00:00)
+    5 :         Get TK.TODAY(IDENTIFIER, 'today', V=None)
 
 tree1:(post)  today-2y..today
 result: Lit(None)
+    1 : BinOp TK.SUB(BINOP, '-', V=None)
+    2 :     Get TK.TODAY(IDENTIFIER, 'today', V=None)
+    3 :     BinOp TK.RANGE(BINOP, '..', V=None)
+    4 :         Duration TK.DUR(LITERAL, '2y', V=730 days, 0:00:00)
+    5 :         Get TK.TODAY(IDENTIFIER, 'today', V=None)

@@ -1,7 +1,0 @@
-
-
-test: 17: "-1h"
-
-tree1:  "-1h"
-    1 : UnaryOp TK.NEG(UNARY, '-', V=None)
-    2 :     Duration TK.DUR(LITERAL, '1h', V=1:00:00)

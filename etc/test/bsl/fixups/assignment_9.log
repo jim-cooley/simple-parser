@@ -5,6 +5,12 @@ test: 9:
 
 tree1:  a += 1
 result: Lit(None)
+    1 : Assign TK.PLEQ(NONE, '+=', V=None)
+    2 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    3 :     Int TK.INT(LITERAL, '1', V=1)
 
 tree1:(post)  a += 1
 result: Lit(None)
+    1 : Assign TK.PLEQ(NONE, '+=', V=None)
+    2 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    3 :     Int TK.INT(LITERAL, '1', V=1)

@@ -5,3 +5,9 @@ test: 3:
 
 tree1:  a(x, y, z)
 result: Lit(None)
+    1 : FnCall TK.FUNCTION(BINOP, '(', V=None)
+    2 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    3 :     List TK.TUPLE(LITERAL, '(', V=[Get(), Get(), Get()])
+    4 :         Get TK.IDNT(IDENTIFIER, 'x', V=None)
+    5 :         Get TK.IDNT(IDENTIFIER, 'y', V=None)
+    6 :         Get TK.IDNT(IDENTIFIER, 'z', V=None)

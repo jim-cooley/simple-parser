@@ -5,3 +5,4 @@ test: 1:
 
 tree1:  a
 result: Lit(None)
+    1 : Get TK.IDNT(IDENTIFIER, 'a', V=None)

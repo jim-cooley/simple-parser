@@ -1,7 +1,0 @@
-
-
-test: 14: "10.5%"
-
-tree1:(post)  10.5%
-result: float(0.105)
-    1 : Percent TK.PCT(LITERAL, '10.5%', V=0.105)

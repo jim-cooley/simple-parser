@@ -5,6 +5,8 @@ test: 12:
 
 tree1:  f{a:5, b:'c', d}
 result: Lit(None)
+    1 : Get TK.IDNT(IDENTIFIER, 'f', V=None)
 
 tree2:  f{a:5, b:'c', d}
 result: Lit(None)
+    1 : Set TK.SET(LITERAL, '{', V=None)

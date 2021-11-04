@@ -5,6 +5,13 @@ test: 14:
 
 tree1:  (-1, 1)
 result: list([UnaryOp(), Int()])
+    1 : List TK.TUPLE(LITERAL, '(', V=[UnaryOp(), Int()])
+    2 :     UnaryOp TK.NEG(UNARY, '-', V=None)
+    3 :         Int TK.INT(LITERAL, '1', V=1)
+    4 :     Int TK.INT(LITERAL, '1', V=1)
 
 tree1:(post)  (-1, 1)
 result: list([Int(), Int()])
+    1 : List TK.TUPLE(LITERAL, '(', V=[Int(), Int()])
+    2 :     Int TK.INT(LITERAL, '1', V=-1)
+    3 :     Int TK.INT(LITERAL, '1', V=1)

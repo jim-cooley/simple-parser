@@ -5,6 +5,18 @@ test: 11:
 
 tree1:  a() | b
 result: list([FnCall(), ApplyChainProd()])
+    1 : Flow TK.CHAIN(NONE, '|', V=[FnCall(), ApplyChainProd()])
+    2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
+    3 :         Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    4 :         List TK.TUPLE(LITERAL, '(', V=[])
+    5 :     ApplyChainProd TK.APPLY(UNARY, '', V=None)
+    6 :         Ref TK.IDNT(IDENTIFIER, 'b', V=None)
 
 tree1:(post)  a() | b
 result: list([FnCall(), ApplyChainProd()])
+    1 : Flow TK.CHAIN(NONE, '|', V=[FnCall(), ApplyChainProd()])
+    2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
+    3 :         Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    4 :         List TK.TUPLE(LITERAL, '(', V=[])
+    5 :     ApplyChainProd TK.APPLY(UNARY, '', V=None)
+    6 :         Ref TK.IDNT(IDENTIFIER, 'b', V=None)

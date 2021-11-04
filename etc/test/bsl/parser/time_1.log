@@ -5,3 +5,4 @@ test: 1:
 
 tree1:  10:45a
 result: time(10:45:00)
+    1 : Time TK.TIME(LITERAL, '10:45a', V=10:45:00)

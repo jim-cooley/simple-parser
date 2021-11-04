@@ -5,6 +5,15 @@ test: 5:
 
 tree1:  a + 2 * 3 + 4 not 5
 result: Lit(None)
+    1 : BinOp TK.ADD(BINOP, '+', V=None)
+    2 :     BinOp TK.ADD(BINOP, '+', V=None)
+    3 :         Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    4 :         BinOp TK.MUL(BINOP, '*', V=None)
+    5 :             Int TK.INT(LITERAL, '2', V=2)
+    6 :             Int TK.INT(LITERAL, '3', V=3)
+    7 :     Int TK.INT(LITERAL, '4', V=4)
 
 tree2:  a + 2 * 3 + 4 not 5
 result: Lit(None)
+    1 : UnaryOp TK.NOT(UNARY, 'not', V=None)
+    2 :     Int TK.INT(LITERAL, '5', V=5)

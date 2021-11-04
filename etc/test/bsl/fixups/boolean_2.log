@@ -5,6 +5,9 @@ test: 2:
 
 tree1:  not empty
 result: Lit(None)
+    1 : UnaryOp TK.NOT(UNARY, 'not', V=None)
+    2 :     Set TK.EMPTY(LITERAL, '{}', V=None)
 
 tree1:(post)  not empty
 result: Lit(None)
+    1 : Set TK.EMPTY(LITERAL, '{}', V=True)

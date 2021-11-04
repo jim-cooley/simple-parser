@@ -5,3 +5,14 @@ test: 18:
 
 tree1:  a.b.c.d() = 1
 result: Lit(None)
+    1 : Define TK.EQLS(BINOP, '=', V=None)
+    2 :     PropRef TK.REF(BINOP, '.', V=None)
+    3 :         Ref TK.IDNT(IDENTIFIER, 'a', V=None)
+    4 :         PropRef TK.REF(BINOP, '.', V=None)
+    5 :             Ref TK.IDNT(IDENTIFIER, 'b', V=None)
+    6 :             PropRef TK.REF(BINOP, '.', V=None)
+    7 :                 Ref TK.IDNT(IDENTIFIER, 'c', V=None)
+    8 :                 DefineFn TK.FUNCTION(BINOP, '(', V=None)
+    9 :                     Ref TK.IDNT(IDENTIFIER, 'd', V=None)
+   10 :                     List TK.TUPLE(LITERAL, '(', V=[])
+   11 :     Int TK.INT(LITERAL, '1', V=1)

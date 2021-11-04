@@ -5,6 +5,12 @@ test: 28:
 
 tree1:  f = x
 result: Lit(None)
+    1 : Define TK.EQLS(BINOP, '=', V=None)
+    2 :     Ref TK.IDNT(IDENTIFIER, 'f', V=None)
+    3 :     Get TK.IDNT(IDENTIFIER, 'x', V=None)
 
 tree1:(post)  f = x
 result: Lit(None)
+    1 : Define TK.EQLS(BINOP, '=', V=None)
+    2 :     Ref TK.IDNT(IDENTIFIER, 'f', V=None)
+    3 :     Get TK.IDNT(IDENTIFIER, 'x', V=None)

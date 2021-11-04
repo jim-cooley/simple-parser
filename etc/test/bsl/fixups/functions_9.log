@@ -5,12 +5,16 @@ test: 9:
 
 tree1:  a{}
 result: Lit(None)
+    1 : Get TK.IDNT(IDENTIFIER, 'a', V=None)
 
 tree2:  a{}
-result: dict({})
+result: bool(True)
+    1 : Set TK.EMPTY(LITERAL, '{}', V=True)
 
 tree1:(post)  a{}
 result: Lit(None)
+    1 : Get TK.IDNT(IDENTIFIER, 'a', V=None)
 
 tree2:(post)  a{}
-result: dict({})
+result: bool(True)
+    1 : Set TK.EMPTY(LITERAL, '{}', V=True)

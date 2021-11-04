@@ -5,3 +5,6 @@ test: 9:
 
 tree1:  a == b
 result: Lit(None)
+    1 : BinOp TK.ISEQ(BINOP, '==', V=None)
+    2 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    3 :     Get TK.IDNT(IDENTIFIER, 'b', V=None)

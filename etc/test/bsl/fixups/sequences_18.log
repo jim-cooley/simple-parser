@@ -5,6 +5,24 @@ test: 18:
 
 tree1:  open.b(1d) | c
 result: list([PropRef(), ApplyChainProd()])
+    1 : Flow TK.CHAIN(NONE, '|', V=[PropRef(), ApplyChainProd()])
+    2 :     PropRef TK.REF(BINOP, '.', V=None)
+    3 :         Get TK.IDNT(IDENTIFIER, 'open', V=None)
+    4 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
+    5 :             Get TK.IDNT(IDENTIFIER, 'b', V=None)
+    6 :             List TK.TUPLE(LITERAL, '(', V=[Duration()])
+    7 :                 Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
+    8 :     ApplyChainProd TK.APPLY(UNARY, '', V=None)
+    9 :         Ref TK.IDNT(IDENTIFIER, 'c', V=None)
 
 tree1:(post)  open.b(1d) | c
 result: list([PropRef(), ApplyChainProd()])
+    1 : Flow TK.CHAIN(NONE, '|', V=[PropRef(), ApplyChainProd()])
+    2 :     PropRef TK.REF(BINOP, '.', V=None)
+    3 :         Get TK.IDNT(IDENTIFIER, 'open', V=None)
+    4 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
+    5 :             Get TK.IDNT(IDENTIFIER, 'b', V=None)
+    6 :             List TK.TUPLE(LITERAL, '(', V=[Duration()])
+    7 :                 Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
+    8 :     ApplyChainProd TK.APPLY(UNARY, '', V=None)
+    9 :         Ref TK.IDNT(IDENTIFIER, 'c', V=None)

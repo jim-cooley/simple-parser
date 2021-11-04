@@ -5,6 +5,9 @@ test: 11:
 
 tree1:  not 3
 result: Lit(None)
+    1 : UnaryOp TK.NOT(UNARY, 'not', V=None)
+    2 :     Int TK.INT(LITERAL, '3', V=3)
 
 tree1:(post)  not 3
 result: Lit(None)
+    1 : Int TK.INT(LITERAL, '3', V=False)

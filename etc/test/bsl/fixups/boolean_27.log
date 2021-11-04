@@ -5,6 +5,9 @@ test: 27:
 
 tree1:  ! "false"
 result: Lit(None)
+    1 : UnaryOp TK.NOT(UNARY, '!', V=None)
+    2 :     Str TK.STR(LITERAL, 'false', V=false)
 
 tree1:(post)  ! "false"
 result: Lit(None)
+    1 : Str TK.STR(LITERAL, 'false', V=False)

@@ -5,3 +5,7 @@ test: 5:
 
 tree1:  any:{a=False, b=False, c=False}:{a=True}
 result: Lit(None)
+    1 : UnaryOp TK.ANY(UNARY, 'any', V=None)
+    2 :     Define TK.COLN(NONE, ':', V=None)
+    3 :         Block TK.BLOCK(SCOPE, '', V=None)
+    4 :         Block TK.BLOCK(SCOPE, '', V=None)

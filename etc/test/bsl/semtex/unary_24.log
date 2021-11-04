@@ -1,7 +1,0 @@
-
-
-test: 24: "++1M"
-
-tree1:  "++1M"
-result: timedelta(58 days, 10:00:00)
-    1 : Duration TK.DUR(LITERAL, '1M', V=58 days, 10:00:00)

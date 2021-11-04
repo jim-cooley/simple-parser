@@ -5,6 +5,24 @@ test: 6:
 
 tree1:  [a:5, b:[c], d]
 result: list([Define(), Define(), Get()])
+    1 : List TK.LIST(LITERAL, '[', V=[Define(), Define(), Get()])
+    2 :     Define TK.COLN(NONE, ':', V=None)
+    3 :         Ref TK.IDNT(IDENTIFIER, 'a', V=None)
+    4 :         Int TK.INT(LITERAL, '5', V=5)
+    5 :     Define TK.COLN(NONE, ':', V=None)
+    6 :         Ref TK.IDNT(IDENTIFIER, 'b', V=None)
+    7 :         List TK.LIST(LITERAL, '[', V=[Get()])
+    8 :             Get TK.IDNT(IDENTIFIER, 'c', V=None)
+    9 :     Get TK.IDNT(IDENTIFIER, 'd', V=None)
 
 tree1:(post)  [a:5, b:[c], d]
 result: list([Define(), Define(), Get()])
+    1 : List TK.LIST(LITERAL, '[', V=[Define(), Define(), Get()])
+    2 :     Define TK.COLN(NONE, ':', V=None)
+    3 :         Ref TK.IDNT(IDENTIFIER, 'a', V=None)
+    4 :         Int TK.INT(LITERAL, '5', V=5)
+    5 :     Define TK.COLN(NONE, ':', V=None)
+    6 :         Ref TK.IDNT(IDENTIFIER, 'b', V=None)
+    7 :         List TK.LIST(LITERAL, '[', V=[Get()])
+    8 :             Get TK.IDNT(IDENTIFIER, 'c', V=None)
+    9 :     Get TK.IDNT(IDENTIFIER, 'd', V=None)

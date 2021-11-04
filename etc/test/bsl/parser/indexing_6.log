@@ -5,6 +5,12 @@ test: 6:
 
 tree1:  a[x][y]
 result: Lit(None)
+    1 : Index TK.INDEX(BINOP, '[', V=None)
+    2 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    3 :     List TK.TUPLE(LITERAL, '[', V=[Get()])
+    4 :         Get TK.IDNT(IDENTIFIER, 'x', V=None)
 
 tree2:  a[x][y]
 result: list([Get()])
+    1 : List TK.LIST(LITERAL, '[', V=[Get()])
+    2 :     Get TK.IDNT(IDENTIFIER, 'y', V=None)

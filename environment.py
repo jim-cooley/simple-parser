@@ -1,3 +1,4 @@
+from collections import deque
 from dataclasses import dataclass
 from enum import Enum
 
@@ -19,6 +20,37 @@ DEFAULT_FORCE_ERRORS = False
 
 
 @dataclass
+class RuntimeStack(object):
+    def __init__(self):
+        self._stack = deque()
+
+    def is_empty(self):
+        return True if len(self._stack) == 0 else False
+
+    def depth(self):
+        return len(self._stack)
+
+    def top(self):
+        return self._stack[-1]
+
+    def push(self, x):
+        self._stack.append(x)
+
+    def push_all(self, l):
+        for item in l:
+            self.push(item)
+
+    def pop(self):
+        if self.is_empty():
+            Environment.get_logger().runtime_error(f'Stack underflow', loc=None)
+        return self._stack.pop()
+
+    def clear(self):
+        self._stack.clear()
+        self._stack = deque()
+
+
+@dataclass
 class Environment(object):
     current = None
 
@@ -26,10 +58,10 @@ class Environment(object):
         STRICT = 'strict'
         FORCE_ERRORS = 'force_errors'
 
-    def __init__(self, source=None, nodes=None, commands=None, keywords=None, options=None):
+    def __init__(self, source=None, commands=None, keywords=None, options=None):
         self.keywords = keywords if keywords is not None else Keywords()
         self.globals = Scope(self.keywords)
-        self.symbols = self.globals
+        self.scope = self.globals
         self.commands = commands if commands is not None else []
         self.trees = []
         self.lines = None
@@ -37,6 +69,7 @@ class Environment(object):
         self.tokens = None
         self.options = options if options is not None else {}
         self.logger = ExceptionReporter(self)
+        self.stack = RuntimeStack()
         Environment.current = self
 
     def __getitem__(self, key):
@@ -70,16 +103,19 @@ class Environment(object):
         self.lines = source.splitlines(True)
         return source
 
-    def enter(self, scope=None):
+    @staticmethod
+    def enter(scope=None):
         if scope is None:
             scope = Scope()
-        scope.link(Environment.current.symbols)
-        Environment.current.symbols = scope
+        scope.link(Environment.current.scope)
+        Environment.current.scope = scope
         return scope
 
-    def leave(self, scope):
+    @staticmethod
+    def leave(scope=None):
+        scope = Environment.current.scope if scope is None else scope
         parent = scope.parent_scope
-        Environment.current.symbols = parent
+        Environment.current.scope = parent
         return scope
 
     def get_line(self, line):

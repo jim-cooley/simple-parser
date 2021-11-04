@@ -5,6 +5,8 @@ test: 6:
 
 tree1:  trades
 result: Lit(None)
+    1 : Get TK.IDNT(IDENTIFIER, 'trades', V=None)
 
 tree1:(post)  trades
 result: Lit(None)
+    1 : Get TK.IDNT(IDENTIFIER, 'trades', V=None)

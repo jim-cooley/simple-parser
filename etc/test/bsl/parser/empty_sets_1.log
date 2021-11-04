@@ -5,3 +5,4 @@ test: 1:
 
 tree1:  {}
 result: dict({})
+    1 : Set TK.EMPTY(LITERAL, '{}', V={})

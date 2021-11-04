@@ -5,3 +5,5 @@ test: 12:
 
 tree1:  not "0"
 result: Lit(None)
+    1 : UnaryOp TK.NOT(UNARY, 'not', V=None)
+    2 :     Str TK.STR(LITERAL, '0', V=0)

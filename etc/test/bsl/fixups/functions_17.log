@@ -5,6 +5,20 @@ test: 17:
 
 tree1:  def avg_daily_price = (open + close) / 2
 result: Lit(None)
+    1 : Define TK.EQLS(BINOP, '=', V=None)
+    2 :     Ref TK.IDNT(IDENTIFIER, 'avg_daily_price', V=None)
+    3 :     BinOp TK.DIV(BINOP, '/', V=None)
+    4 :         BinOp TK.ADD(BINOP, '+', V=None)
+    5 :             Ref TK.IDNT(IDENTIFIER, 'open', V=None)
+    6 :             Ref TK.IDNT(IDENTIFIER, 'close', V=None)
+    7 :         Int TK.INT(LITERAL, '2', V=2)
 
 tree1:(post)  def avg_daily_price = (open + close) / 2
 result: Lit(None)
+    1 : Define TK.EQLS(BINOP, '=', V=None)
+    2 :     Ref TK.IDNT(IDENTIFIER, 'avg_daily_price', V=None)
+    3 :     BinOp TK.DIV(BINOP, '/', V=None)
+    4 :         BinOp TK.ADD(BINOP, '+', V=None)
+    5 :             Ref TK.IDNT(IDENTIFIER, 'open', V=None)
+    6 :             Ref TK.IDNT(IDENTIFIER, 'close', V=None)
+    7 :         Int TK.INT(LITERAL, '2', V=2)

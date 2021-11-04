@@ -1,7 +1,0 @@
-
-
-test: 20: "none"
-
-tree1:(post)  none
-result: None
-    1 : Literal TK.NONE(LITERAL, 'none', V=None)

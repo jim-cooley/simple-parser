@@ -1,9 +1,0 @@
-
-
-test: 21: "none"
-
-tree1:
-    1 : Set TK.SET(SET, '{}', V=Set())
-
-tree1:
-    1 : Set TK.SET(SET, '{}', V=Set())

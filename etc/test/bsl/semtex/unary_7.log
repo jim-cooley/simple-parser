@@ -1,7 +1,0 @@
-
-
-test: 7: "not 1"
-
-tree1:  "not 1"
-result: bool(False)
-    1 : Int TK.BOOL(LITERAL, '1', V=False)

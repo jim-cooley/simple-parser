@@ -5,6 +5,16 @@ test: 12:
 
 tree1:  f.a = { var a(x):x*x }
 result: Lit(None)
+    1 : Define TK.EQLS(BINOP, '=', V=None)
+    2 :     PropRef TK.REF(BINOP, '.', V=None)
+    3 :         Ref TK.IDNT(IDENTIFIER, 'f', V=None)
+    4 :         Ref TK.IDNT(IDENTIFIER, 'a', V=None)
+    5 :     Block TK.BLOCK(SCOPE, '', V=None)
 
 tree1:(post)  f.a = { var a(x):x*x }
 result: Lit(None)
+    1 : Define TK.EQLS(BINOP, '=', V=None)
+    2 :     PropRef TK.REF(BINOP, '.', V=None)
+    3 :         Ref TK.IDNT(IDENTIFIER, 'f', V=None)
+    4 :         Ref TK.IDNT(IDENTIFIER, 'a', V=None)
+    5 :     Block TK.BLOCK(SCOPE, '', V=None)

@@ -5,6 +5,12 @@ test: 12:
 
 tree1:  ---a
 result: Lit(None)
+    1 : UnaryOp TK.DECREMENT(UNARY, '--', V=None)
+    2 :     UnaryOp TK.NEG(UNARY, '-', V=None)
+    3 :         Get TK.IDNT(IDENTIFIER, 'a', V=None)
 
 tree1:(post)  ---a
 result: Lit(None)
+    1 : UnaryOp TK.DECREMENT(UNARY, '--', V=None)
+    2 :     UnaryOp TK.NEG(UNARY, '-', V=None)
+    3 :         Get TK.IDNT(IDENTIFIER, 'a', V=None)

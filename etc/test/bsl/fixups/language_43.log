@@ -5,12 +5,24 @@ test: 43:
 
 tree1:  f := { a(x):x*x }; { b: b.left = b.right}:(node);
 result: Lit(None)
+    1 : DefineVarFn TK.COEQ(NONE, ':=', V=None)
+    2 :     Ref TK.IDNT(IDENTIFIER, 'f', V=None)
+    3 :     Block TK.BLOCK(SCOPE, '', V=None)
 
 tree2:  f := { a(x):x*x }; { b: b.left = b.right}:(node);
 result: Lit(None)
+    1 : Define TK.COLN(NONE, ':', V=None)
+    2 :     Block TK.BLOCK(SCOPE, '', V=None)
+    3 :     Get TK.IDNT(IDENTIFIER, 'node', V=None)
 
 tree1:(post)  f := { a(x):x*x }; { b: b.left = b.right}:(node);
 result: Lit(None)
+    1 : DefineVarFn TK.COEQ(NONE, ':=', V=None)
+    2 :     Ref TK.IDNT(IDENTIFIER, 'f', V=None)
+    3 :     Block TK.BLOCK(SCOPE, '', V=None)
 
 tree2:(post)  f := { a(x):x*x }; { b: b.left = b.right}:(node);
 result: Lit(None)
+    1 : Define TK.COLN(NONE, ':', V=None)
+    2 :     Block TK.BLOCK(SCOPE, '', V=None)
+    3 :     Get TK.IDNT(IDENTIFIER, 'node', V=None)

@@ -5,6 +5,20 @@ test: 7:
 
 tree1:  a = 2 * 3 + 4
 result: Lit(None)
+    1 : Define TK.EQLS(BINOP, '=', V=None)
+    2 :     Ref TK.IDNT(IDENTIFIER, 'a', V=None)
+    3 :     BinOp TK.ADD(BINOP, '+', V=None)
+    4 :         BinOp TK.MUL(BINOP, '*', V=None)
+    5 :             Int TK.INT(LITERAL, '2', V=2)
+    6 :             Int TK.INT(LITERAL, '3', V=3)
+    7 :         Int TK.INT(LITERAL, '4', V=4)
 
 tree1:(post)  a = 2 * 3 + 4
 result: Lit(None)
+    1 : Define TK.EQLS(BINOP, '=', V=None)
+    2 :     Ref TK.IDNT(IDENTIFIER, 'a', V=None)
+    3 :     BinOp TK.ADD(BINOP, '+', V=None)
+    4 :         BinOp TK.MUL(BINOP, '*', V=6)
+    5 :             Int TK.INT(LITERAL, '2', V=2)
+    6 :             Int TK.INT(LITERAL, '3', V=3)
+    7 :         Int TK.INT(LITERAL, '4', V=4)

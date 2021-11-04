@@ -82,7 +82,7 @@ class Int(Literal):
             token.value = int(token.lexeme)
 
     def format(self, fmt=None):
-        return f'{self.value}'
+        return f'{self.qualname} = {self.value}'
 
 
 @dataclass

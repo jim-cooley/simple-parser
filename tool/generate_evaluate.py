@@ -2,64 +2,80 @@
 import sys
 from tokens import TK
 
-_COLUMNS = ['int', 'float', 'bool', 'str', 'timedelta']
+_COLUMNS = ['int', 'float', 'bool', 'str', 'timedelta', 'Object']
 
 _evaluate_binops_fn = {
     TK.ADD: [
-        #     int         float           bool             str             dur
-        ['l + r',       'l + r',        'l + r',        "l + f'{r}'",   'l + r'],    # int
-        ['l + r',       'l + r',        'l + r',        "l + f'{r}'",   'l + r'],    # float
-        ['l + r',       'l + r',        'l + r',        "l + f'{r}'",   'l + r'],    # bool
-        ["f'{l}' + r",  "f'{l}' + r",   "f'{l}' + r",   "invalid",      'invalid'],  # str
-        ['l + r',       'l + r',        'l + r',        "l + f'{r}'",   'l + r'],    # dur
+        #     int         float           bool             str             dur       object
+        ['l + r',       'l + r',        'l + r',        "l + f'{r}'",   'l + r',    'l + r',   ],    # int
+        ['l + r',       'l + r',        'l + r',        "l + f'{r}'",   'l + r',    'l + r',   ],    # float
+        ['l + r',       'l + r',        'l + r',        "l + f'{r}'",   'l + r',    'l + r',   ],    # bool
+        ["f'{l}' + r",  "f'{l}' + r",   "f'{l}' + r",   "invalid",      'invalid',  'invalid', ],    # str
+        ['l + r',       'l + r',        'l + r',        "l + f'{r}'",   'l + r',    'l + r',   ],    # dur
+        ['l + r',       'l + r',        'l + r',        "l + f'{r}'",   'l + r',    'l + r',   ],    # object
     ],
     TK.SUB: [
-        #     int         float           bool             str
-        ['l - r',       'l - r',        'l - r',        "invalid",      'l - r'],    # int
-        ['l - r',       'l - r',        'l - r',        "invalid",      'l - r'],    # float
-        ['l - r',       'l - r',        'l - r',        "invalid",      'l - r'],    # bool
-        ['invalid',     "invalid",      "invalid",      "invalid",      'l - r'],    # str
-        ['l - r',       'l - r',        'l - r',        "invalid",      'l - r'],    # dur
+        #     int         float           bool             str            dur        object
+        ['l - r',       'l - r',        'l - r',        "invalid",      'l - r',    'l - r',   ],    # int
+        ['l - r',       'l - r',        'l - r',        "invalid",      'l - r',    'l - r',   ],    # float
+        ['l - r',       'l - r',        'l - r',        "invalid",      'l - r',    'l - r',   ],    # bool
+        ['invalid',     "invalid",      "invalid",      "invalid",      'l - r',    'l - r',   ],    # str
+        ['l - r',       'l - r',        'l - r',        "invalid",      'l - r',    'l - r',   ],    # dur
+        ['l - r',       'l - r',        'l - r',        "invalid",      'l - r',    'l - r',   ],    # object
     ],
     TK.DIV: [
-        #     int         float           bool             str            dur
-        ['l / r',       'l / r',        'l / r',        "invalid",      'l / r'],    # int
-        ['l / r',       'l / r',        'l / r',        "invalid",      'l / r'],    # float
-        ['l / r',       'l / r',        'l / r',        "invalid",      'l / r'],    # bool
-        ['invalid',     "invalid",      "invalid",      "invalid",      'l / r'],    # str
-        ['l / r',       'l / r',        'l / r',        "invalid",      'l / r'],    # dur
+        #     int         float           bool             str            dur        object
+        ['l / r',       'l / r',        'l / r',        "invalid",      'l / r',    'l / r',    ],    # int
+        ['l / r',       'l / r',        'l / r',        "invalid",      'l / r',    'l / r',    ],    # float
+        ['l / r',       'l / r',        'l / r',        "invalid",      'l / r',    'l / r',    ],    # bool
+        ['invalid',     "invalid",      "invalid",      "invalid",      'l / r',    'l / r',    ],    # str
+        ['l / r',       'l / r',        'l / r',        "invalid",      'l / r',    'l / r',    ],    # dur
+        ['l / r',       'l / r',        'l / r',        "invalid",      'l / r',    'l / r',    ],    # object
     ],
     TK.IDIV: [
-        #     int         float           bool             str            dur
-        ['l // r',       'l // r',        'l // r',     "invalid",      'l // r'],    # int
-        ['l // r',       'l // r',        'l // r',     "invalid",      'l // r'],    # float
-        ['l // r',       'l // r',        'l // r',     "invalid",      'l // r'],    # bool
-        ['invalid',      "invalid",       "invalid",    "invalid",      'l // r'],    # str
-        ['l // r',       'l // r',        'l // r',     "invalid",      'l // r'],    # dur
+        #     int         float           bool             str            dur        object
+        ['l // r',       'l // r',        'l // r',     "invalid",      'l // r',   'l // r',   ],    # int
+        ['l // r',       'l // r',        'l // r',     "invalid",      'l // r',   'l // r',   ],    # float
+        ['l // r',       'l // r',        'l // r',     "invalid",      'l // r',   'l // r',   ],    # bool
+        ['invalid',      "invalid",       "invalid",    "invalid",      'l // r',   'l // r',   ],    # str
+        ['l // r',       'l // r',        'l // r',     "invalid",      'l // r',   'l // r',   ],    # dur
+        ['l // r',       'l // r',        'l // r',     "invalid",      'l // r',   'l // r',   ],    # object
     ],
     TK.POW: [
-        #     int         float           bool             str           dur
-        ['l ** r',       'l ** r',        'l ** r',     "invalid",      'l ** r'],    # int
-        ['l ** r',       'l ** r',        'l ** r',     "invalid",      'l ** r'],    # float
-        ['l ** r',       'l ** r',        'l ** r',     "invalid",      'l ** r'],    # bool
-        ['invalid',      "invalid",       "invalid",    "invalid",      'l ** r'],    # str
-        ['l ** r',       'l ** r',        'l ** r',     "invalid",      'l ** r'],    # dur
+        #     int         float           bool             str           dur         object
+        ['l ** r',       'l ** r',        'l ** r',     "invalid",      'l ** r',   'l ** r',   ],    # int
+        ['l ** r',       'l ** r',        'l ** r',     "invalid",      'l ** r',   'l ** r',   ],    # float
+        ['l ** r',       'l ** r',        'l ** r',     "invalid",      'l ** r',   'l ** r',   ],    # bool
+        ['invalid',      "invalid",       "invalid",    "invalid",      'l ** r',   'l ** r',   ],    # str
+        ['l ** r',       'l ** r',        'l ** r',     "invalid",      'l ** r',   'l ** r',   ],    # dur
+        ['l ** r',       'l ** r',        'l ** r',     "invalid",      'l ** r',   'l ** r',   ],    # object
     ],
     TK.MUL: [
-        #     int         float           bool             str            dur
-        ['l * r',       'l * r',        'l * r',        "l * r",        "l * r"],     # int
-        ['l * r',       'l * r',        'l * r',        "l * r",        "l * r"],     # float
-        ['l * r',       'l * r',        'l * r',        "l * r",        "l * r"],     # bool
-        ['l * r',       "l * r",        "l * r",        "l * r",        "l * r"],     # str
-        ['l * r',       'l * r',        'l * r',        "l * r",        "l * r"],     # dur
+        #     int         float           bool             str            dur        object
+        ['l * r',       'l * r',        'l * r',        "l * r",        "l * r",    "l * r",    ],     # int
+        ['l * r',       'l * r',        'l * r',        "l * r",        "l * r",    "l * r",    ],     # float
+        ['l * r',       'l * r',        'l * r',        "invalid",      "l * r",    "l * r",    ],     # bool
+        ['l * r',       "l * r",        "l * r",        "invalid",      "l * r",    "l * r",    ],     # str
+        ['l * r',       'l * r',        'l * r',        "invalid",      "l * r",    "l * r",    ],     # dur
+        ['l * r',       'l * r',        'l * r',        "invalid",      "l * r",    "l * r",    ],     # object
     ],
     TK.MOD: [
-        #     int         float           bool             str            dur
-        ['l % r',      'l % r',        'l % r',         "l % r",        "l % r"],     # int
-        ['l % r',      'l % r',        'l % r',         "l % r",        "l % r"],     # float
-        ['l % r',      'l % r',        'l % r',         "l % r",        "l % r"],     # bool
-        ['l % r',      "l % r",        "l % r",         "l % r",        "l % r"],     # str
-        ['l % r',      'l % r',        'l % r',         "l % r",        "l % r"],     # dur
+        #     int         float           bool             str            dur        object
+        ['l % r',      'l % r',        'l % r',         "l % r",        "l % r",    "l % r",    ],     # int
+        ['l % r',      'l % r',        'l % r',         "l % r",        "l % r",    "l % r",    ],     # float
+        ['l % r',      'l % r',        'l % r',         "l % r",        "l % r",    "l % r",    ],     # bool
+        ['l % r',      "l % r",        "l % r",         "l % r",        "l % r",    "l % r",    ],     # str
+        ['l % r',      'l % r',        'l % r',         "l % r",        "l % r",    "l % r",    ],     # dur
+        ['l % r',      'l % r',        'l % r',         "l % r",        "l % r",    "l % r",    ],     # object
+    ],
+    TK.ASSIGN: [
+        #     int         float           bool             str            dur        object
+        ['l = r',      'l = r',        'l = r',         "l = r",        "l = r",    "l = r",    ],     # int
+        ['l = r',      'l = r',        'l = r',         "l = r",        "l = r",    "l = r",    ],     # float
+        ['l = r',      'l = r',        'l = r',         "l = r",        "l = r",    "l = r",    ],     # bool
+        ['l = r',      "l = r",        "l = r",         "l = r",        "l = r",    "l = r",    ],     # str
+        ['l = r',      'l = r',        'l = r',         "l = r",        "l = r",    "l = r",    ],     # dur
+        ['l = r',      'l = r',        'l = r',         "l = r",        "l = r",    "l = r",    ],     # object
     ],
 }
 

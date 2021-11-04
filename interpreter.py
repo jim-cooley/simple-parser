@@ -1,7 +1,8 @@
 from environment import Environment
-from evaluate import evaluate_literal, evaluate_binary_operation, evaluate_unary_operation, evaluate_identifier, \
+from evaluate import reduce_value, evaluate_binary_operation, evaluate_unary_operation, evaluate_identifier, \
     evaluate_set, reduce_get, reduce_propref, reduce_ref
 from scope import Block
+from treeprint import print_node
 from visitor import TreeFilter, BINARY_NODE, SEQUENCE_NODE
 
 _VISIT_ASSIGNMENT = 'visit_assignment'
@@ -66,6 +67,7 @@ class Interpreter(TreeFilter):
     def __init__(self, environment):
         super().__init__(mapping=_interpreterVisitNodeMappings, apply_parent_fixups=True)
         self.environment = environment
+        self.stack = environment.stack
         self._verbose = True
 
     def apply(self, trees):
@@ -73,17 +75,22 @@ class Interpreter(TreeFilter):
         if trees is None:
             return None
         for t in trees:
-            v = self.visit(t.root)
+            self.visit(t.root)
+            v = self.stack.pop()
+            ty = type(v).__name__
             if getattr(v, 'value', False):
                 v = v.value
             t.values = v
+            if self._verbose:
+                print(f'\nresult: {ty.lower()}({v})\n')
+        print(f'stack depth: {self.stack.depth()}')
         return self.trees
 
     # default
     def visit_node(self, node, label=None):
         super().visit_node(node, label)
         self._print_node(node)
-        return node.value
+        self.stack.push(node.value)
 
     # encountered if 'tree' is actually a 'forest'
     def visit_list(self, list, label=None):
@@ -95,74 +102,82 @@ class Interpreter(TreeFilter):
             if self._verbose:
                 print(f'\ntree:{count}')
             values.append(self.visit(n))
-        return values
+        self.stack.push(values)
 
     def process_intrinsic(self, value, lable=None):
-        return value
+        self.stack.push(value)
 
     def visit_literal(self, node, label=None):
         self._print_node(node)
-        return evaluate_literal(node)
+        reduce_value(self.stack, node)
 
     # node is to be returned (thinks like Ref, etc)
     def visit_value(self, node, label=None):
         self._print_node(node)
-        return node
+        self.stack.push(node)
 
     # non-converting visitation
     def visit_assignment(self, node, label=None):
-        return self.visit_binary_node(node, label)
+        self.process_binop(node, label)
 
     def visit_definition(self, node, label=None):
-        return self.process_binop(node, label)
+        self.process_binop(node, label)
 
     def visit_ident(self, node, label=None):
         self._print_node(node)
-        return evaluate_identifier(node)
+        self.stack.push(evaluate_identifier(node))
 
     # worker nodes
     def process_binop(self, node, label=None):
         self._print_node(node)
         self.indent()
-        left = self.visit(node.left)
-        right = self.visit(node.right)
+        self.visit(node.right)
+        self.visit(node.left)
         self.dedent()
-        return evaluate_binary_operation(node, left, right)
+        l_value = self.stack.pop()
+        r_value = self.stack.pop()
+        l_value = evaluate_binary_operation(node, l_value, r_value)
+        self.stack.push(l_value)
 
     def process_block(self, node, label=None):
         self._print_node(node)
         block = Block(loc=node.token.location)
-        self.environment.enter(block)
+        Environment.enter(block)
         self._process_sequence(node)
-        self.environment.leave(block)
-        return block
+        Environment.leave()
+        self.stack.push(block)
 
     def process_get(self, node, label=None):
         self._print_node(node)
-        return reduce_get(get=node)
+        self.stack.push(reduce_get(get=node))
 
     def process_propref(self, node, label=None):
         self._print_node(node)
-        left = self.visit(node.left)
-        right = self.visit(node.right)
-        return reduce_propref(left, right)
+        self.visit(node.left)
+        left = self.stack.pop()
+        Environment.enter(left)
+        self.visit(node.right)
+        Environment.leave()
+        right = self.stack.pop()
+        self.stack.push(reduce_propref(left, right))
 
     def process_ref(self, node, label=None):
         self._print_node(node)
-        return reduce_ref(ref=node)
+        self.stack.push(reduce_ref(ref=node))
 
     def process_set_object(self, node, label=None):
         self._print_node(node)
         values = node.values()
         if values is None:
             return None
-        return evaluate_set(node, self)
+        evaluate_set(node, self)    # stack items are left on the stack
 
     def process_unop(self, node, label=None):
         self._print_node(node)
         self.indent()
-        left = self.visit(node.expr)
-        return evaluate_unary_operation(node, left)
+        self.visit(node.expr)
+        left = self.stack.pop()
+        self.stack.push(evaluate_unary_operation(node, left))
 
     def _process_sequence(self, seq):
         self.indent()
@@ -173,13 +188,15 @@ class Interpreter(TreeFilter):
             n = values[idx]
             if n is None:
                 continue
-            v = self.visit(n)
+            self.visit(n)
         self.dedent()
 
     def _init(self, tree):
         self.trees = tree
         self.keywords = self.environment.keywords
         self.globals = self.environment.globals
+        self.environment.stack.clear()
+        self.stack = self.environment.stack
 
     def _print_indented(self, message):
         if self._verbose:

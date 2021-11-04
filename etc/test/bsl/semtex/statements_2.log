@@ -1,9 +1,0 @@
-
-
-test: 2: "a; b"
-
-tree1:  "a; b"
-    1 : Ident TK.IDNT(IDENTIFIER, 'a', V=None)
-
-tree2:  "a; b"
-    1 : Ident TK.IDNT(IDENTIFIER, 'b', V=None)

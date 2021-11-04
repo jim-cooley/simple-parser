@@ -5,3 +5,4 @@ test: 11:
 
 tree1:  {a, b}
 result: Lit(None)
+    1 : Set TK.SET(LITERAL, '{', V=None)

@@ -5,3 +5,6 @@ test: 84:
 
 tree1:  "a" > "b"
 result: Lit(None)
+    1 : BinOp TK.GTR(BINOP, '>', V=None)
+    2 :     Str TK.STR(LITERAL, 'a', V=a)
+    3 :     Str TK.STR(LITERAL, 'b', V=b)

@@ -1,6 +1,0 @@
-
-
-test: 1: "{}"
-
-tree1:  "{}"
-    1 : Set TK.SET(SET, '{', V=[None])

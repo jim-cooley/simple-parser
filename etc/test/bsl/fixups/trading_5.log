@@ -5,6 +5,16 @@ test: 5:
 
 tree1:  buy: position += trade_size
 result: Lit(None)
+    1 : Define TK.COLN(NONE, ':', V=None)
+    2 :     Ref TK.BUY(IDENTIFIER, 'buy', V=None)
+    3 :     Assign TK.PLEQ(NONE, '+=', V=None)
+    4 :         Get TK.IDNT(IDENTIFIER, 'position', V=None)
+    5 :         Get TK.IDNT(IDENTIFIER, 'trade_size', V=None)
 
 tree1:(post)  buy: position += trade_size
 result: Lit(None)
+    1 : Define TK.COLN(NONE, ':', V=None)
+    2 :     Ref TK.BUY(IDENTIFIER, 'buy', V=None)
+    3 :     Assign TK.PLEQ(NONE, '+=', V=None)
+    4 :         Get TK.IDNT(IDENTIFIER, 'position', V=None)
+    5 :         Get TK.IDNT(IDENTIFIER, 'trade_size', V=None)

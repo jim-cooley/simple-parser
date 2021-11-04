@@ -5,6 +5,8 @@ test: 13:
 
 tree1:  10%
 result: float(0.1)
+    1 : Percent TK.PCT(LITERAL, '10%', V=0.1)
 
 tree1:(post)  10%
 result: float(0.1)
+    1 : Percent TK.PCT(LITERAL, '10%', V=0.1)

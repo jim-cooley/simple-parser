@@ -2,6 +2,7 @@
 
 from abc import ABC
 
+from conversion import c_unbox, c_type, c_box
 from eval_binops import eval_binops_dispatch_fixup
 from eval_unary import decrement_literal, increment_literal, negate_literal, not_literal
 from evaluate import _INTRINSIC_VALUE_TYPES
@@ -154,23 +155,29 @@ class Fixups(TreeModifier, ABC):
         if node is None:
             return None
         node.expr = self.visit(node.expr)
-        expr = node.expr
-        if expr is None:
+        if node.expr is None:
             return node
+        expr = node.expr
+        l_tid = c_type(expr)
+        l_value = c_unbox(expr)
+        if l_value is None:
+            return None
+
+        opid = node.op
         if expr.token.t_class == TCL.LITERAL:
-            if node.op == TK.NOT:
-                expr = not_literal(expr)
-                return _lift(node, expr)
-            elif node.op == TK.INCREMENT:
-                expr = increment_literal(expr)
-                return _lift(node, expr)
-            elif node.op == TK.DECREMENT:
-                expr = decrement_literal(expr)
-                return _lift(node, expr)
-            elif node.op == TK.NEG:
-                expr = negate_literal(expr)
-                return _lift(node, expr)
-            elif node.op == TK.POS:
+            if opid == TK.NOT:
+                l_value = not_literal(l_value, l_tid)
+                return _lift(node, c_box(expr, l_value))
+            elif opid == TK.INCREMENT:
+                l_value = increment_literal(l_value, l_tid)
+                return _lift(node, c_box(expr, l_value))
+            elif opid == TK.DECREMENT:
+                l_value = decrement_literal(l_value, l_tid)
+                return _lift(node, c_box(expr, l_value))
+            elif opid == TK.NEG:
+                l_value = negate_literal(l_value, l_tid)
+                return _lift(node, c_box(expr, l_value))
+            elif opid == TK.POS:
                 return _lift(node, expr)
         return node
 

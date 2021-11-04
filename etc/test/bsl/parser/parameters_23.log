@@ -5,3 +5,6 @@ test: 23:
 
 tree1:  {a,b,c}:{a = 5}
 result: Lit(None)
+    1 : Define TK.COLN(NONE, ':', V=None)
+    2 :     Set TK.SET(LITERAL, '{', V=None)
+    3 :     Block TK.BLOCK(SCOPE, '', V=None)

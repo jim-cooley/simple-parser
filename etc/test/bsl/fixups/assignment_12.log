@@ -5,6 +5,16 @@ test: 12:
 
 tree1:  trade_size := position * 10%
 result: Lit(None)
+    1 : DefineVarFn TK.COEQ(NONE, ':=', V=None)
+    2 :     Ref TK.IDNT(IDENTIFIER, 'trade_size', V=None)
+    3 :     BinOp TK.MUL(BINOP, '*', V=None)
+    4 :         Get TK.IDNT(IDENTIFIER, 'position', V=None)
+    5 :         Percent TK.PCT(LITERAL, '10%', V=0.1)
 
 tree1:(post)  trade_size := position * 10%
 result: Lit(None)
+    1 : DefineVarFn TK.COEQ(NONE, ':=', V=None)
+    2 :     Ref TK.IDNT(IDENTIFIER, 'trade_size', V=None)
+    3 :     BinOp TK.MUL(BINOP, '*', V=None)
+    4 :         Get TK.IDNT(IDENTIFIER, 'position', V=None)
+    5 :         Percent TK.PCT(LITERAL, '10%', V=0.1)

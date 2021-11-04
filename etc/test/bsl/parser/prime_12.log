@@ -5,3 +5,4 @@ test: 12:
 
 tree1:  $1.00
 result: float(1.0)
+    1 : Float TK.FLOT(LITERAL, '1.00', V=1.0)

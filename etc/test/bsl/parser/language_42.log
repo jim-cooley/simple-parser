@@ -5,3 +5,4 @@ test: 42:
 
 tree1:  { a(x):x*x }
 result: Lit(None)
+    1 : Block TK.BLOCK(SCOPE, '', V=None)

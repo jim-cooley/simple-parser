@@ -262,7 +262,10 @@ class FunctionalNotationPrinter(TreeFilter):
         self._notes.append(note)
 
     def _print_notation(self, node, append=None):
-        self._print_notation_token(node.token, append=append)
+        if getattr(node, 'token', False):
+            self._print_notation_token(node.token, append=append)
+        else:
+            self._print(f'{type(node).__name__.lower()}({node})')
 
     def _print_notation_token(self, token, append=None):
         val = ''

@@ -5,3 +5,5 @@ test: 12:
 
 tree1:  not {b}
 result: Lit(None)
+    1 : UnaryOp TK.NOT(UNARY, 'not', V=None)
+    2 :     Set TK.SET(LITERAL, '{', V=None)

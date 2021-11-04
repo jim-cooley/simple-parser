@@ -5,6 +5,14 @@ test: 15:
 
 tree1:  [[],[],[]]
 result: list([List(), List(), List()])
+    1 : List TK.LIST(LITERAL, '[', V=[List(), List(), List()])
+    2 :     List TK.LIST(LITERAL, '[', V=[None])
+    3 :     List TK.LIST(LITERAL, '[', V=[None])
+    4 :     List TK.LIST(LITERAL, '[', V=[None])
 
 tree1:(post)  [[],[],[]]
 result: list([List(), List(), List()])
+    1 : List TK.LIST(LITERAL, '[', V=[List(), List(), List()])
+    2 :     List TK.LIST(LITERAL, '[', V=[None])
+    3 :     List TK.LIST(LITERAL, '[', V=[None])
+    4 :     List TK.LIST(LITERAL, '[', V=[None])

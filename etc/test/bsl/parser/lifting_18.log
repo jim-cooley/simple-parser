@@ -5,3 +5,9 @@ test: 18:
 
 tree1:  {a,b,c}:(-1,1)
 result: Lit(None)
+    1 : Define TK.COLN(NONE, ':', V=None)
+    2 :     Set TK.SET(LITERAL, '{', V=None)
+    3 :     List TK.TUPLE(LITERAL, '(', V=[UnaryOp(), Int()])
+    4 :         UnaryOp TK.NEG(UNARY, '-', V=None)
+    5 :             Int TK.INT(LITERAL, '1', V=1)
+    6 :         Int TK.INT(LITERAL, '1', V=1)

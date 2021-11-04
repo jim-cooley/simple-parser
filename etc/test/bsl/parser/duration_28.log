@@ -5,3 +5,5 @@ test: 28:
 
 tree1:  -1.25y
 result: Lit(None)
+    1 : UnaryOp TK.NEG(UNARY, '-', V=None)
+    2 :     Duration TK.DUR(LITERAL, '1.25y', V=456 days, 6:00:00)

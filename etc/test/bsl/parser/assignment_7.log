@@ -5,3 +5,4 @@ test: 7:
 
 tree1:  {a = 5}
 result: Lit(None)
+    1 : Block TK.BLOCK(SCOPE, '', V=None)

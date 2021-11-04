@@ -5,3 +5,6 @@ test: 119:
 
 tree1:  false >= true
 result: Lit(None)
+    1 : BinOp TK.GTE(BINOP, '>=', V=None)
+    2 :     Bool TK.FALSE(LITERAL, 'false', V=False)
+    3 :     Bool TK.TRUE(LITERAL, 'true', V=True)

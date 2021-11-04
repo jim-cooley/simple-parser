@@ -5,3 +5,7 @@ test: 3:
 
 tree1:  [1..2]
 result: list([BinOp()])
+    1 : List TK.LIST(LITERAL, '[', V=[BinOp()])
+    2 :     BinOp TK.RANGE(BINOP, '.', V=None)
+    3 :         Float TK.FLOT(LITERAL, '1.', V=1.0)
+    4 :         Int TK.INT(LITERAL, '2', V=2)

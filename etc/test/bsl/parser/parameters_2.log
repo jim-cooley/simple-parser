@@ -5,3 +5,10 @@ test: 2:
 
 tree1:  fn_with_parameters(1,2,3,4)
 result: Lit(None)
+    1 : FnCall TK.FUNCTION(BINOP, '(', V=None)
+    2 :     Get TK.IDNT(IDENTIFIER, 'fn_with_parameters', V=None)
+    3 :     List TK.TUPLE(LITERAL, '(', V=[Int(), Int(), Int(), Int()])
+    4 :         Int TK.INT(LITERAL, '1', V=1)
+    5 :         Int TK.INT(LITERAL, '2', V=2)
+    6 :         Int TK.INT(LITERAL, '3', V=3)
+    7 :         Int TK.INT(LITERAL, '4', V=4)

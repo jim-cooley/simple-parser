@@ -5,6 +5,10 @@ test: 11:
 
 tree1:  ((a,))                       # grouping of tuple
 result: list([Get()])
+    1 : List TK.TUPLE(LITERAL, '(', V=[Get()])
+    2 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)
 
 tree1:(post)  ((a,))                       # grouping of tuple
 result: list([Get()])
+    1 : List TK.TUPLE(LITERAL, '(', V=[Get()])
+    2 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)

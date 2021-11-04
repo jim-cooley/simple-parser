@@ -1,7 +1,0 @@
-
-
-test: 11: "$1"
-
-tree1:(post)  $1
-result: float(1.0)
-    1 : Float TK.FLOT(LITERAL, '1', V=1.0)

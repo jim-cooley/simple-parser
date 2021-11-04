@@ -1,7 +1,6 @@
 import tokens as _
 from notation_fn import FunctionalNotationPrinter
 from exceptions import _t_print
-from environment import _get_line
 from visitor import NodeVisitor, BINARY_NODE, UNARY_NODE, SEQUENCE_NODE, DEFAULT_NODE, VALUE_NODE, NATIVE_VALUE, \
     ASSIGNMENT_NODE
 
@@ -62,6 +61,11 @@ class TreePrint(NodeVisitor):
 
     def format_indent(self):
         return '' if self._depth < 1 else ' '.ljust(self._depth * 4)
+
+    def visit_node(self, node, label=None):
+        self._print_node(node, label)
+        node._num = self._ncount
+        self._ncount += 1
 
     # helpers
     def visit_intrinsic(self, value, label=None):
@@ -158,7 +162,7 @@ def print_tree(tree, log=None, label=None, print_notation=True, print_results=Tr
         if v is None:
             ty = 'Lit'
         _t_print(log, f'result: {ty}({v})')
-    print_node(tree.root, print_notation=False)
+    print_node(tree.root, log=log, print_notation=False)
 
 
 def print_node(node, log=None, label=None, print_notation=True):

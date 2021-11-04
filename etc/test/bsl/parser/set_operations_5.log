@@ -5,3 +5,6 @@ test: 5:
 
 tree1:  {a} | {b}
 result: list([Set(), Set()])
+    1 : Flow TK.CHAIN(NONE, '|', V=[Set(), Set()])
+    2 :     Set TK.SET(LITERAL, '{', V=None)
+    3 :     Set TK.SET(LITERAL, '{', V=None)

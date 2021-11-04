@@ -5,6 +5,8 @@ test: 4:
 
 tree1:  11:00:30
 result: time(11:00:30)
+    1 : Time TK.TIME(LITERAL, '11:00:30', V=11:00:30)
 
 tree1:(post)  11:00:30
 result: time(11:00:30)
+    1 : Time TK.TIME(LITERAL, '11:00:30', V=11:00:30)

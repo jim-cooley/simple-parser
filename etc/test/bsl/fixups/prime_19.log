@@ -5,6 +5,8 @@ test: 19:
 
 tree1:  None
 result: Lit(None)
+    1 : Get TK.IDNT(IDENTIFIER, 'None', V=None)
 
 tree1:(post)  None
 result: Lit(None)
+    1 : Get TK.IDNT(IDENTIFIER, 'None', V=None)

@@ -5,3 +5,5 @@ test: 1:
 
 tree1:  + 2
 result: Lit(None)
+    1 : UnaryOp TK.POS(UNARY, '+', V=None)
+    2 :     Int TK.INT(LITERAL, '2', V=2)

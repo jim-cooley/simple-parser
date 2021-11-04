@@ -5,6 +5,9 @@ test: 7:
 
 tree1:  not true
 result: Lit(None)
+    1 : UnaryOp TK.NOT(UNARY, 'not', V=None)
+    2 :     Bool TK.TRUE(LITERAL, 'true', V=True)
 
 tree1:(post)  not true
 result: Lit(None)
+    1 : Bool TK.TRUE(LITERAL, 'true', V=False)

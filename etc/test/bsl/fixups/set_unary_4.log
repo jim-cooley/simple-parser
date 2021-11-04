@@ -5,6 +5,10 @@ test: 4:
 
 tree1:  none:{a, b, c}
 result: Lit(None)
+    1 : UnaryOp TK.NONE(UNARY, 'none', V=None)
+    2 :     Set TK.SET(LITERAL, '{', V=None)
 
 tree1:(post)  none:{a, b, c}
 result: Lit(None)
+    1 : UnaryOp TK.NONE(UNARY, 'none', V=None)
+    2 :     Set TK.SET(LITERAL, '{', V=None)

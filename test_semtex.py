@@ -15,8 +15,53 @@ from test.test_setup import test_data
 _test_suite = True       # False is useful for debugging, interactive.  True for test suites
 _skip_tests = [
     'regression',
-    'errors',
+    'regress',
+
+    'assignment',
+    'binops',
+    'blocks',
+    'boolean',
+    'boolean_var',
+    'commands',
+    'constant_expr',
+    'declaration',
+    'declarations_multiline',
+    'duration',
+    'empty_sets',
+    #'eval_test',
+    'expressions',
+    'functions',
+    'grouping',
+    'identifiers',
+    'indexed_properties',
+    'indexing',
+    'keywords',
+    'language',
+    'language_expr',
+    'lifting',
+    'lists',
+    'none',
+    'parameters',
+    'prime',
+    'properties',
+    'ranges',
+    'sequences',
+    'set_operations',
+    'set_parameters',
+    'set_unary',
+    'sets',
+    'shell',
     'simple',
+    'simple2',
+    'simpler',
+    'statements',
+    'system1',
+    'system2',
+    'time',
+    'trading',
+    'tuples',
+    'unary',
+    'var',
 ]
 
 
@@ -35,7 +80,7 @@ class SemanticAnalysisTestRunner(TestSuiteRunner, ABC):
         if self.verbose:
             _dump_environment(environment, log, label='post')
         interp.apply(trees)
-        _dump_environment(environment, log, label='post')
+        _dump_environment(environment, log, label='post', print_results=True, print_symbols=True)
 
 
 # this is only for execution under debugger or via command-line

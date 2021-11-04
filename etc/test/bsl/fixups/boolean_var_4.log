@@ -5,6 +5,12 @@ test: 4:
 
 tree1:  a & b
 result: Lit(None)
+    1 : BinOp TK.AND(BINOP, '&', V=None)
+    2 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    3 :     Get TK.IDNT(IDENTIFIER, 'b', V=None)
 
 tree1:(post)  a & b
 result: Lit(None)
+    1 : BinOp TK.AND(BINOP, '&', V=None)
+    2 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    3 :     Get TK.IDNT(IDENTIFIER, 'b', V=None)

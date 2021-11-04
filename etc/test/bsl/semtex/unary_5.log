@@ -1,7 +1,0 @@
-
-
-test: 5: "not True"
-
-tree1:  "not True"
-result: bool(False)
-    1 : Bool TK.BOOL(LITERAL, 'True', V=False)

@@ -5,6 +5,13 @@ test: 8:
 
 tree1:  close{weekly}.sma(20)
 result: Lit(None)
+    1 : Get TK.IDNT(IDENTIFIER, 'close', V=None)
 
 tree2:  close{weekly}.sma(20)
 result: Lit(None)
+    1 : BinOp TK.DOT(BINOP, '.', V=None)
+    2 :     Set TK.SET(LITERAL, '{', V=None)
+    3 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
+    4 :         Get TK.IDNT(IDENTIFIER, 'sma', V=None)
+    5 :         List TK.TUPLE(LITERAL, '(', V=[Int()])
+    6 :             Int TK.INT(LITERAL, '20', V=20)

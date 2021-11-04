@@ -5,3 +5,6 @@ test: 47:
 
 tree1:  { b: b.left = b.right}:(node)
 result: Lit(None)
+    1 : Define TK.COLN(NONE, ':', V=None)
+    2 :     Block TK.BLOCK(SCOPE, '', V=None)
+    3 :     Get TK.IDNT(IDENTIFIER, 'node', V=None)

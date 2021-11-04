@@ -5,3 +5,10 @@ test: 19:
 
 tree1:  atr := (high + low) / 2
 result: Lit(None)
+    1 : DefineVarFn TK.COEQ(NONE, ':=', V=None)
+    2 :     Ref TK.IDNT(IDENTIFIER, 'atr', V=None)
+    3 :     BinOp TK.DIV(BINOP, '/', V=None)
+    4 :         BinOp TK.ADD(BINOP, '+', V=None)
+    5 :             Get TK.IDNT(IDENTIFIER, 'high', V=None)
+    6 :             Get TK.IDNT(IDENTIFIER, 'low', V=None)
+    7 :         Int TK.INT(LITERAL, '2', V=2)

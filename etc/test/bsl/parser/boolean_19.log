@@ -5,3 +5,5 @@ test: 19:
 
 tree1:  ! true
 result: Lit(None)
+    1 : UnaryOp TK.NOT(UNARY, '!', V=None)
+    2 :     Bool TK.TRUE(LITERAL, 'true', V=True)

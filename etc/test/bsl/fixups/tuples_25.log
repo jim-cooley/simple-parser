@@ -5,6 +5,12 @@ test: 25:
 
 tree1:  {a, b, c}:{a=5, b=3, c=4}    # set parameterization k=v (block)
 result: Lit(None)
+    1 : Define TK.COLN(NONE, ':', V=None)
+    2 :     Set TK.SET(LITERAL, '{', V=None)
+    3 :     Block TK.BLOCK(SCOPE, '', V=None)
 
 tree1:(post)  {a, b, c}:{a=5, b=3, c=4}    # set parameterization k=v (block)
 result: Lit(None)
+    1 : Define TK.COLN(NONE, ':', V=None)
+    2 :     Set TK.SET(LITERAL, '{', V=None)
+    3 :     Block TK.BLOCK(SCOPE, '', V=None)

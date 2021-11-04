@@ -1,6 +1,0 @@
-
-
-test: 9: "1.5m"
-
-tree1:  "1.5m"
-    1 : Duration TK.DUR(LITERAL, '1.5m', V=45 days, 0:00:00)

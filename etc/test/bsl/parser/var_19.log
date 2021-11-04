@@ -5,3 +5,6 @@ test: 19:
 
 tree1:  f = { a(_):_*_ }
 result: Lit(None)
+    1 : Define TK.EQLS(BINOP, '=', V=None)
+    2 :     Ref TK.IDNT(IDENTIFIER, 'f', V=None)
+    3 :     Block TK.BLOCK(SCOPE, '', V=None)

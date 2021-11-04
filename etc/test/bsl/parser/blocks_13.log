@@ -5,3 +5,8 @@ test: 13:
 
 tree1:  { b }:{node} => {b.left = b.right}
 result: list([Define(), Block()])
+    1 : Flow TK.PRODUCE(NONE, '=>', V=[Define(), Block()])
+    2 :     Define TK.COLN(NONE, ':', V=None)
+    3 :         Set TK.SET(LITERAL, '{', V=None)
+    4 :         Set TK.SET(LITERAL, '{', V=None)
+    5 :     Block TK.BLOCK(SCOPE, '', V=None)

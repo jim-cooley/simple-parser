@@ -5,6 +5,12 @@ test: 3:
 
 tree1:  3 mod 2
 result: Lit(None)
+    1 : BinOp TK.MOD(BINOP, 'mod', V=None)
+    2 :     Int TK.INT(LITERAL, '3', V=3)
+    3 :     Int TK.INT(LITERAL, '2', V=2)
 
 tree1:(post)  3 mod 2
 result: Lit(None)
+    1 : BinOp TK.MOD(BINOP, 'mod', V=1)
+    2 :     Int TK.INT(LITERAL, '3', V=3)
+    3 :     Int TK.INT(LITERAL, '2', V=2)

@@ -146,6 +146,7 @@ class TK(IntEnum):
     LIST = auto()
     MOD = auto()
     MUL = auto()  # *
+    NATIVE = auto()    # token represents native literal
     NEG = auto()  # unary - (negate)
     NONE = auto()
     NONEOF = auto()  # none:
@@ -320,6 +321,17 @@ _tk2glyph = {
     TK.VAR: 'var',
 }
 
+native2tkid = {
+    'bool': TK.BOOL,
+    'float': TK.FLOT,
+    'int':  TK.INT,
+    'NoneType': TK.NONE,
+    'object': TK.NONE,
+    'str': TK.STR,
+    'timedelta': TK.DUR,
+    'Object': TK.OBJECT,
+    'Block': TK.BLOCK,
+}
 
 # maps extended special characters directly to tokens
 u16_to_tkid = {

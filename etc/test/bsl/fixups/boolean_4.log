@@ -5,6 +5,9 @@ test: 4:
 
 tree1:  not "empty"
 result: Lit(None)
+    1 : UnaryOp TK.NOT(UNARY, 'not', V=None)
+    2 :     Str TK.STR(LITERAL, 'empty', V=empty)
 
 tree1:(post)  not "empty"
 result: Lit(None)
+    1 : Str TK.STR(LITERAL, 'empty', V=False)

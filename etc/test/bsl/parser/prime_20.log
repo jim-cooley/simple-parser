@@ -5,3 +5,4 @@ test: 20:
 
 tree1:  none
 result: Lit(None)
+    1 : Literal TK.NONE(LITERAL, 'none', V=None)

@@ -5,6 +5,12 @@ test: 28:
 
 tree1:  f = { a:5 }      # should be block, not set
 result: Lit(None)
+    1 : Define TK.EQLS(BINOP, '=', V=None)
+    2 :     Ref TK.IDNT(IDENTIFIER, 'f', V=None)
+    3 :     Set TK.SET(LITERAL, '{', V=None)
 
 tree1:(post)  f = { a:5 }      # should be block, not set
 result: Lit(None)
+    1 : Define TK.EQLS(BINOP, '=', V=None)
+    2 :     Ref TK.IDNT(IDENTIFIER, 'f', V=None)
+    3 :     Set TK.SET(LITERAL, '{', V=None)

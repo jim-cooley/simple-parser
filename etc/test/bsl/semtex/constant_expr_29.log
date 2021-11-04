@@ -1,9 +1,0 @@
-
-
-test: 29: "365d / 12d"
-
-tree1:(post)  365d / 12d
-result: float(30.416666666666668)
-    1 : BinOp TK.DIV(BINOP, '/', V=None)
-    2 :     Duration TK.DUR(LITERAL, '365d', V=365 days, 0:00:00)
-    3 :     Duration TK.DUR(LITERAL, '12d', V=12 days, 0:00:00)

@@ -1,4 +1,6 @@
-from environment import Environment
+from conversion import c_unbox, c_box
+from environment import Environment, RuntimeStack
+from eval_assignment import eval_assignment_dispatch, _SUPPORTED_ASSIGNMENT_TOKENS
 from eval_binops import eval_binops_dispatch, _binops_dispatch_table
 from eval_unary import not_literal, increment_literal, decrement_literal, negate_literal
 from literals import LIT_NONE
@@ -20,76 +22,18 @@ def get_logger():
     return Environment.current.logger
 
 
-def evaluate_literal(node):
-    return node.value
-
-
-def evaluate_identifier(node):
-    left = Environment.current.symbols.find(node.token)
-    return left
-
-
-def evaluate_binary_operation(node, left, right):
-    op = node.op
-    if isinstance(left, Ref):
-        left = reduce_ref(scope=Environment.current.symbols, ref=left)
-    if isinstance(right, Ref):
-        right = reduce_ref(scope=Environment.current.symbols, ref=right)
-    if op in _binops_dispatch_table:
-        return eval_binops_dispatch(node, left, right)
-    elif op in [TK.DEF, TK.REF]:
-        scope = Environment.current.symbols
-        symbol = scope.find_add(left.token)
-        scope = Environment.current.enter(symbol)
-        ref = scope.find_add_local(right.token)
-        Environment.current.leave(scope)
-        return ref if ref is not None else LIT_NONE
-    elif op in [TK.ASSIGN, TK.DEFINE]:
-        left.value = right
-        return left  # UNDONE: return the object or its value?
-    else:
-        get_logger().error(f'Invalid operation {op.name}', loc=node.token.location)
-    return None  # fixups uses this code as well.  probably want option_strict enablement
-    """
-    elif op == TK.REF:
-        scope = Environment.current.symbols
-        symbol = scope.find(left.token)
-        if symbol is None:
-            return LIT_NONE
-        scope = Environment.current.enter_scope(symbol)
-        ref = scope.find_local(right.token)
-        Environment.current.leave_scope(scope)
-        if ref is None:
-            return LIT_NONE
-        return ref.value if ref is not None else LIT_NONE
-    elif op == TK.ASSIGN:
-        scope = Environment.current.symbols
-        token = left.token
-        if isinstance(left.value, AST):
-            token = left.value.token
-            scope = left.value.parent_scope
-        symbol = scope.find_add_local(token, right.value)
-        symbol.value = right.value
-        return right.value
-    elif op in _INPLACE_OPS:
-        left = Environment.current.symbols.find(left.token)
-        if left is not None:
-            op = _unary2binop[op]
-            left.value = eval_binops_dispatch2(op, left.value, right.value)
-            return left.value
-        get_logger().runtime_error(
-            f'Variable ({left.token.lexeme}) used before being initialized', loc=left.token.location)
-    """
+def reduce_value(stack: RuntimeStack, node):
+    stack.push(node.value)
 
 
 def reduce_ref(scope=None, ref=None):
-    scope = Environment.current.symbols if scope is None else scope
+    scope = Environment.current.scope if scope is None else scope
     symbol = scope.find_add_local(ref.token)
     return symbol   # should be Object type
 
 
 def reduce_get(scope=None, get=None):
-    scope = Environment.current.symbols if scope is None else scope
+    scope = Environment.current.scope if scope is None else scope
     symbol = scope.find(get.token)
     if symbol is None:
         Environment.get_logger().runtime_error(f'Symbol `{get.token.lexeme}` does not exist', loc=get.token.location)
@@ -97,7 +41,7 @@ def reduce_get(scope=None, get=None):
 
 
 def reduce_propref(left=None, right=None):
-    scope = Environment.current.symbols
+    scope = Environment.current.scope
     symbol = scope.find(left.token)
     if symbol is None:
         Environment.get_logger().runtime_error(f'Symbol `{left.token.lexeme}` does not exist', loc=left.token.location)
@@ -106,7 +50,7 @@ def reduce_propref(left=None, right=None):
 
 
 def reduce_propget(left=None, right=None):
-    scope = Environment.current.symbols
+    scope = Environment.current.scope
     symbol = scope.find(left.token)
     if symbol is None:
         Environment.get_logger().runtime_error(f'Symbol `{left.token.lexeme}` does not exist', loc=left.token.location)
@@ -116,39 +60,78 @@ def reduce_propget(left=None, right=None):
     return prop
 
 
+def evaluate_identifier(stack, node):
+    left = Environment.current.scope.find(node.token)
+    stack.push(left)
+
+
+def evaluate_binary_operation(node, left, right):
+    op = node.op
+    if isinstance(left, Ref):
+        left = reduce_ref(scope=Environment.current.scope, ref=left)
+    if isinstance(right, Ref):
+        right = reduce_ref(scope=Environment.current.scope, ref=right)
+    if op in _binops_dispatch_table:
+        return eval_binops_dispatch(node, left, right)
+    elif op in [TK.DEF, TK.REF]:
+        scope = Environment.current.scope
+        symbol = scope.find_add(left.token)
+        ref = symbol.find_add_local(right.token)
+        return ref if ref is not None else LIT_NONE
+    elif op in [TK.ASSIGN, TK.DEFINE]:
+        if op in _SUPPORTED_ASSIGNMENT_TOKENS:
+            return eval_assignment_dispatch(left, right)
+        else:
+            get_logger().runtime_error(f'Type mismatch for assignment({type(left)}, {type(right)})', loc=None)
+#        left.value = right
+#        return left  # UNDONE: return the object or its value?
+    else:
+        get_logger().error(f'Invalid operation {op.name}', loc=node.token.location)
+    return None  # fixups uses this code as well.  probably want option_strict enablement
+
+
 def evaluate_set(node, visitor=None):
     if node is None:
         return None
     values = node.values()
     if values is None:
         return None
-    scope = Environment.current.enter(node)
+    scope = Environment.enter(node)
     node.value = scope
     for idx in range(0, len(values)):
         n = values[idx]
         if n is None:
             continue
         visitor.visit(n)
-    Environment.current.leave(scope)
+    Environment.leave()
     return node
 
 
-def evaluate_unary_operation(node, expr):
-    tid = node.op
-    left = node.expr
+def evaluate_unary_operation(node, left):
+    opid = node.op
+    l_tid = TK.NATIVE
+    if getattr(left, 'token', False):
+        l_tid = left.token.id
+    l_value = c_unbox(left)
 
-    if left.token.value is None:
+    if l_value is None:
         return None
 
-    if left.token.t_class == TCL.LITERAL:
-        if tid == TK.NOT:
-            return not_literal(left).value
-        elif tid == TK.INCREMENT:
-            return increment_literal(left).value
-        elif tid == TK.DECREMENT:
-            return decrement_literal(left).value
-        elif tid == TK.NEG:
-            return negate_literal(left).value
-        elif tid == TK.POS:
-            return left.value
-    return node.value
+    if opid == TK.NOT:
+        return not_literal(l_value, l_tid)
+    elif opid == TK.INCREMENT:
+        l_value = increment_literal(l_value, l_tid)
+#        eval_assignment_dispatch(left, r_value),
+    elif opid == TK.DECREMENT:
+        l_value = decrement_literal(l_value, l_tid)
+#        eval_assignment_dispatch(left, r_value),
+    elif opid == TK.NEG:
+        l_value = negate_literal(l_value, l_tid)
+#        eval_assignment_dispatch(left, r_value),
+    elif opid == TK.POS:
+        pass
+    else:
+        get_logger().error(f'Invalid operation {opid.name}', loc=None)
+
+    left = c_box(left, l_value)
+    return left

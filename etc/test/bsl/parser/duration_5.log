@@ -5,3 +5,4 @@ test: 5:
 
 tree1:  1w
 result: timedelta(7 days, 0:00:00)
+    1 : Duration TK.DUR(LITERAL, '1w', V=7 days, 0:00:00)

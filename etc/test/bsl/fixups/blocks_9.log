@@ -5,6 +5,12 @@ test: 9:
 
 tree1:  node => { b : b.left = b.right}
 result: list([Get(), Block()])
+    1 : Flow TK.PRODUCE(NONE, '=>', V=[Get(), Block()])
+    2 :     Get TK.IDNT(IDENTIFIER, 'node', V=None)
+    3 :     Block TK.BLOCK(SCOPE, '', V=None)
 
 tree1:(post)  node => { b : b.left = b.right}
 result: list([Get(), Block()])
+    1 : Flow TK.PRODUCE(NONE, '=>', V=[Get(), Block()])
+    2 :     Get TK.IDNT(IDENTIFIER, 'node', V=None)
+    3 :     Block TK.BLOCK(SCOPE, '', V=None)

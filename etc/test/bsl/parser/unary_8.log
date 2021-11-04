@@ -5,3 +5,5 @@ test: 8:
 
 tree1:  ! b
 result: Lit(None)
+    1 : UnaryOp TK.NOT(UNARY, '!', V=None)
+    2 :     Get TK.IDNT(IDENTIFIER, 'b', V=None)

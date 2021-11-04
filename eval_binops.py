@@ -47,9 +47,9 @@ def eval_binops_dispatch(node, left, right):
         r_value = right.value
     r_ty = type(r_value).__name__
     if l_ty == 'Ident':
-        l_value = Environment.current.symbols.find(left.token).value
+        l_value = Environment.current.scope.find(left.token).value
     if r_ty == 'Ident':
-        r_value = Environment.current.symbols.find(right.token).value
+        r_value = Environment.current.scope.find(right.token).value
     if l_value is None or r_value is None:
         return None
     return eval_binops_dispatch2(node.token.id, l_value, r_value)

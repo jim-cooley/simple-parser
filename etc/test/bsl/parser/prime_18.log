@@ -5,3 +5,4 @@ test: 18:
 
 tree1:  false
 result: bool(False)
+    1 : Bool TK.FALSE(LITERAL, 'false', V=False)

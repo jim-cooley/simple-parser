@@ -1,8 +1,0 @@
-
-
-test: 3: "not b"
-
-tree1:  "not b"
-result: Lit(None)
-    1 : UnaryOp TK.NOT(UNARY, 'not', V=None)
-    2 :     Ident TK.IDNT(IDENTIFIER, 'b', V=b)

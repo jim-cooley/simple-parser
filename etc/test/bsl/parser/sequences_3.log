@@ -5,3 +5,9 @@ test: 3:
 
 tree1:  a | b | c | d
 result: list([Get(), Get(), Get(), ApplyChainProd()])
+    1 : Flow TK.CHAIN(NONE, '|', V=[Get(), Get(), Get(), ApplyChainProd()])
+    2 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    3 :     Get TK.IDNT(IDENTIFIER, 'b', V=None)
+    4 :     Get TK.IDNT(IDENTIFIER, 'c', V=None)
+    5 :     ApplyChainProd TK.APPLY(UNARY, '', V=None)
+    6 :         Ref TK.IDNT(IDENTIFIER, 'd', V=None)

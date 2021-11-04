@@ -5,6 +5,12 @@ test: 50:
 
 tree1:  1 and "hello"
 result: Lit(None)
+    1 : BinOp TK.AND(BINOP, 'and', V=None)
+    2 :     Int TK.INT(LITERAL, '1', V=1)
+    3 :     Str TK.STR(LITERAL, 'hello', V=hello)
 
 tree1:(post)  1 and "hello"
 result: Lit(None)
+    1 : BinOp TK.AND(BINOP, 'and', V=None)
+    2 :     Int TK.INT(LITERAL, '1', V=1)
+    3 :     Str TK.STR(LITERAL, 'hello', V=hello)

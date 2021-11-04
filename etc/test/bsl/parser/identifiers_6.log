@@ -5,3 +5,8 @@ test: 6:
 
 tree1:  a.b.c
 result: Lit(None)
+    1 : PropRef TK.REF(BINOP, '.', V=None)
+    2 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    3 :     PropRef TK.REF(BINOP, '.', V=None)
+    4 :         Get TK.IDNT(IDENTIFIER, 'b', V=None)
+    5 :         Get TK.IDNT(IDENTIFIER, 'c', V=None)

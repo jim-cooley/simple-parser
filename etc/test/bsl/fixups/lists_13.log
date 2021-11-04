@@ -5,6 +5,14 @@ test: 13:
 
 tree1:  [[[a]]]
 result: list([List()])
+    1 : List TK.LIST(LITERAL, '[', V=[List()])
+    2 :     List TK.LIST(LITERAL, '[', V=[List()])
+    3 :         List TK.LIST(LITERAL, '[', V=[Get()])
+    4 :             Get TK.IDNT(IDENTIFIER, 'a', V=None)
 
 tree1:(post)  [[[a]]]
 result: list([List()])
+    1 : List TK.LIST(LITERAL, '[', V=[List()])
+    2 :     List TK.LIST(LITERAL, '[', V=[List()])
+    3 :         List TK.LIST(LITERAL, '[', V=[Get()])
+    4 :             Get TK.IDNT(IDENTIFIER, 'a', V=None)

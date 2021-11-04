@@ -5,3 +5,8 @@ test: 17:
 
 tree1:  (((a), (b)), (c))            # tuple in a tuple with more grouping
 result: list([List(), Get()])
+    1 : List TK.TUPLE(LITERAL, '(', V=[List(), Get()])
+    2 :     List TK.TUPLE(LITERAL, '(', V=[Get(), Get()])
+    3 :         Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    4 :         Get TK.IDNT(IDENTIFIER, 'b', V=None)
+    5 :     Get TK.IDNT(IDENTIFIER, 'c', V=None)

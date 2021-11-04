@@ -1,7 +1,0 @@
-
-
-test: 15: "+++2"
-
-tree1:  "+++2"
-result: int(3)
-    1 : Int TK.INT(LITERAL, '2', V=3)
