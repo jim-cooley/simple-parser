@@ -1,12 +1,4 @@
 
 
 test: 15:
-"s.a = 5"
-
-tree1:  s.a = 5
-result: Lit(None)
-    1 : Define TK.EQLS(BINOP, '=', V=None)
-    2 :     PropRef TK.REF(BINOP, '.', V=None)
-    3 :         Ref TK.IDNT(IDENTIFIER, 's', V=None)
-    4 :         Ref TK.IDNT(IDENTIFIER, 'a', V=None)
-    5 :     Int TK.INT(LITERAL, '5', V=5)
+"#"

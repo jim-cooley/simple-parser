@@ -5,7 +5,6 @@ from copy import copy, deepcopy
 from dataclasses import dataclass
 from queue import SimpleQueue
 
-from exceptions import runtime_error
 from tokens import Token, TCL, TK
 from tree import AST, Expression
 
@@ -19,6 +18,9 @@ class Scope:
         self._fqname = self._calc_fqname()
         self._symbols = {}
 
+    def __len__(self):
+        return len(self._symbols.keys())
+
     @property
     def name(self):
         return self._name
@@ -30,7 +32,7 @@ class Scope:
     def assign(self, token, expr):
         sym = self.find(token)
         if sym is None:
-            runtime_error(f'Symbol `{token.lexeme}` does not exist', loc=token.location)
+            raise ValueError(f'Symbol `{token.lexeme}` does not exist')
         sym.from_value(expr)
         return sym
 
@@ -115,7 +117,7 @@ class Object(AST, Scope):
     def __init__(self, token=None, value=None, parent=None):
         super().__init__(token=token, value=value, parent=parent, parent_scope=None)
         self.is_lvalue = True
-        self._value = token.value
+        self.value = token.value
         if self.token is None or self.token.lexeme is None:
             self._name = ''
         else:
@@ -134,13 +136,15 @@ class Object(AST, Scope):
         eval_assignment_dispatch(self, value)
         return self
 
-    #    @property
-    #    def value(self):
-    #        return self._value
-
-    #    @value.setter
-    #    def value(self, value):
-    #        self._value = value
+    def to_dict(self, unbox_values=True):
+        d = deepcopy(self._symbols)
+        if unbox_values:
+            for k in d.keys():
+                v = d[k]
+                if getattr(v, 'value', False):
+                    v = v.value
+                d[k] = v
+        return d
 
     def format(self):
         tk = self.token
@@ -157,6 +161,11 @@ class Block(Expression, Object):
         op = Token(tid=TK.BLOCK, tcl=TCL.SCOPE, loc=loc)
         super().__init__(token=op, is_lvalue=False)
         self.items = items if items is not None else []
+        self.value = self.items
+        self.is_l_value = False
+
+    def __len__(self):
+        return len(self.items)
 
 
 @dataclass

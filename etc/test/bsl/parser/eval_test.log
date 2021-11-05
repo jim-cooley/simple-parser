@@ -1,8 +1,8 @@
 
 
 test:
-"#4
-#4 * 3
+"4
+4 * 3
 a = 4
 s = { a=5 }
 s.a
@@ -11,32 +11,43 @@ s.b
 #
 b = a * 3
 c = b
-s = { a=5 }
-s.b = s.a * a
 s.b
 ++s.b
 
 "
 
-tree1:  a = 4
+tree1:  4
+result: int(4)
+    1 : Int TK.INT(LITERAL, '4', V=4)
+
+tree2:  4 * 3
+result: Lit(None)
+    1 : BinOp TK.MUL(BINOP, '*', V=None)
+    2 :     Int TK.INT(LITERAL, '4', V=4)
+    3 :     Int TK.INT(LITERAL, '3', V=3)
+
+tree3:  a = 4
 result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'a', V=None)
     3 :     Int TK.INT(LITERAL, '4', V=4)
 
-tree2:  s = { a=5 }
+tree4:  s = { a=5 }
 result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 's', V=None)
-    3 :     Block TK.BLOCK(SCOPE, '', V=None)
+    3 :     Block TK.BLOCK(SCOPE, '', V=[Define()])
+    4 :         Define TK.EQLS(BINOP, '=', V=None)
+    5 :             Ref TK.IDNT(IDENTIFIER, 'a', V=None)
+    6 :             Int TK.INT(LITERAL, '5', V=5)
 
-tree3:  s.a
+tree5:  s.a
 result: Lit(None)
     1 : PropRef TK.REF(BINOP, '.', V=None)
     2 :     Get TK.IDNT(IDENTIFIER, 's', V=None)
     3 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)
 
-tree4:  s.b = s.a * a
+tree6:  s.b = s.a * a
 result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     PropRef TK.REF(BINOP, '.', V=None)
@@ -48,13 +59,13 @@ result: Lit(None)
     8 :             Get TK.IDNT(IDENTIFIER, 'a', V=None)
     9 :         Get TK.IDNT(IDENTIFIER, 'a', V=None)
 
-tree5:  s.b
+tree7:  s.b
 result: Lit(None)
     1 : PropRef TK.REF(BINOP, '.', V=None)
     2 :     Get TK.IDNT(IDENTIFIER, 's', V=None)
     3 :     Get TK.IDNT(IDENTIFIER, 'b', V=None)
 
-tree6:  b = a * 3
+tree8:  b = a * 3
 result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'b', V=None)
@@ -62,29 +73,11 @@ result: Lit(None)
     4 :         Get TK.IDNT(IDENTIFIER, 'a', V=None)
     5 :         Int TK.INT(LITERAL, '3', V=3)
 
-tree7:  c = b
+tree9:  c = b
 result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'c', V=None)
     3 :     Get TK.IDNT(IDENTIFIER, 'b', V=None)
-
-tree8:  s = { a=5 }
-result: Lit(None)
-    1 : Define TK.EQLS(BINOP, '=', V=None)
-    2 :     Ref TK.IDNT(IDENTIFIER, 's', V=None)
-    3 :     Block TK.BLOCK(SCOPE, '', V=None)
-
-tree9:  s.b = s.a * a
-result: Lit(None)
-    1 : Define TK.EQLS(BINOP, '=', V=None)
-    2 :     PropRef TK.REF(BINOP, '.', V=None)
-    3 :         Ref TK.IDNT(IDENTIFIER, 's', V=None)
-    4 :         Ref TK.IDNT(IDENTIFIER, 'b', V=None)
-    5 :     BinOp TK.MUL(BINOP, '*', V=None)
-    6 :         PropRef TK.REF(BINOP, '.', V=None)
-    7 :             Get TK.IDNT(IDENTIFIER, 's', V=None)
-    8 :             Get TK.IDNT(IDENTIFIER, 'a', V=None)
-    9 :         Get TK.IDNT(IDENTIFIER, 'a', V=None)
 
 tree10:  s.b
 result: Lit(None)

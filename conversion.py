@@ -5,44 +5,10 @@
 from copy import copy
 from datetime import timedelta
 
+from exceptions import runtime_error
 from literals import Bool, Int, Float, _parse_duration
+from scope import Object
 from tokens import TK, native2tkid
-
-
-# --------------------------------
-# General Node conversion helpers
-# --------------------------------
-def c_node2bool(node):
-    tid = node.token.id
-    tk = copy(node.token)
-    tk.id = TK.BOOL
-    tk.value = c_to_bool(tk.value, tid)
-    if tk.value is not None:
-        tk.lexeme = None
-        return Bool(tk)
-    _runtime_error("Unsupported type for conversion", loc=tk.location)
-
-
-def c_node2int(node):
-    tid = node.token.id
-    tk = copy(node.token)
-    tk.id = TK.INT
-    tk.value = c_to_int(tk.value, tid)
-    if tk.value is not None:
-        tk.lexeme = None
-        return Int(tk)
-    _runtime_error("Unsupported type for conversion", loc=tk.location)
-
-
-def c_node2float(node):
-    tid = node.token.id
-    tk = copy(node.token)
-    tk.id = TK.FLOT
-    tk.value = c_to_float(tk.value, tid)
-    if tk.value is not None:
-        tk.lexeme = None
-        return Float(tk)
-    _runtime_error("Unsupported type for conversion", loc=tk.location)
 
 
 # --------------------------------
@@ -57,6 +23,8 @@ def c_box(u, val):
 
 
 def c_unbox(u):
+    if isinstance(u, Object):
+        u = u.value
     if getattr(u, 'value', False):
         u = u.value
     return u
@@ -72,6 +40,42 @@ def c_type(u):
     if ty in native2tkid:
         tid = native2tkid[ty]
     return tid
+
+
+# --------------------------------
+# General Node conversion helpers
+# --------------------------------
+def c_node2bool(node):
+    tid = node.token.id
+    tk = copy(node.token)
+    tk.id = TK.BOOL
+    tk.value = c_to_bool(tk.value, tid)
+    if tk.value is not None:
+        tk.lexeme = None
+        return Bool(tk)
+    runtime_error("Unsupported type for conversion", loc=tk.location)
+
+
+def c_node2int(node):
+    tid = node.token.id
+    tk = copy(node.token)
+    tk.id = TK.INT
+    tk.value = c_to_int(tk.value, tid)
+    if tk.value is not None:
+        tk.lexeme = None
+        return Int(tk)
+    runtime_error("Unsupported type for conversion", loc=tk.location)
+
+
+def c_node2float(node):
+    tid = node.token.id
+    tk = copy(node.token)
+    tk.id = TK.FLOT
+    tk.value = c_to_float(tk.value, tid)
+    if tk.value is not None:
+        tk.lexeme = None
+        return Float(tk)
+    runtime_error("Unsupported type for conversion", loc=tk.location)
 
 
 def c_to_bool(val, tid):
@@ -150,7 +154,9 @@ def c_to_float(val, tid):
 def c_to_int(val, tid):
     if val is None:
         return 0
-    if tid in [TK.NATIVE, TK.IDNT]:
+    if tid == TK.INT:
+        return val
+    elif tid in [TK.NATIVE, TK.IDNT]:
         ty = type(val).__name__
         if ty == 'int':
             return val
@@ -160,8 +166,6 @@ def c_to_int(val, tid):
                 return v
             except ValueError as e:
                 pass
-    elif tid == TK.INT:
-        return val
     elif tid in [TK.EMPTY, TK.NONE, TK.FALSE]:
         return 0
     elif tid in [TK.BOOL, TK.FLOT, TK.PCT, TK.TRUE]:

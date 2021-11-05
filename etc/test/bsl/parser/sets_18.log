@@ -1,0 +1,22 @@
+
+
+test: 18:
+"{a, b, c}:(c=4, a=5, b=6)"
+
+tree1:  {a, b, c}:(c=4, a=5, b=6)
+result: Lit(None)
+    1 : Define TK.COLN(NONE, ':', V=None)
+    2 :     Set TK.SET(LITERAL, '{', V=[Ref(), Ref(), Ref()])
+    3 :         Ref TK.IDNT(IDENTIFIER, 'a', V=None)
+    4 :         Ref TK.IDNT(IDENTIFIER, 'b', V=None)
+    5 :         Ref TK.IDNT(IDENTIFIER, 'c', V=None)
+    6 :     List TK.TUPLE(LITERAL, '(', V=[Define(), Define(), Define()])
+    7 :         Define TK.EQLS(BINOP, '=', V=None)
+    8 :             Ref TK.IDNT(IDENTIFIER, 'c', V=None)
+    9 :             Int TK.INT(LITERAL, '4', V=4)
+   10 :         Define TK.EQLS(BINOP, '=', V=None)
+   11 :             Ref TK.IDNT(IDENTIFIER, 'a', V=None)
+   12 :             Int TK.INT(LITERAL, '5', V=5)
+   13 :         Define TK.EQLS(BINOP, '=', V=None)
+   14 :             Ref TK.IDNT(IDENTIFIER, 'b', V=None)
+   15 :             Int TK.INT(LITERAL, '6', V=6)

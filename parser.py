@@ -6,7 +6,7 @@ from rewrites import RewriteGets2Refs, RewriteFnCall2DefineFn
 from tokens import TK, TCL, _ADDITION_TOKENS, _COMPARISON_TOKENS, _FLOW_TOKENS, \
     _EQUALITY_TEST_TOKENS, _LOGIC_TOKENS, _MULTIPLICATION_TOKENS, _UNARY_TOKENS, _IDENTIFIER_TYPES, _ASSIGNMENT_TOKENS, \
     _SET_UNARY_TOKENS, Token, _IDENTIFIER_TOKENS, _ASSIGNMENT_TOKENS_EX, _IDENTIFIER_TOKENS_EX, _ASSIGNMENT_TOKENS_REF, \
-    TK_EMPTY, TK_SET
+    TK_EMPTY, TK_SET, _VALUE_TOKENS
 from lexer import Lexer
 from tree import UnaryOp, BinOp, Command, Assign, Get, FnCall, Index, PropCall, PropRef, Define, DefineFn, DefineVar, \
     DefineVarFn, ApplyChainProd, Ref
@@ -213,9 +213,11 @@ class Parser(object):
         while op.id in _FLOW_TOKENS:
             sep = op.id
             seq = Flow(op.map2binop(), [node] if node is not None else [])
-            while self.match([sep]):
+            while self.match1(sep):
                 node = self.assignment()
                 if node is not None:
+                    if len(seq) > 0:
+                        node = _rewriteGets(node)
                     seq.append(node)
                 else:
                     break
@@ -223,7 +225,8 @@ class Parser(object):
             last = seq.last
             if isinstance(last, Get):
                 last = last.to_ref()
-                seq.last = ApplyChainProd(last, Token(tid=TK.APPLY, tcl=TCL.UNARY, loc=last.token.location))
+            if isinstance(last, Ref):
+                seq.last = ApplyChainProd(last, Token(tid=TK.APPLY, tcl=TCL.UNARY, lex=seq.token.lexeme,loc=last.token.location))
             op = copy(self.peek())
         return node
 
@@ -404,6 +407,7 @@ class Parser(object):
         tk = self.peek()
         loc = tk.location
         is_l_value = True
+        is_l_value_strict = True    # no assignment or operators on rhs of included exprs
 
         while self.peek().id != TK.EOF and self.peek().id != TK.RBRC:
             decl = self.declaration()
@@ -414,11 +418,19 @@ class Parser(object):
                 if getattr(decl, 'is_lvalue', None) is not None:
                     is_l_value = decl.is_lvalue
                 elif not isinstance(decl, Literal) and not isinstance(decl, Get):
-                    if decl.token.id != TK.COLN:
-                        is_l_value = False
+                    if decl.token.id not in [TK.COLN, TK.EQLS]:
+                        is_l_value_strict = is_l_value = False
+                if is_l_value_strict:
+                    if decl.token.id not in _VALUE_TOKENS:
+                        if decl.token.id in [TK.COLN]:
+                            is_l_value_strict = False
+                            if decl.right.token.id in _VALUE_TOKENS:
+                                is_l_value_strict = True
+                        else:
+                            is_l_value_strict = False
         if len(seq) == 0:
             return Set(TK_EMPTY, seq)
-        elif is_l_value:
+        elif is_l_value and is_l_value_strict:
             return Set(Token(TK.SET, TCL.LITERAL, '{', loc=loc), seq)
         else:
             return Block(items=seq, loc=loc)

@@ -8,7 +8,7 @@ from interpreter import Interpreter
 from parser import Parser
 from notation import NotationPrinter
 from test.suite_runner import TestSuiteRunner, _log_exception
-from exceptions import _t_print
+from environment import _t_print
 from treeprint import print_forest
 from test.test_setup import test_data
 

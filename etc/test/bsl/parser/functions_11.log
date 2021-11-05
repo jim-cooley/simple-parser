@@ -8,5 +8,8 @@ result: Lit(None)
     1 : Get TK.IDNT(IDENTIFIER, 'a', V=None)
 
 tree2:  a{x, y, z}
-result: Lit(None)
-    1 : Set TK.SET(LITERAL, '{', V=None)
+result: list([Get(), Get(), Get()])
+    1 : Set TK.SET(LITERAL, '{', V=[Get(), Get(), Get()])
+    2 :     Get TK.IDNT(IDENTIFIER, 'x', V=None)
+    3 :     Get TK.IDNT(IDENTIFIER, 'y', V=None)
+    4 :     Get TK.IDNT(IDENTIFIER, 'z', V=None)

@@ -2,8 +2,7 @@ from environment import Environment
 from evaluate import reduce_value, evaluate_binary_operation, evaluate_unary_operation, evaluate_identifier, \
     evaluate_set, reduce_get, reduce_propref, reduce_ref
 from scope import Block
-from treeprint import print_node
-from visitor import TreeFilter, BINARY_NODE, SEQUENCE_NODE
+from visitor import TreeFilter, BINARY_NODE
 
 _VISIT_ASSIGNMENT = 'visit_assignment'
 _VISIT_DEFINITION = 'visit_definition'
@@ -11,11 +10,14 @@ _VISIT_IDENT = 'visit_ident'
 _VISIT_LITERAL = 'visit_literal'
 _VISiT_LEAF = 'visit_value'
 
+_PROCESS_APPLY = 'process_apply'
 _PROCESS_BINOP = 'process_binop'
 _PROCESS_BLOCK = 'process_block'
+_PROCESS_FLOW = 'process_flow'
 _PROCESS_GET = 'process_get'
 _PROCESS_PROPREF = 'process_propref'
 _PROCESS_REF = 'process_ref'
+_PROCESS_SEQUENCE = 'process_sequence_node'
 _PROCESS_UNOP = 'process_unop'
 
 _NATIVE_LIST = 'visit_list'
@@ -23,12 +25,11 @@ _NATIVE_VALUE = 'process_intrinsic'
 
 
 _interpreterVisitNodeMappings = {
-    'ApplyChainProd': _VISIT_DEFINITION,
+    'ApplyChainProd': _PROCESS_APPLY,
     'Assign': _VISIT_ASSIGNMENT,
     'BinOp': _PROCESS_BINOP,
     'Block': _PROCESS_BLOCK,
     'Bool': _VISIT_LITERAL,
-    'Command': 'process_command',
     'DateDiff': _VISIT_LITERAL,
     'DateTime': _VISIT_LITERAL,
     'Define': _VISIT_DEFINITION,
@@ -38,13 +39,13 @@ _interpreterVisitNodeMappings = {
     'DefineVarFn': _VISIT_DEFINITION,
     'Duration': _VISIT_LITERAL,
     'Float': _VISIT_LITERAL,
-    'Flow': SEQUENCE_NODE,
+    'Flow': _PROCESS_FLOW,
     'FnCall': BINARY_NODE,
     'Get': _PROCESS_GET,
     'Ident': _VISIT_IDENT,
     'Index': BINARY_NODE,
     'Int': _VISIT_LITERAL,
-    'List': SEQUENCE_NODE,
+    'List': _PROCESS_SEQUENCE,
     'Literal': _VISIT_LITERAL,
     'Node': _VISiT_LEAF,
     'Percent': _VISIT_LITERAL,
@@ -64,8 +65,9 @@ _interpreterVisitNodeMappings = {
 
 class Interpreter(TreeFilter):
 
-    def __init__(self, environment):
-        super().__init__(mapping=_interpreterVisitNodeMappings, apply_parent_fixups=True)
+    def __init__(self, environment, mapping=None):
+        m = dict(_interpreterVisitNodeMappings if mapping is None else mapping)
+        super().__init__(mapping=m, apply_parent_fixups=True)
         self.environment = environment
         self.stack = environment.stack
         self._verbose = True
@@ -104,9 +106,6 @@ class Interpreter(TreeFilter):
             values.append(self.visit(n))
         self.stack.push(values)
 
-    def process_intrinsic(self, value, lable=None):
-        self.stack.push(value)
-
     def visit_literal(self, node, label=None):
         self._print_node(node)
         reduce_value(self.stack, node)
@@ -128,6 +127,14 @@ class Interpreter(TreeFilter):
         self.stack.push(evaluate_identifier(node))
 
     # worker nodes
+    def process_apply(self, node, label=None):
+        self._print_node(node)
+        r_value = self.stack.pop()
+        self.visit(node.left)
+        l_value = self.stack.pop()
+        l_value = evaluate_binary_operation(node, l_value, r_value)
+        self.stack.push(l_value)
+
     def process_binop(self, node, label=None):
         self._print_node(node)
         self.indent()
@@ -147,9 +154,30 @@ class Interpreter(TreeFilter):
         Environment.leave()
         self.stack.push(block)
 
+    def process_flow(self, node, label=None):
+        self._print_node(node)
+        self.indent()
+        values = node.values()
+        if values is None:
+            self.stack.push(node)
+        else:
+            prev = None
+            for idx in range(0, len(values)):
+                n = values[idx]
+                if n is None:
+                    continue
+                if prev is not None:
+                    pass  # look for something to assign it to
+                self.visit(n)
+           #    prev = self.stack.pop()
+        self.dedent()
+
     def process_get(self, node, label=None):
         self._print_node(node)
         self.stack.push(reduce_get(get=node))
+
+    def process_intrinsic(self, value, lable=None):
+        self.stack.push(value)
 
     def process_propref(self, node, label=None):
         self._print_node(node)
@@ -165,12 +193,18 @@ class Interpreter(TreeFilter):
         self._print_node(node)
         self.stack.push(reduce_ref(ref=node))
 
+    def process_sequence_node(self, node, label=None):
+        self._print_node(node)
+        self._process_sequence(node)
+
     def process_set_object(self, node, label=None):
         self._print_node(node)
         values = node.values()
         if values is None:
             return None
+        self.indent()
         evaluate_set(node, self)    # stack items are left on the stack
+        self.dedent()
 
     def process_unop(self, node, label=None):
         self._print_node(node)

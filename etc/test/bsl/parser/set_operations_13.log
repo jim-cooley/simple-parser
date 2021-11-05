@@ -6,4 +6,6 @@ test: 13:
 tree1:  not {a, b}
 result: Lit(None)
     1 : UnaryOp TK.NOT(UNARY, 'not', V=None)
-    2 :     Set TK.SET(LITERAL, '{', V=None)
+    2 :     Set TK.SET(LITERAL, '{', V=[Get(), Get()])
+    3 :         Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    4 :         Get TK.IDNT(IDENTIFIER, 'b', V=None)

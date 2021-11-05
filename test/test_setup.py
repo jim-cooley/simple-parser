@@ -14,6 +14,7 @@ test_data = {
     'declarations_multiline': 'declarations_multiline.f',
     'duration': 'duration.t',
     'empty_sets': 'empty_sets.t',
+    'eval_sequences': 'eval_sequences.f',
     'eval_test': 'eval_test.p',
     'expressions': 'expressions.t',
     'functions': 'functions.t',

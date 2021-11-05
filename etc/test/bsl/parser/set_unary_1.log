@@ -8,5 +8,8 @@ result: Lit(None)
     1 : Literal TK.NONE(LITERAL, 'none', V=None)
 
 tree2:  none {a, b, c}
-result: Lit(None)
-    1 : Set TK.SET(LITERAL, '{', V=None)
+result: list([Get(), Get(), Get()])
+    1 : Set TK.SET(LITERAL, '{', V=[Get(), Get(), Get()])
+    2 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    3 :     Get TK.IDNT(IDENTIFIER, 'b', V=None)
+    4 :     Get TK.IDNT(IDENTIFIER, 'c', V=None)

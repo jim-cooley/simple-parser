@@ -108,10 +108,10 @@ class BinOp(Expression):
         self.op = op.id
         if left is not None:
             left.parent = self
-            self.is_lvalue = False if not left.is_lvalue else self.is_lvalue
+            self.is_lvalue &= left.is_lvalue
         if right is not None:
             right.parent = self
-            self.is_lvalue = False if not right.is_lvalue else self.is_lvalue
+            self.is_lvalue &= right.is_lvalue
 
     def format(self):
         left = "None" if self.left is None else f'{self.left}'
@@ -127,7 +127,7 @@ class Define(Assign):
         super().__init__(left=left, op=op, right=right, is_lvalue=True if is_lvalue is None else is_lvalue)
         self.op = TK.DEFINE
         if right is not None:
-            self.is_lvalue = False if not right.is_lvalue else self.is_lvalue
+            self.is_lvalue = right.is_lvalue
 
     def format(self):
         left = "None" if self.left is None else f'{self.left}'

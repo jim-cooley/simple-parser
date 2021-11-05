@@ -4,9 +4,15 @@ test: 7:
 "{a = 5}"
 
 tree1:  {a = 5}
-result: Lit(None)
-    1 : Block TK.BLOCK(SCOPE, '', V=None)
+result: list([Define()])
+    1 : Block TK.BLOCK(SCOPE, '', V=[Define()])
+    2 :     Define TK.EQLS(BINOP, '=', V=None)
+    3 :         Ref TK.IDNT(IDENTIFIER, 'a', V=None)
+    4 :         Int TK.INT(LITERAL, '5', V=5)
 
 tree1:(post)  {a = 5}
-result: Lit(None)
-    1 : Block TK.BLOCK(SCOPE, '', V=None)
+result: list([Define()])
+    1 : Block TK.BLOCK(SCOPE, '', V=[Define()])
+    2 :     Define TK.EQLS(BINOP, '=', V=None)
+    3 :         Ref TK.IDNT(IDENTIFIER, 'a', V=None)
+    4 :         Int TK.INT(LITERAL, '5', V=5)

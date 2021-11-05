@@ -6,13 +6,13 @@ test: 8:
 tree1:  a | b | c | d >> e ; f
 result: list([Flow(), ApplyChainProd()])
     1 : Flow TK.APPLY(NONE, '>>', V=[Flow(), ApplyChainProd()])
-    2 :     Flow TK.CHAIN(NONE, '|', V=[Get(), Get(), Get(), ApplyChainProd()])
+    2 :     Flow TK.CHAIN(NONE, '|', V=[Get(), Ref(), Ref(), ApplyChainProd()])
     3 :         Get TK.IDNT(IDENTIFIER, 'a', V=None)
-    4 :         Get TK.IDNT(IDENTIFIER, 'b', V=None)
-    5 :         Get TK.IDNT(IDENTIFIER, 'c', V=None)
-    6 :         ApplyChainProd TK.APPLY(UNARY, '', V=None)
+    4 :         Ref TK.IDNT(IDENTIFIER, 'b', V=None)
+    5 :         Ref TK.IDNT(IDENTIFIER, 'c', V=None)
+    6 :         ApplyChainProd TK.APPLY(UNARY, '|', V=None)
     7 :             Ref TK.IDNT(IDENTIFIER, 'd', V=None)
-    8 :     ApplyChainProd TK.APPLY(UNARY, '', V=None)
+    8 :     ApplyChainProd TK.APPLY(UNARY, '>>', V=None)
     9 :         Ref TK.IDNT(IDENTIFIER, 'e', V=None)
 
 tree2:  a | b | c | d >> e ; f

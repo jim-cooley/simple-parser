@@ -1,6 +1,6 @@
 import tokens as _
 from notation_fn import FunctionalNotationPrinter
-from exceptions import _t_print
+from environment import _t_print
 from visitor import NodeVisitor, BINARY_NODE, UNARY_NODE, SEQUENCE_NODE, DEFAULT_NODE, VALUE_NODE, NATIVE_VALUE, \
     ASSIGNMENT_NODE
 

@@ -6,4 +6,7 @@ test: 3:
 tree1:  any:{a, b, c}
 result: Lit(None)
     1 : UnaryOp TK.ANY(UNARY, 'any', V=None)
-    2 :     Set TK.SET(LITERAL, '{', V=None)
+    2 :     Set TK.SET(LITERAL, '{', V=[Get(), Get(), Get()])
+    3 :         Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    4 :         Get TK.IDNT(IDENTIFIER, 'b', V=None)
+    5 :         Get TK.IDNT(IDENTIFIER, 'c', V=None)

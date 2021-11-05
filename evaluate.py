@@ -1,8 +1,10 @@
+
 from conversion import c_unbox, c_box
 from environment import Environment, RuntimeStack
 from eval_assignment import eval_assignment_dispatch, _SUPPORTED_ASSIGNMENT_TOKENS
 from eval_binops import eval_binops_dispatch, _binops_dispatch_table
 from eval_unary import not_literal, increment_literal, decrement_literal, negate_literal
+from exceptions import getErrorFacility, runtime_error, runtime_strict_warning
 from literals import LIT_NONE
 from tokens import TK, TCL
 from tree import Ref
@@ -19,7 +21,7 @@ _unary2binop = {
 
 
 def get_logger():
-    return Environment.current.logger
+    return getErrorFacility('semtex')
 
 
 def reduce_value(stack: RuntimeStack, node):
@@ -36,7 +38,7 @@ def reduce_get(scope=None, get=None):
     scope = Environment.current.scope if scope is None else scope
     symbol = scope.find(get.token)
     if symbol is None:
-        Environment.get_logger().runtime_error(f'Symbol `{get.token.lexeme}` does not exist', loc=get.token.location)
+        runtime_strict_warning(f'Symbol `{get.token.lexeme}` does not exist', loc=get.token.location)
     return symbol
 
 
@@ -44,7 +46,7 @@ def reduce_propref(left=None, right=None):
     scope = Environment.current.scope
     symbol = scope.find(left.token)
     if symbol is None:
-        Environment.get_logger().runtime_error(f'Symbol `{left.token.lexeme}` does not exist', loc=left.token.location)
+        runtime_strict_warning(f'Symbol `{left.token.lexeme}` does not exist', loc=left.token.location)
     prop = symbol.find_add_local(right.token)
     return prop
 
@@ -53,10 +55,10 @@ def reduce_propget(left=None, right=None):
     scope = Environment.current.scope
     symbol = scope.find(left.token)
     if symbol is None:
-        Environment.get_logger().runtime_error(f'Symbol `{left.token.lexeme}` does not exist', loc=left.token.location)
+        runtime_strict_warning(f'Symbol `{left.token.lexeme}` does not exist', loc=left.token.location)
     prop = symbol.find(right.token)
     if prop is None:
-        Environment.get_logger().runtime_error(f'Symbol `{right.token.lexeme}` does not exist', loc=right.token.location)
+        runtime_strict_warning(f'Symbol `{right.token.lexeme}` does not exist', loc=right.token.location)
     return prop
 
 
@@ -78,13 +80,11 @@ def evaluate_binary_operation(node, left, right):
         symbol = scope.find_add(left.token)
         ref = symbol.find_add_local(right.token)
         return ref if ref is not None else LIT_NONE
-    elif op in [TK.ASSIGN, TK.DEFINE]:
+    elif op in [TK.ASSIGN, TK.DEFINE, TK.APPLY]:
         if op in _SUPPORTED_ASSIGNMENT_TOKENS:
             return eval_assignment_dispatch(left, right)
         else:
-            get_logger().runtime_error(f'Type mismatch for assignment({type(left)}, {type(right)})', loc=None)
-#        left.value = right
-#        return left  # UNDONE: return the object or its value?
+            runtime_error(f'Type mismatch for assignment({type(left)}, {type(right)})', loc=None)
     else:
         get_logger().error(f'Invalid operation {op.name}', loc=node.token.location)
     return None  # fixups uses this code as well.  probably want option_strict enablement
@@ -131,7 +131,7 @@ def evaluate_unary_operation(node, left):
     elif opid == TK.POS:
         pass
     else:
-        get_logger().error(f'Invalid operation {opid.name}', loc=None)
+        runtime_error(f'Invalid operation {opid.name}', loc=None)
 
     left = c_box(left, l_value)
     return left

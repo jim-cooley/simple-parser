@@ -3,7 +3,7 @@ import traceback
 from abc import abstractmethod, ABC
 from multiprocessing import SimpleQueue
 
-from exceptions import _t_print
+from environment import _t_print
 from treeprint import print_forest, print_node
 
 _LOG_DIRECTORY = "./etc/test/log"
@@ -124,6 +124,9 @@ def _dump_environment(env, log=None, label=None,
         _dump_tokens(env)
         log.flush()
     if print_trees:
+        print('\n-----------------------------------------------')
+        print('               P A R S E   T R E E')
+        print('-----------------------------------------------')
         print_forest(env, log, label, print_results)
         log.flush()
     if print_commands:
@@ -135,16 +138,20 @@ def _dump_environment(env, log=None, label=None,
 
 
 def _print_commands(env, commands, log=None, label=None):
-    idx = 0
-    for i in range(0, len(commands)):
-        t = commands[i]
-        if t is None:
-            continue
-        idx += 1
-        line = env.get_line(t.token.location.line).strip()
-        ll = f'({label})' if label is not None else ''
-        _t_print(log, f'\ntree{idx}:{ll}  {line}')
-        print_node(t)
+    if len(commands) > 0:
+        print('\n-----------------------------------------------')
+        print('                C O M M A N D S')
+        print('-----------------------------------------------')
+        idx = 0
+        for i in range(0, len(commands)):
+            t = commands[i]
+            if t is None:
+                continue
+            idx += 1
+            line = env.get_line(t.token.location.line).strip()
+            ll = f'({label})' if label is not None else ''
+            _t_print(log, f'\ntree{idx}:{ll}  {line}')
+            print_node(t)
 
 
 def _dump_tokens(env):
@@ -153,6 +160,9 @@ def _dump_tokens(env):
 
 
 def _dump_symbols(log, scope):
+    print('\n-----------------------------------------------')
+    print('                    S Y M B O L S')
+    print('-----------------------------------------------\n')
     _t_print(f=log, message="\n\nsymbols: ")
     idx = 0
     q = SimpleQueue()

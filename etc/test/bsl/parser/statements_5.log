@@ -7,7 +7,7 @@ tree1:  a | b ; c
 result: list([Get(), ApplyChainProd()])
     1 : Flow TK.CHAIN(NONE, '|', V=[Get(), ApplyChainProd()])
     2 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)
-    3 :     ApplyChainProd TK.APPLY(UNARY, '', V=None)
+    3 :     ApplyChainProd TK.APPLY(UNARY, '|', V=None)
     4 :         Ref TK.IDNT(IDENTIFIER, 'b', V=None)
 
 tree2:  a | b ; c

@@ -4,5 +4,13 @@ test: 42:
 "{ a(x):x*x }"
 
 tree1:  { a(x):x*x }
-result: Lit(None)
-    1 : Block TK.BLOCK(SCOPE, '', V=None)
+result: list([DefineFn()])
+    1 : Block TK.BLOCK(SCOPE, '', V=[DefineFn()])
+    2 :     DefineFn TK.COLN(NONE, ':', V=None)
+    3 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
+    4 :             Ref TK.IDNT(IDENTIFIER, 'a', V=None)
+    5 :             List TK.TUPLE(LITERAL, '(', V=[Ref()])
+    6 :                 Ref TK.IDNT(IDENTIFIER, 'x', V=None)
+    7 :         BinOp TK.MUL(BINOP, '*', V=None)
+    8 :             Get TK.IDNT(IDENTIFIER, 'x', V=None)
+    9 :             Get TK.IDNT(IDENTIFIER, 'x', V=None)

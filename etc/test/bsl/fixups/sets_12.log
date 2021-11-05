@@ -4,9 +4,23 @@ test: 12:
 "{'a':5, 'b':'c', d}"
 
 tree1:  {'a':5, 'b':'c', d}
-result: Lit(None)
-    1 : Set TK.SET(LITERAL, '{', V=None)
+result: list([Define(), Define(), Get()])
+    1 : Set TK.SET(LITERAL, '{', V=[Define(), Define(), Get()])
+    2 :     Define TK.COLN(NONE, ':', V=None)
+    3 :         Str TK.STR(LITERAL, 'a', V=a)
+    4 :         Int TK.INT(LITERAL, '5', V=5)
+    5 :     Define TK.COLN(NONE, ':', V=None)
+    6 :         Str TK.STR(LITERAL, 'b', V=b)
+    7 :         Str TK.STR(LITERAL, 'c', V=c)
+    8 :     Get TK.IDNT(IDENTIFIER, 'd', V=None)
 
 tree1:(post)  {'a':5, 'b':'c', d}
-result: Lit(None)
-    1 : Set TK.SET(LITERAL, '{', V=None)
+result: list([Define(), Define(), Get()])
+    1 : Set TK.SET(LITERAL, '{', V=[Define(), Define(), Get()])
+    2 :     Define TK.COLN(NONE, ':', V=None)
+    3 :         Str TK.STR(LITERAL, 'a', V=a)
+    4 :         Int TK.INT(LITERAL, '5', V=5)
+    5 :     Define TK.COLN(NONE, ':', V=None)
+    6 :         Str TK.STR(LITERAL, 'b', V=b)
+    7 :         Str TK.STR(LITERAL, 'c', V=c)
+    8 :     Get TK.IDNT(IDENTIFIER, 'd', V=None)

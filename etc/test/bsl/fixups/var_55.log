@@ -7,10 +7,12 @@ tree1:  f = { 5 }
 result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'f', V=None)
-    3 :     Set TK.SET(LITERAL, '{', V=None)
+    3 :     Set TK.SET(LITERAL, '{', V=[Int()])
+    4 :         Int TK.INT(LITERAL, '5', V=5)
 
 tree1:(post)  f = { 5 }
 result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'f', V=None)
-    3 :     Set TK.SET(LITERAL, '{', V=None)
+    3 :     Set TK.SET(LITERAL, '{', V=[Int()])
+    4 :         Int TK.INT(LITERAL, '5', V=5)

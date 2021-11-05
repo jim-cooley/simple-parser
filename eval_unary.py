@@ -1,6 +1,10 @@
-from conversion import c_node2float, c_node2int, c_node2bool, c_to_int, c_to_float, c_to_bool
-from environment import Environment
+from conversion import c_to_int, c_to_float, c_to_bool
+from exceptions import runtime_error
 from tokens import TK
+
+
+def apply_chain(l_expr, tid):
+    pass
 
 
 def decrement_literal(val, tid):
@@ -38,7 +42,7 @@ def negate_literal(val, tid):
             pass
     elif tid == TK.EMPTY:
         return val
-    Environment.get_logger().runtime_error("Unsupported type for Unary minus", loc=token.location)
+    runtime_error("Unsupported type for Unary minus", loc=None)
 
 
 def not_literal(val, tid):

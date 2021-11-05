@@ -4,5 +4,8 @@ test: 3:
 "{{{a}}}"
 
 tree1:  {{{a}}}
-result: Lit(None)
-    1 : Set TK.SET(LITERAL, '{', V=None)
+result: list([Set()])
+    1 : Set TK.SET(LITERAL, '{', V=[Set()])
+    2 :     Set TK.SET(LITERAL, '{', V=[Set()])
+    3 :         Set TK.SET(LITERAL, '{', V=[Get()])
+    4 :             Get TK.IDNT(IDENTIFIER, 'a', V=None)

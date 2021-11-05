@@ -1,5 +1,7 @@
 from tokens import TK
+
 from environment import Environment
+from exceptions import runtime_error
 
 _SUPPORTED_VALUE_TYPES = ['int', 'float', 'bool', 'str', 'timedelta', 'object', 'block']
 _SUPPORTED_ASSIGNMENT_TOKENS = [TK.APPLY, TK.ASSIGN, TK.DEFINE]
@@ -76,18 +78,18 @@ def _assign__block_object(l_value, r_value):
 
 def _assign__object_block(l_value, r_value):
     l_value = r_value
-    _runtime_error(f'Not Implemented: _assign__object_block', loc=None)
+    runtime_error(f'Not Implemented: _assign__object_block', loc=None)
     return l_value
 
 
 def _assign__object_object(l_value, r_value):
     l_value = r_value
-    _runtime_error(f'Not Implemented: _assign__object_object', loc=None)
+    runtime_error(f'Not Implemented: _assign__object_object', loc=None)
     return l_value
 
 
 def _invalid_assign(left, right):
-    _runtime_error(f'Type mismatch for assignment({type(left)}, {type(right)})', loc=None)
+    runtime_error(f'Type mismatch for assignment({type(left)}, {type(right)})', loc=None)
 
 
 _assignment_dispatch_table = [  # l-values (column:from) x r-values (rows:to)

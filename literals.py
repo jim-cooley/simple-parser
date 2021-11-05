@@ -2,6 +2,7 @@ import re
 from dataclasses import dataclass
 from datetime import datetime, time, timedelta
 from enum import Enum
+from functools import total_ordering
 
 from tokens import TCL, TK, Token
 from scope import Literal
@@ -22,6 +23,7 @@ class DUR(Enum):
 
 
 @dataclass
+@total_ordering
 class Bool(Literal):
     def __init__(self, token, value=None):
         super().__init__(token=token)
@@ -29,6 +31,16 @@ class Bool(Literal):
             token.value = value
         if token.value is None:
             token.value = _parse_bool_value(token.lexeme)
+
+    def __lt__(self, other):
+        if isinstance(other, bool):
+            return True if self.value < other else False
+        return NotImplemented
+
+    def __eq__(self, other):
+        if isinstance(other, bool):
+            return True if self.value is other else False
+        return NotImplemented
 
     def format(self):
         tk = self.token
@@ -75,11 +87,22 @@ class Float(Literal):
 
 
 @dataclass
+@total_ordering
 class Int(Literal):
     def __init__(self, token):
         super().__init__(token=token)
         if token.value is None:
             token.value = int(token.lexeme)
+
+    def __lt__(self, other):
+        if isinstance(other, int):
+            return True if self.value < other else False
+        return NotImplemented
+
+    def __eq__(self, other):
+        if isinstance(other, int):
+            return True if self.value == other else False
+        return NotImplemented
 
     def format(self, fmt=None):
         return f'{self.qualname} = {self.value}'
@@ -137,8 +160,8 @@ class Percent(Literal):
 class Set(Literal):
     def __init__(self, token, items=None):
         super().__init__(token=token)
-#       self.items = items if items is not None else {}
-#       self.value = self.items
+        self.items = items if items is not None else {}
+        self.value = self.items
 #       token.id = TK.SET if len(self.items) > 0 else TK.EMPTY
         token.t_class = TCL.LITERAL
 

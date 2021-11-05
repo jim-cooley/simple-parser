@@ -6,5 +6,7 @@ test: 3:
 tree1:  {a} and {b}
 result: Lit(None)
     1 : BinOp TK.AND(BINOP, 'and', V=None)
-    2 :     Set TK.SET(LITERAL, '{', V=None)
-    3 :     Set TK.SET(LITERAL, '{', V=None)
+    2 :     Set TK.SET(LITERAL, '{', V=[Get()])
+    3 :         Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    4 :     Set TK.SET(LITERAL, '{', V=[Get()])
+    5 :         Get TK.IDNT(IDENTIFIER, 'b', V=None)
