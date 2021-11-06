@@ -1,217 +1,13 @@
 #!/Users/jim/venv/jimc/bin/python
 import sys
-from tool.codewriter import LogWriter, CodeWriter, TY
 from tokens import TK
 
+from tool.codewriter import LogWriter, CodeWriter, TY
+from tool.tables import _assign_obj_fn, _evaluate_boolops_fn, _evaluate_binops_fn
 
-# -------------------------------------------------------
-#                       T A B L E S
-# -------------------------------------------------------
-# 'any' is used to denote the generic routine instead of everything ending up appearing as an int_ conversion
 
 _COLUMNS = ['any', 'int', 'float', 'bool', 'str', 'timedelta', 'Object', 'Block']
 
-# abbreviations in table:
-#   l = l_value     2i = c_to_int    2f = c_to_float    u = unbox       s( ) = f'{ }'
-#   r = r_value     2b = c_to_bool   2d = c_to_dur      b = box         .o( ) = .from_object( )
-#                                                                       .b( ) = .from_block( )
-#                                                                       v( ) = .value =
-#
-#   B = TK.BOOL     D = TK.DUR       F = TK.FLOT        I = TK.INT      L = TK.LIST     O = TK.OBJECT   S = TK.STR
-
-
-# -------------------------------------------------------
-#             B I N A R Y  O P E R A T I O N S
-# -------------------------------------------------------
-_assign_obj_fn = {
-    TK.ASSIGN: [
-        #   any     int        float      bool       str         dur        object      block
-        ['r',       'r',       'r',       'r',       "r",        "r",       "u(r)",    "invalid",],     # any
-        ['r',       'r',       'r',       'r',       "r",        "r",       "invalid", "invalid",],     # int
-        ['r',       'r',       'r',       'r',       "r",        "r",       "invalid", "invalid",],     # float
-        ['r',       'r',       'r',       'r',       "r",        "r",       "invalid", "invalid",],     # bool
-        ['r',       'r',       "r",       "invalid", "r",        "invalid", "invalid", "invalid",],     # str
-        ['r',       'r',       'r',       'r',       "r",        "r",       "invalid", "invalid",],     # dur
-        ['.v(r)',   'invalid', 'invalid', 'invalid', "invalid", "invalid",  ".o(r)",    ".b(r)",],       # object
-        ['invalid', 'invalid', 'invalid', 'invalid', "invalid", "invalid",  ".b(r)",   "r",],           # block
-    ],
-}
-
-_evaluate_binops_fn = {
-    TK.ADD: [
-        #   any          int          float           bool               str            dur       object      block
-        ['l + r',     'l + r',       'l + r',        'l + r',        "l + s(r)",    'l + r',    'l + r',   "invalid"],    # any
-        ['l + r',     'l + r',       'l + r',        'l + r',        "l + s(r)",    'l + r',    'u(l) + r',"invalid"],    # int
-        ['l + r',     'l + r',       'l + r',        'l + r',        "l + s(r)",    'l + r',    'l + r',   "invalid"],    # float
-        ['l + r',     'l + r',       'l + r',        'l + r',        "l + s(r)",    'l + r',    'l + r',   "invalid"],    # bool
-        ["f'{l}' + r", "s(l) + r",   "s(l) + r",     "s(l) + r",      "invalid",    'invalid',  'invalid', "invalid"],    # str
-        ['l + r',     'l + r',       'l + r',        'l + r',        "l + s(r)",    'l + r',    'l + r',   "invalid"],    # dur
-        ['l + r',     'l + u(r)',    'l + r',        'l + r',        "l + s(r)",    'l + r',    'l + r',   "invalid"],    # object
-        ['invalid',   'invalid',     'invalid',      'invalid',      "invalid",     'invalid',  'invalid', "invalid"],    # block
-    ],
-    TK.SUB: [
-        #   any          int          float           bool               str             dur       object     block
-        ['l - r',     'l - r',       'l - r',        'l - r',        "invalid",      'l - r',    'l - r',   "invalid"],    # any
-        ['l - r',     'l - r',       'l - r',        'l - r',        "invalid",      'l - r',    'u(l) - r',"invalid"],    # int
-        ['l - r',     'l - r',       'l - r',        'l - r',        "invalid",      'l - r',    'l - r',   "invalid"],    # float
-        ['l - r',     'l - r',       'l - r',        'l - r',        "invalid",      'l - r',    'l - r',   "invalid"],    # bool
-        ['invalid',   'invalid',     "invalid",      "invalid",      "invalid",      'l - r',    'l - r',   "invalid"],    # str
-        ['l - r',     'l - r',       'l - r',        'l - r',        "invalid",      'l - r',    'l - r',   "invalid"],    # dur
-        ['l - r',     'l - u(r)',    'l - r',        'l - r',        "invalid",      'l - r',    'l - r',   "invalid"],    # object
-        ['invalid',   'invalid',     'invalid',      'invalid',      "invalid",      'invalid',  'invalid', "invalid"],    # block
-    ],
-    TK.DIV: [
-        #   any          int          float           bool               str             dur       object     block
-        ['l / r',     'l / r',       'l / r',        'l / r',        "invalid",      'l / r',    'l / r',    "invalid"],    # any
-        ['l / r',     'l / r',       'l / r',        'l / r',        "invalid",      'l / r',    'u(l) / r', "invalid"],    # int
-        ['l / r',     'l / r',       'l / r',        'l / r',        "invalid",      'l / r',    'l / r',    "invalid"],    # float
-        ['l / r',     'l / r',       'l / r',        'l / r',        "invalid",      'l / r',    'l / r',    "invalid"],    # bool
-        ['invalid',   'invalid',     "invalid",      "invalid",      "invalid",      'l / r',    'l / r',    "invalid"],    # str
-        ['l / r',     'l / r',       'l / r',        'l / r',        "invalid",      'l / r',    'l / r',    "invalid"],    # dur
-        ['l / r',     'l / u(r)',    'l / r',        'l / r',        "invalid",      'l / r',    'l / r',    "invalid"],    # object
-        ['invalid',   'invalid',     'invalid',      'invalid',      "invalid",      'invalid',  'invalid',  "invalid"],    # block
-    ],
-    TK.IDIV: [
-        #     any          int       float           bool               str             dur       object        block
-        ['l // r',    'l // r',       'l // r',        'l // r',     "invalid",      'l // r',   'l // r',   "invalid"],    # any
-        ['l // r',    'l // r',       'l // r',        'l // r',     "invalid",      'l // r',   'u(l) // r', "invalid"],    # int
-        ['l // r',    'l // r',       'l // r',        'l // r',     "invalid",      'l // r',   'l // r',   "invalid"],    # float
-        ['l // r',    'l // r',       'l // r',        'l // r',     "invalid",      'l // r',   'l // r',   "invalid"],    # bool
-        ['invalid',   'invalid',      "invalid",       "invalid",    "invalid",      'l // r',   'l // r',   "invalid"],    # str
-        ['l // r',    'l // r',       'l // r',        'l // r',     "invalid",      'l // r',   'l // r',   "invalid"],    # dur
-        ['l // r',    'l // u(r)',    'l // r',        'l // r',     "invalid",      'l // r',   'l // r',   "invalid"],    # object
-        ['invalid',   'invalid',      'invalid',       'invalid',    "invalid",      'invalid',  'invalid',  "invalid"],    # block
-    ],
-    TK.POW: [
-        #     any          int       float           bool               str             dur       object        block
-        ['l ** r',    'l ** r',       'l ** r',        'l ** r',     "invalid",      'l ** r',   'l ** r',   "invalid"],    # any
-        ['l ** r',    'l ** r',       'l ** r',        'l ** r',     "invalid",      'l ** r',   'u(l) ** r', "invalid"],    # int
-        ['l ** r',    'l ** r',       'l ** r',        'l ** r',     "invalid",      'l ** r',   'l ** r',   "invalid"],    # float
-        ['l ** r',    'l ** r',       'l ** r',        'l ** r',     "invalid",      'l ** r',   'l ** r',   "invalid"],    # bool
-        ['invalid',   'invalid',      "invalid",       "invalid",    "invalid",      'l ** r',   'l ** r',   "invalid"],    # str
-        ['l ** r',    'l ** r',       'l ** r',        'l ** r',     "invalid",      'l ** r',   'l ** r',   "invalid"],    # dur
-        ['l ** r',    'l ** u(r)',    'l ** r',        'l ** r',     "invalid",      'l ** r',   'l ** r',   "invalid"],    # object
-        ['invalid',   'invalid',      'invalid',       'invalid',    "invalid",      'invalid',  'invalid', "invalid"],    # block
-    ],
-    TK.MUL: [
-        #   any          int       float           bool               str             dur       object        block
-        ['l * r',     'l * r',       'l * r',        'l * r',        "l * r",        "l * r",    "l * r",    "invalid"],     # any
-        ['l * r',     'l * r',       'l * r',        'l * r',        "l * r",        "l * r",    "u(l) * r", "invalid"],     # int
-        ['l * r',     'l * r',       'l * r',        'l * r',        "l * r",        "l * r",    "l * r",    "invalid"],     # float
-        ['l * r',     'l * r',       'l * r',        'l * r',        "invalid",      "l * r",    "l * r",    "invalid"],     # bool
-        ['l * r',     'l * r',       "l * r",        "l * r",        "invalid",      "l * r",    "l * r",    "invalid"],     # str
-        ['l * r',     'l * r',       'l * r',        'l * r',        "invalid",      "l * r",    "l * r",    "invalid"],     # dur
-        ['l * r',     'l * u(r)',    'l * r',        'l * r',        "invalid",      "l * r",    "l * r",    "invalid"],     # object
-        ['invalid',   'invalid',     'invalid',      'invalid',      "invalid",      'invalid',  'invalid',  "invalid"],    # block
-    ],
-    TK.MOD: [
-        #   any          int         float           bool               str             dur       object        block
-        ['l % r',     'l % r',      'l % r',        'l % r',         "l % r",        "l % r",    "l % r",    "invalid"],     # any
-        ['l % r',     'l % r',      'l % r',        'l % r',         "l % r",        "l % r",    "u(l) % r", "invalid"],     # int
-        ['l % r',     'l % r',      'l % r',        'l % r',         "l % r",        "l % r",    "l % r",    "invalid"],     # float
-        ['l % r',     'l % r',      'l % r',        'l % r',         "l % r",        "l % r",    "l % r",    "invalid"],     # bool
-        ['l % r',     'l % r',      "l % r",        "l % r",         "l % r",        "l % r",    "l % r",    "invalid"],     # str
-        ['l % r',     'l % r',      'l % r',        'l % r',         "l % r",        "l % r",    "l % r",    "invalid"],     # dur
-        ['l % r',     'l % u(r)',   'l % r',        'l % r',         "l % r",        "l % r",    "l % r",    "invalid"],     # object
-        ['invalid',   'invalid',     'invalid',      'invalid',      "invalid",      'invalid',  'invalid', "invalid"],    # block
-    ],
-}
-
-
-# -------------------------------------------------------
-#            B O O L E A N  O P E R A T I O N S
-# -------------------------------------------------------
-_evaluate_boolops_fn = {
-    TK.AND: [
-        #     int       float           bool               str             dur       object        block
-        ['l and r', 'l and r',   'l and r',      'l and r',        "l and r",      "l and r",  "l and r",    "invalid"],   # int
-        ['l and r', 'l and r',   'l and r',      'l and r',        "l and r",      "l and r",  "l and r",    "invalid"],   # float
-        ['l and r', 'l and r',   'l and r',      'l and r',        "l and r",      "l and r",  "l and r",    "invalid"],   # bool
-        ['l and r', 'l and r',   "l and r",      "l and r",        "l and r",      "l and r",  "l and r",    "invalid"],   # str
-        ['l and r', 'l and r',   'l and r',      'l and r',        "l and r",      "l and r",  "l and r",    "invalid"],   # dur
-        ['l and r', 'l and r',   'l and r',      'l and r',        "l and r",      "l and r",  "l and r",    "invalid"],   # object
-        ['invalid', 'invalid',     'invalid',      'invalid',      "invalid",      'invalid',  'invalid', "invalid"],    # block
-    ],
-    TK.OR: [
-        #    any        int       float             bool              str             dur       object        block
-        ['l and r', 'l and r',   'l and r',      'l and r',        "l and r",      "l and r",  "l and r",    "invalid"],   # any
-        ['l and r', 'l and r',   'l and r',      'l and r',        "l and r",      "l and r",  "l and r",    "invalid"],   # int
-        ['l and r', 'l and r',   'l and r',      'l and r',        "l and r",      "l and r",  "l and r",    "invalid"],   # float
-        ['l and r', 'l and r',   'l and r',      'l and r',        "l and r",      "l and r",  "l and r",    "invalid"],   # bool
-        ['l and r', 'l and r',   "l and r",      "l and r",        "l and r",      "l and r",  "l and r",    "invalid"],   # str
-        ['l and r', 'l and r',   'l and r',      'l and r',        "l and r",      "l and r",  "l and r",    "invalid"],   # dur
-        ['l and r', 'l and r',   'l and r',      'l and r',        "l and r",      "l and r",  "l and r",    "invalid"],   # object
-        ['invalid', 'invalid',   'invalid',      'invalid',        "invalid",      'invalid',  'invalid',    "invalid"],   # block
-    ],
-    TK.ISEQ: [
-        #    any        int       float          bool              str            dur       object        block
-        ['l == r',  'l == r',   'l == r',      'l == r',        "l == r",      "l == r",  "l == r",    "invalid"],   # any
-        ['l == r',  'l == r',   'l == r',      'l == 2b(r, I)', "l == r",      "l == r",  "l == r",    "invalid"],   # int
-        ['l == r',  'l == r',   'l == r',      'l == r',        "l == r",      "l == r",  "l == r",    "invalid"],   # float
-        ['l == r',  'l == 2i(r, B)',
-                                'l == r',      'l == r',        "l == r",      "l == r",  "l == r",    "invalid"],   # bool
-        ['l == r',  'l == r',   "l == r",      "l == r",        "l == r",      "l == r",  "l == r",    "invalid"],   # str
-        ['l == r',  'l == r',   'l == r',      'l == r',        "l == r",      "l == r",  "l == r",    "invalid"],   # dur
-        ['l == r',  'l == r',   'l == r',      'l == r',        "l == r",      "l == r",  "l == r",    "invalid"],   # object
-        ['invalid', 'invalid',  'invalid',     'invalid',       "invalid",     'invalid', 'invalid',   "invalid"],   # block
-    ],
-    TK.NEQ: [
-        #    any        int       float          bool              str            dur       object        block
-        ['l != r',  'l != r',   'l != r',      'l != r',        "l != r",      "l != r",  "l != r",    "invalid"],   # any
-        ['l != r',  'l != r',   'l != r',      'l != 2b(r, I)', "l != r",      "l != r",  "l != r",    "invalid"],   # int
-        ['l != r',  'l != r',   'l != r',      'l != r',        "l != r",      "l != r",  "l != r",    "invalid"],   # float
-        ['l != r',  'l != 2i(r, B)',
-                                'l != r',      'l != r',        "l != r",      "l != r",  "l != r",    "invalid"],   # bool
-        ['l != r',  'l != r',   "l != r",      "l != r",        "l != r",      "l != r",  "l != r",    "invalid"],   # str
-        ['l != r',  'l != r',   'l != r',      'l != r',        "l != r",      "l != r",  "l != r",    "invalid"],   # dur
-        ['l != r',  'l != r',   'l != r',      'l != r',        "l != r",      "l != r",  "l != r",    "invalid"],   # object
-        ['invalid', 'invalid',  'invalid',     'invalid',       "invalid",     'invalid', 'invalid',   "invalid"],   # block
-    ],
-    TK.GTR: [
-        #  any        int        float        bool             str            dur     object       block
-        ['l > r',   'l > r',   'l > r',      'l > r',        "l > r",      "l > r",  "l > r",    "invalid"],   # any
-        ['l > r',   'l > r',   'l > r',      'l > r',        "l > r",      "l > r",  "l > r",    "invalid"],   # int
-        ['l > r',   'l > r',   'l > r',      'l > r',        "l > r",      "l > r",  "l > r",    "invalid"],   # float
-        ['l > r',   'l > r',   'l > r',      'l > r',        "l > r",      "l > r",  "l > r",    "invalid"],   # bool
-        ['l > r',   'l > r',   "l > r",      "l > r",        "l > r",      "l > r",  "l > r",    "invalid"],   # str
-        ['l > r',   'l > r',   'l > r',      'l > r',        "l > r",      "l > r",  "l > r",    "invalid"],   # dur
-        ['l > r',   'l > r',   'l > r',      'l > r',        "l > r",      "l > r",  "l > r",    "invalid"],   # object
-        ['invalid', 'invalid', 'invalid',    'invalid',      "invalid",    'invalid','invalid',  "invalid"],   # block
-    ],
-    TK.LESS: [
-        #  any        int        float        bool             str            dur     object       block
-        ['l < r',   'l < r',   'l < r',      'l < r',        "l < r",      "l < r",  "l < r",    "invalid"],   # any
-        ['l < r',   'l < r',   'l < r',      'l < r',        "l < r",      "l < r",  "l < r",    "invalid"],   # int
-        ['l < r',   'l < r',   'l < r',      'l < r',        "l < r",      "l < r",  "l < r",    "invalid"],   # float
-        ['l < r',   'l < r',   'l < r',      'l < r',        "l < r",      "l < r",  "l < r",    "invalid"],   # bool
-        ['l < r',   'l < r',   "l < r",      "l < r",        "l < r",      "l < r",  "l < r",    "invalid"],   # str
-        ['l < r',   'l < r',   'l < r',      'l < r',        "l < r",      "l < r",  "l < r",    "invalid"],   # dur
-        ['l < r',   'l < r',   'l < r',      'l < r',        "l < r",      "l < r",  "l < r",    "invalid"],   # object
-        ['invalid', 'invalid', 'invalid',    'invalid',      "invalid",    'invalid','invalid',  "invalid"],   # block
-    ],
-    TK.GTE: [
-        #  any        int         float          bool             str            dur       object       block
-        ['l >= r',  'l >= r',   'l >= r',      'l >= r',        "l >= r",      "l >= r",  "l >= r",    "invalid"],   # any
-        ['l >= r',  'l >= r',   'l >= r',      'l >= r',        "l >= r",      "l >= r",  "l >= r",    "invalid"],   # int
-        ['l >= r',  'l >= r',   'l >= r',      'l >= r',        "l >= r",      "l >= r",  "l >= r",    "invalid"],   # float
-        ['l >= r',  'l >= r',   'l >= r',      'l >= r',        "l >= r",      "l >= r",  "l >= r",    "invalid"],   # bool
-        ['l >= r',  'l >= r',   "l >= r",      "l >= r",        "l >= r",      "l >= r",  "l >= r",    "invalid"],   # str
-        ['l >= r',  'l >= r',   'l >= r',      'l >= r',        "l >= r",      "l >= r",  "l >= r",    "invalid"],   # dur
-        ['l >= r',  'l >= r',   'l >= r',      'l >= r',        "l >= r",      "l >= r",  "l >= r",    "invalid"],   # object
-        ['invalid', 'invalid',  'invalid',     'invalid',       "invalid",     'invalid', 'invalid',   "invalid"],   # block
-    ],
-    TK.LTE: [
-        #  any        int         float          bool             str            dur       object       block
-        ['l <= r',  'l <= r',   'l <= r',      'l <= r',        "l <= r",      "l <= r",  "l <= r",    "invalid"],   # any
-        ['l <= r',  'l <= r',   'l <= r',      'l <= r',        "l <= r",      "l <= r",  "l <= r",    "invalid"],   # int
-        ['l <= r',  'l <= r',   'l <= r',      'l <= r',        "l <= r",      "l <= r",  "l <= r",    "invalid"],   # float
-        ['l <= r',  'l <= r',   'l <= r',      'l <= r',        "l <= r",      "l <= r",  "l <= r",    "invalid"],   # bool
-        ['l <= r',  'l <= r',   "l <= r",      "l <= r",        "l <= r",      "l <= r",  "l <= r",    "invalid"],   # str
-        ['l <= r',  'l <= r',   'l <= r',      'l <= r',        "l <= r",      "l <= r",  "l <= r",    "invalid"],   # dur
-        ['l <= r',  'l <= r',   'l <= r',      'l <= r',        "l <= r",      "l <= r",  "l <= r",    "invalid"],   # object
-        ['invalid', 'invalid',  'invalid',     'invalid',       "invalid",     'invalid', 'invalid',   "invalid"],   # block
-    ],
-}
 
 _type2native = {
     'Ident': 'ident',
@@ -229,6 +25,7 @@ _type2native = {
 class GenerateEvalDispatch:
     def __init__(self):
         self.fname = None
+        self.file = None
         self._functions = {}
         self.o = None
         self.source = None
@@ -246,6 +43,29 @@ class GenerateEvalDispatch:
             self.o = CodeWriter(logger=logger)
             self.generate_file(name, insert_fixup_dispatch, insert_assignment_fixup)
             self.o.flush()
+
+    # second entry point: reprints the data tables -- be careful.
+    def print_tables(self, fname):
+        with open(fname, 'w') as file:
+            logger = LogWriter(file=file)
+            self.o = CodeWriter(logger=logger)
+            self.print_table_header()
+            self.pretty_print_table('assignment tables', '_assign_obj_fn', _assign_obj_fn, 12, quote=True)
+            self.pretty_print_table('binary operations', '_evaluate_binops_fn', _evaluate_binops_fn, 12, quote=True)
+            self.pretty_print_table('boolean operations', '_evaluate_boolops_fn', _evaluate_boolops_fn, 14, quote=True)
+            self.o.flush()
+
+    def open(self, fname):
+        self.fname = fname
+        if fname is not None:
+            self.file = open(fname, 'w')
+        logger = LogWriter(file=self.file)
+        self.o = CodeWriter(logger=logger)
+
+    def close(self):
+        if self.file is not None:
+            self.file.close()
+            self.file = None
 
     def indent(self):
         self.o.indent()
@@ -408,6 +228,53 @@ class GenerateEvalDispatch:
                     fn = f'_{op.name.lower()}__{_COLUMNS[c]}_{_COLUMNS[r]}' if code != 'invalid' else f'_invalid_{op.name.lower()}'
                     self._functions[code] = fn
 
+    # -------------------------------
+
+    def print_table_header(self):
+        self.o.print("from tokens import TK")
+        self.o.banner("TABLES")
+        self.o.print("# 'any' is used to denote the generic routine instead of everything ending up appearing as an int_ conversion\n"
+                     "\n"
+                     "# abbreviations in table:\n"
+                     "#   l = l_value     2i = c_to_int    2f = c_to_float    u = unbox       s( ) = f'{ }'\n"
+                     "#   r = r_value     2b = c_to_bool   2d = c_to_dur      b = box         .o( ) = .from_object( )\n"
+                     "#                                                                       .b( ) = .from_block( )\n"
+                     "#                                                                       v( ) = .value =\n"
+                     "#\n"
+                     "#   B = TK.BOOL     D = TK.DUR       F = TK.FLOT        I = TK.INT      L = TK.LIST     O = TK.OBJECT   S = TK.STR\n")
+
+    def pretty_print_table(self, name, identifier, table, width, quote=False):
+        self.o.banner(f"{name.upper()}")
+        self.o.write_open(f"{identifier}", TY.DICT)
+        for op in table:
+            self._pretty_print_table_section(table=table[op], sect=op, width=width, quote=quote)
+        self.o.write_close(TY.DICT)
+
+    def _pretty_print_table_section(self, table, sect, width, quote=False):
+        q = '\"' if quote is True else ''
+        sep = ', '
+        self.indent()
+        self.o.print(f'TK.{sect.name}: [')
+        self.indent()
+        self.o.l_print(2, '#', end='')
+        for c in _COLUMNS:
+            self.o.print(f'{c:^{width}s}', end='', append=True)
+        self.o.blank_line(1)
+        for r in range(0, len(table)):
+            self.o.print('[', end='')
+            _len = len(table[r])
+            for c in range(0, _len):
+                code = table[r][c]
+                self.o.print(f'{q}{code}{q}', end='', append=True)
+                if c < _len - 1:
+                    pad = max(width-len(code), 0)
+                    self.o.print(f'{sep:{pad}s}', end='', append=True)
+            self.o.print('],   # ', end='', append=True)
+            self.o.print(f'{_COLUMNS[r]}      ', append=True)
+        self.dedent()
+        self.o.print('\n    ],')
+        self.dedent()
+
 
 def _expand_fragment(code):
     code = "r_value" if code == "r" else code
@@ -431,11 +298,12 @@ def _expand_fragment(code):
 def main(args):
     gen = GenerateEvalDispatch()
     gen.go('eval_binops.py', 'binops', _evaluate_binops_fn)
-
     gen.go('eval_boolean.py', 'boolean', _evaluate_boolops_fn, insert_fixup_dispatch=False)
-
     gen.go('eval_assignment.py', 'assign', _assign_obj_fn,
            assign_style=True, insert_fixup_dispatch=False, insert_assignment_fixup=True, width=24)
+
+    gen = GenerateEvalDispatch()
+    gen.print_tables('tables.py')
 
 
 if __name__ == '__main__':
