@@ -1,9 +1,9 @@
 
 
 test: 114:
-"1" <= 0
+"0" <= 0
 
-tree1:  "1" <= 0
+tree1:  "0" <= 0
     1 : BinOp TK.LTE(BINOP, '<=', V=None)
-    2 :     Str TK.STR(LITERAL, '1', V=1)
+    2 :     Str TK.STR(LITERAL, '0', V=0)
     3 :     Int TK.INT(LITERAL, '0', V=0)

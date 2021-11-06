@@ -10,8 +10,7 @@ from literals import LIT_NONE
 from tokens import TK, TCL
 from tree import Ref
 
-_INTRINSIC_VALUE_TYPES = ['int', 'float', 'bool', 'timedelta']
-_INTRINSIC_STR_TYPE = 'str'
+_INTRINSIC_VALUE_TYPES = ['bool', 'float', 'int', 'str', 'timedelta']
 
 _INPLACE_OPS = [TK.PLEQ, TK.MNEQ]
 

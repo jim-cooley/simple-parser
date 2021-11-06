@@ -136,7 +136,8 @@ class Fixups(TreeModifier, ABC):
             if tkid == TK.TUPLE:
                 return self.convert_coln_plist(node, label)
             if node.left.token.t_class == TCL.LITERAL and node.right.token.t_class == TCL.LITERAL:
-                rnode = _fixup_binary_operation(node)
+                rnode = _fixup_binary_operation(rnode)
+                rnode = _lift(rnode, Literal.lit(rnode.value, other=rnode))
         return rnode
 
     def process_command(self, node, label=None):

@@ -1,5 +1,6 @@
 from conversion import c_box, c_to_bool, c_to_int, c_unbox
 from environment import Environment
+from eval_boolean import _boolean_dispatch_table, eval_boolean_dispatch
 from exceptions import runtime_error
 from tokens import TK
 
@@ -54,6 +55,8 @@ def eval_binops_dispatch_fixup(node):
         return None
     if node.op in _binops_dispatch_table:
         return eval_binops_dispatch(node, node.left, node.right)
+    elif node.op in _boolean_dispatch_table:
+        return eval_boolean_dispatch(node, node.left, node.right)
     return node.value
 
 

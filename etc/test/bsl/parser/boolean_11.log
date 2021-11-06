@@ -1,8 +1,8 @@
 
 
 test: 11:
-not 3
+not 0
 
-tree1:  not 3
+tree1:  not 0
     1 : UnaryOp TK.NOT(UNARY, 'not', V=None)
-    2 :     Int TK.INT(LITERAL, '3', V=3)
+    2 :     Int TK.INT(LITERAL, '0', V=0)

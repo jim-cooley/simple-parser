@@ -1,8 +1,8 @@
 
 
 test: 16:
-not "false"
+not "true"
 
-tree1:  not "false"
+tree1:  not "true"
     1 : UnaryOp TK.NOT(UNARY, 'not', V=None)
-    2 :     Str TK.STR(LITERAL, 'false', V=false)
+    2 :     Str TK.STR(LITERAL, 'true', V=true)

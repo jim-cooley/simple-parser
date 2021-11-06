@@ -1,8 +1,8 @@
 
 
 test: 2:
-not empty
+not none
 
-tree1:  not empty
+tree1:  not none
     1 : UnaryOp TK.NOT(UNARY, 'not', V=None)
-    2 :     Set TK.EMPTY(LITERAL, '{}', V={})
+    2 :     Literal TK.NONE(LITERAL, 'none', V=None)

@@ -1,9 +1,9 @@
 
 
 test: 141:
-false != 1
+false != 0
 
-tree1:  false != 1
+tree1:  false != 0
     1 : BinOp TK.NEQ(BINOP, '!=', V=None)
     2 :     Bool TK.FALSE(LITERAL, 'false', V=False)
-    3 :     Int TK.INT(LITERAL, '1', V=1)
+    3 :     Int TK.INT(LITERAL, '0', V=0)

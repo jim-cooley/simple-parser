@@ -1,9 +1,9 @@
 
 
 test: 53:
-true or true
+true or false
 
-tree1:  true or true
+tree1:  true or false
     1 : BinOp TK.OR(BINOP, 'or', V=None)
     2 :     Bool TK.TRUE(LITERAL, 'true', V=True)
-    3 :     Bool TK.TRUE(LITERAL, 'true', V=True)
+    3 :     Bool TK.FALSE(LITERAL, 'false', V=False)
