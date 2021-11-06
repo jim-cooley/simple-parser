@@ -1,10 +1,9 @@
 
 
 test: 19:
-"atr := (high + low) / 2"
+atr := (high + low) / 2
 
 tree1:  atr := (high + low) / 2
-result: Lit(None)
     1 : DefineVarFn TK.COEQ(NONE, ':=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'atr', V=None)
     3 :     BinOp TK.DIV(BINOP, '/', V=None)

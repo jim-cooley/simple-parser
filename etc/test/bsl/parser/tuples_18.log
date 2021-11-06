@@ -1,10 +1,9 @@
 
 
 test: 18:
-"(a, b, c,)                   # tuple"
+(a, b, c,)                   # tuple
 
 tree1:  (a, b, c,)                   # tuple
-result: list([Get(), Get(), Get()])
     1 : List TK.TUPLE(LITERAL, '(', V=[Get(), Get(), Get()])
     2 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)
     3 :     Get TK.IDNT(IDENTIFIER, 'b', V=None)

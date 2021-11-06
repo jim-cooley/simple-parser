@@ -5,7 +5,7 @@ from copy import copy, deepcopy
 from dataclasses import dataclass
 from queue import SimpleQueue
 
-from tokens import Token, TCL, TK
+from tokens import Token, TCL, TK, TK_NONE
 from tree import AST, Expression
 
 
@@ -28,6 +28,13 @@ class Scope:
     @property
     def qualname(self):
         return self._name if self._fqname is None else self._fqname
+
+    def from_block(self, block):
+        self._symbols = block._symbols
+        for s in self._symbols.values():
+            s.parent_scope = self
+            s._calc_fqname()
+        return self
 
     def assign(self, token, expr):
         sym = self.find(token)
@@ -121,16 +128,11 @@ class Object(AST, Scope):
         if self.token is None or self.token.lexeme is None:
             self._name = ''
         else:
-            self._name = self.token.lexeme
+            self._name = self.token.lexeme  # UNDONE: this is very silly on Literal subclasses (name = 'true')
             self._calc_fqname()
 
-    # CONSIDER: deepcopy block from stack or deepcopy onto stack?
-    def from_block(self, block):
-        self._symbols = block._symbols
-        for s in self._symbols.values():
-            s.parent_scope = self
-            s._calc_fqname()
-        return self
+    def from_object(self, other):
+        return self.from_block(other)
 
     def from_value(self, value):
         eval_assignment_dispatch(self, value)
@@ -174,17 +176,6 @@ class Flow(Block):
         super().__init__(items=llist)
         token.value = llist
         self.token = token
-
-
-@dataclass
-class Literal(Object):
-    def __init__(self, token=None, value=None, parent=None):
-        super().__init__(token=token, value=value, parent=parent)
-        if token is not None:
-            token.t_class = TCL.LITERAL
-            self.token.id = token.map2litval().id
-        else:
-            self.token = Token(tid=TK.OBJECT, tcl=TCL.LITERAL, val=value)
 
 
 def _dump_symbols(scope):

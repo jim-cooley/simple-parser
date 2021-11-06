@@ -1,10 +1,9 @@
 
 
 test: 21:
-"f(x) = { a(_):_*_ }"
+f(x) = { a(_):_*_ }
 
 tree1:  f(x) = { a(_):_*_ }
-result: Lit(None)
     1 : DefineFn TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'f', V=None)
     3 :     Block TK.BLOCK(SCOPE, '', V=[DefineFn()])

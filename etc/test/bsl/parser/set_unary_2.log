@@ -1,10 +1,9 @@
 
 
 test: 2:
-"any:{a, b, c}"
+any:{a, b, c}
 
 tree1:  any:{a, b, c}
-result: Lit(None)
     1 : UnaryOp TK.ANY(UNARY, 'any', V=None)
     2 :     Set TK.SET(LITERAL, '{', V=[Get(), Get(), Get()])
     3 :         Get TK.IDNT(IDENTIFIER, 'a', V=None)

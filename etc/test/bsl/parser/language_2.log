@@ -1,4 +1,4 @@
 
 
 test: 2:
-"# a 'sniff-test' composed of grammatical edge cases among the parser states"
+# a 'sniff-test' composed of grammatical edge cases among the parser states

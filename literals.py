@@ -4,8 +4,8 @@ from datetime import datetime, time, timedelta
 from enum import Enum
 from functools import total_ordering
 
+from scope import Object
 from tokens import TCL, TK, Token
-from scope import Literal
 
 '''
 Type Helpers
@@ -23,14 +23,54 @@ class DUR(Enum):
 
 
 @dataclass
+class Literal(Object):
+    def __init__(self, token=None, tid=None, value=None, loc=None, parent=None):
+        if token is None:
+            if tid is not None:
+                token = Token(tid=tid, tcl=TCL.LITERAL, val=value, loc=loc)
+            else:
+                token = Token(tid=TK.OBJECT, tcl=TCL.LITERAL, val=value, loc=loc)
+        else:
+            tid = token.map2litval().id if tid is None else tid
+            token.t_class = TCL.LITERAL
+            token.id = tid
+        super().__init__(token=token, value=value, parent=parent)
+
+    @staticmethod
+    def lit(val, tid=None, other=None, loc=None):
+        if val is None:
+            return LIT_NONE
+        if other is not None:
+            if other.token is not None:
+                tid = other.token.id
+                loc = other.token.location
+        if tid is not None:
+            return Literal(tid=tid, value=val)
+        elif isinstance(val, bool):
+            return Bool(value=val, loc=loc)
+        elif isinstance(val, datetime):
+            return Literal(tid=TK.TIME, value=val)
+        elif isinstance(val, float):
+            return Literal(tid=TK.FLOAT, value=val)
+        elif isinstance(val, int):
+            return Literal(tid=TK.INT, value=val)
+        elif isinstance(val, str):
+            return Literal(tid=TK.STR, value=val)
+        elif isinstance(val, timedelta):
+            return Literal(tid=TK.DUR, value=val)
+        else:
+            return Literal(value=val)
+
+
+@dataclass
 @total_ordering
 class Bool(Literal):
-    def __init__(self, token, value=None):
-        super().__init__(token=token)
-        if value is not None:
-            token.value = value
-        if token.value is None:
-            token.value = _parse_bool_value(token.lexeme)
+    def __init__(self, token=None, value=None, loc=None):
+        tid = TK.BOOL if token is None else token.id
+        loc = loc if token is None else token.location
+        super().__init__(token=token, value=value, tid=tid, loc=loc)
+        if self.value is None:
+            self.value = _parse_bool_value(self.token.lexeme)
 
     def __lt__(self, other):
         if isinstance(other, bool):
@@ -313,5 +353,6 @@ def _parse_duration_units(units):
     return dur
 
 
-LIT_EMPTY_SET = Set(Token(tid=TK.EMPTY, tcl=TCL.LITERAL, lex="{}", val=None))
+# TODO: make these classes if we need to keep them singletons & compare on them, etc
+LIT_EMPTY = Set(Token(tid=TK.EMPTY, tcl=TCL.LITERAL, lex="{}", val=None))
 LIT_NONE = Literal(Token(tid=TK.NONE, tcl=TCL.LITERAL, lex="none", val=None))

@@ -1,8 +1,7 @@
 
 
 test: 6:
-"1d"
+1d
 
 tree1:  1d
-result: timedelta(1 day, 0:00:00)
     1 : Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)

@@ -1,7 +1,7 @@
 
 
 test:
-"# sample rules file for pyser / qtradr
+# sample rules file for pyser / qtradr
 %%backtest (period='train5', rules=rules)
 
 atr := (high + low) / 2
@@ -36,10 +36,9 @@ report := { trades | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sel
 
 %%report (report)
 
-"
+
 
 tree1:  atr := (high + low) / 2
-result: Lit(None)
     1 : DefineVarFn TK.COEQ(NONE, ':=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'atr', V=None)
     3 :     BinOp TK.DIV(BINOP, '/', V=None)
@@ -49,7 +48,6 @@ result: Lit(None)
     7 :         Int TK.INT(LITERAL, '2', V=2)
 
 tree2:  median_price := (open + close) / 2
-result: Lit(None)
     1 : DefineVarFn TK.COEQ(NONE, ':=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'median_price', V=None)
     3 :     BinOp TK.DIV(BINOP, '/', V=None)
@@ -59,7 +57,6 @@ result: Lit(None)
     7 :         Int TK.INT(LITERAL, '2', V=2)
 
 tree3:  trade_size := position * 10%
-result: Lit(None)
     1 : DefineVarFn TK.COEQ(NONE, ':=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'trade_size', V=None)
     3 :     BinOp TK.MUL(BINOP, '*', V=None)
@@ -67,7 +64,6 @@ result: Lit(None)
     5 :         Percent TK.PCT(LITERAL, '10%', V=0.1)
 
 tree4:  def buy = { position += trade_size }
-result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.BUY(IDENTIFIER, 'buy', V=None)
     3 :     Block TK.BLOCK(SCOPE, '', V=[Assign()])
@@ -76,7 +72,6 @@ result: Lit(None)
     6 :             Ref TK.IDNT(IDENTIFIER, 'trade_size', V=None)
 
 tree5:  def sell = { position -= trade_size }
-result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.SELL(IDENTIFIER, 'sell', V=None)
     3 :     Block TK.BLOCK(SCOPE, '', V=[Assign()])
@@ -85,7 +80,6 @@ result: Lit(None)
     6 :             Ref TK.IDNT(IDENTIFIER, 'trade_size', V=None)
 
 tree6:  rules => {
-result: list([Get(), Block()])
     1 : Flow TK.PRODUCE(NONE, '=>', V=[Get(), Block()])
     2 :     Get TK.IDNT(IDENTIFIER, 'rules', V=None)
     3 :     Block TK.BLOCK(SCOPE, '', V=[UnaryOp(), Flow()])
@@ -143,7 +137,6 @@ result: list([Get(), Block()])
    55 :                 Ref TK.SELL(IDENTIFIER, 'sell', V=None)
 
 tree7:  rules2 := {
-result: Lit(None)
     1 : DefineVarFn TK.COEQ(NONE, ':=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'rules2', V=None)
     3 :     Block TK.BLOCK(SCOPE, '', V=[Flow(), Flow()])
@@ -199,7 +192,6 @@ result: Lit(None)
    53 :                 Ref TK.IDNT(IDENTIFIER, 'atr', V=None)
 
 tree8:  rules3 := {
-result: Lit(None)
     1 : DefineVarFn TK.COEQ(NONE, ':=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'rules3', V=None)
     3 :     Block TK.BLOCK(SCOPE, '', V=[UnaryOp(), Flow()])
@@ -257,7 +249,6 @@ result: Lit(None)
    55 :                 Ref TK.SELL(IDENTIFIER, 'sell', V=None)
 
 tree9:  rules4 = {
-result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'rules4', V=None)
     3 :     Block TK.BLOCK(SCOPE, '', V=[UnaryOp(), Flow()])
@@ -315,7 +306,6 @@ result: Lit(None)
    55 :                 Ref TK.SELL(IDENTIFIER, 'sell', V=None)
 
 tree10:  def rules5 = {
-result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'rules5', V=None)
     3 :     Block TK.BLOCK(SCOPE, '', V=[UnaryOp(), Flow()])
@@ -373,7 +363,6 @@ result: Lit(None)
    55 :                 Ref TK.SELL(IDENTIFIER, 'sell', V=None)
 
 tree11:  report := { trades | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price') }
-result: Lit(None)
     1 : DefineVarFn TK.COEQ(NONE, ':=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'report', V=None)
     3 :     Block TK.BLOCK(SCOPE, '', V=[Flow()])

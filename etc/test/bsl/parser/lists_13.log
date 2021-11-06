@@ -1,10 +1,9 @@
 
 
 test: 13:
-"[[[a]]]"
+[[[a]]]
 
 tree1:  [[[a]]]
-result: list([List()])
     1 : List TK.LIST(LITERAL, '[', V=[List()])
     2 :     List TK.LIST(LITERAL, '[', V=[List()])
     3 :         List TK.LIST(LITERAL, '[', V=[Get()])

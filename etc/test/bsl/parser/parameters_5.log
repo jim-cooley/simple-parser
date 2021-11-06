@@ -1,10 +1,9 @@
 
 
 test: 5:
-"close[+1d]"
+close[+1d]
 
 tree1:  close[+1d]
-result: Lit(None)
     1 : Index TK.INDEX(BINOP, '[', V=None)
     2 :     Get TK.IDNT(IDENTIFIER, 'close', V=None)
     3 :     List TK.TUPLE(LITERAL, '[', V=[UnaryOp()])

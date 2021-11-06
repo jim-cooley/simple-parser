@@ -1,10 +1,9 @@
 
 
 test: 5:
-"today-2y..today"
+today-2y..today
 
 tree1:  today-2y..today
-result: Lit(None)
     1 : BinOp TK.SUB(BINOP, '-', V=None)
     2 :     Get TK.TODAY(IDENTIFIER, 'today', V=None)
     3 :     BinOp TK.RANGE(BINOP, '..', V=None)

@@ -1,10 +1,9 @@
 
 
 test: 13:
-"close >| sma(10) and close <| sma(20) | signal >> open.delay(1d)"
+close >| sma(10) and close <| sma(20) | signal >> open.delay(1d)
 
 tree1:  close >| sma(10) and close <| sma(20) | signal >> open.delay(1d)
-result: list([Flow(), PropRef()])
     1 : Flow TK.APPLY(NONE, '>>', V=[Flow(), PropRef()])
     2 :     Flow TK.CHAIN(NONE, '|', V=[BinOp(), ApplyChainProd()])
     3 :         BinOp TK.AND(BINOP, 'and', V=None)

@@ -187,17 +187,23 @@ def c_to_int(val, tid):
 def _c_str2bool(val):
     if val is None:
         return False
+    v = val.lower()
     try:
-        i = int(val)
+        i = int(v)
         return bool(i)
     except Exception as e:
         pass
+    if v == 'true':
+        return True
+    if v == 'false'\
+            or v == 'none' \
+            or v == 'empty'\
+            or v == 'nil':
+        return False
     try:
-        b = bool(val)
+        b = bool(v)
         return b
     except Exception as e:
         pass
-    if val.lower() == 'none' or val.lower() == 'empty':
-        return False
     return len(val) > 0
 

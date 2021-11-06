@@ -1,10 +1,9 @@
 
 
 test: 27:
-"a(x, y)*b.c(1, 2)"
+a(x, y)*b.c(1, 2)
 
 tree1:  a(x, y)*b.c(1, 2)
-result: Lit(None)
     1 : BinOp TK.MUL(BINOP, '*', V=None)
     2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
     3 :         Get TK.IDNT(IDENTIFIER, 'a', V=None)

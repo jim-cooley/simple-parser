@@ -1,10 +1,9 @@
 
 
 test: 19:
-"(a,b,c) = (1, -1, 3)"
+(a,b,c) = (1, -1, 3)
 
 tree1:  (a,b,c) = (1, -1, 3)
-result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     List TK.TUPLE(LITERAL, '(', V=[Ref(), Ref(), Ref()])
     3 :         Ref TK.IDNT(IDENTIFIER, 'a', V=None)

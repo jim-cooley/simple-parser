@@ -1,10 +1,9 @@
 
 
 test: 86:
-"true < false"
+true < false
 
 tree1:  true < false
-result: Lit(None)
     1 : BinOp TK.LESS(BINOP, '<', V=None)
     2 :     Bool TK.TRUE(LITERAL, 'true', V=True)
     3 :     Bool TK.FALSE(LITERAL, 'false', V=False)

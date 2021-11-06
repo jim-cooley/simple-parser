@@ -1,10 +1,9 @@
 
 
 test: 1:
-"a[]"
+a[]
 
 tree1:  a[]
-result: Lit(None)
     1 : Index TK.INDEX(BINOP, '[', V=None)
     2 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)
     3 :     List TK.TUPLE(LITERAL, '[', V=[])

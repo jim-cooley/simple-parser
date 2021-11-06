@@ -1,10 +1,9 @@
 
 
 test: 9:
-"{-1}"
+{-1}
 
 tree1:  {-1}
-result: list([UnaryOp()])
     1 : Block TK.BLOCK(SCOPE, '', V=[UnaryOp()])
     2 :     UnaryOp TK.NEG(UNARY, '-', V=None)
     3 :         Int TK.INT(LITERAL, '1', V=1)

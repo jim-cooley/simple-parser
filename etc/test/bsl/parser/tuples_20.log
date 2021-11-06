@@ -1,10 +1,9 @@
 
 
 test: 20:
-"(a, b, c) := (4, 5, 6)       # tuple assignment (var)"
+(a, b, c) := (4, 5, 6)       # tuple assignment (var)
 
 tree1:  (a, b, c) := (4, 5, 6)       # tuple assignment (var)
-result: Lit(None)
     1 : DefineVarFn TK.COEQ(NONE, ':=', V=None)
     2 :     List TK.TUPLE(LITERAL, '(', V=[Ref(), Ref(), Ref()])
     3 :         Ref TK.IDNT(IDENTIFIER, 'a', V=None)

@@ -1,9 +1,8 @@
 
 
 test: 32:
-"--1.25y"
+--1.25y
 
 tree1:  --1.25y
-result: Lit(None)
     1 : UnaryOp TK.DECREMENT(UNARY, '--', V=None)
     2 :     Duration TK.DUR(LITERAL, '1.25y', V=456 days, 6:00:00)

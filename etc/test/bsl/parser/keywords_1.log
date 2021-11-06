@@ -1,10 +1,9 @@
 
 
 test: 1:
-"open.b(1d) | buy"
+open.b(1d) | buy
 
 tree1:  open.b(1d) | buy
-result: list([PropRef(), ApplyChainProd()])
     1 : Flow TK.CHAIN(NONE, '|', V=[PropRef(), ApplyChainProd()])
     2 :     PropRef TK.REF(BINOP, '.', V=None)
     3 :         Get TK.IDNT(IDENTIFIER, 'open', V=None)

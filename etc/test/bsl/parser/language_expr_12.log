@@ -1,10 +1,9 @@
 
 
 test: 12:
-"close >| sma(10) and close <| sma(20) | signal"
+close >| sma(10) and close <| sma(20) | signal
 
 tree1:  close >| sma(10) and close <| sma(20) | signal
-result: list([BinOp(), ApplyChainProd()])
     1 : Flow TK.CHAIN(NONE, '|', V=[BinOp(), ApplyChainProd()])
     2 :     BinOp TK.AND(BINOP, 'and', V=None)
     3 :         BinOp TK.RISE_ABOVE(BINOP, '>|', V=None)

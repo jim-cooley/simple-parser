@@ -1,8 +1,7 @@
 
 
 test: 2:
-"abcdefghijklmnopqrstuvwxyz"
+abcdefghijklmnopqrstuvwxyz
 
 tree1:  abcdefghijklmnopqrstuvwxyz
-result: Lit(None)
     1 : Get TK.IDNT(IDENTIFIER, 'abcdefghijklmnopqrstuvwxyz', V=None)

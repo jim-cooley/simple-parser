@@ -1,7 +1,7 @@
 
 
 test:
-"rules0a := {
+rules0a := {
     buy:: any:{ close >| sma(10), close >| sma(20) }:(threshold=0.01) | signal | delay(1d) | atr,
     sell:: close <| sma(10) | signal | delay(1d) | atr
 }
@@ -29,10 +29,9 @@ def rules5 = {
     any:{ close >| sma(10), close >| sma(20) }:(threshold=0.01) | signal >> delay(1d) | atr => buy,
     close <| sma(10) | signal >> delay(1d) | atr -> sell
 }
-"
+
 
 tree1:  rules0a := {
-result: Lit(None)
     1 : DefineVarFn TK.COEQ(NONE, ':=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'rules0a', V=None)
     3 :     Block TK.BLOCK(SCOPE, '', V=[Flow(), Flow()])
@@ -83,7 +82,6 @@ result: Lit(None)
    48 :                 Ref TK.IDNT(IDENTIFIER, 'atr', V=None)
 
 tree2:  rules0 := {
-result: Lit(None)
     1 : DefineVarFn TK.COEQ(NONE, ':=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'rules0', V=None)
     3 :     Block TK.BLOCK(SCOPE, '', V=[Flow(), Flow()])
@@ -119,7 +117,6 @@ result: Lit(None)
    33 :                 Ref TK.SELL(IDENTIFIER, 'sell', V=None)
 
 tree3:  rules1 => {
-result: list([Get(), Block()])
     1 : Flow TK.PRODUCE(NONE, '=>', V=[Get(), Block()])
     2 :     Get TK.IDNT(IDENTIFIER, 'rules1', V=None)
     3 :     Block TK.BLOCK(SCOPE, '', V=[UnaryOp(), Flow()])
@@ -177,7 +174,6 @@ result: list([Get(), Block()])
    55 :                 Ref TK.SELL(IDENTIFIER, 'sell', V=None)
 
 tree4:  rules2 := {
-result: Lit(None)
     1 : DefineVarFn TK.COEQ(NONE, ':=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'rules2', V=None)
     3 :     Block TK.BLOCK(SCOPE, '', V=[Flow(), Flow()])
@@ -233,7 +229,6 @@ result: Lit(None)
    53 :                 Ref TK.IDNT(IDENTIFIER, 'atr', V=None)
 
 tree5:  rules3 := {
-result: Lit(None)
     1 : DefineVarFn TK.COEQ(NONE, ':=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'rules3', V=None)
     3 :     Block TK.BLOCK(SCOPE, '', V=[UnaryOp(), Flow()])
@@ -291,7 +286,6 @@ result: Lit(None)
    55 :                 Ref TK.SELL(IDENTIFIER, 'sell', V=None)
 
 tree6:  rules4 = {
-result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'rules4', V=None)
     3 :     Block TK.BLOCK(SCOPE, '', V=[UnaryOp(), Flow()])
@@ -349,7 +343,6 @@ result: Lit(None)
    55 :                 Ref TK.SELL(IDENTIFIER, 'sell', V=None)
 
 tree7:  def rules5 = {
-result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'rules5', V=None)
     3 :     Block TK.BLOCK(SCOPE, '', V=[UnaryOp(), Flow()])

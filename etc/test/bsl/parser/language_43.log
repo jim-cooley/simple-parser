@@ -1,10 +1,9 @@
 
 
 test: 43:
-"f := { a(x):x*x }; { b: b.left = b.right}:(node);"
+f := { a(x):x*x }; { b: b.left = b.right}:(node);
 
 tree1:  f := { a(x):x*x }; { b: b.left = b.right}:(node);
-result: Lit(None)
     1 : DefineVarFn TK.COEQ(NONE, ':=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'f', V=None)
     3 :     Block TK.BLOCK(SCOPE, '', V=[DefineFn()])
@@ -18,7 +17,6 @@ result: Lit(None)
    11 :                 Get TK.IDNT(IDENTIFIER, 'x', V=None)
 
 tree2:  f := { a(x):x*x }; { b: b.left = b.right}:(node);
-result: Lit(None)
     1 : Define TK.COLN(NONE, ':', V=None)
     2 :     Block TK.BLOCK(SCOPE, '', V=[Define()])
     3 :         Define TK.COLN(NONE, ':', V=None)

@@ -1,10 +1,9 @@
 
 
 test: 7:
-"[a:5, b:[c, d]]"
+[a:5, b:[c, d]]
 
 tree1:  [a:5, b:[c, d]]
-result: list([Define(), Define()])
     1 : List TK.LIST(LITERAL, '[', V=[Define(), Define()])
     2 :     Define TK.COLN(NONE, ':', V=None)
     3 :         Ref TK.IDNT(IDENTIFIER, 'a', V=None)

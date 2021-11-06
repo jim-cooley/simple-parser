@@ -10,8 +10,8 @@ from tokens import TK, TCL, _ADDITION_TOKENS, _COMPARISON_TOKENS, _FLOW_TOKENS, 
 from lexer import Lexer
 from tree import UnaryOp, BinOp, Command, Assign, Get, FnCall, Index, PropCall, PropRef, Define, DefineFn, DefineVar, \
     DefineVarFn, ApplyChainProd, Ref
-from scope import Block, Flow, Literal
-from literals import Duration, Float, Int, Percent, Str, Time, Bool, List, Set, LIT_EMPTY_SET
+from scope import Block, Flow
+from literals import Duration, Float, Int, Percent, Str, Time, Bool, List, Set, LIT_EMPTY, Literal
 from treeprint import TreePrint
 
 
@@ -368,7 +368,7 @@ class Parser(object):
         elif token.id == TK.QUOT:
             node = Str(token)
         elif token.id == TK.EMPTY:
-            node = LIT_EMPTY_SET
+            node = LIT_EMPTY
             node.token.location = token.location
         elif token.id == TK.NONE:
             node = Literal(token)

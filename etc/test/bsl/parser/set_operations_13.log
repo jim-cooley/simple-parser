@@ -1,10 +1,9 @@
 
 
 test: 13:
-"not {a, b}"
+not {a, b}
 
 tree1:  not {a, b}
-result: Lit(None)
     1 : UnaryOp TK.NOT(UNARY, 'not', V=None)
     2 :     Set TK.SET(LITERAL, '{', V=[Get(), Get()])
     3 :         Get TK.IDNT(IDENTIFIER, 'a', V=None)

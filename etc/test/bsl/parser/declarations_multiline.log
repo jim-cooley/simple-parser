@@ -1,7 +1,7 @@
 
 
 test:
-"# var declarations
+# var declarations
 var f = 5
 var f.a = 5
 var f = { a=5 }
@@ -71,16 +71,14 @@ var c = {x=1, y=2, z=3}
 var c = {x=1, y=2, z=3*(x+y)}:(x=1, y=2, z=3)
 
 
-"
+
 
 tree1:  var f = 5
-result: Lit(None)
     1 : DefineVar TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'f', V=None)
     3 :     Int TK.INT(LITERAL, '5', V=5)
 
 tree2:  var f.a = 5
-result: Lit(None)
     1 : DefineVar TK.EQLS(BINOP, '=', V=None)
     2 :     PropRef TK.REF(BINOP, '.', V=None)
     3 :         Ref TK.IDNT(IDENTIFIER, 'f', V=None)
@@ -88,7 +86,6 @@ result: Lit(None)
     5 :     Int TK.INT(LITERAL, '5', V=5)
 
 tree3:  var f = { a=5 }
-result: Lit(None)
     1 : DefineVar TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'f', V=None)
     3 :     Block TK.BLOCK(SCOPE, '', V=[Define()])
@@ -97,7 +94,6 @@ result: Lit(None)
     6 :             Int TK.INT(LITERAL, '5', V=5)
 
 tree4:  var f = { a(x):x*x }
-result: Lit(None)
     1 : DefineVar TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'f', V=None)
     3 :     Block TK.BLOCK(SCOPE, '', V=[DefineFn()])
@@ -111,7 +107,6 @@ result: Lit(None)
    11 :                 Ref TK.IDNT(IDENTIFIER, 'x', V=None)
 
 tree5:  var f = { a(_):_*_ }
-result: Lit(None)
     1 : DefineVar TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'f', V=None)
     3 :     Block TK.BLOCK(SCOPE, '', V=[DefineFn()])
@@ -125,27 +120,23 @@ result: Lit(None)
    11 :                 Ref TK.ANON(IDENTIFIER, '_', V=None)
 
 tree6:  var f = { 5 }
-result: Lit(None)
     1 : DefineVar TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'f', V=None)
     3 :     Set TK.SET(LITERAL, '{', V=[Int()])
     4 :         Int TK.INT(LITERAL, '5', V=5)
 
 tree7:  var f := 5
-result: Lit(None)
     1 : DefineVarFn TK.COEQ(NONE, ':=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'f', V=None)
     3 :     Int TK.INT(LITERAL, '5', V=5)
 
 tree8:  var f := { 5 }
-result: Lit(None)
     1 : DefineVarFn TK.COEQ(NONE, ':=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'f', V=None)
     3 :     Set TK.SET(LITERAL, '{', V=[Int()])
     4 :         Int TK.INT(LITERAL, '5', V=5)
 
 tree9:  def f(x) := x * 4;
-result: Lit(None)
     1 : DefineFn TK.COEQ(NONE, ':=', V=None)
     2 :     DefineFn TK.FUNCTION(BINOP, '(', V=None)
     3 :         Ref TK.IDNT(IDENTIFIER, 'f', V=None)
@@ -156,7 +147,6 @@ result: Lit(None)
     8 :         Int TK.INT(LITERAL, '4', V=4)
 
 tree10:  def f(x) = x * 4
-result: Lit(None)
     1 : DefineFn TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'f', V=None)
     3 :     BinOp TK.MUL(BINOP, '*', V=None)
@@ -164,7 +154,6 @@ result: Lit(None)
     5 :         Int TK.INT(LITERAL, '4', V=4)
 
 tree11:  def f(x) := { x * 4 }
-result: Lit(None)
     1 : DefineFn TK.COEQ(NONE, ':=', V=None)
     2 :     DefineFn TK.FUNCTION(BINOP, '(', V=None)
     3 :         Ref TK.IDNT(IDENTIFIER, 'f', V=None)
@@ -176,7 +165,6 @@ result: Lit(None)
     9 :             Int TK.INT(LITERAL, '4', V=4)
 
 tree12:  def f(x) := {
-result: Lit(None)
     1 : DefineFn TK.COEQ(NONE, ':=', V=None)
     2 :     DefineFn TK.FUNCTION(BINOP, '(', V=None)
     3 :         Ref TK.IDNT(IDENTIFIER, 'f', V=None)
@@ -194,21 +182,18 @@ result: Lit(None)
    15 :             Ref TK.IDNT(IDENTIFIER, 'y', V=None)
 
 tree13:  (x, y, z)
-result: list([Get(), Get(), Get()])
     1 : List TK.TUPLE(LITERAL, '(', V=[Get(), Get(), Get()])
     2 :     Get TK.IDNT(IDENTIFIER, 'x', V=None)
     3 :     Get TK.IDNT(IDENTIFIER, 'y', V=None)
     4 :     Get TK.IDNT(IDENTIFIER, 'z', V=None)
 
 tree14:  (1, 2, 3)
-result: list([Int(), Int(), Int()])
     1 : List TK.TUPLE(LITERAL, '(', V=[Int(), Int(), Int()])
     2 :     Int TK.INT(LITERAL, '1', V=1)
     3 :     Int TK.INT(LITERAL, '2', V=2)
     4 :     Int TK.INT(LITERAL, '3', V=3)
 
 tree15:  (x:1, y:2, z:3)
-result: list([Define(), Define(), Define()])
     1 : List TK.TUPLE(LITERAL, '(', V=[Define(), Define(), Define()])
     2 :     Define TK.COLN(NONE, ':', V=None)
     3 :         Ref TK.IDNT(IDENTIFIER, 'x', V=None)
@@ -221,7 +206,6 @@ result: list([Define(), Define(), Define()])
    10 :         Int TK.INT(LITERAL, '3', V=3)
 
 tree16:  (x=1, y=2, z=3)
-result: list([Define(), Define(), Define()])
     1 : List TK.TUPLE(LITERAL, '(', V=[Define(), Define(), Define()])
     2 :     Define TK.EQLS(BINOP, '=', V=None)
     3 :         Ref TK.IDNT(IDENTIFIER, 'x', V=None)
@@ -234,7 +218,6 @@ result: list([Define(), Define(), Define()])
    10 :         Int TK.INT(LITERAL, '3', V=3)
 
 tree17:  (x, y, z) = (1, 2, 3)
-result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     List TK.TUPLE(LITERAL, '(', V=[Ref(), Ref(), Ref()])
     3 :         Ref TK.IDNT(IDENTIFIER, 'x', V=None)
@@ -246,7 +229,6 @@ result: Lit(None)
     9 :         Int TK.INT(LITERAL, '3', V=3)
 
 tree18:  (x, y, z) = {q, r, s}:(1, 2, 3)
-result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     List TK.TUPLE(LITERAL, '(', V=[Ref(), Ref(), Ref()])
     3 :         Ref TK.IDNT(IDENTIFIER, 'x', V=None)
@@ -263,7 +245,6 @@ result: Lit(None)
    14 :             Int TK.INT(LITERAL, '3', V=3)
 
 tree19:  (x, y, z) = {q, r, s}:{q=1, r=2, s=3}
-result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     List TK.TUPLE(LITERAL, '(', V=[Ref(), Ref(), Ref()])
     3 :         Ref TK.IDNT(IDENTIFIER, 'x', V=None)
@@ -286,7 +267,6 @@ result: Lit(None)
    20 :                 Int TK.INT(LITERAL, '3', V=3)
 
 tree20:  a = (1, 2, 3)
-result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'a', V=None)
     3 :     List TK.TUPLE(LITERAL, '(', V=[Int(), Int(), Int()])
@@ -295,7 +275,6 @@ result: Lit(None)
     6 :         Int TK.INT(LITERAL, '3', V=3)
 
 tree21:  a = {q, r, s}:(1, 2, 3)
-result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'a', V=None)
     3 :     Define TK.COLN(NONE, ':', V=None)
@@ -309,7 +288,6 @@ result: Lit(None)
    11 :             Int TK.INT(LITERAL, '3', V=3)
 
 tree22:  a = {q, r, s}:{q=1, r=2, s=3}
-result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'a', V=None)
     3 :     Define TK.COLN(NONE, ':', V=None)
@@ -329,21 +307,18 @@ result: Lit(None)
    17 :                 Int TK.INT(LITERAL, '3', V=3)
 
 tree23:  {x, y, z}
-result: list([Get(), Get(), Get()])
     1 : Set TK.SET(LITERAL, '{', V=[Get(), Get(), Get()])
     2 :     Get TK.IDNT(IDENTIFIER, 'x', V=None)
     3 :     Get TK.IDNT(IDENTIFIER, 'y', V=None)
     4 :     Get TK.IDNT(IDENTIFIER, 'z', V=None)
 
 tree24:  {1, 2, 3}
-result: list([Int(), Int(), Int()])
     1 : Set TK.SET(LITERAL, '{', V=[Int(), Int(), Int()])
     2 :     Int TK.INT(LITERAL, '1', V=1)
     3 :     Int TK.INT(LITERAL, '2', V=2)
     4 :     Int TK.INT(LITERAL, '3', V=3)
 
 tree25:  {x:1, y:2, z:3}
-result: list([Define(), Define(), Define()])
     1 : Set TK.SET(LITERAL, '{', V=[Define(), Define(), Define()])
     2 :     Define TK.COLN(NONE, ':', V=None)
     3 :         Ref TK.IDNT(IDENTIFIER, 'x', V=None)
@@ -356,7 +331,6 @@ result: list([Define(), Define(), Define()])
    10 :         Int TK.INT(LITERAL, '3', V=3)
 
 tree26:  {x=1, y=2, z=3}
-result: list([Define(), Define(), Define()])
     1 : Block TK.BLOCK(SCOPE, '', V=[Define(), Define(), Define()])
     2 :     Define TK.EQLS(BINOP, '=', V=None)
     3 :         Ref TK.IDNT(IDENTIFIER, 'x', V=None)
@@ -369,7 +343,6 @@ result: list([Define(), Define(), Define()])
    10 :         Int TK.INT(LITERAL, '3', V=3)
 
 tree27:  {x=1, y=2, z=3*(x+y)}
-result: list([Define(), Define(), Define()])
     1 : Block TK.BLOCK(SCOPE, '', V=[Define(), Define(), Define()])
     2 :     Define TK.EQLS(BINOP, '=', V=None)
     3 :         Ref TK.IDNT(IDENTIFIER, 'x', V=None)
@@ -386,21 +359,18 @@ result: list([Define(), Define(), Define()])
    14 :                 Get TK.IDNT(IDENTIFIER, 'y', V=None)
 
 tree28:  {x, y, z}
-result: list([Get(), Get(), Get()])
     1 : Set TK.SET(LITERAL, '{', V=[Get(), Get(), Get()])
     2 :     Get TK.IDNT(IDENTIFIER, 'x', V=None)
     3 :     Get TK.IDNT(IDENTIFIER, 'y', V=None)
     4 :     Get TK.IDNT(IDENTIFIER, 'z', V=None)
 
 tree29:  {1, 2, 3}
-result: list([Int(), Int(), Int()])
     1 : Set TK.SET(LITERAL, '{', V=[Int(), Int(), Int()])
     2 :     Int TK.INT(LITERAL, '1', V=1)
     3 :     Int TK.INT(LITERAL, '2', V=2)
     4 :     Int TK.INT(LITERAL, '3', V=3)
 
 tree30:  {x:1, y:2, z:3}
-result: list([Define(), Define(), Define()])
     1 : Set TK.SET(LITERAL, '{', V=[Define(), Define(), Define()])
     2 :     Define TK.COLN(NONE, ':', V=None)
     3 :         Ref TK.IDNT(IDENTIFIER, 'x', V=None)
@@ -413,7 +383,6 @@ result: list([Define(), Define(), Define()])
    10 :         Int TK.INT(LITERAL, '3', V=3)
 
 tree31:  {x=1, y=2, z=3}
-result: list([Define(), Define(), Define()])
     1 : Block TK.BLOCK(SCOPE, '', V=[Define(), Define(), Define()])
     2 :     Define TK.EQLS(BINOP, '=', V=None)
     3 :         Ref TK.IDNT(IDENTIFIER, 'x', V=None)
@@ -426,7 +395,6 @@ result: list([Define(), Define(), Define()])
    10 :         Int TK.INT(LITERAL, '3', V=3)
 
 tree32:  {x=1, y=2, z=3*(x+y)}:(x=1, y=2, z=3)
-result: Lit(None)
     1 : Define TK.COLN(NONE, ':', V=None)
     2 :     Block TK.BLOCK(SCOPE, '', V=[Define(), Define(), Define()])
     3 :         Define TK.EQLS(BINOP, '=', V=None)
@@ -454,7 +422,6 @@ result: Lit(None)
    25 :             Int TK.INT(LITERAL, '3', V=3)
 
 tree33:  a = (x, y, z)
-result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'a', V=None)
     3 :     List TK.TUPLE(LITERAL, '(', V=[Get(), Get(), Get()])
@@ -463,7 +430,6 @@ result: Lit(None)
     6 :         Get TK.IDNT(IDENTIFIER, 'z', V=None)
 
 tree34:  a = (1, 2, 3)
-result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'a', V=None)
     3 :     List TK.TUPLE(LITERAL, '(', V=[Int(), Int(), Int()])
@@ -472,7 +438,6 @@ result: Lit(None)
     6 :         Int TK.INT(LITERAL, '3', V=3)
 
 tree35:  a = (x:1, y:2, z:3)
-result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'a', V=None)
     3 :     List TK.TUPLE(LITERAL, '(', V=[Define(), Define(), Define()])
@@ -487,7 +452,6 @@ result: Lit(None)
    12 :             Int TK.INT(LITERAL, '3', V=3)
 
 tree36:  a = (x=1, y=2, z=3)
-result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'a', V=None)
     3 :     List TK.TUPLE(LITERAL, '(', V=[Define(), Define(), Define()])
@@ -502,7 +466,6 @@ result: Lit(None)
    12 :             Int TK.INT(LITERAL, '3', V=3)
 
 tree37:  b := {x, y, z}
-result: Lit(None)
     1 : DefineVarFn TK.COEQ(NONE, ':=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'b', V=None)
     3 :     Set TK.SET(LITERAL, '{', V=[Get(), Get(), Get()])
@@ -511,7 +474,6 @@ result: Lit(None)
     6 :         Get TK.IDNT(IDENTIFIER, 'z', V=None)
 
 tree38:  b := {1, 2, 3}
-result: Lit(None)
     1 : DefineVarFn TK.COEQ(NONE, ':=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'b', V=None)
     3 :     Set TK.SET(LITERAL, '{', V=[Int(), Int(), Int()])
@@ -520,7 +482,6 @@ result: Lit(None)
     6 :         Int TK.INT(LITERAL, '3', V=3)
 
 tree39:  b := {x:1, y:2, z:3}
-result: Lit(None)
     1 : DefineVarFn TK.COEQ(NONE, ':=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'b', V=None)
     3 :     Set TK.SET(LITERAL, '{', V=[Define(), Define(), Define()])
@@ -535,7 +496,6 @@ result: Lit(None)
    12 :             Int TK.INT(LITERAL, '3', V=3)
 
 tree40:  b := {x=1, y=2, z=3}
-result: Lit(None)
     1 : DefineVarFn TK.COEQ(NONE, ':=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'b', V=None)
     3 :     Block TK.BLOCK(SCOPE, '', V=[Define(), Define(), Define()])
@@ -550,7 +510,6 @@ result: Lit(None)
    12 :             Int TK.INT(LITERAL, '3', V=3)
 
 tree41:  b := {x=1, y=2, z=3*(x+y)}
-result: Lit(None)
     1 : DefineVarFn TK.COEQ(NONE, ':=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'b', V=None)
     3 :     Block TK.BLOCK(SCOPE, '', V=[Define(), Define(), Define()])
@@ -569,7 +528,6 @@ result: Lit(None)
    16 :                     Get TK.IDNT(IDENTIFIER, 'y', V=None)
 
 tree42:  def c = {x, y, z}
-result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'c', V=None)
     3 :     Set TK.SET(LITERAL, '{', V=[Ref(), Ref(), Ref()])
@@ -578,7 +536,6 @@ result: Lit(None)
     6 :         Ref TK.IDNT(IDENTIFIER, 'z', V=None)
 
 tree43:  def c = {1, 2, 3}
-result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'c', V=None)
     3 :     Set TK.SET(LITERAL, '{', V=[Int(), Int(), Int()])
@@ -587,7 +544,6 @@ result: Lit(None)
     6 :         Int TK.INT(LITERAL, '3', V=3)
 
 tree44:  def c = {x:1, y:2, z:3}
-result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'c', V=None)
     3 :     Set TK.SET(LITERAL, '{', V=[Define(), Define(), Define()])
@@ -602,7 +558,6 @@ result: Lit(None)
    12 :             Int TK.INT(LITERAL, '3', V=3)
 
 tree45:  def c = {x=1, y=2, z=3}
-result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'c', V=None)
     3 :     Block TK.BLOCK(SCOPE, '', V=[Define(), Define(), Define()])
@@ -617,7 +572,6 @@ result: Lit(None)
    12 :             Int TK.INT(LITERAL, '3', V=3)
 
 tree46:  def c = {x=1, y=2, z=3*(x+y)}:(x=1, y=2, z=3)
-result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'c', V=None)
     3 :     Define TK.COLN(NONE, ':', V=None)
@@ -647,7 +601,6 @@ result: Lit(None)
    27 :                 Int TK.INT(LITERAL, '3', V=3)
 
 tree47:  var c = {x, y, z}
-result: Lit(None)
     1 : DefineVar TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'c', V=None)
     3 :     Set TK.SET(LITERAL, '{', V=[Ref(), Ref(), Ref()])
@@ -656,7 +609,6 @@ result: Lit(None)
     6 :         Ref TK.IDNT(IDENTIFIER, 'z', V=None)
 
 tree48:  var c = {1, 2, 3}
-result: Lit(None)
     1 : DefineVar TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'c', V=None)
     3 :     Set TK.SET(LITERAL, '{', V=[Int(), Int(), Int()])
@@ -665,7 +617,6 @@ result: Lit(None)
     6 :         Int TK.INT(LITERAL, '3', V=3)
 
 tree49:  var c = {x:1, y:2, z:3}
-result: Lit(None)
     1 : DefineVar TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'c', V=None)
     3 :     Set TK.SET(LITERAL, '{', V=[Define(), Define(), Define()])
@@ -680,7 +631,6 @@ result: Lit(None)
    12 :             Int TK.INT(LITERAL, '3', V=3)
 
 tree50:  var c = {x=1, y=2, z=3}
-result: Lit(None)
     1 : DefineVar TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'c', V=None)
     3 :     Block TK.BLOCK(SCOPE, '', V=[Define(), Define(), Define()])
@@ -695,7 +645,6 @@ result: Lit(None)
    12 :             Int TK.INT(LITERAL, '3', V=3)
 
 tree51:  var c = {x=1, y=2, z=3*(x+y)}:(x=1, y=2, z=3)
-result: Lit(None)
     1 : DefineVar TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'c', V=None)
     3 :     Define TK.COLN(NONE, ':', V=None)

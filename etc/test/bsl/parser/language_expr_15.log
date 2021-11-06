@@ -1,10 +1,9 @@
 
 
 test: 15:
-"start: open.delay(1d) | buy; end: open | sell"
+start: open.delay(1d) | buy; end: open | sell
 
 tree1:  start: open.delay(1d) | buy; end: open | sell
-result: list([Define(), ApplyChainProd()])
     1 : Flow TK.CHAIN(NONE, '|', V=[Define(), ApplyChainProd()])
     2 :     Define TK.COLN(NONE, ':', V=None)
     3 :         Ref TK.IDNT(IDENTIFIER, 'start', V=None)
@@ -18,7 +17,6 @@ result: list([Define(), ApplyChainProd()])
    11 :         Ref TK.BUY(IDENTIFIER, 'buy', V=None)
 
 tree2:  start: open.delay(1d) | buy; end: open | sell
-result: list([Define(), ApplyChainProd()])
     1 : Flow TK.CHAIN(NONE, '|', V=[Define(), ApplyChainProd()])
     2 :     Define TK.COLN(NONE, ':', V=None)
     3 :         Ref TK.IDNT(IDENTIFIER, 'end', V=None)

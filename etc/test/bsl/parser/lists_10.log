@@ -1,10 +1,9 @@
 
 
 test: 10:
-"[[a],[b],[c]]"
+[[a],[b],[c]]
 
 tree1:  [[a],[b],[c]]
-result: list([List(), List(), List()])
     1 : List TK.LIST(LITERAL, '[', V=[List(), List(), List()])
     2 :     List TK.LIST(LITERAL, '[', V=[Get()])
     3 :         Get TK.IDNT(IDENTIFIER, 'a', V=None)

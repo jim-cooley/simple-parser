@@ -1,12 +1,10 @@
 
 
 test: 9:
-"a{}"
+a{}
 
 tree1:  a{}
-result: Lit(None)
     1 : Get TK.IDNT(IDENTIFIER, 'a', V=None)
 
 tree2:  a{}
-result: list([])
     1 : Set TK.EMPTY(LITERAL, '{}', V=[])

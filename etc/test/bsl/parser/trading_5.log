@@ -1,10 +1,9 @@
 
 
 test: 5:
-"buy: position += trade_size"
+buy: position += trade_size
 
 tree1:  buy: position += trade_size
-result: Lit(None)
     1 : Define TK.COLN(NONE, ':', V=None)
     2 :     Ref TK.BUY(IDENTIFIER, 'buy', V=None)
     3 :     Assign TK.PLEQ(NONE, '+=', V=None)

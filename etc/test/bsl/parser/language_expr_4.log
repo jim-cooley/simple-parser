@@ -1,10 +1,9 @@
 
 
 test: 4:
-"any:{ close >| sma(10), close <| sma(20) }:(threshold=0.01) | signal >> atr | delay(1d) => buy"
+any:{ close >| sma(10), close <| sma(20) }:(threshold=0.01) | signal >> atr | delay(1d) => buy
 
 tree1:  any:{ close >| sma(10), close <| sma(20) }:(threshold=0.01) | signal >> atr | delay(1d) => buy
-result: Lit(None)
     1 : UnaryOp TK.ANY(UNARY, 'any', V=None)
     2 :     Flow TK.PRODUCE(NONE, '=>', V=[Flow(), ApplyChainProd()])
     3 :         Flow TK.CHAIN(NONE, '|', V=[Flow(), FnCall()])

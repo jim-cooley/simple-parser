@@ -1,10 +1,9 @@
 
 
 test: 7:
-"a = 2 * 3 + 4"
+a = 2 * 3 + 4
 
 tree1:  a = 2 * 3 + 4
-result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'a', V=None)
     3 :     BinOp TK.ADD(BINOP, '+', V=None)

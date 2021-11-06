@@ -1,6 +1,44 @@
 #!/usr/local/bin/bash
 logpath="./etc/test/log"
 bslpath="./etc/test/bsl"
+tdiff_log="./etc/log/tdiff.log"
+
+read -r -d '' help_text <<'EOF'
+tdiff - compare baselines
+  -q  = silence unneccessary output
+  -t  = single test mode (see -b)
+  -w  = wide diff format (side by side)
+  -v  = verbose output
+  -h  = help
+EOF
+
+declare -i quiet=1
+declare -i wide=0
+declare diff_color=" --color"
+declare diff_opt="-rcd"
+declare diff="/usr/local/bin/diff"
+
+while [[ $# -gt 0 ]] ; do
+    case "$1" in
+        -q | --quiet)
+            quiet=1
+            ;;
+        -w | --wide)
+            wide=1
+            diff_opt="-wady"
+            ;;
+        -v | --verbose)
+            quiet=0
+            ;;
+        -h | --help)
+            display_help=1
+            break
+            ;;
+        *)
+            break;;
+    esac
+    shift
+done
 
 prefx=$1
 suite=$2
@@ -8,9 +46,54 @@ suite=$2
 printf $suite
 
 printf "\n\ncomparing tests\n\n"
+echo "" > $tdiff_log
+declare -i pass=0
+declare -i total=0
+declare -i no_baseline=0
+declare -i exceptions=0
+
 for test in $logpath/$prefx/$suite*; do
+    total=$((total + 1))
     baseline="$bslpath/$prefx"/"$(basename $test)"
     printf "\ncomparing $baseline, $test\n"
-    diff $baseline $test
+    if [ -f "$baseline" ]; then
+        reason="diff"
+        $diff $diff_opt $diff_color $baseline $test && reason="pass"
+        grep -i "exception" "$test" && printf "in $test\n" && reason="exception"
+        if [ "$reason" == "pass" ]; then
+            pass=$((pass + 1))
+        else
+            printf "$(basename $test):\tfail: $reason\n" >> $tdiff_log
+            if [ $quiet -eq 0 ]; then
+              printf "$(basename $test):\tfail: $reason\n"
+            fi
+        fi
+    else
+        reason="no baseline"
+        no_baseline=$((no_baseline + 1))
+        grep -i "exception" "$test" && printf "in $test\n" && reason="exception"
+        printf "$(basename $test):\tfail: $reason\n" >> $tdiff_log
+        if [ $quiet -eq 0 ]; then
+            printf "$(basename $test):\tfail: $reason\n"
+        fi
+    fi
+    if [ "$reason" == "exception" ]; then
+        exceptions=$((exceptions + 1))
+    fi
     printf "================================\n"
 done
+
+if [ $quiet -eq 0 ]; then
+  cat $tdiff_log
+fi
+
+printf "\n\nresults summary:\n"
+fail=$((total-pass-no_baseline))
+printf "================================\n"
+printf "  pass:        $pass   $((pass*100/total)) pct \n"
+printf "  fail:        $fail   $(((fail*100)/total)) pct \n"
+printf "  exceptions:  $exceptions      $(((exceptions*100)/total)) pct \n"
+printf "  no baseline: $no_baseline\n"
+printf "  total:       $total\n"
+printf "================================\n\n"
+

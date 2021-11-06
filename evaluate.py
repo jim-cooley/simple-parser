@@ -1,8 +1,9 @@
 
 from conversion import c_unbox, c_box
 from environment import Environment, RuntimeStack
-from eval_assignment import eval_assignment_dispatch, _SUPPORTED_ASSIGNMENT_TOKENS
+from eval_assignment import eval_assign_dispatch, _SUPPORTED_ASSIGNMENT_TOKENS
 from eval_binops import eval_binops_dispatch, _binops_dispatch_table
+from eval_boolean import eval_boolean_dispatch, _boolean_dispatch_table
 from eval_unary import not_literal, increment_literal, decrement_literal, negate_literal
 from exceptions import getErrorFacility, runtime_error, runtime_strict_warning
 from literals import LIT_NONE
@@ -75,6 +76,8 @@ def evaluate_binary_operation(node, left, right):
         right = reduce_ref(scope=Environment.current.scope, ref=right)
     if op in _binops_dispatch_table:
         return eval_binops_dispatch(node, left, right)
+    elif op in _boolean_dispatch_table:
+        return eval_boolean_dispatch(node, left, right)
     elif op in [TK.DEF, TK.REF]:
         scope = Environment.current.scope
         symbol = scope.find_add(left.token)
@@ -82,7 +85,7 @@ def evaluate_binary_operation(node, left, right):
         return ref if ref is not None else LIT_NONE
     elif op in [TK.ASSIGN, TK.DEFINE, TK.APPLY]:
         if op in _SUPPORTED_ASSIGNMENT_TOKENS:
-            return eval_assignment_dispatch(left, right)
+            return eval_assign_dispatch(left, right)
         else:
             runtime_error(f'Type mismatch for assignment({type(left)}, {type(right)})', loc=None)
     else:
@@ -121,13 +124,13 @@ def evaluate_unary_operation(node, left):
         return not_literal(l_value, l_tid)
     elif opid == TK.INCREMENT:
         l_value = increment_literal(l_value, l_tid)
-#        eval_assignment_dispatch(left, r_value),
+#        eval_assign_dispatch(left, r_value),
     elif opid == TK.DECREMENT:
         l_value = decrement_literal(l_value, l_tid)
-#        eval_assignment_dispatch(left, r_value),
+#        eval_assign_dispatch(left, r_value),
     elif opid == TK.NEG:
         l_value = negate_literal(l_value, l_tid)
-#        eval_assignment_dispatch(left, r_value),
+#        eval_assign_dispatch(left, r_value),
     elif opid == TK.POS:
         pass
     else:

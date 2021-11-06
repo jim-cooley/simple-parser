@@ -1,8 +1,7 @@
 
 
 test: 18:
-"false"
+false
 
 tree1:  false
-result: bool(False)
     1 : Bool TK.FALSE(LITERAL, 'false', V=False)

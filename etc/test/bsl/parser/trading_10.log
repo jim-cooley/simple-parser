@@ -1,10 +1,9 @@
 
 
 test: 10:
-"close <| sma(10) | signal >> delay(1d) | atr => sell"
+close <| sma(10) | signal >> delay(1d) | atr => sell
 
 tree1:  close <| sma(10) | signal >> delay(1d) | atr => sell
-result: list([Flow(), ApplyChainProd()])
     1 : Flow TK.PRODUCE(NONE, '=>', V=[Flow(), ApplyChainProd()])
     2 :     Flow TK.CHAIN(NONE, '|', V=[Flow(), ApplyChainProd()])
     3 :         Flow TK.APPLY(NONE, '>>', V=[Flow(), FnCall()])

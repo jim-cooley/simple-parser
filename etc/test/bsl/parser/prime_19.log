@@ -1,8 +1,7 @@
 
 
 test: 19:
-"None"
+None
 
 tree1:  None
-result: Lit(None)
     1 : Get TK.IDNT(IDENTIFIER, 'None', V=None)

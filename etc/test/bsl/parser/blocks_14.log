@@ -1,10 +1,9 @@
 
 
 test: 14:
-"node | { _ : _.left = _.right}"
+node | { _ : _.left = _.right}
 
 tree1:  node | { _ : _.left = _.right}
-result: list([Get(), Block()])
     1 : Flow TK.CHAIN(NONE, '|', V=[Get(), Block()])
     2 :     Get TK.IDNT(IDENTIFIER, 'node', V=None)
     3 :     Block TK.BLOCK(SCOPE, '', V=[Define()])

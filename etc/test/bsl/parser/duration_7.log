@@ -1,8 +1,7 @@
 
 
 test: 7:
-"1y"
+1y
 
 tree1:  1y
-result: timedelta(365 days, 0:00:00)
     1 : Duration TK.DUR(LITERAL, '1y', V=365 days, 0:00:00)

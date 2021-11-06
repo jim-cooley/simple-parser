@@ -1,10 +1,9 @@
 
 
 test: 14:
-"{a, b, c}:(4, 5, 6)"
+{a, b, c}:(4, 5, 6)
 
 tree1:  {a, b, c}:(4, 5, 6)
-result: Lit(None)
     1 : Define TK.COLN(NONE, ':', V=None)
     2 :     Set TK.SET(LITERAL, '{', V=[Ref(), Ref(), Ref()])
     3 :         Ref TK.IDNT(IDENTIFIER, 'a', V=None)

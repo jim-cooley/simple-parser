@@ -1,9 +1,8 @@
 
 
 test: 25:
-"++1y"
+++1y
 
 tree1:  ++1y
-result: Lit(None)
     1 : UnaryOp TK.INCREMENT(UNARY, '++', V=None)
     2 :     Duration TK.DUR(LITERAL, '1y', V=365 days, 0:00:00)

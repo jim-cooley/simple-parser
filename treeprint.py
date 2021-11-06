@@ -161,7 +161,8 @@ def print_tree(tree, log=None, label=None, print_notation=True, print_results=Tr
         ty = type(v).__name__
         if v is None:
             ty = 'Lit'
-        _t_print(log, f'result: {ty}({v})')
+        if print_results:
+            _t_print(log, f'result: {ty}({v})')
     print_node(tree.root, log=log, print_notation=False)
 
 

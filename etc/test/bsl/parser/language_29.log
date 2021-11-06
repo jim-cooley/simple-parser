@@ -1,10 +1,9 @@
 
 
 test: 29:
-"f(x) = x * 4"
+f(x) = x * 4
 
 tree1:  f(x) = x * 4
-result: Lit(None)
     1 : DefineFn TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'f', V=None)
     3 :     BinOp TK.MUL(BINOP, '*', V=None)

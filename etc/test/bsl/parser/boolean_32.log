@@ -1,10 +1,9 @@
 
 
 test: 32:
-"false and true"
+false and true
 
 tree1:  false and true
-result: Lit(None)
     1 : BinOp TK.AND(BINOP, 'and', V=None)
     2 :     Bool TK.FALSE(LITERAL, 'false', V=False)
     3 :     Bool TK.TRUE(LITERAL, 'true', V=True)

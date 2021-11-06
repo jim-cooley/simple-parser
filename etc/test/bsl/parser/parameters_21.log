@@ -1,10 +1,9 @@
 
 
 test: 21:
-"{a}:(a = 5)"
+{a}:(a = 5)
 
 tree1:  {a}:(a = 5)
-result: Lit(None)
     1 : Define TK.COLN(NONE, ':', V=None)
     2 :     Set TK.SET(LITERAL, '{', V=[Ref()])
     3 :         Ref TK.IDNT(IDENTIFIER, 'a', V=None)

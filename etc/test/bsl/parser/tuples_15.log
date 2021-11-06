@@ -1,10 +1,9 @@
 
 
 test: 15:
-"((a, b), c)                  # tuple in a tuple"
+((a, b), c)                  # tuple in a tuple
 
 tree1:  ((a, b), c)                  # tuple in a tuple
-result: list([List(), Get()])
     1 : List TK.TUPLE(LITERAL, '(', V=[List(), Get()])
     2 :     List TK.TUPLE(LITERAL, '(', V=[Get(), Get()])
     3 :         Get TK.IDNT(IDENTIFIER, 'a', V=None)

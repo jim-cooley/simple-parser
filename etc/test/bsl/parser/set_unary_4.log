@@ -1,10 +1,9 @@
 
 
 test: 4:
-"none:{a, b, c}"
+none:{a, b, c}
 
 tree1:  none:{a, b, c}
-result: Lit(None)
     1 : UnaryOp TK.NONE(UNARY, 'none', V=None)
     2 :     Set TK.SET(LITERAL, '{', V=[Get(), Get(), Get()])
     3 :         Get TK.IDNT(IDENTIFIER, 'a', V=None)

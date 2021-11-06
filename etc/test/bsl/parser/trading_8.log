@@ -1,10 +1,9 @@
 
 
 test: 8:
-"atr = (high + low) / 2; median = (close + open) /2"
+atr = (high + low) / 2; median = (close + open) /2
 
 tree1:  atr = (high + low) / 2; median = (close + open) /2
-result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'atr', V=None)
     3 :     BinOp TK.DIV(BINOP, '/', V=None)
@@ -14,7 +13,6 @@ result: Lit(None)
     7 :         Int TK.INT(LITERAL, '2', V=2)
 
 tree2:  atr = (high + low) / 2; median = (close + open) /2
-result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'median', V=None)
     3 :     BinOp TK.DIV(BINOP, '/', V=None)

@@ -1,10 +1,9 @@
 
 
 test: 25:
-"2 * (1d + 1h)"
+2 * (1d + 1h)
 
 tree1:  2 * (1d + 1h)
-result: Lit(None)
     1 : BinOp TK.MUL(BINOP, '*', V=None)
     2 :     Int TK.INT(LITERAL, '2', V=2)
     3 :     BinOp TK.ADD(BINOP, '+', V=None)

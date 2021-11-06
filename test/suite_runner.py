@@ -77,7 +77,7 @@ class TestSuiteRunner(ABC):
 
     def _run_single_test(self, name, test, idx=None):
         fn = f'{name}.log' if idx is None else f'{name}_{idx}.log'
-        label = f'test:\n"{test}"' if idx is None else f'test: {idx}:\n"{test}"'
+        label = f'test:\n{test}' if idx is None else f'test: {idx}:\n{test}'
         fname = f'{self.logs_dir}/{self.prefix}{fn}'
         with open(fname, 'w') as log:
             _t_print(log, f'\n\n{label}')
@@ -88,7 +88,7 @@ class TestSuiteRunner(ABC):
 
     def _generate_empty_log(self, name, test, message='', idx=None):
         fname = f'{name}.log' if idx is None else f'{name}_{idx}.log'
-        label = f'test:\n"{test}"' if idx is None else f'test: {idx}:\n"{test}"'
+        label = f'test:\n{test}' if idx is None else f'test: {idx}:\n{test}'
         with open(f'{self.logs_dir}/{fname}', 'w') as log:
             _t_print(log, message)
 
@@ -119,7 +119,8 @@ def _dump_environment(env, log=None, label=None,
                       print_commands=True,
                       print_tokens=True,
                       print_trees=True,
-                      print_symbols=False):
+                      print_symbols=False,
+                      print_notation=True):
     if print_tokens:
         _dump_tokens(env)
         log.flush()
@@ -127,7 +128,7 @@ def _dump_environment(env, log=None, label=None,
         print('\n-----------------------------------------------')
         print('               P A R S E   T R E E')
         print('-----------------------------------------------')
-        print_forest(env, log, label, print_results)
+        print_forest(env, log, label, print_results=print_results, print_notation=print_notation)
         log.flush()
     if print_commands:
         _print_commands(env, env.commands, log=log)

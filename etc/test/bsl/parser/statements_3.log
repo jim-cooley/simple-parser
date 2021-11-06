@@ -1,16 +1,13 @@
 
 
 test: 3:
-"a; b; c"
+a; b; c
 
 tree1:  a; b; c
-result: Lit(None)
     1 : Get TK.IDNT(IDENTIFIER, 'a', V=None)
 
 tree2:  a; b; c
-result: Lit(None)
     1 : Get TK.IDNT(IDENTIFIER, 'b', V=None)
 
 tree3:  a; b; c
-result: Lit(None)
     1 : Get TK.IDNT(IDENTIFIER, 'c', V=None)

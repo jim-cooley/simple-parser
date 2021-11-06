@@ -1,10 +1,9 @@
 
 
 test: 47:
-"{ b: b.left = b.right}:(node)"
+{ b: b.left = b.right}:(node)
 
 tree1:  { b: b.left = b.right}:(node)
-result: Lit(None)
     1 : Define TK.COLN(NONE, ':', V=None)
     2 :     Block TK.BLOCK(SCOPE, '', V=[Define()])
     3 :         Define TK.COLN(NONE, ':', V=None)

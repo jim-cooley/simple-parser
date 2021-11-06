@@ -1,10 +1,9 @@
 
 
 test: 8:
-"{close.sma(20) and close.sma(50)} | diff | sign | signal(how='cross')"
+{close.sma(20) and close.sma(50)} | diff | sign | signal(how='cross')
 
 tree1:  {close.sma(20) and close.sma(50)} | diff | sign | signal(how='cross')
-result: list([Block(), Ref(), Ref(), FnCall()])
     1 : Flow TK.CHAIN(NONE, '|', V=[Block(), Ref(), Ref(), FnCall()])
     2 :     Block TK.BLOCK(SCOPE, '', V=[BinOp()])
     3 :         BinOp TK.AND(BINOP, 'and', V=None)

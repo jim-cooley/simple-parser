@@ -1,6 +1,6 @@
 
 
 test: 2:
-"%%backtest (rules, period='train')"
+%%backtest (rules, period='train')
 
 tree1:  %%backtest (rules, period='train')

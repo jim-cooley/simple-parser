@@ -1,7 +1,7 @@
 
 
 test:
-"# sample rules file for pyser / qtradr
+# sample rules file for pyser / qtradr
 
 %%yahoo (file='spq500.csv', 2y)
 %%backtest (rules, period='train')
@@ -31,10 +31,9 @@ rules: {
         sell: close <| sma(sma_period) | signal >> atr.delay(1d)
     }
 }
-"
+
 
 tree1:  periods = {
-result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'periods', V=None)
     3 :     Block TK.BLOCK(SCOPE, '', V=[Define()])
@@ -47,7 +46,6 @@ result: Lit(None)
    10 :                 Get TK.TODAY(IDENTIFIER, 'today', V=None)
 
 tree2:  sma_period = [3,5,10..20,28]
-result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'sma_period', V=None)
     3 :     List TK.LIST(LITERAL, '[', V=[Int(), Int(), BinOp(), Int()])
@@ -59,7 +57,6 @@ result: Lit(None)
     9 :         Int TK.INT(LITERAL, '28', V=28)
 
 tree3:  atr := (high + low) / 2
-result: Lit(None)
     1 : DefineVarFn TK.COEQ(NONE, ':=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'atr', V=None)
     3 :     BinOp TK.DIV(BINOP, '/', V=None)
@@ -69,7 +66,6 @@ result: Lit(None)
     7 :         Int TK.INT(LITERAL, '2', V=2)
 
 tree4:  median_price := (open + close) / 2
-result: Lit(None)
     1 : DefineVarFn TK.COEQ(NONE, ':=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'median_price', V=None)
     3 :     BinOp TK.DIV(BINOP, '/', V=None)
@@ -79,7 +75,6 @@ result: Lit(None)
     7 :         Int TK.INT(LITERAL, '2', V=2)
 
 tree5:  price10a := price.delay(1d)[10:00]
-result: Lit(None)
     1 : DefineVarFn TK.COEQ(NONE, ':=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'price10a', V=None)
     3 :     PropRef TK.REF(BINOP, '.', V=None)
@@ -90,12 +85,10 @@ result: Lit(None)
     8 :                 Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
 
 tree6:  price10a := price.delay(1d)[10:00]
-result: list([Time()])
     1 : List TK.LIST(LITERAL, '[', V=[Time()])
     2 :     Time TK.TIME(LITERAL, '10:00', V=10:00:00)
 
 tree7:  report := { trades | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price') }
-result: Lit(None)
     1 : DefineVarFn TK.COEQ(NONE, ':=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'report', V=None)
     3 :     Block TK.BLOCK(SCOPE, '', V=[Flow()])
@@ -111,7 +104,6 @@ result: Lit(None)
    13 :                     Str TK.STR(LITERAL, 'sell_price', V=sell_price)
 
 tree8:  rules: {
-result: Lit(None)
     1 : Define TK.COLN(NONE, ':', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'rules', V=None)
     3 :     Block TK.BLOCK(SCOPE, '', V=[Define(), Define()])

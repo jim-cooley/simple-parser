@@ -1,14 +1,12 @@
 
 
 test: 12:
-"f{a:5, b:'c', d}"
+f{a:5, b:'c', d}
 
 tree1:  f{a:5, b:'c', d}
-result: Lit(None)
     1 : Get TK.IDNT(IDENTIFIER, 'f', V=None)
 
 tree2:  f{a:5, b:'c', d}
-result: list([Define(), Define(), Get()])
     1 : Set TK.SET(LITERAL, '{', V=[Define(), Define(), Get()])
     2 :     Define TK.COLN(NONE, ':', V=None)
     3 :         Ref TK.IDNT(IDENTIFIER, 'a', V=None)

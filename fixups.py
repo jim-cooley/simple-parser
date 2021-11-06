@@ -6,9 +6,8 @@ from conversion import c_unbox, c_type, c_box
 from eval_binops import eval_binops_dispatch_fixup
 from eval_unary import decrement_literal, increment_literal, negate_literal, not_literal
 from evaluate import _INTRINSIC_VALUE_TYPES
-from scope import Literal
 from tree import AST, Define, DefineVar, DefineFn, DefineVarFn
-from literals import List
+from literals import List, Literal, Bool
 from modifytree import TreeModifier
 from tokens import TK, TCL, Token
 from visitor import BINARY_NODE, NATIVE_LIST, DEFAULT_NODE, VALUE_NODE, SEQUENCE_NODE
@@ -81,7 +80,7 @@ class Fixups(TreeModifier, ABC):
         for t in trees:
             val = self.visit(t.root)
             if not isinstance(val, AST):
-                val = Literal(val)
+                val = Literal.lit(val)
             t.root = val
         return self.trees
 
@@ -156,27 +155,25 @@ class Fixups(TreeModifier, ABC):
             return None
         node.expr = self.visit(node.expr)
         if node.expr is None:
-            return node
+            return node     # TODO: Probably a failure
         expr = node.expr
         l_tid = c_type(expr)
         l_value = c_unbox(expr)
-        if l_value is None:
-            return None
 
         opid = node.op
         if expr.token.t_class == TCL.LITERAL:
             if opid == TK.NOT:
                 l_value = not_literal(l_value, l_tid)
-                return _lift(node, c_box(expr, l_value))
+                return _lift(node, Bool(value=l_value, loc=expr.token.location))
             elif opid == TK.INCREMENT:
                 l_value = increment_literal(l_value, l_tid)
-                return _lift(node, c_box(expr, l_value))
+                return _lift(node, Literal.lit(l_value, other=expr))
             elif opid == TK.DECREMENT:
                 l_value = decrement_literal(l_value, l_tid)
-                return _lift(node, c_box(expr, l_value))
+                return _lift(node, Literal.lit(l_value, other=expr))
             elif opid == TK.NEG:
                 l_value = negate_literal(l_value, l_tid)
-                return _lift(node, c_box(expr, l_value))
+                return _lift(node, Literal.lit(l_value, other=expr))
             elif opid == TK.POS:
                 return _lift(node, expr)
         return node

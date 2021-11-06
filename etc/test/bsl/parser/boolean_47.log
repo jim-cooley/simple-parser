@@ -1,10 +1,9 @@
 
 
 test: 47:
-"0 and "1""
+0 and "1"
 
 tree1:  0 and "1"
-result: Lit(None)
     1 : BinOp TK.AND(BINOP, 'and', V=None)
     2 :     Int TK.INT(LITERAL, '0', V=0)
     3 :     Str TK.STR(LITERAL, '1', V=1)

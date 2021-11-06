@@ -1,10 +1,9 @@
 
 
 test: 22:
-"def f(x) = { a.b(x):x*x }"
+def f(x) = { a.b(x):x*x }
 
 tree1:  def f(x) = { a.b(x):x*x }
-result: Lit(None)
     1 : DefineFn TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'f', V=None)
     3 :     Block TK.BLOCK(SCOPE, '', V=[Define()])

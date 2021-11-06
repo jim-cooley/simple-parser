@@ -1,4 +1,4 @@
 
 
 test: 6:
-"#   NUMBER | DATETIME | DURATION | SET | STRING | true | false | none"
+#   NUMBER | DATETIME | DURATION | SET | STRING | true | false | none

@@ -1,10 +1,9 @@
 
 
 test: 16:
-"def atr = (high + low) / 2"
+def atr = (high + low) / 2
 
 tree1:  def atr = (high + low) / 2
-result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'atr', V=None)
     3 :     BinOp TK.DIV(BINOP, '/', V=None)

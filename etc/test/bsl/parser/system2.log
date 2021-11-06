@@ -1,7 +1,7 @@
 
 
 test:
-"# sample rules file for pyser / qtradr
+# sample rules file for pyser / qtradr
 { close }:(threshold=5) | signal
 
 rules >> report | print
@@ -49,10 +49,9 @@ rules: {
 
 backtest( rules, period=period['train'])
 rules >> report | print
-"
+
 
 tree1:  { close }:(threshold=5) | signal
-result: list([Define(), ApplyChainProd()])
     1 : Flow TK.CHAIN(NONE, '|', V=[Define(), ApplyChainProd()])
     2 :     Define TK.COLN(NONE, ':', V=None)
     3 :         Set TK.SET(LITERAL, '{', V=[Ref()])
@@ -64,7 +63,6 @@ result: list([Define(), ApplyChainProd()])
     9 :         Ref TK.SIGNAL(IDENTIFIER, 'signal', V=None)
 
 tree2:  rules >> report | print
-result: list([Flow(), ApplyChainProd()])
     1 : Flow TK.CHAIN(NONE, '|', V=[Flow(), ApplyChainProd()])
     2 :     Flow TK.APPLY(NONE, '>>', V=[Get(), ApplyChainProd()])
     3 :         Get TK.IDNT(IDENTIFIER, 'rules', V=None)
@@ -74,7 +72,6 @@ result: list([Flow(), ApplyChainProd()])
     7 :         Ref TK.IDNT(IDENTIFIER, 'print', V=None)
 
 tree3:  periods = {
-result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'periods', V=None)
     3 :     Block TK.BLOCK(SCOPE, '', V=[Define()])
@@ -87,7 +84,6 @@ result: Lit(None)
    10 :                 Get TK.TODAY(IDENTIFIER, 'today', V=None)
 
 tree4:  sma_periods1 = [3,5,10..20,28]
-result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'sma_periods1', V=None)
     3 :     List TK.LIST(LITERAL, '[', V=[Int(), Int(), BinOp(), Int()])
@@ -99,7 +95,6 @@ result: Lit(None)
     9 :         Int TK.INT(LITERAL, '28', V=28)
 
 tree5:  sma_periods2 = [5,10,12,20,30,60,90]
-result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'sma_periods2', V=None)
     3 :     List TK.LIST(LITERAL, '[', V=[Int(), Int(), Int(), Int(), Int(), Int(), Int()])
@@ -112,7 +107,6 @@ result: Lit(None)
    10 :         Int TK.INT(LITERAL, '90', V=90)
 
 tree6:  var r = range(sma_periods1)
-result: Lit(None)
     1 : DefineVar TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'r', V=None)
     3 :     DefineFn TK.FUNCTION(BINOP, '(', V=None)
@@ -121,7 +115,6 @@ result: Lit(None)
     6 :             Ref TK.IDNT(IDENTIFIER, 'sma_periods1', V=None)
 
 tree7:  var r2 = range(sma_periods2)
-result: Lit(None)
     1 : DefineVar TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'r2', V=None)
     3 :     DefineFn TK.FUNCTION(BINOP, '(', V=None)
@@ -130,7 +123,6 @@ result: Lit(None)
     6 :             Ref TK.IDNT(IDENTIFIER, 'sma_periods2', V=None)
 
 tree8:  (open, high, low, close, adj_close) = yahoo( file='spq500.csv', 2y )
-result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     List TK.TUPLE(LITERAL, '(', V=[Ref(), Ref(), Ref(), Ref(), Ref()])
     3 :         Ref TK.IDNT(IDENTIFIER, 'open', V=None)
@@ -147,7 +139,6 @@ result: Lit(None)
    14 :             Duration TK.DUR(LITERAL, '2y', V=730 days, 0:00:00)
 
 tree9:  atr = (high + low) / 2
-result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'atr', V=None)
     3 :     BinOp TK.DIV(BINOP, '/', V=None)
@@ -157,7 +148,6 @@ result: Lit(None)
     7 :         Int TK.INT(LITERAL, '2', V=2)
 
 tree10:  median_price = (open + close) / 2
-result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'median_price', V=None)
     3 :     BinOp TK.DIV(BINOP, '/', V=None)
@@ -167,7 +157,6 @@ result: Lit(None)
     7 :         Int TK.INT(LITERAL, '2', V=2)
 
 tree11:  price10a = price.delay(1d)[10:00]
-result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'price10a', V=None)
     3 :     PropRef TK.REF(BINOP, '.', V=None)
@@ -178,12 +167,10 @@ result: Lit(None)
     8 :                 Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
 
 tree12:  price10a = price.delay(1d)[10:00]
-result: list([Time()])
     1 : List TK.LIST(LITERAL, '[', V=[Time()])
     2 :     Time TK.TIME(LITERAL, '10:00', V=10:00:00)
 
 tree13:  report := { trades | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price') }
-result: Lit(None)
     1 : DefineVarFn TK.COEQ(NONE, ':=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'report', V=None)
     3 :     Block TK.BLOCK(SCOPE, '', V=[Flow()])
@@ -199,7 +186,6 @@ result: Lit(None)
    13 :                     Str TK.STR(LITERAL, 'sell_price', V=sell_price)
 
 tree14:  rules: {
-result: Lit(None)
     1 : Define TK.COLN(NONE, ':', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'rules', V=None)
     3 :     Block TK.BLOCK(SCOPE, '', V=[Define(), Define(), Define(), Define(), Block()])
@@ -442,7 +428,6 @@ result: Lit(None)
   240 :                     Ref TK.SELL(IDENTIFIER, 'sell', V=None)
 
 tree15:  backtest( rules, period=period['train'])
-result: Lit(None)
     1 : FnCall TK.FUNCTION(BINOP, '(', V=None)
     2 :     Get TK.IDNT(IDENTIFIER, 'backtest', V=None)
     3 :     List TK.TUPLE(LITERAL, '(', V=[Get(), Define()])
@@ -455,7 +440,6 @@ result: Lit(None)
    10 :                     Str TK.STR(LITERAL, 'train', V=train)
 
 tree16:  rules >> report | print
-result: list([Flow(), ApplyChainProd()])
     1 : Flow TK.CHAIN(NONE, '|', V=[Flow(), ApplyChainProd()])
     2 :     Flow TK.APPLY(NONE, '>>', V=[Get(), ApplyChainProd()])
     3 :         Get TK.IDNT(IDENTIFIER, 'rules', V=None)

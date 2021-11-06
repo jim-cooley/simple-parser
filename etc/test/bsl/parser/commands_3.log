@@ -1,6 +1,6 @@
 
 
 test: 3:
-"%%report { report >> rules }"
+%%report { report >> rules }
 
 tree1:  %%report { report >> rules }

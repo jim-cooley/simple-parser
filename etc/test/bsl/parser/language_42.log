@@ -1,10 +1,9 @@
 
 
 test: 42:
-"{ a(x):x*x }"
+{ a(x):x*x }
 
 tree1:  { a(x):x*x }
-result: list([DefineFn()])
     1 : Block TK.BLOCK(SCOPE, '', V=[DefineFn()])
     2 :     DefineFn TK.COLN(NONE, ':', V=None)
     3 :         FnCall TK.FUNCTION(BINOP, '(', V=None)

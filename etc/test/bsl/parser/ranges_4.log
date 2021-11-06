@@ -1,10 +1,9 @@
 
 
 test: 4:
-"[a..b, 1..2]"
+[a..b, 1..2]
 
 tree1:  [a..b, 1..2]
-result: list([BinOp(), BinOp()])
     1 : List TK.LIST(LITERAL, '[', V=[BinOp(), BinOp()])
     2 :     BinOp TK.RANGE(BINOP, '..', V=None)
     3 :         Ref TK.IDNT(IDENTIFIER, 'a', V=None)

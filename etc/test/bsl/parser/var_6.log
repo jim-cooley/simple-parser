@@ -1,10 +1,9 @@
 
 
 test: 6:
-"var f = { var a(x):x*x }"
+var f = { var a(x):x*x }
 
 tree1:  var f = { var a(x):x*x }
-result: Lit(None)
     1 : DefineVar TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'f', V=None)
     3 :     Block TK.BLOCK(SCOPE, '', V=[DefineVarFn()])

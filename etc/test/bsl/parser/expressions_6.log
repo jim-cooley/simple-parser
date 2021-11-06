@@ -1,10 +1,9 @@
 
 
 test: 6:
-"a + 2 * 3 + 4 or not 5"
+a + 2 * 3 + 4 or not 5
 
 tree1:  a + 2 * 3 + 4 or not 5
-result: Lit(None)
     1 : BinOp TK.OR(BINOP, 'or', V=None)
     2 :     BinOp TK.ADD(BINOP, '+', V=None)
     3 :         BinOp TK.ADD(BINOP, '+', V=None)

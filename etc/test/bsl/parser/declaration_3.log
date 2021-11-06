@@ -1,10 +1,9 @@
 
 
 test: 3:
-"var f.a.b.c(x) = x*x"
+var f.a.b.c(x) = x*x
 
 tree1:  var f.a.b.c(x) = x*x
-result: Lit(None)
     1 : DefineVar TK.EQLS(BINOP, '=', V=None)
     2 :     PropRef TK.REF(BINOP, '.', V=None)
     3 :         Ref TK.IDNT(IDENTIFIER, 'f', V=None)

@@ -1,10 +1,9 @@
 
 
 test: 22:
-"{a, b, c}:(4, 5, 6)          # set parameterization"
+{a, b, c}:(4, 5, 6)          # set parameterization
 
 tree1:  {a, b, c}:(4, 5, 6)          # set parameterization
-result: Lit(None)
     1 : Define TK.COLN(NONE, ':', V=None)
     2 :     Set TK.SET(LITERAL, '{', V=[Ref(), Ref(), Ref()])
     3 :         Ref TK.IDNT(IDENTIFIER, 'a', V=None)

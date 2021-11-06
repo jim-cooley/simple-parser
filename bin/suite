@@ -37,6 +37,7 @@ done
 
 prefx=$1
 suite=$2
+diff_opts="-wrcd --color"
 
 if [ $display_help -gt 0 ]; then
   printf "$help_text\n"
@@ -46,6 +47,7 @@ else
   declare -i pass=0
   declare -i total=0
   declare -i no_baseline=0
+  declare -i exceptions=0
 
   printf "\n\n================================\n"
   printf "running tests\n"
@@ -73,21 +75,21 @@ else
       baseline="$bslpath/$prefx"/"$(basename $test)"
   #   printf "$(basename $test):\n"
       if [ -f "$baseline" ]; then
-          result="fail"
+          reason="fail"
           if [ $ignore_baselines -eq 0 ]; then
-              diff "$baseline" "$test" >> ./suite.log && result="pass"
+              diff $diff_opts "$baseline" "$test" >> ./suite.log && reason="pass"
           else
-              result="pass"
+              reason="pass"
           fi
-          grep -i "exception" "$test" && printf "in $test\n" && result="fail (exception)"
-          if [ "$result" == "pass" ]; then
+          grep -i "exception" "$test" && printf "in $test\n" && reason="fail (exception)"
+          if [ "$reason" == "pass" ]; then
               pass=$((pass + 1))
           fi
           if [ $quiet -eq 0 ]; then
-              printf "$(basename $test):  $result\n"
+              printf "$(basename $test):  $reason\n"
           fi
-          if [ "$result" != "pass" ]; then
-              printf "$(basename $test):\t$result\n" >> ./suite.log &>> ./suite.log
+          if [ "$reason" != "pass" ]; then
+              printf "$(basename $test):\t$reason\n" >> ./suite.log &>> ./suite.log
           fi
       else
           if [ $ignore_baselines -eq 0 ]; then
@@ -106,23 +108,28 @@ else
           if [ $ignore_baselines -eq 0 ]; then
               printf "$(basename $test):\tfail: $reason\n" >> ./suite.log &>> ./suite.log
           elif [ "$reason" != "" ]; then
-
               printf "$(basename $test):\tfail: $reason\n" >> ./suite.log &>> ./suite.log
           fi
+      fi
+      if [ "$reason" == "fail (exception)" ]; then
+          exceptions=$((exceptions + 1))
       fi
   done
 
   printf "\n\nresults summary:\n" >> ./suite.log
+  fail=$((total-pass-no_baseline))
   printf "================================\n" >> ./suite.log
   printf "  pass:        $pass\n" >> ./suite.log
   printf "  fail:        $((total-pass-no_baseline))\n" >> ./suite.log
+  printf "  exceptions:  $exceptions\n" >> ./suite.log
   printf "  no baseline: $no_baseline\n" >> ./suite.log
   printf "  total:       $total\n" >> ./suite.log
   printf "================================\n\n" >> ./suite.log
   printf "\n\nresults summary:\n"
   printf "================================\n"
-  printf "  pass:        $pass\n"
-  printf "  fail:        $((total-pass-no_baseline))\n"
+  printf "  pass:        $pass   $((pass*100/total)) pct \n"
+  printf "  fail:        $fail   $(((fail*100)/total)) pct \n"
+  printf "  exceptions:  $exceptions      $(((exceptions*100)/total)) pct \n"
   printf "  no baseline: $no_baseline\n"
   printf "  total:       $total\n"
   printf "================================\n\n"

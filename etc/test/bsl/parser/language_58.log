@@ -1,10 +1,9 @@
 
 
 test: 58:
-"{ _ => _.left = _.right}:(node)"
+{ _ => _.left = _.right}:(node)
 
 tree1:  { _ => _.left = _.right}:(node)
-result: Lit(None)
     1 : Define TK.COLN(NONE, ':', V=None)
     2 :     Block TK.BLOCK(SCOPE, '', V=[Flow()])
     3 :         Flow TK.PRODUCE(NONE, '=>', V=[Ref(), Define()])

@@ -1,10 +1,9 @@
 
 
 test: 18:
-"a().b.c = 4"
+a().b.c = 4
 
 tree1:  a().b.c = 4
-result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     BinOp TK.DOT(BINOP, '.', V=None)
     3 :         DefineFn TK.FUNCTION(BINOP, '(', V=None)

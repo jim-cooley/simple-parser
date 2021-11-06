@@ -1,10 +1,9 @@
 
 
 test: 2:
-"def trade_size = postition * 10%"
+def trade_size = postition * 10%
 
 tree1:  def trade_size = postition * 10%
-result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'trade_size', V=None)
     3 :     BinOp TK.MUL(BINOP, '*', V=None)

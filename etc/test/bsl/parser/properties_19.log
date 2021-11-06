@@ -1,10 +1,9 @@
 
 
 test: 19:
-"a.b().c"
+a.b().c
 
 tree1:  a.b().c
-result: Lit(None)
     1 : BinOp TK.DOT(BINOP, '.', V=None)
     2 :     PropRef TK.REF(BINOP, '.', V=None)
     3 :         Get TK.IDNT(IDENTIFIER, 'a', V=None)

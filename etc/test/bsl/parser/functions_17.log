@@ -1,10 +1,9 @@
 
 
 test: 17:
-"def avg_daily_price = (open + close) / 2"
+def avg_daily_price = (open + close) / 2
 
 tree1:  def avg_daily_price = (open + close) / 2
-result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'avg_daily_price', V=None)
     3 :     BinOp TK.DIV(BINOP, '/', V=None)

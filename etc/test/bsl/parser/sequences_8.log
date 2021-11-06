@@ -1,10 +1,9 @@
 
 
 test: 8:
-"a >> b | c | d"
+a >> b | c | d
 
 tree1:  a >> b | c | d
-result: list([Flow(), Ref(), ApplyChainProd()])
     1 : Flow TK.CHAIN(NONE, '|', V=[Flow(), Ref(), ApplyChainProd()])
     2 :     Flow TK.APPLY(NONE, '>>', V=[Get(), ApplyChainProd()])
     3 :         Get TK.IDNT(IDENTIFIER, 'a', V=None)

@@ -435,6 +435,7 @@ class Token:
 
 TK_EOF = Token(TK.EOF, TCL.LITERAL, '', None)
 TK_EMPTY = Token(TK.EMPTY, TCL.LITERAL, '{}', {})
+TK_NONE = Token(TK.NONE, TCL.LITERAL, '', None)
 TK_SET = Token(TK.SET, TCL.LITERAL, '{', None)
 TK_ASSIGN = Token(TK.ASSIGN, TCL.FUNCTION)
 TK_DEFINE = Token(TK.DEFINE, TCL.FUNCTION)

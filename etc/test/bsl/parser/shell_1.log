@@ -1,6 +1,6 @@
 
 
 test: 1:
-"%%backtest"
+%%backtest
 
 tree1:  %%backtest

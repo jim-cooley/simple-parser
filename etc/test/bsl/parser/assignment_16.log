@@ -1,10 +1,9 @@
 
 
 test: 16:
-"a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z = 5"
+a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z = 5
 
 tree1:  a.b.c.d.e.f.g.h.i.j.k.l.m.n.o.p.q.r.s.t.u.v.w.x.y.z = 5
-result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     PropRef TK.REF(BINOP, '.', V=None)
     3 :         Ref TK.IDNT(IDENTIFIER, 'a', V=None)

@@ -1,10 +1,9 @@
 
 
 test: 28:
-"f = x"
+f = x
 
 tree1:  f = x
-result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'f', V=None)
     3 :     Get TK.IDNT(IDENTIFIER, 'x', V=None)

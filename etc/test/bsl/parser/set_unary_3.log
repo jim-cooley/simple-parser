@@ -1,10 +1,9 @@
 
 
 test: 3:
-"all:{a, b, c}"
+all:{a, b, c}
 
 tree1:  all:{a, b, c}
-result: Lit(None)
     1 : UnaryOp TK.ALL(UNARY, 'all', V=None)
     2 :     Set TK.SET(LITERAL, '{', V=[Get(), Get(), Get()])
     3 :         Get TK.IDNT(IDENTIFIER, 'a', V=None)

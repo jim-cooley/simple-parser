@@ -1,10 +1,9 @@
 
 
 test: 18:
-"def f(x) := x * 4;"
+def f(x) := x * 4;
 
 tree1:  def f(x) := x * 4;
-result: Lit(None)
     1 : DefineFn TK.COEQ(NONE, ':=', V=None)
     2 :     DefineFn TK.FUNCTION(BINOP, '(', V=None)
     3 :         Ref TK.IDNT(IDENTIFIER, 'f', V=None)

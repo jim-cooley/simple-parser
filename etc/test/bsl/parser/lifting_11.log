@@ -1,10 +1,9 @@
 
 
 test: 11:
-"2*-1"
+2*-1
 
 tree1:  2*-1
-result: Lit(None)
     1 : BinOp TK.MUL(BINOP, '*', V=None)
     2 :     Int TK.INT(LITERAL, '2', V=2)
     3 :     UnaryOp TK.NEG(UNARY, '-', V=None)

@@ -1,8 +1,7 @@
 
 
 test: 18:
-"a,"
+a,
 
 tree1:  a,
-result: Lit(None)
     1 : Get TK.IDNT(IDENTIFIER, 'a', V=None)

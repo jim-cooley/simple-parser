@@ -1,10 +1,9 @@
 
 
 test: 21:
-"(a, b, c) = (a:5, b:3, c:4)  # tuple assignment k:v"
+(a, b, c) = (a:5, b:3, c:4)  # tuple assignment k:v
 
 tree1:  (a, b, c) = (a:5, b:3, c:4)  # tuple assignment k:v
-result: Lit(None)
     1 : Define TK.EQLS(BINOP, '=', V=None)
     2 :     List TK.TUPLE(LITERAL, '(', V=[Ref(), Ref(), Ref()])
     3 :         Ref TK.IDNT(IDENTIFIER, 'a', V=None)

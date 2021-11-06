@@ -1,10 +1,9 @@
 
 
 test: 17:
-"{ b } => buy"
+{ b } => buy
 
 tree1:  { b } => buy
-result: list([Set(), ApplyChainProd()])
     1 : Flow TK.PRODUCE(NONE, '=>', V=[Set(), ApplyChainProd()])
     2 :     Set TK.SET(LITERAL, '{', V=[Get()])
     3 :         Get TK.IDNT(IDENTIFIER, 'b', V=None)

@@ -1,10 +1,9 @@
 
 
 test: 13:
-"f(a:5, b:'c', d)"
+f(a:5, b:'c', d)
 
 tree1:  f(a:5, b:'c', d)
-result: Lit(None)
     1 : FnCall TK.FUNCTION(BINOP, '(', V=None)
     2 :     Get TK.IDNT(IDENTIFIER, 'f', V=None)
     3 :     List TK.TUPLE(LITERAL, '(', V=[Define(), Define(), Get()])

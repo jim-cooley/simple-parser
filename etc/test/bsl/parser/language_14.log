@@ -1,10 +1,9 @@
 
 
 test: 14:
-"var f = x"
+var f = x
 
 tree1:  var f = x
-result: Lit(None)
     1 : DefineVar TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'f', V=None)
     3 :     Ref TK.IDNT(IDENTIFIER, 'x', V=None)

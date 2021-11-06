@@ -1,10 +1,9 @@
 
 
 test: 2:
-"f(a)                         # parameter list (tuple)"
+f(a)                         # parameter list (tuple)
 
 tree1:  f(a)                         # parameter list (tuple)
-result: Lit(None)
     1 : FnCall TK.FUNCTION(BINOP, '(', V=None)
     2 :     Get TK.IDNT(IDENTIFIER, 'f', V=None)
     3 :     List TK.TUPLE(LITERAL, '(', V=[Get()])

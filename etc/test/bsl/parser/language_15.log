@@ -1,10 +1,9 @@
 
 
 test: 15:
-"var f(x) = x * 4"
+var f(x) = x * 4
 
 tree1:  var f(x) = x * 4
-result: Lit(None)
     1 : DefineVarFn TK.EQLS(BINOP, '=', V=None)
     2 :     Ref TK.IDNT(IDENTIFIER, 'f', V=None)
     3 :     BinOp TK.MUL(BINOP, '*', V=None)

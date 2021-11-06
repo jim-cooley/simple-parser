@@ -1,10 +1,9 @@
 
 
 test: 2:
-"{a} + {b}"
+{a} + {b}
 
 tree1:  {a} + {b}
-result: Lit(None)
     1 : BinOp TK.ADD(BINOP, '+', V=None)
     2 :     Set TK.SET(LITERAL, '{', V=[Get()])
     3 :         Get TK.IDNT(IDENTIFIER, 'a', V=None)

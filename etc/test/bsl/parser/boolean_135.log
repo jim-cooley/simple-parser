@@ -1,10 +1,9 @@
 
 
 test: 135:
-"true != true"
+true != true
 
 tree1:  true != true
-result: Lit(None)
     1 : BinOp TK.NEQ(BINOP, '!=', V=None)
     2 :     Bool TK.TRUE(LITERAL, 'true', V=True)
     3 :     Bool TK.TRUE(LITERAL, 'true', V=True)

@@ -1,10 +1,9 @@
 
 
 test: 19:
-"(a = 5,)"
+(a = 5,)
 
 tree1:  (a = 5,)
-result: list([Define()])
     1 : List TK.TUPLE(LITERAL, '(', V=[Define()])
     2 :     Define TK.EQLS(BINOP, '=', V=None)
     3 :         Ref TK.IDNT(IDENTIFIER, 'a', V=None)

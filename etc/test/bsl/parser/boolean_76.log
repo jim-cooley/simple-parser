@@ -1,10 +1,9 @@
 
 
 test: 76:
-"0 > 1"
+0 > 1
 
 tree1:  0 > 1
-result: Lit(None)
     1 : BinOp TK.GTR(BINOP, '>', V=None)
     2 :     Int TK.INT(LITERAL, '0', V=0)
     3 :     Int TK.INT(LITERAL, '1', V=1)

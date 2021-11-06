@@ -1,8 +1,7 @@
 
 
 test: 5:
-"'defgh'"
+'defgh'
 
 tree1:  'defgh'
-result: str(defgh)
     1 : Str TK.STR(LITERAL, 'defgh', V=defgh)

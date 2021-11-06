@@ -1,10 +1,9 @@
 
 
 test: 5:
-"none or true"
+none or true
 
 tree1:  none or true
-result: Lit(None)
     1 : BinOp TK.OR(BINOP, 'or', V=None)
     2 :     Literal TK.NONE(LITERAL, 'none', V=None)
     3 :     Bool TK.TRUE(LITERAL, 'true', V=True)

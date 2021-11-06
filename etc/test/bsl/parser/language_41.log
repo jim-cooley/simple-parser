@@ -1,9 +1,8 @@
 
 
 test: 41:
-"{ b };"
+{ b };
 
 tree1:  { b };
-result: list([Get()])
     1 : Set TK.SET(LITERAL, '{', V=[Get()])
     2 :     Get TK.IDNT(IDENTIFIER, 'b', V=None)

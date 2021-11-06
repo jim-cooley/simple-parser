@@ -1,10 +1,9 @@
 
 
 test: 16:
-"((a, b), (c))                # tuple in a tuple with grouping"
+((a, b), (c))                # tuple in a tuple with grouping
 
 tree1:  ((a, b), (c))                # tuple in a tuple with grouping
-result: list([List(), Get()])
     1 : List TK.TUPLE(LITERAL, '(', V=[List(), Get()])
     2 :     List TK.TUPLE(LITERAL, '(', V=[Get(), Get()])
     3 :         Get TK.IDNT(IDENTIFIER, 'a', V=None)

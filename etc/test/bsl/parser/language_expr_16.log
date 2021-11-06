@@ -1,10 +1,9 @@
 
 
 test: 16:
-"close >| sma(20) | signal | open.delay(1d) | buy; close <| sma(10) | signal | open.delay(1d) | sell"
+close >| sma(20) | signal | open.delay(1d) | buy; close <| sma(10) | signal | open.delay(1d) | sell
 
 tree1:  close >| sma(20) | signal | open.delay(1d) | buy; close <| sma(10) | signal | open.delay(1d) | sell
-result: list([BinOp(), Ref(), PropRef(), ApplyChainProd()])
     1 : Flow TK.CHAIN(NONE, '|', V=[BinOp(), Ref(), PropRef(), ApplyChainProd()])
     2 :     BinOp TK.RISE_ABOVE(BINOP, '>|', V=None)
     3 :         Get TK.IDNT(IDENTIFIER, 'close', V=None)
@@ -23,7 +22,6 @@ result: list([BinOp(), Ref(), PropRef(), ApplyChainProd()])
    16 :         Ref TK.BUY(IDENTIFIER, 'buy', V=None)
 
 tree2:  close >| sma(20) | signal | open.delay(1d) | buy; close <| sma(10) | signal | open.delay(1d) | sell
-result: list([BinOp(), Ref(), PropRef(), ApplyChainProd()])
     1 : Flow TK.CHAIN(NONE, '|', V=[BinOp(), Ref(), PropRef(), ApplyChainProd()])
     2 :     BinOp TK.FALL_BELOW(BINOP, '<|', V=None)
     3 :         Get TK.IDNT(IDENTIFIER, 'close', V=None)

@@ -1,10 +1,9 @@
 
 
 test: 3:
-"{{{}}}"
+{{{}}}
 
 tree1:  {{{}}}
-result: list([Set()])
     1 : Set TK.SET(LITERAL, '{', V=[Set()])
     2 :     Set TK.SET(LITERAL, '{', V=[Set()])
     3 :         Set TK.EMPTY(LITERAL, '{}', V=[])

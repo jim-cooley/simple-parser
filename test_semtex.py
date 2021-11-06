@@ -71,7 +71,7 @@ class SemanticAnalysisTestRunner(TestSuiteRunner, ABC):
     def __init__(self, test_data, skip_tests=None):
         super().__init__(test_data, skip_tests, log_dir='./etc/test/log/semtex')
         self.verbose = True
-        self.test = False
+        self.test = True
 
     def run_unprotected_test(self, log, name, test):
         environment = Environment()
@@ -81,14 +81,16 @@ class SemanticAnalysisTestRunner(TestSuiteRunner, ABC):
         command = CommandInterpreter(environment)
         environment.trees = fixups.apply(parser.parse(text=test))
         if self.verbose:
-            _dump_environment(environment, log, label='post', print_tokens=False)
+            _dump_environment(environment, log, label='post', print_tokens=False, print_results=False)
         print('\n-----------------------------------------------')
         print('                    R U N')
         print('-----------------------------------------------\n')
         command.execute(interp)
 #       interp.apply(trees)
         if self.test:
-            _dump_environment(environment, log, label='post', print_results=True, print_symbols=True)
+            _dump_environment(environment, log, label='post',
+                              print_tokens=False, print_trees=False, print_results=True, print_symbols=True,
+                              print_commands=False)
 
 
 # this is only for execution under debugger or via command-line
