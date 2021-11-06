@@ -79,8 +79,18 @@ def c_node2float(node):
 
 
 def c_to_bool(val, tid):
+    """
+    Convert a value to a bool.  Value may be an intrinsic (platform) or runtime Object
+
+    :param val:
+    :type val: any
+    :param tid:
+    :type tid: TK
+    :return: bool()
+    """
     if val is None:
         return False
+    tid = tid if tid is not None else c_type(val)
     if tid in [TK.NATIVE, TK.IDNT]:
         return val is True
     elif tid in [TK.BOOL, TK.TRUE, TK.FALSE]:
@@ -96,8 +106,19 @@ def c_to_bool(val, tid):
 
 
 def c_to_dur(val, tid):
+    """
+    Convert a value to a Duration.  Value may be an intrinsic (platform) or another runtime Object.  String parsing
+    is supported via _parse_duration()
+
+    :param val:
+    :type val: any
+    :param tid:
+    :type tid: TK
+    :return: Duration()
+    """
     if val is None:
         return timedelta(seconds=0)
+    tid = tid if tid is not None else c_type(val)
     if tid in [TK.NATIVE, TK.IDNT]:
         ty = type(val).__name__
         if ty == 'timedelta':
@@ -122,8 +143,18 @@ def c_to_dur(val, tid):
 
 
 def c_to_float(val, tid):
+    """
+    Convert a value to a float.  Value may be an intrinsic (platform) or runtime Object
+
+    :param val:
+    :type val: any
+    :param tid:
+    :type tid: TK
+    :return: float()
+    """
     if val is None:
         return float(0)
+    tid = tid if tid is not None else c_type(val)
     if tid in [TK.NATIVE, TK.IDNT]:
         ty = type(val).__name__
         if ty == 'float':
@@ -152,8 +183,18 @@ def c_to_float(val, tid):
 
 
 def c_to_int(val, tid):
+    """
+    Converts a value to an int(). The value may be another intrinsic or it may be a structured type descending from
+    Object.
+
+    :param val: value to convert
+    :param tid: optional: type id of value to convert
+    :type tid: TK
+    :return: int()
+    """
     if val is None:
         return 0
+    tid = tid if tid is not None else c_type(val)
     if tid == TK.INT:
         return val
     elif tid in [TK.NATIVE, TK.IDNT]:
@@ -185,6 +226,14 @@ def c_to_int(val, tid):
 # Specific value conversion helpers
 # --------------------------------
 def _c_str2bool(val):
+    """
+    Converts a value to a bool(). The value may be another intrinsic or it may be a structured type descending from
+    Object.
+
+    :param val: value to convert
+    :type val: str
+    :return: bool
+    """
     if val is None:
         return False
     v = val.lower()

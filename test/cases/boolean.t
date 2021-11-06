@@ -1,4 +1,3 @@
-"1" == "0"
 not none
 not empty
 not "none"

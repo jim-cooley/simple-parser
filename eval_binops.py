@@ -1,8 +1,10 @@
 from conversion import c_box, c_to_bool, c_to_int, c_unbox
 from environment import Environment
-from eval_boolean import _boolean_dispatch_table, eval_boolean_dispatch
 from exceptions import runtime_error
 from tokens import TK
+
+
+from eval_boolean import _boolean_dispatch_table, eval_boolean_dispatch
 
 
 # --------------------------------------------------------------------------------------------------
@@ -55,7 +57,7 @@ def eval_binops_dispatch_fixup(node):
         return None
     if node.op in _binops_dispatch_table:
         return eval_binops_dispatch(node, node.left, node.right)
-    elif node.op in _boolean_dispatch_table:
+    if node.op in _boolean_dispatch_table:
         return eval_boolean_dispatch(node, node.left, node.right)
     return node.value
 
@@ -67,13 +69,15 @@ def eval_binops_dispatch_fixup(node):
 
 def eval_binops_dispatch(node, left, right):
     l_value = left
-    if getattr(left, 'value', False):
-        l_value = left.value
     l_ty = type(l_value).__name__
+    if getattr(left, 'value', False) or l_ty in ['Int', 'Bool', 'Str', 'Float']:
+        l_value = left.value
+        l_ty = type(l_value).__name__
     r_value = right
-    if getattr(right, 'value', False):
-        r_value = right.value
     r_ty = type(r_value).__name__
+    if getattr(right, 'value', False) or r_ty in ['Int', 'Bool', 'Str', 'Float']:
+        r_value = right.value
+        r_ty = type(r_value).__name__
     if l_ty == 'Ident':
         l_value = Environment.current.scope.find(left.token).value
     if r_ty == 'Ident':
@@ -113,10 +117,6 @@ def _add__object_int(l_value, r_value):
 
 
 def _add__any_str(l_value, r_value):
-    return f'{l_value}' + r_value
-
-
-def _add__int_str(l_value, r_value):
     return f'{l_value}' + r_value
 
 
@@ -239,7 +239,7 @@ _binops_dispatch_table = {
         [_add__any_any,    _add__any_any,    _add__any_any,    _add__any_any,    _add__str_any,    _add__any_any,    _add__object_int, _invalid_add],   # int      
         [_add__any_any,    _add__any_any,    _add__any_any,    _add__any_any,    _add__str_any,    _add__any_any,    _add__any_any,    _invalid_add],   # float      
         [_add__any_any,    _add__any_any,    _add__any_any,    _add__any_any,    _add__str_any,    _add__any_any,    _add__any_any,    _invalid_add],   # bool      
-        [_add__any_str,    _add__int_str,    _add__int_str,    _add__int_str,    _invalid_add,     _invalid_add,     _invalid_add,     _invalid_add],   # str      
+        [_add__any_str,    _add__any_any,    _add__any_any,    _add__any_str,    _invalid_add,     _invalid_add,     _invalid_add,     _invalid_add],   # str      
         [_add__any_any,    _add__any_any,    _add__any_any,    _add__any_any,    _add__str_any,    _add__any_any,    _add__any_any,    _invalid_add],   # timedelta      
         [_add__any_any,    _add__int_object, _add__any_any,    _add__any_any,    _add__str_any,    _add__any_any,    _add__any_any,    _invalid_add],   # Object      
         [_invalid_add,     _invalid_add,     _invalid_add,     _invalid_add,     _invalid_add,     _invalid_add,     _invalid_add,     _invalid_add],   # Block      

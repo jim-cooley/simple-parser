@@ -1,8 +1,4 @@
 
 
 test: 18:
-not "hello"
-
-tree1:  not "hello"
-    1 : UnaryOp TK.NOT(UNARY, 'not', V=None)
-    2 :     Str TK.STR(LITERAL, 'hello', V=hello)
+#

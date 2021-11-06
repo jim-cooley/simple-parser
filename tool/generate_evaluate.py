@@ -8,6 +8,7 @@ from tool.tables import _assign_obj_fn, _evaluate_boolops_fn, _evaluate_binops_f
 
 _COLUMNS = ['any', 'int', 'float', 'bool', 'str', 'timedelta', 'Object', 'Block']
 
+_rc2tok = [TK.OBJECT, TK.INT, TK.FLOT, TK.BOOL, TK.STR, TK.DUR, TK.OBJECT, TK.BLOCK]
 
 _type2native = {
     'Ident': 'ident',
@@ -87,6 +88,8 @@ class GenerateEvalDispatch:
                         'exceptions':['runtime_error'],
                         'tokens':['TK'],
                         })
+        if insert_fixup_dispatch:
+            self.o.imports({'eval_boolean':['_boolean_dispatch_table', 'eval_boolean_dispatch']})
         self.o.horiz_line(98)
         self.o.l_print(0, "# NOTE: This is a generated file.  Please port any manual changes to tool/generate_evaluate.py")
         self.o.horiz_line(98)
@@ -106,6 +109,8 @@ class GenerateEvalDispatch:
                          "        return None\n"
                          f"    if node.op in _{name}_dispatch_table:\n"
                          f"        return eval_{name}_dispatch(node, node.left, node.right)\n"
+                         f"    if node.op in _boolean_dispatch_table:\n"
+                         "        return eval_boolean_dispatch(node, node.left, node.right)\n"
                          "    return node.value")
         if insert_assignment_fixup:
             self.o.print("# referenced in evaluate:\n"
@@ -117,13 +122,15 @@ class GenerateEvalDispatch:
         self.o.blank_line(2)
         self.o.define_fn(f'eval_{name}_dispatch', 'node, left, right')
         self.o.l_print(0, "    l_value = left\n"
-                          "    if getattr(left, 'value', False):\n"
-                          "        l_value = left.value\n"
                           "    l_ty = type(l_value).__name__\n"
+                          "    if getattr(left, 'value', False) or l_ty in ['Int', 'Bool', 'Str', 'Float']:\n"
+                          "        l_value = left.value\n"
+                          "        l_ty = type(l_value).__name__\n"
                           "    r_value = right\n"
-                          "    if getattr(right, 'value', False):\n"
-                          "        r_value = right.value\n"
                           "    r_ty = type(r_value).__name__\n"
+                          "    if getattr(right, 'value', False) or r_ty in ['Int', 'Bool', 'Str', 'Float']:\n"
+                          "        r_value = right.value\n"
+                          "        r_ty = type(r_value).__name__\n"
                           "    if l_ty == 'Ident':\n"
                           "        l_value = Environment.current.scope.find(left.token).value\n"
                           "    if r_ty == 'Ident':\n"
@@ -155,9 +162,9 @@ class GenerateEvalDispatch:
     def write_eval_fn(self, name, code):
         self.o.blank_line(2)
         self.o.define_fn(name.lower(), 'l_value, r_value')
-        code = _expand_fragment(code)
+#       code = _expand_fragment(code)
         if self.is_assign_style:
-            if code[0] is '.':
+            if code[0] == '.':
                 self.o.l_print(1, f'l_value{code}')
             else:
                 self.o.l_print(1, f'l_value = {code}')
@@ -201,11 +208,12 @@ class GenerateEvalDispatch:
             _len = len(table[r])
             for c in range(0, _len):
                 code = table[r][c]
-                if code == 'invalid':
+                ex = _expand_fragment2(code, row=r, col=c)
+                if ex == 'invalid':
                     fn = f'_invalid_{op.name.lower()}'
                     self.o.print(f'{fn}', end='', append=True)
                 else:
-                    fn = self._functions[code].lower()
+                    fn = self._functions[ex].lower()
                     self.o.print(f'{fn}', end='', append=True)
                 if c < _len - 1:
                     pad = max(width-len(fn), 0)
@@ -223,10 +231,12 @@ class GenerateEvalDispatch:
             for r in range(0, len(table)):
                 for c in range(0, len(table[r])):
                     code = table[r][c]
-                    if code in self._functions:
+                    ex = _expand_fragment2(code, row=r, col=c)
+                    print(f'{r}, {c}: {code} -> {ex}')
+                    if ex in self._functions:
                         continue
                     fn = f'_{op.name.lower()}__{_COLUMNS[c]}_{_COLUMNS[r]}' if code != 'invalid' else f'_invalid_{op.name.lower()}'
-                    self._functions[code] = fn
+                    self._functions[ex] = fn
 
     # -------------------------------
 
@@ -236,12 +246,13 @@ class GenerateEvalDispatch:
         self.o.print("# 'any' is used to denote the generic routine instead of everything ending up appearing as an int_ conversion\n"
                      "\n"
                      "# abbreviations in table:\n"
-                     "#   l = l_value     2i = c_to_int    2f = c_to_float    u = unbox       s( ) = f'{ }'\n"
-                     "#   r = r_value     2b = c_to_bool   2d = c_to_dur      b = box         .o( ) = .from_object( )\n"
-                     "#                                                                       .b( ) = .from_block( )\n"
-                     "#                                                                       v( ) = .value =\n"
+                     "#   l = l_value    2i: = c_to_int   2f: = c_to_float    u: = unbox      .o = l.from_object( )\n"
+                     "#   r = r_value    2b: = c_to_bool  2d: = c_to_dur      b: = box        .b = .from_block( )\n"
+                     "#                                                       s: = f'{ }'     .v = .value =\n"
                      "#\n"
-                     "#   B = TK.BOOL     D = TK.DUR       F = TK.FLOT        I = TK.INT      L = TK.LIST     O = TK.OBJECT   S = TK.STR\n")
+                     "#\n"
+                     "#   B = TK.BOOL     D = TK.DUR       F = TK.FLOT        I = TK.INT      L = TK.LIST     O = TK.OBJECT   S = TK.STR\n"
+                     )
 
     def pretty_print_table(self, name, identifier, table, width, quote=False):
         self.o.banner(f"{name.upper()}")
@@ -276,20 +287,55 @@ class GenerateEvalDispatch:
         self.dedent()
 
 
-def _expand_fragment(code):
+# abbreviations in table:
+#   l = l_value    2i: = c_to_int   2f: = c_to_float    u: = unbox      .o = l.from_object( )
+#   r = r_value    2b: = c_to_bool  2d: = c_to_dur      b: = box        .b = .from_block( )
+#                                                       s: = f'{ }'     .v = .value =
+#
+#
+#   B = TK.BOOL     D = TK.DUR       F = TK.FLOT        I = TK.INT      L = TK.LIST     O = TK.OBJECT   S = TK.STR
+
+
+def _expand_fragment2(code, row=None, col=None):
+    """
+    Expands a code fragment from the table, performing all abbreviation substitutions.
+
+    :param code: The code fragment to expand
+    :param row: The row of the table we are processing (To, or LeftHandSide)
+    :param col: The col of the table we are processing (From, or RightHandSide)
+    :return: Expanded code fragment
+    """
     code = "r_value" if code == "r" else code
-    code = code.replace("l ", "l_value ").replace(" r", " r_value") \
-        .replace("{r", "{r_value").replace("{l", "{l_value") \
-        .replace("(r", "(r_value").replace("(l", "(l_value") \
-        .replace(" B)", " TK.BOOL)").replace(" I)", " TK.INT)") \
+    code = code.replace(" B)", " TK.BOOL)").replace(" I)", " TK.INT)") \
         .replace(" D)", " TK.DUR)").replace(" F)", " TK.FLOT)") \
         .replace(" L)", " TK.LIST)").replace(" O)", " TK.OBJECT)").replace(" S)", " TK.STR)") \
-        .replace("2i(", "c_to_int(").replace("2b(", "c_to_bool(") \
-        .replace("2f(", "c_to_float(").replace("2d(", "c_to_dur(") \
-        .replace(".b(r_value)", ".from_block(r_value)").replace("u(", "c_unbox(").replace("b(", "c_box(") \
-        .replace("s(l_value)", "f'{l_value}'").replace("s(r_value)", "f'{r_value}'").replace(".v(r_value)", ".value = r_value") \
-        .replace(".o(r_value)", ".from_object(r_value)")
+        .replace("2i:l", xcl("c_to_int", row)).replace("2b:l", xcl("c_to_bool", row)) \
+        .replace("2f:l", xcl("c_to_float", row)).replace("2d:l", xcl("c_to_dur", row)) \
+        .replace("l.b", "l.from_block(r)").replace("l.o", ".from_object(r)").replace("l.v", "l.value") \
+        .replace("u:l", "c_unbox(l)").replace("b:l", "c_box(l)") \
+        .replace("2i:r", xcr("c_to_int", col)).replace("2b:r", xcr("c_to_bool", col)) \
+        .replace("2f:r", xcr("c_to_float", col)).replace("2d:r", xcr("c_to_dur", col)) \
+        .replace("r.b", "r.from_block(l)").replace("r.o", ".from_object(l)").replace("r.v", "r.value") \
+        .replace("u:r", "c_unbox(r)").replace("b:r", "c_box(r)") \
+        .replace("s:l",  "f'{l}'").replace("s:r",  "f'{r}'") \
+        .replace("l ", "l_value ").replace(" r", " r_value") \
+        .replace("l.", "l_value.").replace("r.", "r_value.") \
+        .replace("r}", "r_value}").replace("l}", "l_value}") \
+        .replace("r)", "r_value)").replace("l)", "l_value)") \
+        .replace("(r,", "(r_value,").replace("(l,", "(l_value,") \
+        .replace("X", "invalid").replace("---", "invalid")
     return code
+
+# .replace(".b(r)", ".from_block(r)").replace("u(", "c_unbox(").replace("b(", "c_box(") \
+#         .replace("s(l)", "f'{l}'").replace("s(r)", "f'{r}'") \
+
+
+def xcl(base, rc):
+    return f"{base}(l, TK.{_rc2tok[rc].name})"
+
+
+def xcr(base, rc):
+    return f"{base}(r, TK.{_rc2tok[rc].name})"
 
 
 # -------------------------------------------------------
@@ -303,7 +349,7 @@ def main(args):
            assign_style=True, insert_fixup_dispatch=False, insert_assignment_fixup=True, width=24)
 
     gen = GenerateEvalDispatch()
-    gen.print_tables('tables.py')
+    gen.print_tables('tables_new.py')
 
 
 if __name__ == '__main__':

@@ -1,9 +1,9 @@
 
 
 test: 103:
-true <= false
+false <= true
 
-tree1:  true <= false
+tree1:  false <= true
     1 : BinOp TK.LTE(BINOP, '<=', V=None)
-    2 :     Bool TK.TRUE(LITERAL, 'true', V=True)
-    3 :     Bool TK.FALSE(LITERAL, 'false', V=False)
+    2 :     Bool TK.FALSE(LITERAL, 'false', V=False)
+    3 :     Bool TK.TRUE(LITERAL, 'true', V=True)

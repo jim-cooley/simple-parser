@@ -1,8 +1,8 @@
 
 
 test: 8:
-not true
+not false
 
-tree1:  not true
+tree1:  not false
     1 : UnaryOp TK.NOT(UNARY, 'not', V=None)
-    2 :     Bool TK.TRUE(LITERAL, 'true', V=True)
+    2 :     Bool TK.FALSE(LITERAL, 'false', V=False)

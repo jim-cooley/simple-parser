@@ -54,13 +54,15 @@ _SUPPORTED_ASSIGNMENT_TOKENS = [TK.APPLY, TK.ASSIGN, TK.DEFINE]
 
 def eval_assign_dispatch(node, left, right):
     l_value = left
-    if getattr(left, 'value', False):
-        l_value = left.value
     l_ty = type(l_value).__name__
+    if getattr(left, 'value', False) or l_ty in ['Int', 'Bool', 'Str', 'Float']:
+        l_value = left.value
+        l_ty = type(l_value).__name__
     r_value = right
-    if getattr(right, 'value', False):
-        r_value = right.value
     r_ty = type(r_value).__name__
+    if getattr(right, 'value', False) or r_ty in ['Int', 'Bool', 'Str', 'Float']:
+        r_value = right.value
+        r_ty = type(r_value).__name__
     if l_ty == 'Ident':
         l_value = Environment.current.scope.find(left.token).value
     if r_ty == 'Ident':
@@ -98,7 +100,7 @@ def _assign__object_any(l_value, r_value):
 
 
 def _assign__any_object(l_value, r_value):
-    l_value.value = r_value
+    l_value = r_value.value
     return l_value
 
 
@@ -108,7 +110,12 @@ def _assign__object_object(l_value, r_value):
 
 
 def _assign__block_object(l_value, r_value):
-    l_value.from_block(r_value)
+    l_value = l_value.from_block(r_value)
+    return l_value
+
+
+def _assign__object_block(l_value, r_value):
+    l_value = r_value.from_block(l_value)
     return l_value
 
 
@@ -134,7 +141,7 @@ _assign_dispatch_table = {
         [_assign__any_any,       _assign__any_any,       _assign__any_any,       _invalid_assign,        _assign__any_any,       _invalid_assign,        _invalid_assign,        _invalid_assign],   # str      
         [_assign__any_any,       _assign__any_any,       _assign__any_any,       _assign__any_any,       _assign__any_any,       _assign__any_any,       _invalid_assign,        _invalid_assign],   # timedelta      
         [_assign__any_object,    _invalid_assign,        _invalid_assign,        _invalid_assign,        _invalid_assign,        _invalid_assign,        _assign__object_object, _assign__block_object],   # Object      
-        [_invalid_assign,        _invalid_assign,        _invalid_assign,        _invalid_assign,        _invalid_assign,        _invalid_assign,        _assign__block_object,  _assign__any_any],   # Block      
+        [_invalid_assign,        _invalid_assign,        _invalid_assign,        _invalid_assign,        _invalid_assign,        _invalid_assign,        _assign__object_block,  _assign__any_any],   # Block      
     
     ],
 }

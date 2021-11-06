@@ -66,7 +66,7 @@ class Literal(Object):
 @total_ordering
 class Bool(Literal):
     def __init__(self, token=None, value=None, loc=None):
-        tid = TK.BOOL if token is None else token.id
+        tid = TK.BOOL if token is None else token.map2litval().id
         loc = loc if token is None else token.location
         super().__init__(token=token, value=value, tid=tid, loc=loc)
         if self.value is None:
@@ -89,10 +89,12 @@ class Bool(Literal):
 
 @dataclass
 class DateTime(Literal):
-    def __init__(self, token):
-        super().__init__(token=token)
-        if token.value is None:
-            token.value = _parse_date_value(token.lexeme)
+    def __init__(self, token=None, value=None, loc=None):
+        tid = TK.TIME if token is None else token.map2litval().id
+        loc = loc if token is None else token.location
+        super().__init__(token=token, value=value, tid=tid, loc=loc)
+        if self.value is None:
+            self.value = _parse_date_value(token.lexeme)
 
     def format(self):
         return f'{self.value}'
@@ -100,10 +102,12 @@ class DateTime(Literal):
 
 @dataclass
 class Duration(Literal):
-    def __init__(self, token):
-        super().__init__(token=token)
-        if token.value is None:
-            token.value, self.units = _parse_duration(token.lexeme)
+    def __init__(self, token=None, value=None, loc=None):
+        tid = TK.DUR if token is None else token.map2litval().id
+        loc = loc if token is None else token.location
+        super().__init__(token=token, value=value, tid=tid, loc=loc)
+        if self.value is None:
+            self.value, self.units = _parse_duration(token.lexeme)
 
     def total_seconds(self):
         return self.value.total_seconds()
@@ -117,10 +121,12 @@ class Duration(Literal):
 
 @dataclass
 class Float(Literal):
-    def __init__(self, token):
-        super().__init__(token=token)
-        if token.value is None:
-            token.value = float(token.lexeme)
+    def __init__(self, token=None, value=None, loc=None):
+        tid = TK.FLOT if token is None else token.map2litval().id
+        loc = loc if token is None else token.location
+        super().__init__(token=token, value=value, tid=tid, loc=loc)
+        if self.value is None:
+            self.value = float(token.lexeme)
 
     def format(self, fmt=None):
         return f'{self.value}'
@@ -129,10 +135,12 @@ class Float(Literal):
 @dataclass
 @total_ordering
 class Int(Literal):
-    def __init__(self, token):
-        super().__init__(token=token)
-        if token.value is None:
-            token.value = int(token.lexeme)
+    def __init__(self, token=None, value=None, loc=None):
+        tid = TK.INT if token is None else token.map2litval().id
+        loc = loc if token is None else token.location
+        super().__init__(token=token, value=value, tid=tid, loc=loc)
+        if self.value is None:
+            self.value = int(self.token.lexeme)
 
     def __lt__(self, other):
         if isinstance(other, int):
@@ -150,10 +158,10 @@ class Int(Literal):
 
 @dataclass
 class List(Literal):
-    def __init__(self, token, items=None):
-        super().__init__(token=token)
-        token.t_class = TCL.LITERAL
-        token.value = None if items is None else items
+    def __init__(self, token=None, items=None, loc=None):
+        tid = TK.LIST if token is None else token.map2litval().id
+        loc = loc if token is None else token.location
+        super().__init__(token=token, value=items, tid=tid, loc=loc)
         self.value = items
 
     def __getitem__(self, index):
@@ -188,9 +196,12 @@ class List(Literal):
 
 @dataclass
 class Percent(Literal):
-    def __init__(self, token):
-        super().__init__(token=token)
-        token.value = float(token.lexeme.replace("%",""))/100
+    def __init__(self, token=None, value=None, loc=None):
+        tid = TK.INT if token is None else token.map2litval().id
+        loc = loc if token is None else token.location
+        super().__init__(token=token, value=value, tid=tid, loc=loc)
+        if self.value is None:
+            self.value = float(token.lexeme.replace("%",""))/100
 
     def format(self, fmt=None):
         return '' if self.value is None else f'{self.value*100} %'
@@ -198,12 +209,12 @@ class Percent(Literal):
 
 @dataclass
 class Set(Literal):
-    def __init__(self, token, items=None):
-        super().__init__(token=token)
+    def __init__(self, token=None, items=None, loc=None):
+        tid = TK.SET if token is None else token.map2litval().id
+        loc = loc if token is None else token.location
+        super().__init__(token=token, value=items, tid=tid, loc=loc)
         self.items = items if items is not None else {}
         self.value = self.items
-#       token.id = TK.SET if len(self.items) > 0 else TK.EMPTY
-        token.t_class = TCL.LITERAL
 
     def __getitem__(self, item):
         if type(item).name == 'int':
@@ -244,9 +255,12 @@ class Set(Literal):
 
 @dataclass
 class Str(Literal):
-    def __init__(self, token):
-        super().__init__(token=token)
-        token.value = token.lexeme
+    def __init__(self, token=None, value=None, loc=None):
+        tid = TK.STR if token is None else token.map2litval().id
+        loc = loc if token is None else token.location
+        super().__init__(token=token, value=value, tid=tid, loc=loc)
+        if self.value is None:
+            self.value = token.lexeme
 
     def format(self, fmt=None):
         if self.value is None:
@@ -259,9 +273,12 @@ class Str(Literal):
 
 @dataclass
 class Time(Literal):
-    def __init__(self, token):
-        super().__init__(token=token)
-        token.value = _parse_time_value(token.lexeme)
+    def __init__(self, token=None, value=None, loc=None):
+        tid = TK.TIME if token is None else token.map2litval().id
+        loc = loc if token is None else token.location
+        super().__init__(token=token, value=value, tid=tid, loc=loc)
+        if self.value is None:
+            self.value = _parse_time_value(token.lexeme)
 
     def format(self, fmt=None):
         fmt = "%H:%M:%S" if fmt is None else fmt

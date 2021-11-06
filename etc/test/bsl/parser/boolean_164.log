@@ -1,9 +1,9 @@
 
 
 test: 164:
-true == 0
+false == 0
 
-tree1:  true == 0
+tree1:  false == 0
     1 : BinOp TK.ISEQ(BINOP, '==', V=None)
-    2 :     Bool TK.TRUE(LITERAL, 'true', V=True)
+    2 :     Bool TK.FALSE(LITERAL, 'false', V=False)
     3 :     Int TK.INT(LITERAL, '0', V=0)
