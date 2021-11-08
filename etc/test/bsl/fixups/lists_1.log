@@ -1,12 +1,11 @@
 
 
 test: 1:
-"[]"
+[]
 
 tree1:  []
-result: list([None])
-    1 : List TK.LIST(LITERAL, '[', V=[None])
+    1  : List(TK.LIST, [None])
 
 tree1:(post)  []
 result: list([None])
-    1 : List TK.LIST(LITERAL, '[', V=[None])
+    1  : List(TK.LIST, [None])

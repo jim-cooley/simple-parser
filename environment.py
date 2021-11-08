@@ -59,7 +59,7 @@ class Environment(object):
     """
     current = None
 
-    def __init__(self, source=None, commands=None, keywords=None, options=None):
+    def __init__(self, source=None, commands=None, keywords=None, options=None, file=None):
         self.keywords = keywords if keywords is not None else Keywords()
         self.globals = Scope(self.keywords)
         self.scope = self.globals
@@ -69,12 +69,18 @@ class Environment(object):
         self.source = self.set_source(source) if source is not None else None
         self.tokens = None
         self.options = IndexedDict(items=options, defaults=_option_defaults)
-        self.logger = getErrorFacility('semtex', env=self)
+        self.logger = getErrorFacility('semtex', env=self, file=file)
         self.stack = RuntimeStack()
         Environment.current = self
 
     def get_logger(self):
         return self.logger
+
+    def close(self):
+        if self.logger:
+            self.logger.close()
+            exceptions.removeErrorFacility(self.logger)
+            self.logger = None
 
     @staticmethod
     def enter(scope=None):

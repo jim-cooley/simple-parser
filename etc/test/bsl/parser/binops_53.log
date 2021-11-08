@@ -1,0 +1,9 @@
+
+
+test: 53:
+1 <| false
+
+tree1:  1 <| false
+    1  : BinOp(TK.FALL_BELOW, '<|')
+    2  :     Int(TK.INT, 1)
+    3  :     Bool(TK.FALSE, False)

@@ -1,0 +1,9 @@
+
+
+test: 96:
+a - b
+
+tree1:  a - b
+    1  : BinOp(TK.SUB, '-')
+    2  :     Get(TK.IDNT, 'a')
+    3  :     Get(TK.IDNT, 'b')

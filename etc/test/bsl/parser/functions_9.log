@@ -4,7 +4,7 @@ test: 9:
 a{}
 
 tree1:  a{}
-    1 : Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    1  : Get(TK.IDNT, 'a')
 
 tree2:  a{}
-    1 : Set TK.EMPTY(LITERAL, '{}', V=[])
+    1  : Set(TK.EMPTY, [])

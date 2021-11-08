@@ -4,8 +4,8 @@ test: 5:
 close[+1d]
 
 tree1:  close[+1d]
-    1 : Index TK.INDEX(BINOP, '[', V=None)
-    2 :     Get TK.IDNT(IDENTIFIER, 'close', V=None)
-    3 :     List TK.TUPLE(LITERAL, '[', V=[UnaryOp()])
-    4 :         UnaryOp TK.POS(UNARY, '+', V=None)
-    5 :             Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
+    1  : Index('close')
+    2  :     Get(TK.IDNT, 'close')
+    3  :     List(TK.TUPLE, [UnaryOp()])
+    4  :         UnaryOp(TK.POS, TK.POS, '+')
+    5  :             Duration(TK.DUR, 1 day, 0:00:00)

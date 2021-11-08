@@ -1,16 +1,14 @@
 
 
 test: 3:
-"(a) = 5                      # grouping"
+(a) = 5                      # grouping
 
 tree1:  (a) = 5                      # grouping
-result: Lit(None)
-    1 : Define TK.EQLS(BINOP, '=', V=None)
-    2 :     Ref TK.IDNT(IDENTIFIER, 'a', V=None)
-    3 :     Int TK.INT(LITERAL, '5', V=5)
+    1  : Define(TK.DEFINE, TK.EQLS, '=')
+    2  :     Ref(TK.IDNT, 'a')
+    3  :     Int(TK.INT, 5)
 
 tree1:(post)  (a) = 5                      # grouping
-result: Lit(None)
-    1 : Define TK.EQLS(BINOP, '=', V=None)
-    2 :     Ref TK.IDNT(IDENTIFIER, 'a', V=None)
-    3 :     Int TK.INT(LITERAL, '5', V=5)
+    1  : Define(TK.DEFINE, TK.EQLS, '=')
+    2  :     Ref(TK.IDNT, 'a')
+    3  :     Int(TK.INT, 5)

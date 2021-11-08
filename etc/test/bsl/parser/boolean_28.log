@@ -4,5 +4,5 @@ test: 28:
 ! "hello"
 
 tree1:  ! "hello"
-    1 : UnaryOp TK.NOT(UNARY, '!', V=None)
-    2 :     Str TK.STR(LITERAL, 'hello', V=hello)
+    1  : UnaryOp(TK.NOT, TK.NOT, '!')
+    2  :     Str(TK.STR, hello)

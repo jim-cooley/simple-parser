@@ -124,7 +124,7 @@ class Object(AST, Scope):
     def __init__(self, token=None, value=None, parent=None):
         super().__init__(token=token, value=value, parent=parent, parent_scope=None)
         self.is_lvalue = True
-        self.value = token.value
+#       self.value = token.value
         if self.token is None or self.token.lexeme is None:
             self._name = ''
         else:

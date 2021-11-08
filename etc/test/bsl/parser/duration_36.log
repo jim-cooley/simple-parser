@@ -4,5 +4,5 @@ test: 36:
 +1.5s
 
 tree1:  +1.5s
-    1 : UnaryOp TK.POS(UNARY, '+', V=None)
-    2 :     Duration TK.DUR(LITERAL, '1.5s', V=0:00:01.500000)
+    1  : UnaryOp(TK.POS, TK.POS, '+')
+    2  :     Duration(TK.DUR, 0:00:01.500000)

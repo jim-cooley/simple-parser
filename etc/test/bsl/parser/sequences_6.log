@@ -4,13 +4,13 @@ test: 6:
 a | b >> c | d
 
 tree1:  a | b >> c | d
-    1 : Flow TK.CHAIN(NONE, '|', V=[Flow(), ApplyChainProd()])
-    2 :     Flow TK.APPLY(NONE, '>>', V=[Flow(), ApplyChainProd()])
-    3 :         Flow TK.CHAIN(NONE, '|', V=[Get(), ApplyChainProd()])
-    4 :             Get TK.IDNT(IDENTIFIER, 'a', V=None)
-    5 :             ApplyChainProd TK.APPLY(UNARY, '|', V=None)
-    6 :                 Ref TK.IDNT(IDENTIFIER, 'b', V=None)
-    7 :         ApplyChainProd TK.APPLY(UNARY, '>>', V=None)
-    8 :             Ref TK.IDNT(IDENTIFIER, 'c', V=None)
-    9 :     ApplyChainProd TK.APPLY(UNARY, '|', V=None)
-   10 :         Ref TK.IDNT(IDENTIFIER, 'd', V=None)
+    1  : Flow(TK.CHAIN, v=[Flow(), ApplyChainProd()], '|')
+    2  :     Flow(TK.APPLY, v=[Flow(), ApplyChainProd()], '>>')
+    3  :         Flow(TK.CHAIN, v=[Get(), ApplyChainProd()], '|')
+    4  :             Get(TK.IDNT, 'a')
+    5  :             ApplyChainProd(TK.DEFINE, TK.APPLY, '|')
+    6  :                 Ref(TK.IDNT, 'b')
+    7  :         ApplyChainProd(TK.DEFINE, TK.APPLY, '>>')
+    8  :             Ref(TK.IDNT, 'c')
+    9  :     ApplyChainProd(TK.DEFINE, TK.APPLY, '|')
+   10  :         Ref(TK.IDNT, 'd')

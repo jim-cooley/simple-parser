@@ -1,13 +1,11 @@
 
 
 test: 27:
-"++1.5m"
+++1.5m
 
 tree1:  ++1.5m
-result: Lit(None)
-    1 : UnaryOp TK.INCREMENT(UNARY, '++', V=None)
-    2 :     Duration TK.DUR(LITERAL, '1.5m', V=0:01:30)
+    1  : UnaryOp(TK.INCREMENT, TK.INCREMENT, '++')
+    2  :     Duration(TK.DUR, 0:01:30)
 
 tree1:(post)  ++1.5m
-result: Lit(None)
-    1 : Duration TK.DUR(LITERAL, '1.5m', V=1.0010416666666666)
+    1  : Literal(TK.FLOT, 1.0010416666666666)

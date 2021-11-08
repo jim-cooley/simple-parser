@@ -4,7 +4,7 @@ test: 4:
 {{},{},{}}
 
 tree1:  {{},{},{}}
-    1 : Set TK.SET(LITERAL, '{', V=[Set(), Set(), Set()])
-    2 :     Set TK.EMPTY(LITERAL, '{}', V=[])
-    3 :     Set TK.EMPTY(LITERAL, '{}', V=[])
-    4 :     Set TK.EMPTY(LITERAL, '{}', V=[])
+    1  : Set(TK.SET, [Set(), Set(), Set()])
+    2  :     Set(TK.EMPTY, [])
+    3  :     Set(TK.EMPTY, [])
+    4  :     Set(TK.EMPTY, [])

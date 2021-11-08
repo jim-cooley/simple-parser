@@ -1,4 +1,4 @@
-from conversion import c_box, c_to_bool, c_to_int, c_unbox
+from conversion import c_box, c_to_bool, c_to_float, c_to_int, c_unbox
 from environment import Environment
 from exceptions import runtime_error
 from tokens import TK
@@ -84,7 +84,7 @@ def eval_binops_dispatch(node, left, right):
         r_value = Environment.current.scope.find(right.token).value
     if l_value is None or r_value is None:
         return None
-    return eval_binops_dispatch2(node.token.id, l_value, r_value)
+    return eval_binops_dispatch2(node.op, l_value, r_value)
 
 
 def eval_binops_dispatch2(tkid, l_value, r_value):

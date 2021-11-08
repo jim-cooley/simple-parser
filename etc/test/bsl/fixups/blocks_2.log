@@ -1,20 +1,19 @@
 
 
 test: 2:
-"{ b } => buy"
+{ b } => buy
 
 tree1:  { b } => buy
-result: list([Set(), ApplyChainProd()])
-    1 : Flow TK.PRODUCE(NONE, '=>', V=[Set(), ApplyChainProd()])
-    2 :     Set TK.SET(LITERAL, '{', V=[Get()])
-    3 :         Get TK.IDNT(IDENTIFIER, 'b', V=None)
-    4 :     ApplyChainProd TK.APPLY(UNARY, '=>', V=None)
-    5 :         Ref TK.BUY(IDENTIFIER, 'buy', V=None)
+    1  : Flow(TK.PRODUCE, v=[Set(), ApplyChainProd()], '=>')
+    2  :     Set(TK.SET, [Get()])
+    3  :         Get(TK.IDNT, 'b')
+    4  :     ApplyChainProd(TK.DEFINE, TK.APPLY, '=>')
+    5  :         Ref(TK.BUY, 'buy')
 
 tree1:(post)  { b } => buy
 result: list([Set(), ApplyChainProd()])
-    1 : Flow TK.PRODUCE(NONE, '=>', V=[Set(), ApplyChainProd()])
-    2 :     Set TK.SET(LITERAL, '{', V=[Get()])
-    3 :         Get TK.IDNT(IDENTIFIER, 'b', V=None)
-    4 :     ApplyChainProd TK.APPLY(UNARY, '=>', V=None)
-    5 :         Ref TK.BUY(IDENTIFIER, 'buy', V=None)
+    1  : Flow(TK.PRODUCE, v=[Set(), ApplyChainProd()], '=>')
+    2  :     Set(TK.SET, [Get()])
+    3  :         Get(TK.IDNT, 'b')
+    4  :     ApplyChainProd(TK.DEFINE, TK.APPLY, '=>')
+    5  :         Ref(TK.BUY, 'buy')

@@ -4,7 +4,7 @@ test: 2:
 a; b
 
 tree1:  a; b
-    1 : Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    1  : Get(TK.IDNT, 'a')
 
 tree2:  a; b
-    1 : Get TK.IDNT(IDENTIFIER, 'b', V=None)
+    1  : Get(TK.IDNT, 'b')

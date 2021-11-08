@@ -4,6 +4,6 @@ test: 175:
 "0" == "0"
 
 tree1:  "0" == "0"
-    1 : BinOp TK.ISEQ(BINOP, '==', V=None)
-    2 :     Str TK.STR(LITERAL, '0', V=0)
-    3 :     Str TK.STR(LITERAL, '0', V=0)
+    1  : BinOp(TK.ISEQ, '==')
+    2  :     Str(TK.STR, 0)
+    3  :     Str(TK.STR, 0)

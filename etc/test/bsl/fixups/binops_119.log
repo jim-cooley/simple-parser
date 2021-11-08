@@ -1,0 +1,14 @@
+
+
+test: 119:
+a * b
+
+tree1:  a * b
+    1  : BinOp(TK.MUL, '*')
+    2  :     Get(TK.IDNT, 'a')
+    3  :     Get(TK.IDNT, 'b')
+
+tree1:(post)  a * b
+    1  : BinOp(TK.MUL, '*')
+    2  :     Get(TK.IDNT, 'a')
+    3  :     Get(TK.IDNT, 'b')

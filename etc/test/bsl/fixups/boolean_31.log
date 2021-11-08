@@ -1,16 +1,12 @@
 
 
 test: 31:
-"true and false"
+true and false
 
 tree1:  true and false
-result: Lit(None)
-    1 : BinOp TK.AND(BINOP, 'and', V=None)
-    2 :     Bool TK.TRUE(LITERAL, 'true', V=True)
-    3 :     Bool TK.FALSE(LITERAL, 'false', V=False)
+    1  : BinOp(TK.AND, 'and')
+    2  :     Bool(TK.TRUE, True)
+    3  :     Bool(TK.FALSE, False)
 
 tree1:(post)  true and false
-result: Lit(None)
-    1 : BinOp TK.AND(BINOP, 'and', V=None)
-    2 :     Bool TK.TRUE(LITERAL, 'true', V=True)
-    3 :     Bool TK.FALSE(LITERAL, 'false', V=False)
+    1  : Bool(TK.BOOL, False)

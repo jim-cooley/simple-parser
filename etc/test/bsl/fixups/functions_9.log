@@ -1,20 +1,17 @@
 
 
 test: 9:
-"a{}"
+a{}
 
 tree1:  a{}
-result: Lit(None)
-    1 : Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    1  : Get(TK.IDNT, 'a')
 
 tree2:  a{}
-result: bool(True)
-    1 : Set TK.EMPTY(LITERAL, '{}', V=True)
+    1  : Set(TK.EMPTY, [])
 
 tree1:(post)  a{}
-result: Lit(None)
-    1 : Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    1  : Get(TK.IDNT, 'a')
 
 tree2:(post)  a{}
-result: bool(True)
-    1 : Set TK.EMPTY(LITERAL, '{}', V=True)
+result: list([])
+    1  : Set(TK.EMPTY, [])

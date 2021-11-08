@@ -4,5 +4,5 @@ test: 6:
 not 0
 
 tree1:  not 0
-    1 : UnaryOp TK.NOT(UNARY, 'not', V=None)
-    2 :     Int TK.INT(LITERAL, '0', V=0)
+    1  : UnaryOp(TK.NOT, TK.NOT, 'not')
+    2  :     Int(TK.INT, 0)

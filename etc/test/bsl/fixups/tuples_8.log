@@ -1,12 +1,10 @@
 
 
 test: 8:
-"((a))                        # grouping"
+((a))                        # grouping
 
 tree1:  ((a))                        # grouping
-result: Lit(None)
-    1 : Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    1  : Get(TK.IDNT, 'a')
 
 tree1:(post)  ((a))                        # grouping
-result: Lit(None)
-    1 : Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    1  : Get(TK.IDNT, 'a')

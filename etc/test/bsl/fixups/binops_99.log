@@ -1,0 +1,12 @@
+
+
+test: 99:
+1 - false
+
+tree1:  1 - false
+    1  : BinOp(TK.SUB, '-')
+    2  :     Int(TK.INT, 1)
+    3  :     Bool(TK.FALSE, False)
+
+tree1:(post)  1 - false
+    1  : Literal(TK.INT, 1)

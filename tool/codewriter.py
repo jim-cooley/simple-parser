@@ -7,37 +7,6 @@ class TY(IntEnum):
     LIST = auto()
 
 
-class LogWriter:
-    def __init__(self, file=None):
-        self.file = file
-        self.linebuf = []
-
-    def close(self):
-        if self.file is not None:
-            self.file.close()
-            self.file = None
-
-    def open(self, fname):
-        self.file = open(fname, 'w')
-
-    def write(self, buf, append=False, end=None):
-        end = '\n' if end is None else end
-        for line in buf.splitlines():
-            print(f'{line}', end=end)
-            if not append:
-                self.linebuf.append(line)
-            else:
-                self.linebuf[len(self.linebuf) - 1] += line
-            if self.file is not None:
-                self.file.write(f'{line}{end}')
-
-    def format(self):
-        return '\n'.join(self.linebuf)
-
-    def flush(self):
-        pass
-
-
 class CodeWriter:
 
     def __init__(self, logger):

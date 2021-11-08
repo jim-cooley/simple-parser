@@ -4,5 +4,5 @@ test: 19:
 -1w
 
 tree1:  -1w
-    1 : UnaryOp TK.NEG(UNARY, '-', V=None)
-    2 :     Duration TK.DUR(LITERAL, '1w', V=7 days, 0:00:00)
+    1  : UnaryOp(TK.NEG, TK.NEG, '-')
+    2  :     Duration(TK.DUR, 7 days, 0:00:00)

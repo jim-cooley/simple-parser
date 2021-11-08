@@ -4,7 +4,7 @@ test: 15:
 [[],[],[]]
 
 tree1:  [[],[],[]]
-    1 : List TK.LIST(LITERAL, '[', V=[List(), List(), List()])
-    2 :     List TK.LIST(LITERAL, '[', V=[None])
-    3 :     List TK.LIST(LITERAL, '[', V=[None])
-    4 :     List TK.LIST(LITERAL, '[', V=[None])
+    1  : List(TK.LIST, [List(), List(), List()])
+    2  :     List(TK.LIST, [None])
+    3  :     List(TK.LIST, [None])
+    4  :     List(TK.LIST, [None])

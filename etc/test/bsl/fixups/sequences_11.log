@@ -1,22 +1,21 @@
 
 
 test: 11:
-"a() | b"
+a() | b
 
 tree1:  a() | b
-result: list([FnCall(), ApplyChainProd()])
-    1 : Flow TK.CHAIN(NONE, '|', V=[FnCall(), ApplyChainProd()])
-    2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
-    3 :         Get TK.IDNT(IDENTIFIER, 'a', V=None)
-    4 :         List TK.TUPLE(LITERAL, '(', V=[])
-    5 :     ApplyChainProd TK.APPLY(UNARY, '', V=None)
-    6 :         Ref TK.IDNT(IDENTIFIER, 'b', V=None)
+    1  : Flow(TK.CHAIN, v=[FnCall(), ApplyChainProd()], '|')
+    2  :     FnCall('a')
+    3  :         Get(TK.IDNT, 'a')
+    4  :         List(TK.TUPLE, [])
+    5  :     ApplyChainProd(TK.DEFINE, TK.APPLY, '|')
+    6  :         Ref(TK.IDNT, 'b')
 
 tree1:(post)  a() | b
 result: list([FnCall(), ApplyChainProd()])
-    1 : Flow TK.CHAIN(NONE, '|', V=[FnCall(), ApplyChainProd()])
-    2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
-    3 :         Get TK.IDNT(IDENTIFIER, 'a', V=None)
-    4 :         List TK.TUPLE(LITERAL, '(', V=[])
-    5 :     ApplyChainProd TK.APPLY(UNARY, '', V=None)
-    6 :         Ref TK.IDNT(IDENTIFIER, 'b', V=None)
+    1  : Flow(TK.CHAIN, v=[FnCall(), ApplyChainProd()], '|')
+    2  :     FnCall('a')
+    3  :         Get(TK.IDNT, 'a')
+    4  :         List(TK.TUPLE, [])
+    5  :     ApplyChainProd(TK.DEFINE, TK.APPLY, '|')
+    6  :         Ref(TK.IDNT, 'b')

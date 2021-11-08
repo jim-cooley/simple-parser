@@ -4,5 +4,5 @@ test: 41:
 { b };
 
 tree1:  { b };
-    1 : Set TK.SET(LITERAL, '{', V=[Get()])
-    2 :     Get TK.IDNT(IDENTIFIER, 'b', V=None)
+    1  : Set(TK.SET, [Get()])
+    2  :     Get(TK.IDNT, 'b')

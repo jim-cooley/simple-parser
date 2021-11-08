@@ -1,0 +1,9 @@
+
+
+test: 133:
+true * none
+
+tree1:  true * none
+    1  : BinOp(TK.MUL, '*')
+    2  :     Bool(TK.TRUE, True)
+    3  :     Literal(TK.NONE, None)

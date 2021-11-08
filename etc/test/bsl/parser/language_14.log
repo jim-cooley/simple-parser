@@ -4,6 +4,6 @@ test: 14:
 var f = x
 
 tree1:  var f = x
-    1 : DefineVar TK.EQLS(BINOP, '=', V=None)
-    2 :     Ref TK.IDNT(IDENTIFIER, 'f', V=None)
-    3 :     Ref TK.IDNT(IDENTIFIER, 'x', V=None)
+    1  : DefineVar(TK.DEFINE, TK.EQLS, '=')
+    2  :     Ref(TK.IDNT, 'f')
+    3  :     Ref(TK.IDNT, 'x')

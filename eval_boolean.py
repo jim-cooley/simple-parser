@@ -1,4 +1,4 @@
-from conversion import c_box, c_to_bool, c_to_int, c_unbox
+from conversion import c_box, c_to_bool, c_to_float, c_to_int, c_unbox
 from environment import Environment
 from exceptions import runtime_error
 from tokens import TK
@@ -73,7 +73,7 @@ def eval_boolean_dispatch(node, left, right):
         r_value = Environment.current.scope.find(right.token).value
     if l_value is None or r_value is None:
         return None
-    return eval_boolean_dispatch2(node.token.id, l_value, r_value)
+    return eval_boolean_dispatch2(node.op, l_value, r_value)
 
 
 def eval_boolean_dispatch2(tkid, l_value, r_value):
@@ -97,24 +97,52 @@ def _and__any_any(l_value, r_value):
     return l_value and r_value
 
 
+def _or__any_any(l_value, r_value):
+    return l_value and r_value
+
+
 def _iseq__any_any(l_value, r_value):
     return l_value == r_value
 
 
 def _iseq__bool_int(l_value, r_value):
-    return l_value == c_to_bool(r_value, TK.BOOL)
+    return c_to_int(l_value, TK.BOOL) == r_value
 
 
 def _iseq__str_int(l_value, r_value):
-    return l_value == c_to_int(r_value, TK.STR)
+    return c_to_int(l_value, TK.STR) == r_value
+
+
+def _iseq__bool_float(l_value, r_value):
+    return c_to_float(l_value, TK.BOOL) == r_value
+
+
+def _iseq__str_float(l_value, r_value):
+    return c_to_float(l_value, TK.STR) == r_value
 
 
 def _iseq__int_bool(l_value, r_value):
-    return l_value == c_to_int(r_value, TK.INT)
+    return l_value == c_to_int(r_value, TK.BOOL)
+
+
+def _iseq__float_bool(l_value, r_value):
+    return l_value == c_to_float(r_value, TK.BOOL)
 
 
 def _iseq__any_str(l_value, r_value):
-    return c_to_int(l_value, TK.STR) == r_value
+    return l_value == c_to_int(r_value, TK.STR)
+
+
+def _iseq__float_str(l_value, r_value):
+    return l_value == c_to_float(r_value, TK.STR)
+
+
+def _iseq__bool_str(l_value, r_value):
+    return l_value == c_to_bool(r_value, TK.STR)
+
+
+def _iseq__timedelta_str(l_value, r_value):
+    return l_value == c_to_dur(r_value, TK.STR)
 
 
 def _neq__any_any(l_value, r_value):
@@ -122,15 +150,35 @@ def _neq__any_any(l_value, r_value):
 
 
 def _neq__bool_int(l_value, r_value):
-    return l_value != c_to_bool(r_value, TK.BOOL)
+    return c_to_int(l_value, TK.BOOL) != r_value
+
+
+def _neq__str_int(l_value, r_value):
+    return c_to_int(l_value, TK.STR) != r_value
+
+
+def _neq__str_float(l_value, r_value):
+    return c_to_float(l_value, TK.STR) != r_value
 
 
 def _neq__int_bool(l_value, r_value):
-    return l_value != c_to_int(r_value, TK.INT)
+    return l_value != c_to_int(r_value, TK.BOOL)
 
 
 def _neq__any_str(l_value, r_value):
-    return c_to_int(l_value, TK.STR) != r_value
+    return l_value != c_to_int(r_value, TK.STR)
+
+
+def _neq__float_str(l_value, r_value):
+    return l_value != c_to_float(r_value, TK.STR)
+
+
+def _neq__bool_str(l_value, r_value):
+    return l_value != c_to_bool(r_value, TK.STR)
+
+
+def _neq__timedelta_str(l_value, r_value):
+    return l_value != c_to_dur(r_value, TK.STR)
 
 
 def _gtr__any_any(l_value, r_value):
@@ -138,23 +186,35 @@ def _gtr__any_any(l_value, r_value):
 
 
 def _gtr__bool_int(l_value, r_value):
-    return l_value > c_to_int(r_value, TK.BOOL)
-
-
-def _gtr__str_int(l_value, r_value):
-    return c_to_int(l_value, TK.INT) > r_value
-
-
-def _gtr__int_bool(l_value, r_value):
     return c_to_int(l_value, TK.BOOL) > r_value
 
 
+def _gtr__str_int(l_value, r_value):
+    return c_to_int(l_value, TK.STR) > r_value
+
+
+def _gtr__str_float(l_value, r_value):
+    return c_to_float(l_value, TK.STR) > r_value
+
+
+def _gtr__int_bool(l_value, r_value):
+    return l_value > c_to_int(r_value, TK.BOOL)
+
+
 def _gtr__any_str(l_value, r_value):
-    return c_to_int(l_value, TK.STR) > c_to_int(r_value, TK.OBJECT)
+    return l_value > c_to_int(r_value, TK.STR)
 
 
-def _gtr__int_str(l_value, r_value):
-    return l_value > c_to_int(r_value, TK.INT)
+def _gtr__float_str(l_value, r_value):
+    return l_value > c_to_float(r_value, TK.STR)
+
+
+def _gtr__bool_str(l_value, r_value):
+    return l_value > c_to_bool(r_value, TK.STR)
+
+
+def _gtr__timedelta_str(l_value, r_value):
+    return l_value > c_to_dur(r_value, TK.STR)
 
 
 def _less__any_any(l_value, r_value):
@@ -162,19 +222,35 @@ def _less__any_any(l_value, r_value):
 
 
 def _less__bool_int(l_value, r_value):
-    return l_value < c_to_int(r_value, TK.BOOL)
-
-
-def _less__str_int(l_value, r_value):
-    return l_value > c_to_int(r_value, TK.STR)
-
-
-def _less__int_bool(l_value, r_value):
     return c_to_int(l_value, TK.BOOL) < r_value
 
 
-def _less__int_str(l_value, r_value):
+def _less__str_int(l_value, r_value):
     return c_to_int(l_value, TK.STR) < r_value
+
+
+def _less__str_float(l_value, r_value):
+    return c_to_float(l_value, TK.STR) < r_value
+
+
+def _less__int_bool(l_value, r_value):
+    return l_value < c_to_int(r_value, TK.BOOL)
+
+
+def _less__any_str(l_value, r_value):
+    return l_value < c_to_int(r_value, TK.STR)
+
+
+def _less__float_str(l_value, r_value):
+    return l_value < c_to_float(r_value, TK.STR)
+
+
+def _less__bool_str(l_value, r_value):
+    return l_value < c_to_bool(r_value, TK.STR)
+
+
+def _less__timedelta_str(l_value, r_value):
+    return l_value < c_to_dur(r_value, TK.STR)
 
 
 def _gte__any_any(l_value, r_value):
@@ -182,23 +258,71 @@ def _gte__any_any(l_value, r_value):
 
 
 def _gte__bool_int(l_value, r_value):
-    return l_value >= c_to_int(r_value, TK.BOOL)
-
-
-def _gte__int_bool(l_value, r_value):
     return c_to_int(l_value, TK.BOOL) >= r_value
 
 
+def _gte__str_int(l_value, r_value):
+    return c_to_int(l_value, TK.STR) >= r_value
+
+
+def _gte__str_float(l_value, r_value):
+    return c_to_float(l_value, TK.STR) >= r_value
+
+
+def _gte__int_bool(l_value, r_value):
+    return l_value >= c_to_int(r_value, TK.BOOL)
+
+
 def _gte__any_str(l_value, r_value):
-    return c_to_int(l_value, TK.STR) > r_value
+    return l_value >= c_to_int(r_value, TK.STR)
+
+
+def _gte__float_str(l_value, r_value):
+    return l_value >= c_to_float(r_value, TK.STR)
+
+
+def _gte__bool_str(l_value, r_value):
+    return l_value >= c_to_bool(r_value, TK.STR)
+
+
+def _gte__timedelta_str(l_value, r_value):
+    return l_value >= c_to_dur(r_value, TK.STR)
 
 
 def _lte__any_any(l_value, r_value):
     return l_value <= r_value
 
 
-def _lte__int_bool(l_value, r_value):
+def _lte__bool_int(l_value, r_value):
     return c_to_int(l_value, TK.BOOL) <= r_value
+
+
+def _lte__str_int(l_value, r_value):
+    return c_to_int(l_value, TK.STR) <= r_value
+
+
+def _lte__str_float(l_value, r_value):
+    return c_to_float(l_value, TK.STR) <= r_value
+
+
+def _lte__int_bool(l_value, r_value):
+    return l_value <= c_to_int(r_value, TK.BOOL)
+
+
+def _lte__any_str(l_value, r_value):
+    return l_value <= c_to_int(r_value, TK.STR)
+
+
+def _lte__float_str(l_value, r_value):
+    return l_value <= c_to_float(r_value, TK.STR)
+
+
+def _lte__bool_str(l_value, r_value):
+    return l_value <= c_to_bool(r_value, TK.STR)
+
+
+def _lte__timedelta_str(l_value, r_value):
+    return l_value <= c_to_dur(r_value, TK.STR)
 
 
 # --------------------------------------------------
@@ -255,13 +379,13 @@ _boolean_dispatch_table = {
     ],
     TK.OR: [
         #       any               int              float              bool              str            timedelta           Object            Block       
-        [_and__any_any,    _and__any_any,    _and__any_any,    _and__any_any,    _and__any_any,    _and__any_any,    _and__any_any,    _invalid_or],   # any      
-        [_and__any_any,    _and__any_any,    _and__any_any,    _and__any_any,    _and__any_any,    _and__any_any,    _and__any_any,    _invalid_or],   # int      
-        [_and__any_any,    _and__any_any,    _and__any_any,    _and__any_any,    _and__any_any,    _and__any_any,    _and__any_any,    _invalid_or],   # float      
-        [_and__any_any,    _and__any_any,    _and__any_any,    _and__any_any,    _and__any_any,    _and__any_any,    _and__any_any,    _invalid_or],   # bool      
-        [_and__any_any,    _and__any_any,    _and__any_any,    _and__any_any,    _and__any_any,    _and__any_any,    _and__any_any,    _invalid_or],   # str      
-        [_and__any_any,    _and__any_any,    _and__any_any,    _and__any_any,    _and__any_any,    _and__any_any,    _and__any_any,    _invalid_or],   # timedelta      
-        [_and__any_any,    _and__any_any,    _and__any_any,    _and__any_any,    _and__any_any,    _and__any_any,    _and__any_any,    _invalid_or],   # Object      
+        [_or__any_any,     _or__any_any,     _or__any_any,     _or__any_any,     _or__any_any,     _or__any_any,     _or__any_any,     _invalid_or],   # any      
+        [_or__any_any,     _or__any_any,     _or__any_any,     _or__any_any,     _or__any_any,     _or__any_any,     _or__any_any,     _invalid_or],   # int      
+        [_or__any_any,     _or__any_any,     _or__any_any,     _or__any_any,     _or__any_any,     _or__any_any,     _or__any_any,     _invalid_or],   # float      
+        [_or__any_any,     _or__any_any,     _or__any_any,     _or__any_any,     _or__any_any,     _or__any_any,     _or__any_any,     _invalid_or],   # bool      
+        [_or__any_any,     _or__any_any,     _or__any_any,     _or__any_any,     _or__any_any,     _or__any_any,     _or__any_any,     _invalid_or],   # str      
+        [_or__any_any,     _or__any_any,     _or__any_any,     _or__any_any,     _or__any_any,     _or__any_any,     _or__any_any,     _invalid_or],   # timedelta      
+        [_or__any_any,     _or__any_any,     _or__any_any,     _or__any_any,     _or__any_any,     _or__any_any,     _or__any_any,     _invalid_or],   # Object      
         [_invalid_or,      _invalid_or,      _invalid_or,      _invalid_or,      _invalid_or,      _invalid_or,      _invalid_or,      _invalid_or],   # Block      
     
     ],
@@ -269,9 +393,9 @@ _boolean_dispatch_table = {
         #       any               int              float              bool              str            timedelta           Object            Block       
         [_iseq__any_any,   _iseq__any_any,   _iseq__any_any,   _iseq__any_any,   _iseq__any_any,   _iseq__any_any,   _iseq__any_any,   _invalid_iseq],   # any      
         [_iseq__any_any,   _iseq__any_any,   _iseq__any_any,   _iseq__bool_int,  _iseq__str_int,   _iseq__any_any,   _iseq__any_any,   _invalid_iseq],   # int      
-        [_iseq__any_any,   _iseq__any_any,   _iseq__any_any,   _iseq__any_any,   _iseq__any_any,   _iseq__any_any,   _iseq__any_any,   _invalid_iseq],   # float      
-        [_iseq__any_any,   _iseq__int_bool,  _iseq__any_any,   _iseq__any_any,   _iseq__any_any,   _iseq__any_any,   _iseq__any_any,   _invalid_iseq],   # bool      
-        [_iseq__any_str,   _iseq__any_any,   _iseq__any_any,   _iseq__any_any,   _iseq__any_any,   _iseq__any_any,   _iseq__any_any,   _invalid_iseq],   # str      
+        [_iseq__any_any,   _iseq__any_any,   _iseq__any_any,   _iseq__bool_float, _iseq__str_float, _iseq__any_any,   _iseq__any_any,   _invalid_iseq],   # float      
+        [_iseq__any_any,   _iseq__int_bool,  _iseq__float_bool, _iseq__any_any,   _iseq__any_any,   _iseq__any_any,   _iseq__any_any,   _invalid_iseq],   # bool      
+        [_iseq__any_str,   _iseq__any_str,   _iseq__float_str, _iseq__bool_str,  _iseq__any_any,   _iseq__timedelta_str, _iseq__any_any,   _invalid_iseq],   # str      
         [_iseq__any_any,   _iseq__any_any,   _iseq__any_any,   _iseq__any_any,   _iseq__any_any,   _iseq__any_any,   _iseq__any_any,   _invalid_iseq],   # timedelta      
         [_iseq__any_any,   _iseq__any_any,   _iseq__any_any,   _iseq__any_any,   _iseq__any_any,   _iseq__any_any,   _iseq__any_any,   _invalid_iseq],   # Object      
         [_invalid_iseq,    _invalid_iseq,    _invalid_iseq,    _invalid_iseq,    _invalid_iseq,    _invalid_iseq,    _invalid_iseq,    _invalid_iseq],   # Block      
@@ -280,10 +404,10 @@ _boolean_dispatch_table = {
     TK.NEQ: [
         #       any               int              float              bool              str            timedelta           Object            Block       
         [_neq__any_any,    _neq__any_any,    _neq__any_any,    _neq__any_any,    _neq__any_any,    _neq__any_any,    _neq__any_any,    _invalid_neq],   # any      
-        [_neq__any_any,    _neq__any_any,    _neq__any_any,    _neq__bool_int,   _neq__any_any,    _neq__any_any,    _neq__any_any,    _invalid_neq],   # int      
-        [_neq__any_any,    _neq__any_any,    _neq__any_any,    _neq__any_any,    _neq__any_any,    _neq__any_any,    _neq__any_any,    _invalid_neq],   # float      
-        [_neq__any_any,    _neq__int_bool,   _neq__any_any,    _neq__any_any,    _neq__any_any,    _neq__any_any,    _neq__any_any,    _invalid_neq],   # bool      
-        [_neq__any_str,    _neq__any_any,    _neq__any_any,    _neq__any_any,    _neq__any_any,    _neq__any_any,    _neq__any_any,    _invalid_neq],   # str      
+        [_neq__any_any,    _neq__any_any,    _neq__any_any,    _neq__bool_int,   _neq__str_int,    _neq__any_any,    _neq__any_any,    _invalid_neq],   # int      
+        [_neq__any_any,    _neq__any_any,    _neq__any_any,    _neq__bool_int,   _neq__str_float,  _neq__any_any,    _neq__any_any,    _invalid_neq],   # float      
+        [_neq__any_any,    _neq__int_bool,   _neq__int_bool,   _neq__any_any,    _neq__any_any,    _neq__any_any,    _neq__any_any,    _invalid_neq],   # bool      
+        [_neq__any_str,    _neq__any_str,    _neq__float_str,  _neq__bool_str,   _neq__any_any,    _neq__timedelta_str, _neq__any_any,    _invalid_neq],   # str      
         [_neq__any_any,    _neq__any_any,    _neq__any_any,    _neq__any_any,    _neq__any_any,    _neq__any_any,    _neq__any_any,    _invalid_neq],   # timedelta      
         [_neq__any_any,    _neq__any_any,    _neq__any_any,    _neq__any_any,    _neq__any_any,    _neq__any_any,    _neq__any_any,    _invalid_neq],   # Object      
         [_invalid_neq,     _invalid_neq,     _invalid_neq,     _invalid_neq,     _invalid_neq,     _invalid_neq,     _invalid_neq,     _invalid_neq],   # Block      
@@ -293,9 +417,9 @@ _boolean_dispatch_table = {
         #       any               int              float              bool              str            timedelta           Object            Block       
         [_gtr__any_any,    _gtr__any_any,    _gtr__any_any,    _gtr__any_any,    _gtr__any_any,    _gtr__any_any,    _gtr__any_any,    _invalid_gtr],   # any      
         [_gtr__any_any,    _gtr__any_any,    _gtr__any_any,    _gtr__bool_int,   _gtr__str_int,    _gtr__any_any,    _gtr__any_any,    _invalid_gtr],   # int      
-        [_gtr__any_any,    _gtr__any_any,    _gtr__any_any,    _gtr__any_any,    _gtr__any_any,    _gtr__any_any,    _gtr__any_any,    _invalid_gtr],   # float      
-        [_gtr__any_any,    _gtr__int_bool,   _gtr__any_any,    _gtr__any_any,    _gtr__any_any,    _gtr__any_any,    _gtr__any_any,    _invalid_gtr],   # bool      
-        [_gtr__any_str,    _gtr__int_str,    _gtr__any_any,    _gtr__any_any,    _gtr__any_any,    _gtr__any_any,    _gtr__any_any,    _invalid_gtr],   # str      
+        [_gtr__any_any,    _gtr__any_any,    _gtr__any_any,    _gtr__bool_int,   _gtr__str_float,  _gtr__any_any,    _gtr__any_any,    _invalid_gtr],   # float      
+        [_gtr__any_any,    _gtr__int_bool,   _gtr__int_bool,   _gtr__any_any,    _gtr__any_any,    _gtr__any_any,    _gtr__any_any,    _invalid_gtr],   # bool      
+        [_gtr__any_str,    _gtr__any_str,    _gtr__float_str,  _gtr__bool_str,   _gtr__any_any,    _gtr__timedelta_str, _gtr__any_any,    _invalid_gtr],   # str      
         [_gtr__any_any,    _gtr__any_any,    _gtr__any_any,    _gtr__any_any,    _gtr__any_any,    _gtr__any_any,    _gtr__any_any,    _invalid_gtr],   # timedelta      
         [_gtr__any_any,    _gtr__any_any,    _gtr__any_any,    _gtr__any_any,    _gtr__any_any,    _gtr__any_any,    _gtr__any_any,    _invalid_gtr],   # Object      
         [_invalid_gtr,     _invalid_gtr,     _invalid_gtr,     _invalid_gtr,     _invalid_gtr,     _invalid_gtr,     _invalid_gtr,     _invalid_gtr],   # Block      
@@ -305,9 +429,9 @@ _boolean_dispatch_table = {
         #       any               int              float              bool              str            timedelta           Object            Block       
         [_less__any_any,   _less__any_any,   _less__any_any,   _less__any_any,   _less__any_any,   _less__any_any,   _less__any_any,   _invalid_less],   # any      
         [_less__any_any,   _less__any_any,   _less__any_any,   _less__bool_int,  _less__str_int,   _less__any_any,   _less__any_any,   _invalid_less],   # int      
-        [_less__any_any,   _less__any_any,   _less__any_any,   _less__any_any,   _less__any_any,   _less__any_any,   _less__any_any,   _invalid_less],   # float      
-        [_less__any_any,   _less__int_bool,  _less__any_any,   _less__any_any,   _less__any_any,   _less__any_any,   _less__any_any,   _invalid_less],   # bool      
-        [_gtr__any_str,    _less__int_str,   _less__any_any,   _less__any_any,   _less__any_any,   _less__any_any,   _less__any_any,   _invalid_less],   # str      
+        [_less__any_any,   _less__any_any,   _less__any_any,   _less__bool_int,  _less__str_float, _less__any_any,   _less__any_any,   _invalid_less],   # float      
+        [_less__any_any,   _less__int_bool,  _less__int_bool,  _less__any_any,   _less__any_any,   _less__any_any,   _less__any_any,   _invalid_less],   # bool      
+        [_less__any_str,   _less__any_str,   _less__float_str, _less__bool_str,  _less__any_any,   _less__timedelta_str, _less__any_any,   _invalid_less],   # str      
         [_less__any_any,   _less__any_any,   _less__any_any,   _less__any_any,   _less__any_any,   _less__any_any,   _less__any_any,   _invalid_less],   # timedelta      
         [_less__any_any,   _less__any_any,   _less__any_any,   _less__any_any,   _less__any_any,   _less__any_any,   _less__any_any,   _invalid_less],   # Object      
         [_invalid_less,    _invalid_less,    _invalid_less,    _invalid_less,    _invalid_less,    _invalid_less,    _invalid_less,    _invalid_less],   # Block      
@@ -316,10 +440,10 @@ _boolean_dispatch_table = {
     TK.GTE: [
         #       any               int              float              bool              str            timedelta           Object            Block       
         [_gte__any_any,    _gte__any_any,    _gte__any_any,    _gte__any_any,    _gte__any_any,    _gte__any_any,    _gte__any_any,    _invalid_gte],   # any      
-        [_gte__any_any,    _gte__any_any,    _gte__any_any,    _gte__bool_int,   _less__str_int,   _gte__any_any,    _gte__any_any,    _invalid_gte],   # int      
-        [_gte__any_any,    _gte__any_any,    _gte__any_any,    _gte__any_any,    _gte__any_any,    _gte__any_any,    _gte__any_any,    _invalid_gte],   # float      
-        [_gte__any_any,    _gte__int_bool,   _gte__any_any,    _gte__any_any,    _gte__any_any,    _gte__any_any,    _gte__any_any,    _invalid_gte],   # bool      
-        [_gte__any_str,    _gte__any_any,    _gte__any_any,    _gte__any_any,    _gte__any_any,    _gte__any_any,    _gte__any_any,    _invalid_gte],   # str      
+        [_gte__any_any,    _gte__any_any,    _gte__any_any,    _gte__bool_int,   _gte__str_int,    _gte__any_any,    _gte__any_any,    _invalid_gte],   # int      
+        [_gte__any_any,    _gte__any_any,    _gte__any_any,    _gte__bool_int,   _gte__str_float,  _gte__any_any,    _gte__any_any,    _invalid_gte],   # float      
+        [_gte__any_any,    _gte__int_bool,   _gte__int_bool,   _gte__any_any,    _gte__any_any,    _gte__any_any,    _gte__any_any,    _invalid_gte],   # bool      
+        [_gte__any_str,    _gte__any_str,    _gte__float_str,  _gte__bool_str,   _gte__any_any,    _gte__timedelta_str, _gte__any_any,    _invalid_gte],   # str      
         [_gte__any_any,    _gte__any_any,    _gte__any_any,    _gte__any_any,    _gte__any_any,    _gte__any_any,    _gte__any_any,    _invalid_gte],   # timedelta      
         [_gte__any_any,    _gte__any_any,    _gte__any_any,    _gte__any_any,    _gte__any_any,    _gte__any_any,    _gte__any_any,    _invalid_gte],   # Object      
         [_invalid_gte,     _invalid_gte,     _invalid_gte,     _invalid_gte,     _invalid_gte,     _invalid_gte,     _invalid_gte,     _invalid_gte],   # Block      
@@ -328,10 +452,10 @@ _boolean_dispatch_table = {
     TK.LTE: [
         #       any               int              float              bool              str            timedelta           Object            Block       
         [_lte__any_any,    _lte__any_any,    _lte__any_any,    _lte__any_any,    _lte__any_any,    _lte__any_any,    _lte__any_any,    _invalid_lte],   # any      
-        [_lte__any_any,    _lte__any_any,    _lte__any_any,    _lte__any_any,    _less__str_int,   _lte__any_any,    _lte__any_any,    _invalid_lte],   # int      
-        [_lte__any_any,    _lte__any_any,    _lte__any_any,    _lte__any_any,    _lte__any_any,    _lte__any_any,    _lte__any_any,    _invalid_lte],   # float      
-        [_lte__any_any,    _lte__int_bool,   _lte__any_any,    _lte__any_any,    _lte__any_any,    _lte__any_any,    _lte__any_any,    _invalid_lte],   # bool      
-        [_gte__any_str,    _lte__any_any,    _lte__any_any,    _lte__any_any,    _lte__any_any,    _lte__any_any,    _lte__any_any,    _invalid_lte],   # str      
+        [_lte__any_any,    _lte__any_any,    _lte__any_any,    _lte__bool_int,   _lte__str_int,    _lte__any_any,    _lte__any_any,    _invalid_lte],   # int      
+        [_lte__any_any,    _lte__any_any,    _lte__any_any,    _lte__bool_int,   _lte__str_float,  _lte__any_any,    _lte__any_any,    _invalid_lte],   # float      
+        [_lte__any_any,    _lte__int_bool,   _lte__int_bool,   _lte__any_any,    _lte__any_any,    _lte__any_any,    _lte__any_any,    _invalid_lte],   # bool      
+        [_lte__any_str,    _lte__any_str,    _lte__float_str,  _lte__bool_str,   _lte__any_any,    _lte__timedelta_str, _lte__any_any,    _invalid_lte],   # str      
         [_lte__any_any,    _lte__any_any,    _lte__any_any,    _lte__any_any,    _lte__any_any,    _lte__any_any,    _lte__any_any,    _invalid_lte],   # timedelta      
         [_lte__any_any,    _lte__any_any,    _lte__any_any,    _lte__any_any,    _lte__any_any,    _lte__any_any,    _lte__any_any,    _invalid_lte],   # Object      
         [_invalid_lte,     _invalid_lte,     _invalid_lte,     _invalid_lte,     _invalid_lte,     _invalid_lte,     _invalid_lte,     _invalid_lte],   # Block      

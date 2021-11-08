@@ -4,11 +4,11 @@ test: 6:
 a[x][y]
 
 tree1:  a[x][y]
-    1 : Index TK.INDEX(BINOP, '[', V=None)
-    2 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)
-    3 :     List TK.TUPLE(LITERAL, '[', V=[Get()])
-    4 :         Get TK.IDNT(IDENTIFIER, 'x', V=None)
+    1  : Index('a')
+    2  :     Get(TK.IDNT, 'a')
+    3  :     List(TK.TUPLE, [Get()])
+    4  :         Get(TK.IDNT, 'x')
 
 tree2:  a[x][y]
-    1 : List TK.LIST(LITERAL, '[', V=[Get()])
-    2 :     Get TK.IDNT(IDENTIFIER, 'y', V=None)
+    1  : List(TK.LIST, [Get()])
+    2  :     Get(TK.IDNT, 'y')

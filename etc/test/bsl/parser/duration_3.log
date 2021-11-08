@@ -4,4 +4,4 @@ test: 3:
 1h
 
 tree1:  1h
-    1 : Duration TK.DUR(LITERAL, '1h', V=1:00:00)
+    1  : Duration(TK.DUR, 1:00:00)

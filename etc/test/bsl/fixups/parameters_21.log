@@ -1,20 +1,20 @@
 
 
 test: 21:
-"{a}:(a = 5)"
+{a}:(a = 5)
 
 tree1:  {a}:(a = 5)
-result: Lit(None)
-    1 : Define TK.COLN(NONE, ':', V=None)
-    2 :     Set TK.SET(LITERAL, '{', V=None)
-    3 :     Define TK.EQLS(BINOP, '=', V=None)
-    4 :         Ref TK.IDNT(IDENTIFIER, 'a', V=None)
-    5 :         Int TK.INT(LITERAL, '5', V=5)
+    1  : Define(TK.DEFINE, TK.COLN, ':')
+    2  :     Set(TK.SET, [Ref()])
+    3  :         Ref(TK.IDNT, 'a')
+    4  :     Define(TK.DEFINE, TK.EQLS, '=')
+    5  :         Ref(TK.IDNT, 'a')
+    6  :         Int(TK.INT, 5)
 
 tree1:(post)  {a}:(a = 5)
-result: Lit(None)
-    1 : Define TK.COLN(NONE, ':', V=None)
-    2 :     Set TK.SET(LITERAL, '{', V=None)
-    3 :     Define TK.EQLS(BINOP, '=', V=None)
-    4 :         Ref TK.IDNT(IDENTIFIER, 'a', V=None)
-    5 :         Int TK.INT(LITERAL, '5', V=5)
+    1  : Define(TK.DEFINE, TK.COLN, ':')
+    2  :     Set(TK.SET, [Ref()])
+    3  :         Ref(TK.IDNT, 'a')
+    4  :     Define(TK.DEFINE, TK.EQLS, '=')
+    5  :         Ref(TK.IDNT, 'a')
+    6  :         Int(TK.INT, 5)

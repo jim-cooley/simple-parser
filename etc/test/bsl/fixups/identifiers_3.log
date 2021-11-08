@@ -1,12 +1,10 @@
 
 
 test: 3:
-"a1234567890"
+a1234567890
 
 tree1:  a1234567890
-result: Lit(None)
-    1 : Get TK.IDNT(IDENTIFIER, 'a1234567890', V=None)
+    1  : Get(TK.IDNT, 'a1234567890')
 
 tree1:(post)  a1234567890
-result: Lit(None)
-    1 : Get TK.IDNT(IDENTIFIER, 'a1234567890', V=None)
+    1  : Get(TK.IDNT, 'a1234567890')

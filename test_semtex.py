@@ -1,4 +1,4 @@
-#!./bin/python3
+#!/Volumes/HD2/Lab/Repository/jimc/python3.9/bin/python3
 # test semantic analysis
 import sys
 from abc import ABC
@@ -73,22 +73,20 @@ class SemanticAnalysisTestRunner(TestSuiteRunner, ABC):
         self.verbose = True
         self.test = True
 
-    def run_unprotected_test(self, log, name, test):
-        environment = Environment()
+    def run_unprotected_test(self, environment, name, test):
+        logger = environment.logger
         parser = Parser(environment, verbose=False)
         fixups = Fixups(environment)
         interp = Interpreter(environment)
         command = CommandInterpreter(environment)
         environment.trees = fixups.apply(parser.parse(text=test))
         if self.verbose:
-            _dump_environment(environment, log, label='post', print_tokens=False, print_results=False)
-        print('\n-----------------------------------------------')
-        print('                    R U N')
-        print('-----------------------------------------------\n')
+            _dump_environment(environment, label='post', print_tokens=False, print_results=False)
+        logger.banner("RUN")
         command.execute(interp)
 #       interp.apply(trees)
         if self.test:
-            _dump_environment(environment, log, label='post',
+            _dump_environment(environment, label='post',
                               print_tokens=False, print_trees=False, print_results=True, print_symbols=True,
                               print_commands=False)
 

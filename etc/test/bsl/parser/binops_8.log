@@ -1,9 +1,9 @@
 
 
 test: 8:
-a = b
+2 >> none
 
-tree1:  a = b
-    1 : Define TK.EQLS(BINOP, '=', V=None)
-    2 :     Ref TK.IDNT(IDENTIFIER, 'a', V=None)
-    3 :     Get TK.IDNT(IDENTIFIER, 'b', V=None)
+tree1:  2 >> none
+    1  : Flow(TK.APPLY, v=[Int(), Literal()], '>>')
+    2  :     Int(TK.INT, 2)
+    3  :     Literal(TK.NONE, None)

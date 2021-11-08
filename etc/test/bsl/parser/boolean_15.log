@@ -4,5 +4,5 @@ test: 15:
 not "true"
 
 tree1:  not "true"
-    1 : UnaryOp TK.NOT(UNARY, 'not', V=None)
-    2 :     Str TK.STR(LITERAL, 'true', V=true)
+    1  : UnaryOp(TK.NOT, TK.NOT, 'not')
+    2  :     Str(TK.STR, true)

@@ -4,6 +4,6 @@ test: 1:
 1d + 1h
 
 tree1:  1d + 1h
-    1 : BinOp TK.ADD(BINOP, '+', V=None)
-    2 :     Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
-    3 :     Duration TK.DUR(LITERAL, '1h', V=1:00:00)
+    1  : BinOp(TK.ADD, '+')
+    2  :     Duration(TK.DUR, 1 day, 0:00:00)
+    3  :     Duration(TK.DUR, 1:00:00)

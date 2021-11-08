@@ -9,18 +9,10 @@ from tokens import TCL, Token, TK
 class AST:
     def __init__(self, token=None, value=None, parent=None, **kwargs):
         super().__init__(**kwargs)
-        self .parent = parent
+        self.parent = parent
         self.token = token
-        if token is not None and value is not None:
-            token.value = value
-
-    @property
-    def value(self):
-        return self.token.value if self.token is not None else None
-
-    @value.setter
-    def value(self, value):
-        self.token.value = value
+        self.value = token.value if token is not None else None
+        self.value = value if value is not None else self.value
 
     def __str__(self):
         if getattr(self, 'format', None) is not None:
@@ -57,7 +49,7 @@ class ASTCompound(AST):
             return '{}'
         else:
             fstr = ''
-            max = (len(self.value)-1)
+            max = (len(self.value) - 1)
             for idx in range(0, len(self.value)):
                 fstr += f'{self.items[idx]}'
                 fstr += ',' if idx < max else ''
@@ -73,7 +65,7 @@ class Expression(ASTCompound):
 
 @dataclass
 class Statement(ASTCompound):
-    def __init__(self, token=None, value=None, parent=None, is_lvalue=True,  **kwargs):
+    def __init__(self, token=None, value=None, parent=None, is_lvalue=True, **kwargs):
         super().__init__(token=token, value=value, parent=parent, **kwargs)
         self.is_lvalue = is_lvalue
 
@@ -85,7 +77,7 @@ class Statement(ASTCompound):
 class Assign(Expression):
     def __init__(self, left, op, right, is_lvalue=None):
         super().__init__(token=op, is_lvalue=False if is_lvalue is None else is_lvalue)
-#       self.token = left.token
+        #       self.token = left.token
         self.left = left
         self.right = right
         self.op = TK.ASSIGN

@@ -173,7 +173,7 @@ class FunctionalNotationPrinter(TreeFilter):
         self._print_notation(node)
 
     def visit_assignment_node(self, node, label=None):
-        self._print_indented(f'{_tk2pfx[node.op]}')
+        self.print_indented = self._print_indented(f'{_tk2pfx[node.op]}')
         self._process_binary_node(node)
 
     def visit_binary_node(self, node, label=None):
@@ -181,7 +181,8 @@ class FunctionalNotationPrinter(TreeFilter):
         self._process_binary_node(node)
 
     def visit_define_node(self, node, label=None):
-        text = f'{label.lower()}{_tk2glyph[node.op]} ' if node.op in _tk2glyph else f'{label.lower()} '
+#       text = f'{label.lower()}{_tk2glyph[node.op]} ' if node.op in _tk2glyph else f'{label.lower()} '
+        text = f'{label.lower()} '
         self._print_indented(text)
         self._process_binary_node(node)
 
@@ -263,16 +264,16 @@ class FunctionalNotationPrinter(TreeFilter):
 
     def _print_notation(self, node, append=None):
         if getattr(node, 'token', False):
-            self._print_notation_token(node.token, append=append)
+            self._print_notation_token(node.token, value=node.value, append=append)
         else:
             self._print(f'{type(node).__name__.lower()}({node})')
 
-    def _print_notation_token(self, token, append=None):
+    def _print_notation_token(self, token, value=None, append=None):
         val = ''
         if token is not None:
             val = f'{_tk2pfx[token.id]}' if token.id in _tk2pfx else token.lexeme
             if token.id not in [TK.LIST, TK.SET] and token.t_class == TCL.LITERAL:
-                v = f'{token.value}'
+                v = f'{value}'
                 val = f'{val}({v.lower()})'
         self._print(f'{val}', append=append)
 

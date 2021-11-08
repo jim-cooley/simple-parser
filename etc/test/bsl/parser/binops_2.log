@@ -1,9 +1,4 @@
 
 
 test: 2:
-a >| b
 
-tree1:  a >| b
-    1 : BinOp TK.RISE_ABOVE(BINOP, '>|', V=None)
-    2 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)
-    3 :     Get TK.IDNT(IDENTIFIER, 'b', V=None)

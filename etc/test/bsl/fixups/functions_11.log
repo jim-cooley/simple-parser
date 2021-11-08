@@ -1,20 +1,23 @@
 
 
 test: 11:
-"a{x, y, z}"
+a{x, y, z}
 
 tree1:  a{x, y, z}
-result: Lit(None)
-    1 : Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    1  : Get(TK.IDNT, 'a')
 
 tree2:  a{x, y, z}
-result: Lit(None)
-    1 : Set TK.SET(LITERAL, '{', V=None)
+    1  : Set(TK.SET, [Get(), Get(), Get()])
+    2  :     Get(TK.IDNT, 'x')
+    3  :     Get(TK.IDNT, 'y')
+    4  :     Get(TK.IDNT, 'z')
 
 tree1:(post)  a{x, y, z}
-result: Lit(None)
-    1 : Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    1  : Get(TK.IDNT, 'a')
 
 tree2:(post)  a{x, y, z}
-result: Lit(None)
-    1 : Set TK.SET(LITERAL, '{', V=None)
+result: list([Get(), Get(), Get()])
+    1  : Set(TK.SET, [Get(), Get(), Get()])
+    2  :     Get(TK.IDNT, 'x')
+    3  :     Get(TK.IDNT, 'y')
+    4  :     Get(TK.IDNT, 'z')

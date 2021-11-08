@@ -1,16 +1,14 @@
 
 
 test: 2:
-"a or b"
+a or b
 
 tree1:  a or b
-result: Lit(None)
-    1 : BinOp TK.OR(BINOP, 'or', V=None)
-    2 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)
-    3 :     Get TK.IDNT(IDENTIFIER, 'b', V=None)
+    1  : BinOp(TK.OR, 'or')
+    2  :     Get(TK.IDNT, 'a')
+    3  :     Get(TK.IDNT, 'b')
 
 tree1:(post)  a or b
-result: Lit(None)
-    1 : BinOp TK.OR(BINOP, 'or', V=None)
-    2 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)
-    3 :     Get TK.IDNT(IDENTIFIER, 'b', V=None)
+    1  : BinOp(TK.OR, 'or')
+    2  :     Get(TK.IDNT, 'a')
+    3  :     Get(TK.IDNT, 'b')

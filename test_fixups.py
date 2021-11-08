@@ -1,4 +1,4 @@
-#!./bin/python3
+#!/Volumes/HD2/Lab/Repository/jimc/python3.9/bin/python3
 # test semantic analysis
 import sys
 from abc import ABC
@@ -24,14 +24,15 @@ class SemanticAnalysisTestRunner(TestSuiteRunner, ABC):
     def __init__(self, test_data, skip_tests=None):
         super().__init__(test_data, skip_tests, log_dir='./etc/test/log/fixups')
 
-    def run_unprotected_test(self, log, name, test):
-        environment = Environment()
+    def run_unprotected_test(self, environment, name, test):
         parser = Parser(environment)
         fixups = Fixups(environment)
         tree = parser.parse(text=test)
-        _dump_environment(environment, log, print_commands=False, print_results=False, print_symbols=False, print_tokens=False)
+        _dump_environment(environment, print_commands=False, print_results=False, print_symbols=False, print_tokens=False)
         tree = fixups.apply(tree)
-        _dump_environment(environment, log, label='post', print_results=False, print_symbols=False, print_tokens=False)
+        _dump_environment(environment, label='post',
+                          print_tokens=False, print_trees=True, print_results=True, print_symbols=False,
+                          print_commands=True)
 
 
 # this is only for execution under debugger or via command-line

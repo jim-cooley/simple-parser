@@ -4,7 +4,7 @@ test: 4:
 a[b]
 
 tree1:  a[b]
-    1 : Index TK.INDEX(BINOP, '[', V=None)
-    2 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)
-    3 :     List TK.TUPLE(LITERAL, '[', V=[Get()])
-    4 :         Get TK.IDNT(IDENTIFIER, 'b', V=None)
+    1  : Index('a')
+    2  :     Get(TK.IDNT, 'a')
+    3  :     List(TK.TUPLE, [Get()])
+    4  :         Get(TK.IDNT, 'b')

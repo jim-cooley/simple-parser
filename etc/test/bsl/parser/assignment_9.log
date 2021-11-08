@@ -4,11 +4,11 @@ test: 9:
 a = 0; a += 1
 
 tree1:  a = 0; a += 1
-    1 : Define TK.EQLS(BINOP, '=', V=None)
-    2 :     Ref TK.IDNT(IDENTIFIER, 'a', V=None)
-    3 :     Int TK.INT(LITERAL, '0', V=0)
+    1  : Define(TK.DEFINE, TK.EQLS, '=')
+    2  :     Ref(TK.IDNT, 'a')
+    3  :     Int(TK.INT, 0)
 
 tree2:  a = 0; a += 1
-    1 : Assign TK.PLEQ(NONE, '+=', V=None)
-    2 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)
-    3 :     Int TK.INT(LITERAL, '1', V=1)
+    1  : Assign(TK.ASSIGN, TK.PLEQ, '+=')
+    2  :     Get(TK.IDNT, 'a')
+    3  :     Int(TK.INT, 1)

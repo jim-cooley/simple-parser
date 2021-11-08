@@ -1,13 +1,11 @@
 
 
 test: 23:
-"! "0""
+! "0"
 
 tree1:  ! "0"
-result: Lit(None)
-    1 : UnaryOp TK.NOT(UNARY, '!', V=None)
-    2 :     Str TK.STR(LITERAL, '0', V=0)
+    1  : UnaryOp(TK.NOT, TK.NOT, '!')
+    2  :     Str(TK.STR, 0)
 
 tree1:(post)  ! "0"
-result: Lit(None)
-    1 : Str TK.STR(LITERAL, '0', V=True)
+    1  : Bool(TK.BOOL, True)

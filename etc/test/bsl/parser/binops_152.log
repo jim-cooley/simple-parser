@@ -1,0 +1,9 @@
+
+
+test: 152:
+true / empty
+
+tree1:  true / empty
+    1  : BinOp(TK.DIV, '/')
+    2  :     Bool(TK.TRUE, True)
+    3  :     Set(TK.EMPTY, {})

@@ -1,0 +1,9 @@
+
+
+test: 123:
+2 * none
+
+tree1:  2 * none
+    1  : BinOp(TK.MUL, '*')
+    2  :     Int(TK.INT, 2)
+    3  :     Literal(TK.NONE, None)

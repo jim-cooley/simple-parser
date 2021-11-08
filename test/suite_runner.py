@@ -3,7 +3,7 @@ import traceback
 from abc import abstractmethod, ABC
 from multiprocessing import SimpleQueue
 
-from environment import _t_print
+from environment import _t_print, Environment
 from treeprint import print_forest, print_node
 
 _LOG_DIRECTORY = "./etc/test/log"
@@ -26,14 +26,19 @@ class TestSuiteRunner(ABC):
         self.logs_dir = log_dir if log_dir is not None else _LOG_DIRECTORY
 
     @abstractmethod
-    def run_unprotected_test(self, log, name, test):
+    def run_unprotected_test(self, environment, name, test):
         pass
 
     def run_protected_test(self, log, name, test):
         try:
-            self.run_unprotected_test(log, name, test)
+            self.environment = Environment(file=log)
+            self.run_unprotected_test(self.environment, name, test)
+            self.environment.close()
+            self.environment = None
         except Exception as e:
             _log_exception(e, log, name)
+            if self.environment is not None:
+                self.environment.close()
 
     def run_suites(self, suites):
         for name in suites:
@@ -114,31 +119,32 @@ def _log_exception(e, log, name):
         print(f'{trace}')
 
 
-def _dump_environment(env, log=None, label=None,
+def _dump_environment(env, label=None,
                       print_results=False,
                       print_commands=True,
                       print_tokens=True,
                       print_trees=True,
                       print_symbols=False,
                       print_notation=True):
+    logger = env.logger
     if print_tokens:
         _dump_tokens(env)
-        log.flush()
+        logger.flush()
     if print_trees:
         print('\n-----------------------------------------------')
         print('               P A R S E   T R E E')
         print('-----------------------------------------------')
-        print_forest(env, log, label, print_results=print_results, print_notation=print_notation)
-        log.flush()
+        print_forest(env, logger, label, print_results=print_results, print_notation=print_notation)
+        logger.flush()
     if print_commands:
-        _print_commands(env, env.commands, log=log)
-        log.flush()
+        _print_commands(env, env.commands, logger=logger)
+        logger.flush()
     if print_symbols:
-        _dump_symbols(log, env.scope)
-        log.flush()
+        _dump_symbols(logger, env.scope)
+        logger.flush()
 
 
-def _print_commands(env, commands, log=None, label=None):
+def _print_commands(env, commands, logger=None, label=None):
     if len(commands) > 0:
         print('\n-----------------------------------------------')
         print('                C O M M A N D S')
@@ -151,8 +157,8 @@ def _print_commands(env, commands, log=None, label=None):
             idx += 1
             line = env.get_line(t.token.location.line).strip()
             ll = f'({label})' if label is not None else ''
-            _t_print(log, f'\ntree{idx}:{ll}  {line}')
-            print_node(t)
+            logger.print(f'\ntree{idx}:{ll}  {line}')
+            print_node(t, logger=logger)
 
 
 def _dump_tokens(env):
@@ -160,11 +166,11 @@ def _dump_tokens(env):
     env.tokens.printall()
 
 
-def _dump_symbols(log, scope):
+def _dump_symbols(logger, scope):
     print('\n-----------------------------------------------')
     print('                    S Y M B O L S')
     print('-----------------------------------------------\n')
-    _t_print(f=log, message="\n\nsymbols: ")
+    logger.print("\n\nsymbols: ")
     idx = 0
     q = SimpleQueue()
     q.put(scope)
@@ -173,12 +179,12 @@ def _dump_symbols(log, scope):
         if s._symbols is None or len(s._symbols) == 0:
             continue
         if getattr(s, 'token', False):
-            _t_print(f=log, message=f'\nscope: {s.token.lexeme}')
+            logger.print(f'\nscope: {s.token.lexeme}')
         else:
-            _t_print(f=log, message=f'\nglobal scope:')
+            logger.print(f'\nglobal scope:')
         for k in s._symbols.keys():
             v = s._symbols[k]
             if type(v).__name__ == 'Object':
                 q.put(v)
-                _t_print(f=log, message=f'{idx:5d}:  `{k}`: {v.qualname} : Object({v.token})')
+                logger.print(f'{idx:5d}:  `{k}`: {v.qualname} : Object({v.token})')
                 idx += 1

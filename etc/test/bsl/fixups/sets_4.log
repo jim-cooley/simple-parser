@@ -1,18 +1,17 @@
 
 
 test: 4:
-"{a, b, c}"
+{a, b, c}
 
 tree1:  {a, b, c}
-result: list([Get(), Get(), Get()])
-    1 : Set TK.SET(LITERAL, '{', V=[Get(), Get(), Get()])
-    2 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)
-    3 :     Get TK.IDNT(IDENTIFIER, 'b', V=None)
-    4 :     Get TK.IDNT(IDENTIFIER, 'c', V=None)
+    1  : Set(TK.SET, [Get(), Get(), Get()])
+    2  :     Get(TK.IDNT, 'a')
+    3  :     Get(TK.IDNT, 'b')
+    4  :     Get(TK.IDNT, 'c')
 
 tree1:(post)  {a, b, c}
 result: list([Get(), Get(), Get()])
-    1 : Set TK.SET(LITERAL, '{', V=[Get(), Get(), Get()])
-    2 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)
-    3 :     Get TK.IDNT(IDENTIFIER, 'b', V=None)
-    4 :     Get TK.IDNT(IDENTIFIER, 'c', V=None)
+    1  : Set(TK.SET, [Get(), Get(), Get()])
+    2  :     Get(TK.IDNT, 'a')
+    3  :     Get(TK.IDNT, 'b')
+    4  :     Get(TK.IDNT, 'c')

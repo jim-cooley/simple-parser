@@ -1,18 +1,43 @@
 # parsing and semantic analysis exception handling and helper functions
+import traceback
+import warnings
 
 from indexed_dict import IndexedDict
+from logwriter import IndentedLogWriter
 
 
-class SemtexException(Exception):
-    def __init__(self, *args):
-        super().__init__(*args)
+class SemtexError(Exception):
+    def __init__(self, *args, **kwargs):  # real signature unknown
+        super().__init__(*args, **kwargs)
 
 
-def getErrorFacility(name, options=None, env=None):
-    if name not in _facilities.keys():
-        f = ExceptionReporter(env=env, options=options)
+class SemtexWarning(Warning):
+    def __init__(self, *args, **kwargs):  # real signature unknown
+        super().__init__(*args, **kwargs)
+
+
+class SemtexRuntimeError(RuntimeError):
+    def __init__(self, *args, **kwargs):  # real signature unknown
+        super().__init__(*args, **kwargs)
+
+
+class SemtexRuntimeWarning(RuntimeWarning):
+    def __init__(self, *args, **kwargs):  # real signature unknown
+        super().__init__(*args, **kwargs)
+
+
+def getErrorFacility(name, options=None, env=None, file=None):
+    if name not in _facilities:
+        f = ExceptionReporter(name, env=env, options=options, file=file)
         _facilities[name] = f
     return _facilities[name]
+
+
+def removeErrorFacility(fac):
+    if fac.name not in _facilities:
+        return
+    fac = _facilities.pop(fac.name, None)
+    return fac
 
 
 def runtime_error(message, loc=None):
@@ -37,11 +62,15 @@ def setErrorConfiguration(name, options, env=None):
     f.environment = f.environment if env is None else env
 
 
-class ExceptionReporter:
+class ExceptionReporter(IndentedLogWriter):
 
-    def __init__(self, env=None, options=None):
+    def __init__(self, name, env=None, options=None, file=None):
+        super().__init__(file=file)
+        self.name = name
         self.environment = env
         self.option = IndexedDict(items=options, defaults=_defaultOptions)
+        if not file:
+            raise ValueError("File not specified")
 
     def set_options(self, options):
         self.option.update(options)
@@ -55,52 +84,62 @@ class ExceptionReporter:
         error_text = f'Invalid Syntax: {message}.'
         self.report(error_text, loc)
         if exception:
-            raise SemtexException(error_text)
+            raise SemtexError(error_text)
 
     def strict_warning(self, message, loc=None):
         error_text = f'Warning: Invalid Syntax: {message}.'
         self.report(error_text, loc)
         if self.option.strict or self.option.force_errors:
-            raise SemtexException(error_text)
+            raise SemtexError(error_text)
+        # warnings.warn("message", SemtexWarning(message))  # UNDONE: says these aren't subclasses of Warning.
 
     def warning(self, message, loc=None):
         error_text = f'Warning: Invalid Syntax: {message}.'
         self.report(error_text, loc)
         if self.option.force_errors:
-            raise SemtexException(error_text)
+            raise SemtexError(error_text)
+        # warnings.warn("message", SemtexWarning(message))
 
     def runtime_error(self, message, loc=None):
         error_text = f'Runtime Error: {message}.'
         self.report(error_text, loc)
-        raise SemtexException(error_text)
+        raise SemtexError(error_text)
 
     def runtime_strict_warning(self, message, loc=None):
         error_text = f'Warning: {message}.'
         self.report(error_text, loc)
         if self.option.strict or self.option.force_errors:
-            raise SemtexException(error_text)
+            raise SemtexError(error_text)
+        # warnings.warn("message", SemtexRuntimeWarning(message))
 
     def runtime_warning(self, message, loc=None):
         error_text = f'Warning: {message}.'
         self.report(error_text, loc)
         if self.option.force_errors:
-            raise SemtexException(error_text)
+            raise SemtexError(error_text)
+        # warnings.warn("message", SemtexRuntimeWarning(message))
 
     def report(self, message, loc=None):
+        if self.option.stack_trace:
+            trace = f'{traceback.print_stack(limit=7)}'
+        else:
+            trace = ''
         if loc is not None:
             loc.offset -= 1
             carrot = ''
             if self.environment is not None:
                 carrot = f'\n\n{self.environment.lines[loc.line]}\n{"^".rjust(loc.offset)}\n' if loc.line < len(self.environment.lines) else ''
-            text = f"\n{carrot}\nFOCAL: {message} at position: {loc.line + 1}:{loc.offset}\n"
+            text = f"\n{carrot}\nFOCAL: {message} at position: {loc.line + 1}:{loc.offset}\n\n{trace}"
         else:
-            text = f"FOCAL: {message}."
+            text = f"FOCAL: {message}.\n\n{trace}"
         print(text)
 
 
 _defaultOptions = {
     'strict': False,
     'force_errors': False,
+    'log_file': './semtex.log',
+    'stack_trace': False,
 }
 
 _facilities = {}

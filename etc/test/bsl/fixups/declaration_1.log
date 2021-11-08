@@ -1,16 +1,20 @@
 
 
 test: 1:
-"var f = { a:5 }"
+var f = { a:5 }
 
 tree1:  var f = { a:5 }
-result: Lit(None)
-    1 : DefineVar TK.EQLS(BINOP, '=', V=None)
-    2 :     Ref TK.IDNT(IDENTIFIER, 'f', V=None)
-    3 :     Set TK.SET(LITERAL, '{', V=None)
+    1  : DefineVar(TK.DEFINE, TK.EQLS, '=')
+    2  :     Ref(TK.IDNT, 'f')
+    3  :     Set(TK.SET, [Define()])
+    4  :         Define(TK.DEFINE, TK.COLN, ':')
+    5  :             Ref(TK.IDNT, 'a')
+    6  :             Int(TK.INT, 5)
 
 tree1:(post)  var f = { a:5 }
-result: Lit(None)
-    1 : DefineVar TK.EQLS(BINOP, '=', V=None)
-    2 :     Ref TK.IDNT(IDENTIFIER, 'f', V=None)
-    3 :     Set TK.SET(LITERAL, '{', V=None)
+    1  : DefineVar(TK.DEFINE, TK.EQLS, '=')
+    2  :     Ref(TK.IDNT, 'f')
+    3  :     Set(TK.SET, [Define()])
+    4  :         Define(TK.DEFINE, TK.COLN, ':')
+    5  :             Ref(TK.IDNT, 'a')
+    6  :             Int(TK.INT, 5)

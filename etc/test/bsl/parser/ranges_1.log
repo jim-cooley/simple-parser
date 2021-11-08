@@ -4,6 +4,6 @@ test: 1:
 1..2
 
 tree1:  1..2
-    1 : BinOp TK.RANGE(BINOP, '.', V=None)
-    2 :     Float TK.FLOT(LITERAL, '1.', V=1.0)
-    3 :     Int TK.INT(LITERAL, '2', V=2)
+    1  : BinOp(TK.RANGE, '.')
+    2  :     Float(TK.FLOT, 1.0)
+    3  :     Int(TK.INT, 2)

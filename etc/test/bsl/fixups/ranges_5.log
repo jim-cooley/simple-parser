@@ -1,20 +1,18 @@
 
 
 test: 5:
-"today-2y..today"
+today-2y..today
 
 tree1:  today-2y..today
-result: Lit(None)
-    1 : BinOp TK.SUB(BINOP, '-', V=None)
-    2 :     Get TK.TODAY(IDENTIFIER, 'today', V=None)
-    3 :     BinOp TK.RANGE(BINOP, '..', V=None)
-    4 :         Duration TK.DUR(LITERAL, '2y', V=730 days, 0:00:00)
-    5 :         Get TK.TODAY(IDENTIFIER, 'today', V=None)
+    1  : BinOp(TK.SUB, '-')
+    2  :     Get(TK.TODAY, 'today')
+    3  :     BinOp(TK.RANGE, '..')
+    4  :         Duration(TK.DUR, 730 days, 0:00:00)
+    5  :         Get(TK.TODAY, 'today')
 
 tree1:(post)  today-2y..today
-result: Lit(None)
-    1 : BinOp TK.SUB(BINOP, '-', V=None)
-    2 :     Get TK.TODAY(IDENTIFIER, 'today', V=None)
-    3 :     BinOp TK.RANGE(BINOP, '..', V=None)
-    4 :         Duration TK.DUR(LITERAL, '2y', V=730 days, 0:00:00)
-    5 :         Get TK.TODAY(IDENTIFIER, 'today', V=None)
+    1  : BinOp(TK.SUB, '-')
+    2  :     Get(TK.TODAY, 'today')
+    3  :     BinOp(TK.RANGE, '..')
+    4  :         Duration(TK.DUR, 730 days, 0:00:00)
+    5  :         Get(TK.TODAY, 'today')

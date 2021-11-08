@@ -38,7 +38,7 @@ def reduce_get(scope=None, get=None):
     scope = Environment.current.scope if scope is None else scope
     symbol = scope.find(get.token)
     if symbol is None:
-        runtime_strict_warning(f'Symbol `{get.token.lexeme}` does not exist', loc=get.token.location)
+        runtime_strict_warning(f'Symbol `{get.token.lexeme}` referenced before initialized', loc=get.token.location)
     return symbol
 
 
@@ -46,7 +46,7 @@ def reduce_propref(left=None, right=None):
     scope = Environment.current.scope
     symbol = scope.find(left.token)
     if symbol is None:
-        runtime_strict_warning(f'Symbol `{left.token.lexeme}` does not exist', loc=left.token.location)
+        runtime_strict_warning(f'Symbol `{left.token.lexeme}` referenced before initialized', loc=left.token.location)
     prop = symbol.find_add_local(right.token)
     return prop
 
@@ -55,10 +55,10 @@ def reduce_propget(left=None, right=None):
     scope = Environment.current.scope
     symbol = scope.find(left.token)
     if symbol is None:
-        runtime_strict_warning(f'Symbol `{left.token.lexeme}` does not exist', loc=left.token.location)
+        runtime_strict_warning(f'Symbol `{left.token.lexeme}` referenced before initialized', loc=left.token.location)
     prop = symbol.find(right.token)
     if prop is None:
-        runtime_strict_warning(f'Symbol `{right.token.lexeme}` does not exist', loc=right.token.location)
+        runtime_strict_warning(f'Symbol `{right.token.lexeme}` referenced before initialized', loc=right.token.location)
     return prop
 
 
@@ -84,7 +84,7 @@ def evaluate_binary_operation(node, left, right):
         return ref if ref is not None else LIT_NONE
     elif op in [TK.ASSIGN, TK.DEFINE, TK.APPLY]:
         if op in _SUPPORTED_ASSIGNMENT_TOKENS:
-            return eval_assign_dispatch(left, right)
+            return eval_assign_dispatch(node, left, right)
         else:
             runtime_error(f'Type mismatch for assignment({type(left)}, {type(right)})', loc=None)
     else:

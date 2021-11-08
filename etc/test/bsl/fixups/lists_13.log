@@ -1,18 +1,17 @@
 
 
 test: 13:
-"[[[a]]]"
+[[[a]]]
 
 tree1:  [[[a]]]
-result: list([List()])
-    1 : List TK.LIST(LITERAL, '[', V=[List()])
-    2 :     List TK.LIST(LITERAL, '[', V=[List()])
-    3 :         List TK.LIST(LITERAL, '[', V=[Get()])
-    4 :             Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    1  : List(TK.LIST, [List()])
+    2  :     List(TK.LIST, [List()])
+    3  :         List(TK.LIST, [Get()])
+    4  :             Get(TK.IDNT, 'a')
 
 tree1:(post)  [[[a]]]
 result: list([List()])
-    1 : List TK.LIST(LITERAL, '[', V=[List()])
-    2 :     List TK.LIST(LITERAL, '[', V=[List()])
-    3 :         List TK.LIST(LITERAL, '[', V=[Get()])
-    4 :             Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    1  : List(TK.LIST, [List()])
+    2  :     List(TK.LIST, [List()])
+    3  :         List(TK.LIST, [Get()])
+    4  :             Get(TK.IDNT, 'a')

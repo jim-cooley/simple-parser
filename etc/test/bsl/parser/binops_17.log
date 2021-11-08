@@ -1,0 +1,9 @@
+
+
+test: 17:
+true >> false
+
+tree1:  true >> false
+    1  : Flow(TK.APPLY, v=[Bool(), Bool()], '>>')
+    2  :     Bool(TK.TRUE, True)
+    3  :     Bool(TK.FALSE, False)

@@ -4,6 +4,6 @@ test: 2:
 a + b
 
 tree1:  a + b
-    1 : BinOp TK.ADD(BINOP, '+', V=None)
-    2 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)
-    3 :     Get TK.IDNT(IDENTIFIER, 'b', V=None)
+    1  : BinOp(TK.ADD, '+')
+    2  :     Get(TK.IDNT, 'a')
+    3  :     Get(TK.IDNT, 'b')

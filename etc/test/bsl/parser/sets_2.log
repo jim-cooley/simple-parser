@@ -4,6 +4,6 @@ test: 2:
 {{a}}
 
 tree1:  {{a}}
-    1 : Set TK.SET(LITERAL, '{', V=[Set()])
-    2 :     Set TK.SET(LITERAL, '{', V=[Get()])
-    3 :         Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    1  : Set(TK.SET, [Set()])
+    2  :     Set(TK.SET, [Get()])
+    3  :         Get(TK.IDNT, 'a')

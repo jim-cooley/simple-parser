@@ -1,0 +1,9 @@
+
+
+test: 132:
+true * false
+
+tree1:  true * false
+    1  : BinOp(TK.MUL, '*')
+    2  :     Bool(TK.TRUE, True)
+    3  :     Bool(TK.FALSE, False)

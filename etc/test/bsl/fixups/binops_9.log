@@ -1,0 +1,15 @@
+
+
+test: 9:
+3 >> empty
+
+tree1:  3 >> empty
+    1  : Flow(TK.APPLY, v=[Int(), Set()], '>>')
+    2  :     Int(TK.INT, 3)
+    3  :     Set(TK.EMPTY, {})
+
+tree1:(post)  3 >> empty
+result: list([Int(), Set()])
+    1  : Flow(TK.APPLY, v=[Int(), Set()], '>>')
+    2  :     Int(TK.INT, 3)
+    3  :     Set(TK.EMPTY, {})

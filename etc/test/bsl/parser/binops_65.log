@@ -1,0 +1,9 @@
+
+
+test: 65:
+true <| empty
+
+tree1:  true <| empty
+    1  : BinOp(TK.FALL_BELOW, '<|')
+    2  :     Bool(TK.TRUE, True)
+    3  :     Set(TK.EMPTY, {})

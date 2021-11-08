@@ -1,12 +1,10 @@
 
 
 test: 6:
-"trades"
+trades
 
 tree1:  trades
-result: Lit(None)
-    1 : Get TK.IDNT(IDENTIFIER, 'trades', V=None)
+    1  : Get(TK.IDNT, 'trades')
 
 tree1:(post)  trades
-result: Lit(None)
-    1 : Get TK.IDNT(IDENTIFIER, 'trades', V=None)
+    1  : Get(TK.IDNT, 'trades')

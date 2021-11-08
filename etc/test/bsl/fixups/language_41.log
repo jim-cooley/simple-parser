@@ -1,12 +1,13 @@
 
 
 test: 41:
-"{ b };"
+{ b };
 
 tree1:  { b };
-result: Lit(None)
-    1 : Set TK.SET(LITERAL, '{', V=None)
+    1  : Set(TK.SET, [Get()])
+    2  :     Get(TK.IDNT, 'b')
 
 tree1:(post)  { b };
-result: Lit(None)
-    1 : Set TK.SET(LITERAL, '{', V=None)
+result: list([Get()])
+    1  : Set(TK.SET, [Get()])
+    2  :     Get(TK.IDNT, 'b')

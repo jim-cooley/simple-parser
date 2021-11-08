@@ -1,0 +1,12 @@
+
+
+test: 135:
+none * 2
+
+tree1:  none * 2
+    1  : BinOp(TK.MUL, '*')
+    2  :     Literal(TK.NONE, None)
+    3  :     Int(TK.INT, 2)
+
+tree1:(post)  none * 2
+    1  : Literal(TK.NONE, None)

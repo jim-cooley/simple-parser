@@ -1,0 +1,15 @@
+
+
+test: 16:
+true >> true
+
+tree1:  true >> true
+    1  : Flow(TK.APPLY, v=[Bool(), Bool()], '>>')
+    2  :     Bool(TK.TRUE, True)
+    3  :     Bool(TK.TRUE, True)
+
+tree1:(post)  true >> true
+result: list([Bool(), Bool()])
+    1  : Flow(TK.APPLY, v=[Bool(), Bool()], '>>')
+    2  :     Bool(TK.TRUE, True)
+    3  :     Bool(TK.TRUE, True)

@@ -1,13 +1,11 @@
 
 
 test: 14:
-"not "2""
+not "2"
 
 tree1:  not "2"
-result: Lit(None)
-    1 : UnaryOp TK.NOT(UNARY, 'not', V=None)
-    2 :     Str TK.STR(LITERAL, '2', V=2)
+    1  : UnaryOp(TK.NOT, TK.NOT, 'not')
+    2  :     Str(TK.STR, 2)
 
 tree1:(post)  not "2"
-result: Lit(None)
-    1 : Str TK.STR(LITERAL, '2', V=False)
+    1  : Bool(TK.BOOL, False)

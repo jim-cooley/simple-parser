@@ -4,5 +4,5 @@ test: 32:
 +1d
 
 tree1:  +1d
-    1 : UnaryOp TK.POS(UNARY, '+', V=None)
-    2 :     Duration TK.DUR(LITERAL, '1d', V=1 day, 0:00:00)
+    1  : UnaryOp(TK.POS, TK.POS, '+')
+    2  :     Duration(TK.DUR, 1 day, 0:00:00)

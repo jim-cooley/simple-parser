@@ -1,13 +1,11 @@
 
 
 test: 10:
-"not 0"
+not 0
 
 tree1:  not 0
-result: Lit(None)
-    1 : UnaryOp TK.NOT(UNARY, 'not', V=None)
-    2 :     Int TK.INT(LITERAL, '0', V=0)
+    1  : UnaryOp(TK.NOT, TK.NOT, 'not')
+    2  :     Int(TK.INT, 0)
 
 tree1:(post)  not 0
-result: Lit(None)
-    1 : Int TK.INT(LITERAL, '0', V=False)
+    1  : Bool(TK.BOOL, True)

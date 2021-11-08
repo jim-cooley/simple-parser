@@ -1,0 +1,17 @@
+{
+    "configurations": [
+        {
+            "name": "test_fixups",
+            "type": "python",
+            "request": "launch",
+            "module": "test_fixups.py"
+        },
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        }
+    ]
+}

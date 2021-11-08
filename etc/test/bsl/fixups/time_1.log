@@ -1,12 +1,11 @@
 
 
 test: 1:
-"10:45a"
+10:45a
 
 tree1:  10:45a
-result: time(10:45:00)
-    1 : Time TK.TIME(LITERAL, '10:45a', V=10:45:00)
+    1  : Time(TK.TIME, 10:45:00)
 
 tree1:(post)  10:45a
 result: time(10:45:00)
-    1 : Time TK.TIME(LITERAL, '10:45a', V=10:45:00)
+    1  : Time(TK.TIME, 10:45:00)

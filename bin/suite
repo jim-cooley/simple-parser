@@ -1,6 +1,7 @@
 #!/usr/local/bin/bash
 logpath="./etc/test/log"
 bslpath="./etc/test/bsl"
+suitelog=./etc/log/suite.log
 
 declare -i ignore_baselines=0
 declare -i quiet=0
@@ -43,7 +44,7 @@ if [ $display_help -gt 0 ]; then
   printf "$help_text\n"
 
 else
-  echo "" > "./suite.log"
+  echo "" > $suitelog
   declare -i pass=0
   declare -i total=0
   declare -i no_baseline=0
@@ -77,7 +78,7 @@ else
       if [ -f "$baseline" ]; then
           reason="fail"
           if [ $ignore_baselines -eq 0 ]; then
-              diff $diff_opts "$baseline" "$test" >> ./suite.log && reason="pass"
+              diff $diff_opts "$baseline" "$test" >> $suitelog && reason="pass"
           else
               reason="pass"
           fi
@@ -89,7 +90,7 @@ else
               printf "$(basename $test):  $reason\n"
           fi
           if [ "$reason" != "pass" ]; then
-              printf "$(basename $test):\t$reason\n" >> ./suite.log &>> ./suite.log
+              printf "$(basename $test):\t$reason\n" >> $suitelog &>> $suitelog
           fi
       else
           if [ $ignore_baselines -eq 0 ]; then
@@ -106,9 +107,9 @@ else
               printf "$(basename $test):\tfail: $reason\n"
           fi
           if [ $ignore_baselines -eq 0 ]; then
-              printf "$(basename $test):\tfail: $reason\n" >> ./suite.log &>> ./suite.log
+              printf "$(basename $test):\tfail: $reason\n" >> $suitelog &>> $suitelog
           elif [ "$reason" != "" ]; then
-              printf "$(basename $test):\tfail: $reason\n" >> ./suite.log &>> ./suite.log
+              printf "$(basename $test):\tfail: $reason\n" >> $suitelog &>> $suitelog
           fi
       fi
       if [ "$reason" == "fail (exception)" ]; then
@@ -116,15 +117,15 @@ else
       fi
   done
 
-  printf "\n\nresults summary:\n" >> ./suite.log
+  printf "\n\nresults summary:\n" >> $suitelog
   fail=$((total-pass-no_baseline))
-  printf "================================\n" >> ./suite.log
-  printf "  pass:        $pass\n" >> ./suite.log
-  printf "  fail:        $((total-pass-no_baseline))\n" >> ./suite.log
-  printf "  exceptions:  $exceptions\n" >> ./suite.log
-  printf "  no baseline: $no_baseline\n" >> ./suite.log
-  printf "  total:       $total\n" >> ./suite.log
-  printf "================================\n\n" >> ./suite.log
+  printf "================================\n" >> $suitelog
+  printf "  pass:        $pass\n" >> $suitelog
+  printf "  fail:        $((total-pass-no_baseline))\n" >> $suitelog
+  printf "  exceptions:  $exceptions\n" >> $suitelog
+  printf "  no baseline: $no_baseline\n" >> $suitelog
+  printf "  total:       $total\n" >> $suitelog
+  printf "================================\n\n" >> $suitelog
   printf "\n\nresults summary:\n"
   printf "================================\n"
   printf "  pass:        $pass   $((pass*100/total)) pct \n"
@@ -139,7 +140,7 @@ else
 
 
   if [ $quiet -eq 0 ]; then
-      grep -i fail ./suite.log
+      grep -i fail $suitelog
   fi
 fi
 printf "\n\n"

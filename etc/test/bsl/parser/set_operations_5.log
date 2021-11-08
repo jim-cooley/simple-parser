@@ -4,8 +4,8 @@ test: 5:
 {a} | {b}
 
 tree1:  {a} | {b}
-    1 : Flow TK.CHAIN(NONE, '|', V=[Set(), Set()])
-    2 :     Set TK.SET(LITERAL, '{', V=[Get()])
-    3 :         Get TK.IDNT(IDENTIFIER, 'a', V=None)
-    4 :     Set TK.SET(LITERAL, '{', V=[Ref()])
-    5 :         Ref TK.IDNT(IDENTIFIER, 'b', V=None)
+    1  : Flow(TK.CHAIN, v=[Set(), Set()], '|')
+    2  :     Set(TK.SET, [Get()])
+    3  :         Get(TK.IDNT, 'a')
+    4  :     Set(TK.SET, [Ref()])
+    5  :         Ref(TK.IDNT, 'b')

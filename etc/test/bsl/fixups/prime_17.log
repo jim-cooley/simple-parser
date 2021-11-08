@@ -1,12 +1,11 @@
 
 
 test: 17:
-"False"
+False
 
 tree1:  False
-result: bool(False)
-    1 : Bool TK.FALSE(LITERAL, 'False', V=False)
+    1  : Bool(TK.FALSE, False)
 
 tree1:(post)  False
 result: bool(False)
-    1 : Bool TK.FALSE(LITERAL, 'False', V=False)
+    1  : Bool(TK.FALSE, False)

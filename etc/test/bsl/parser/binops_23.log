@@ -1,0 +1,9 @@
+
+
+test: 23:
+none >> none
+
+tree1:  none >> none
+    1  : Flow(TK.APPLY, v=[Literal(), Literal()], '>>')
+    2  :     Literal(TK.NONE, None)
+    3  :     Literal(TK.NONE, None)

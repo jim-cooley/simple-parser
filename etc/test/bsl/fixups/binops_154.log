@@ -1,0 +1,12 @@
+
+
+test: 154:
+none / empty
+
+tree1:  none / empty
+    1  : BinOp(TK.DIV, '/')
+    2  :     Literal(TK.NONE, None)
+    3  :     Set(TK.EMPTY, {})
+
+tree1:(post)  none / empty
+    1  : Literal(TK.NONE, None)

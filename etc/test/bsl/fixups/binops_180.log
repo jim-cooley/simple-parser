@@ -1,0 +1,14 @@
+
+
+test: 180:
+a = b
+
+tree1:  a = b
+    1  : Define(TK.DEFINE, TK.EQLS, '=')
+    2  :     Ref(TK.IDNT, 'a')
+    3  :     Get(TK.IDNT, 'b')
+
+tree1:(post)  a = b
+    1  : Define(TK.DEFINE, TK.EQLS, '=')
+    2  :     Ref(TK.IDNT, 'a')
+    3  :     Get(TK.IDNT, 'b')

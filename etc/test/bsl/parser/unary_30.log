@@ -4,5 +4,5 @@ test: 30:
 ++1.25w
 
 tree1:  ++1.25w
-    1 : UnaryOp TK.INCREMENT(UNARY, '++', V=None)
-    2 :     Duration TK.DUR(LITERAL, '1.25w', V=8 days, 18:00:00)
+    1  : UnaryOp(TK.INCREMENT, TK.INCREMENT, '++')
+    2  :     Duration(TK.DUR, 8 days, 18:00:00)

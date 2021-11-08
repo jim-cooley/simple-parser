@@ -1,7 +1,7 @@
 from copy import copy
 from dataclasses import dataclass
 
-from exceptions import SemtexException
+from exceptions import SemtexError
 from rewrites import RewriteGets2Refs, RewriteFnCall2DefineFn
 from tokens import TK, TCL, _ADDITION_TOKENS, _COMPARISON_TOKENS, _FLOW_TOKENS, \
     _EQUALITY_TEST_TOKENS, _LOGIC_TOKENS, _MULTIPLICATION_TOKENS, _UNARY_TOKENS, _IDENTIFIER_TYPES, _ASSIGNMENT_TOKENS, \
@@ -80,7 +80,7 @@ class Parser(object):
             elif self.match1(TK.DEFINE):
                 return self.definition()
             return self.statement()
-        except SemtexException as se:
+        except SemtexError as se:
             self.synchronize()
             raise se
         except Exception as e:
@@ -324,10 +324,10 @@ class Parser(object):
                     if l_node.token.id == TK.FLOT:
                         op.id = TK.DOT2
                 elif r_node.token.id == TK.INT:  # l_node is None
-                    s_val = f'.{r_node.token.value}'
+                    s_val = f'.{r_node.value}'
                     r_node.token.id = TK.FLOT
                     r_node.token.lexeme = s_val
-                    r_node.token.value = float(s_val)
+                    r_node.value = float(s_val)
                     l_node = Float(r_node.token)
                     return l_node
             if l_node is None:

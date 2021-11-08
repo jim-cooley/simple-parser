@@ -1,0 +1,9 @@
+
+
+test: 21:
+none >> true
+
+tree1:  none >> true
+    1  : Flow(TK.APPLY, v=[Literal(), Bool()], '>>')
+    2  :     Literal(TK.NONE, None)
+    3  :     Bool(TK.TRUE, True)

@@ -1,20 +1,18 @@
 
 
 test: 9:
-"a * b + c"
+a * b + c
 
 tree1:  a * b + c
-result: Lit(None)
-    1 : BinOp TK.ADD(BINOP, '+', V=None)
-    2 :     BinOp TK.MUL(BINOP, '*', V=None)
-    3 :         Get TK.IDNT(IDENTIFIER, 'a', V=None)
-    4 :         Get TK.IDNT(IDENTIFIER, 'b', V=None)
-    5 :     Get TK.IDNT(IDENTIFIER, 'c', V=None)
+    1  : BinOp(TK.ADD, '+')
+    2  :     BinOp(TK.MUL, '*')
+    3  :         Get(TK.IDNT, 'a')
+    4  :         Get(TK.IDNT, 'b')
+    5  :     Get(TK.IDNT, 'c')
 
 tree1:(post)  a * b + c
-result: Lit(None)
-    1 : BinOp TK.ADD(BINOP, '+', V=None)
-    2 :     BinOp TK.MUL(BINOP, '*', V=None)
-    3 :         Get TK.IDNT(IDENTIFIER, 'a', V=None)
-    4 :         Get TK.IDNT(IDENTIFIER, 'b', V=None)
-    5 :     Get TK.IDNT(IDENTIFIER, 'c', V=None)
+    1  : BinOp(TK.ADD, '+')
+    2  :     BinOp(TK.MUL, '*')
+    3  :         Get(TK.IDNT, 'a')
+    4  :         Get(TK.IDNT, 'b')
+    5  :     Get(TK.IDNT, 'c')

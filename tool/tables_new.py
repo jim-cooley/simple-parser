@@ -21,14 +21,26 @@ from tokens import TK
 _assign_obj_fn = {
     TK.ASSIGN: [
         #    any         int        float        bool        str      timedelta     Object      Block    
-        ["r",          "r",          "r",          "r",          "r",          "r",          "u:r",        "invalid"],   # any      
-        ["r",          "r",          "r",          "r",          "r",          "r",          "invalid",    "invalid"],   # int      
-        ["r",          "r",          "r",          "r",          "r",          "r",          "invalid",    "invalid"],   # float      
-        ["r",          "r",          "r",          "r",          "r",          "r",          "invalid",    "invalid"],   # bool      
-        ["r",          "r",          "r",          "invalid",    "r",          "invalid",    "invalid",    "invalid"],   # str      
-        ["r",          "r",          "r",          "r",          "r",          "r",          "invalid",    "invalid"],   # timedelta      
-        ["r.v",        "invalid",    "invalid",    "invalid",    "invalid",    "invalid",    "l.o",        "l.b"],   # Object      
-        ["invalid",    "invalid",    "invalid",    "invalid",    "invalid",    "invalid",    "r.b",        "r"],   # Block      
+        ["b:l,u:r",    "l=r",        "l=r",        "l=r",        "l=r",        "l=r",        "b:l,u:r",    "invalid"],   # any      
+        ["l=r",        "l=r",        "l=r",        "l=r",        "l=r",        "l=r",        "b:l,u:r",    "invalid"],   # int      
+        ["l=r",        "l=r",        "l=r",        "l=r",        "l=r",        "l=r",        "b:l,u:r",    "invalid"],   # float      
+        ["l=r",        "l=r",        "l=r",        "l=r",        "l=r",        "l=r",        "b:l,u:r",    "invalid"],   # bool      
+        ["l=r",        "l=r",        "l=r",        "invalid",    "l=r",        "invalid",    "b:l,u:r",    "invalid"],   # str      
+        ["l=r",        "l=r",        "l=r",        "l=r",        "l=r",        "l=r",        "b:l,u:r",    "invalid"],   # timedelta      
+        ["b:l,r",      "b:l,r",      "invalid",    "invalid",    "invalid",    "invalid",    "l.o",        "l.b"],   # Object      
+        ["invalid",    "invalid",    "invalid",    "invalid",    "invalid",    "invalid",    "l.b",        "l=r"],   # Block      
+    
+    ],
+    TK.DEFINE: [
+        #    any         int        float        bool        str      timedelta     Object      Block    
+        ["b:l,u:r",    "l=r",        "l=r",        "l=r",        "l=r",        "l=r",        "b:l,u:r",    "invalid"],   # any      
+        ["l=r",        "l=r",        "l=r",        "l=r",        "l=r",        "l=r",        "b:l,u:r",    "invalid"],   # int      
+        ["l=r",        "l=r",        "l=r",        "l=r",        "l=r",        "l=r",        "b:l,u:r",    "invalid"],   # float      
+        ["l=r",        "l=r",        "l=r",        "l=r",        "l=r",        "l=r",        "b:l,u:r",    "invalid"],   # bool      
+        ["l=r",        "l=r",        "l=r",        "invalid",    "l=r",        "invalid",    "b:l,u:r",    "invalid"],   # str      
+        ["l=r",        "invalid",    "l=r",        "l=r",        "l=r",        "l=r",        "b:l,u:r",    "invalid"],   # timedelta      
+        ["b:l,r",      "b:l,r",      "invalid",    "invalid",    "invalid",    "invalid",    "l.o",        "l.b"],   # Object      
+        ["invalid",    "invalid",    "invalid",    "invalid",    "invalid",    "invalid",    "l.b",        "l=r"],   # Block      
     
     ],
 }
@@ -155,10 +167,10 @@ _evaluate_boolops_fn = {
     TK.ISEQ: [
         #     any           int          float          bool          str        timedelta       Object        Block     
         ["l == r",       "l == r",       "l == r",       "l == r",       "l == r",       "l == r",       "l == r",       "invalid"],   # any      
-        ["l == r",       "l == r",       "l == r",       "l == 2b:r",    "l == 2i:r",    "l == r",       "l == r",       "invalid"],   # int      
-        ["l == r",       "l == r",       "l == r",       "l == r",       "l == r",       "l == r",       "l == r",       "invalid"],   # float      
-        ["l == r",       "l == 2i:r",    "l == r",       "l == r",       "l == r",       "l == r",       "l == r",       "invalid"],   # bool      
-        ["2i:l == r",    "l == r",       "l == r",       "l == r",       "l == r",       "l == r",       "l == r",       "invalid"],   # str      
+        ["l == r",       "l == r",       "l == r",       "2i:l == r",    "2i:l == r",    "l == r",       "l == r",       "invalid"],   # int      
+        ["l == r",       "l == r",       "l == r",       "2f:l == r",    "2f:l == r",    "l == r",       "l == r",       "invalid"],   # float      
+        ["l == r",       "l == 2i:r",    "l == 2f:r",    "l == r",       "l == r",       "l == r",       "l == r",       "invalid"],   # bool      
+        ["l == 2i:r",    "l == 2i:r",    "l == 2f:r",    "l == 2b:r",    "l == r",       "l == 2d:r",    "l == r",       "invalid"],   # str      
         ["l == r",       "l == r",       "l == r",       "l == r",       "l == r",       "l == r",       "l == r",       "invalid"],   # timedelta      
         ["l == r",       "l == r",       "l == r",       "l == r",       "l == r",       "l == r",       "l == r",       "invalid"],   # Object      
         ["invalid",      "invalid",      "invalid",      "invalid",      "invalid",      "invalid",      "invalid",      "invalid"],   # Block      
@@ -167,10 +179,10 @@ _evaluate_boolops_fn = {
     TK.NEQ: [
         #     any           int          float          bool          str        timedelta       Object        Block     
         ["l != r",       "l != r",       "l != r",       "l != r",       "l != r",       "l != r",       "l != r",       "invalid"],   # any      
-        ["l != r",       "l != r",       "l != r",       "l != 2b:r",    "l != r",       "l != r",       "l != r",       "invalid"],   # int      
-        ["l != r",       "l != r",       "l != r",       "l != r",       "l != r",       "l != r",       "l != r",       "invalid"],   # float      
-        ["l != r",       "l != 2i:r",    "l != r",       "l != r",       "l != r",       "l != r",       "l != r",       "invalid"],   # bool      
-        ["2i:l != r",    "l != r",       "l != r",       "l != r",       "l != r",       "l != r",       "l != r",       "invalid"],   # str      
+        ["l != r",       "l != r",       "l != r",       "2i:l != r",    "2i:l != r",    "l != r",       "l != r",       "invalid"],   # int      
+        ["l != r",       "l != r",       "l != r",       "2i:l != r",    "2f:l != r",    "l != r",       "l != r",       "invalid"],   # float      
+        ["l != r",       "l != 2i:r",    "l != 2i:r",    "l != r",       "l != r",       "l != r",       "l != r",       "invalid"],   # bool      
+        ["l != 2i:r",    "l != 2i:r",    "l != 2f:r",    "l != 2b:r",    "l != r",       "l != 2d:r",    "l != r",       "invalid"],   # str      
         ["l != r",       "l != r",       "l != r",       "l != r",       "l != r",       "l != r",       "l != r",       "invalid"],   # timedelta      
         ["l != r",       "l != r",       "l != r",       "l != r",       "l != r",       "l != r",       "l != r",       "invalid"],   # Object      
         ["invalid",      "invalid",      "invalid",      "invalid",      "invalid",      "invalid",      "invalid",      "invalid"],   # Block      
@@ -179,10 +191,10 @@ _evaluate_boolops_fn = {
     TK.GTR: [
         #     any           int          float          bool          str        timedelta       Object        Block     
         ["l > r",        "l > r",        "l > r",        "l > r",        "l > r",        "l > r",        "l > r",        "invalid"],   # any      
-        ["l > r",        "l > r",        "l > r",        "l > 2i:r",     "2i:l > r",     "l > r",        "l > r",        "invalid"],   # int      
-        ["l > r",        "l > r",        "l > r",        "l > r",        "l > r",        "l > r",        "l > r",        "invalid"],   # float      
-        ["l > r",        "2i:l > r",     "l > r",        "l > r",        "l > r",        "l > r",        "l > r",        "invalid"],   # bool      
-        ["2i:l > 2i:r",  "l > 2i:r",     "l > r",        "l > r",        "l > r",        "l > r",        "l > r",        "invalid"],   # str      
+        ["l > r",        "l > r",        "l > r",        "2i:l > r",     "2i:l > r",     "l > r",        "l > r",        "invalid"],   # int      
+        ["l > r",        "l > r",        "l > r",        "2i:l > r",     "2f:l > r",     "l > r",        "l > r",        "invalid"],   # float      
+        ["l > r",        "l > 2i:r",     "l > 2i:r",     "l > r",        "l > r",        "l > r",        "l > r",        "invalid"],   # bool      
+        ["l > 2i:r",     "l > 2i:r",     "l > 2f:r",     "l > 2b:r",     "l > r",        "l > 2d:r",     "l > r",        "invalid"],   # str      
         ["l > r",        "l > r",        "l > r",        "l > r",        "l > r",        "l > r",        "l > r",        "invalid"],   # timedelta      
         ["l > r",        "l > r",        "l > r",        "l > r",        "l > r",        "l > r",        "l > r",        "invalid"],   # Object      
         ["invalid",      "invalid",      "invalid",      "invalid",      "invalid",      "invalid",      "invalid",      "invalid"],   # Block      
@@ -191,10 +203,10 @@ _evaluate_boolops_fn = {
     TK.LESS: [
         #     any           int          float          bool          str        timedelta       Object        Block     
         ["l < r",        "l < r",        "l < r",        "l < r",        "l < r",        "l < r",        "l < r",        "invalid"],   # any      
-        ["l < r",        "l < r",        "l < r",        "l < 2i:r",     "l > 2i:r",     "l < r",        "l < r",        "invalid"],   # int      
-        ["l < r",        "l < r",        "l < r",        "l < r",        "l < r",        "l < r",        "l < r",        "invalid"],   # float      
-        ["l < r",        "2i:l < r",     "l < r",        "l < r",        "l < r",        "l < r",        "l < r",        "invalid"],   # bool      
-        ["2i:l > 2i:r",  "2i:l < r",     "l < r",        "l < r",        "l < r",        "l < r",        "l < r",        "invalid"],   # str      
+        ["l < r",        "l < r",        "l < r",        "2i:l < r",     "2i:l < r",     "l < r",        "l < r",        "invalid"],   # int      
+        ["l < r",        "l < r",        "l < r",        "2i:l < r",     "2f:l < r",     "l < r",        "l < r",        "invalid"],   # float      
+        ["l < r",        "l < 2i:r",     "l < 2i:r",     "l < r",        "l < r",        "l < r",        "l < r",        "invalid"],   # bool      
+        ["l < 2i:r",     "l < 2i:r",     "l < 2f:r",     "l < 2b:r",     "l < r",        "l < 2d:r",     "l < r",        "invalid"],   # str      
         ["l < r",        "l < r",        "l < r",        "l < r",        "l < r",        "l < r",        "l < r",        "invalid"],   # timedelta      
         ["l < r",        "l < r",        "l < r",        "l < r",        "l < r",        "l < r",        "l < r",        "invalid"],   # Object      
         ["invalid",      "invalid",      "invalid",      "invalid",      "invalid",      "invalid",      "invalid",      "invalid"],   # Block      
@@ -203,10 +215,10 @@ _evaluate_boolops_fn = {
     TK.GTE: [
         #     any           int          float          bool          str        timedelta       Object        Block     
         ["l >= r",       "l >= r",       "l >= r",       "l >= r",       "l >= r",       "l >= r",       "l >= r",       "invalid"],   # any      
-        ["l >= r",       "l >= r",       "l >= r",       "l >= 2i:r",    "l > 2i:r",     "l >= r",       "l >= r",       "invalid"],   # int      
-        ["l >= r",       "l >= r",       "l >= r",       "l >= r",       "l >= r",       "l >= r",       "l >= r",       "invalid"],   # float      
-        ["l >= r",       "2i:l >= r",    "l >= r",       "l >= r",       "l >= r",       "l >= r",       "l >= r",       "invalid"],   # bool      
-        ["2i:l > r",     "l >= r",       "l >= r",       "l >= r",       "l >= r",       "l >= r",       "l >= r",       "invalid"],   # str      
+        ["l >= r",       "l >= r",       "l >= r",       "2i:l >= r",    "2i:l >= r",    "l >= r",       "l >= r",       "invalid"],   # int      
+        ["l >= r",       "l >= r",       "l >= r",       "2i:l >= r",    "2f:l >= r",    "l >= r",       "l >= r",       "invalid"],   # float      
+        ["l >= r",       "l >= 2i:r",    "l >= 2i:r",    "l >= r",       "l >= r",       "l >= r",       "l >= r",       "invalid"],   # bool      
+        ["l >= 2i:r",    "l >= 2i:r",    "l >= 2f:r",    "l >= 2b:r",    "l >= r",       "l >= 2d:r",    "l >= r",       "invalid"],   # str      
         ["l >= r",       "l >= r",       "l >= r",       "l >= r",       "l >= r",       "l >= r",       "l >= r",       "invalid"],   # timedelta      
         ["l >= r",       "l >= r",       "l >= r",       "l >= r",       "l >= r",       "l >= r",       "l >= r",       "invalid"],   # Object      
         ["invalid",      "invalid",      "invalid",      "invalid",      "invalid",      "invalid",      "invalid",      "invalid"],   # Block      
@@ -215,10 +227,10 @@ _evaluate_boolops_fn = {
     TK.LTE: [
         #     any           int          float          bool          str        timedelta       Object        Block     
         ["l <= r",       "l <= r",       "l <= r",       "l <= r",       "l <= r",       "l <= r",       "l <= r",       "invalid"],   # any      
-        ["l <= r",       "l <= r",       "l <= r",       "l <= r",       "l > 2i:r",     "l <= r",       "l <= r",       "invalid"],   # int      
-        ["l <= r",       "l <= r",       "l <= r",       "l <= r",       "l <= r",       "l <= r",       "l <= r",       "invalid"],   # float      
-        ["l <= r",       "2i:l <= r",    "l <= r",       "l <= r",       "l <= r",       "l <= r",       "l <= r",       "invalid"],   # bool      
-        ["2i:l > r",     "l <= r",       "l <= r",       "l <= r",       "l <= r",       "l <= r",       "l <= r",       "invalid"],   # str      
+        ["l <= r",       "l <= r",       "l <= r",       "2i:l <= r",    "2i:l <= r",    "l <= r",       "l <= r",       "invalid"],   # int      
+        ["l <= r",       "l <= r",       "l <= r",       "2i:l <= r",    "2f:l <= r",    "l <= r",       "l <= r",       "invalid"],   # float      
+        ["l <= r",       "l <= 2i:r",    "l <= 2i:r",    "l <= r",       "l <= r",       "l <= r",       "l <= r",       "invalid"],   # bool      
+        ["l <= 2i:r",    "l <= 2i:r",    "l <= 2f:r",    "l <= 2b:r",    "l <= r",       "l <= 2d:r",    "l <= r",       "invalid"],   # str      
         ["l <= r",       "l <= r",       "l <= r",       "l <= r",       "l <= r",       "l <= r",       "l <= r",       "invalid"],   # timedelta      
         ["l <= r",       "l <= r",       "l <= r",       "l <= r",       "l <= r",       "l <= r",       "l <= r",       "invalid"],   # Object      
         ["invalid",      "invalid",      "invalid",      "invalid",      "invalid",      "invalid",      "invalid",      "invalid"],   # Block      

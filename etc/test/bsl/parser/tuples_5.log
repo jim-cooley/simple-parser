@@ -4,5 +4,5 @@ test: 5:
 (a,)                         # tuple
 
 tree1:  (a,)                         # tuple
-    1 : List TK.TUPLE(LITERAL, '(', V=[Get()])
-    2 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    1  : List(TK.TUPLE, [Get()])
+    2  :     Get(TK.IDNT, 'a')

@@ -1,16 +1,14 @@
 
 
 test: 18:
-"++++b"
+++++b
 
 tree1:  ++++b
-result: Lit(None)
-    1 : UnaryOp TK.INCREMENT(UNARY, '++', V=None)
-    2 :     UnaryOp TK.INCREMENT(UNARY, '++', V=None)
-    3 :         Get TK.IDNT(IDENTIFIER, 'b', V=None)
+    1  : UnaryOp(TK.INCREMENT, TK.INCREMENT, '++')
+    2  :     UnaryOp(TK.INCREMENT, TK.INCREMENT, '++')
+    3  :         Get(TK.IDNT, 'b')
 
 tree1:(post)  ++++b
-result: Lit(None)
-    1 : UnaryOp TK.INCREMENT(UNARY, '++', V=None)
-    2 :     UnaryOp TK.INCREMENT(UNARY, '++', V=None)
-    3 :         Get TK.IDNT(IDENTIFIER, 'b', V=None)
+    1  : UnaryOp(TK.INCREMENT, TK.INCREMENT, '++')
+    2  :     UnaryOp(TK.INCREMENT, TK.INCREMENT, '++')
+    3  :         Get(TK.IDNT, 'b')

@@ -1,24 +1,22 @@
 
 
 test: 19:
-"atr := (high + low) / 2"
+atr := (high + low) / 2
 
 tree1:  atr := (high + low) / 2
-result: Lit(None)
-    1 : DefineVarFn TK.COEQ(NONE, ':=', V=None)
-    2 :     Ref TK.IDNT(IDENTIFIER, 'atr', V=None)
-    3 :     BinOp TK.DIV(BINOP, '/', V=None)
-    4 :         BinOp TK.ADD(BINOP, '+', V=None)
-    5 :             Get TK.IDNT(IDENTIFIER, 'high', V=None)
-    6 :             Get TK.IDNT(IDENTIFIER, 'low', V=None)
-    7 :         Int TK.INT(LITERAL, '2', V=2)
+    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    2  :     Ref(TK.IDNT, 'atr')
+    3  :     BinOp(TK.DIV, '/')
+    4  :         BinOp(TK.ADD, '+')
+    5  :             Get(TK.IDNT, 'high')
+    6  :             Get(TK.IDNT, 'low')
+    7  :         Int(TK.INT, 2)
 
 tree1:(post)  atr := (high + low) / 2
-result: Lit(None)
-    1 : DefineVarFn TK.COEQ(NONE, ':=', V=None)
-    2 :     Ref TK.IDNT(IDENTIFIER, 'atr', V=None)
-    3 :     BinOp TK.DIV(BINOP, '/', V=None)
-    4 :         BinOp TK.ADD(BINOP, '+', V=None)
-    5 :             Get TK.IDNT(IDENTIFIER, 'high', V=None)
-    6 :             Get TK.IDNT(IDENTIFIER, 'low', V=None)
-    7 :         Int TK.INT(LITERAL, '2', V=2)
+    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    2  :     Ref(TK.IDNT, 'atr')
+    3  :     BinOp(TK.DIV, '/')
+    4  :         BinOp(TK.ADD, '+')
+    5  :             Get(TK.IDNT, 'high')
+    6  :             Get(TK.IDNT, 'low')
+    7  :         Int(TK.INT, 2)

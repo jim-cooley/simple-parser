@@ -4,12 +4,12 @@ test: 7:
 [a:5, b:[c, d]]
 
 tree1:  [a:5, b:[c, d]]
-    1 : List TK.LIST(LITERAL, '[', V=[Define(), Define()])
-    2 :     Define TK.COLN(NONE, ':', V=None)
-    3 :         Ref TK.IDNT(IDENTIFIER, 'a', V=None)
-    4 :         Int TK.INT(LITERAL, '5', V=5)
-    5 :     Define TK.COLN(NONE, ':', V=None)
-    6 :         Ref TK.IDNT(IDENTIFIER, 'b', V=None)
-    7 :         List TK.LIST(LITERAL, '[', V=[Get(), Get()])
-    8 :             Get TK.IDNT(IDENTIFIER, 'c', V=None)
-    9 :             Get TK.IDNT(IDENTIFIER, 'd', V=None)
+    1  : List(TK.LIST, [Define(), Define()])
+    2  :     Define(TK.DEFINE, TK.COLN, ':')
+    3  :         Ref(TK.IDNT, 'a')
+    4  :         Int(TK.INT, 5)
+    5  :     Define(TK.DEFINE, TK.COLN, ':')
+    6  :         Ref(TK.IDNT, 'b')
+    7  :         List(TK.LIST, [Get(), Get()])
+    8  :             Get(TK.IDNT, 'c')
+    9  :             Get(TK.IDNT, 'd')

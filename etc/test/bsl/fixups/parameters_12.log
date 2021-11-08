@@ -1,4 +1,4 @@
 
 
 test: 12:
-"#:(a = 5, b='a')  - now syntax error"
+#:(a = 5, b='a')  - now syntax error

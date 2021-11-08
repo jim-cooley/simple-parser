@@ -1,12 +1,10 @@
 
 
 test: 10:
-"((a))"
+((a))
 
 tree1:  ((a))
-result: Lit(None)
-    1 : Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    1  : Get(TK.IDNT, 'a')
 
 tree1:(post)  ((a))
-result: Lit(None)
-    1 : Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    1  : Get(TK.IDNT, 'a')

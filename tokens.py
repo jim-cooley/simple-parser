@@ -278,7 +278,7 @@ _tk2glyph = {
     TK.COMMAND: 'command',
     TK.COMPARE: '?',
     TK.DECREMENT: '--',
-    TK.DEFINE: 'def',
+    TK.DEFINE: ':=',
     TK.DIV: '/',
     TK.DUR: 'dur',
     TK.EMPTY: 'Ø',  # empty set
@@ -316,7 +316,7 @@ _tk2glyph = {
     TK.RANGE: 'range',
     TK.RBRC: '}',
     TK.REF: 'ref',
-    TK.RISE_ABOVE: '>|',  # >|
+    TK.RISE_ABOVE: '|>',  # >|
     TK.SELL: 'sell',
     TK.SET: 'set',
     TK.SIGNAL: 'signal',

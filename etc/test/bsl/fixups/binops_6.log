@@ -1,16 +1,16 @@
 
 
 test: 6:
-"a / b"
+1 >> -1
 
-tree1:  a / b
-result: Lit(None)
-    1 : BinOp TK.DIV(BINOP, '/', V=None)
-    2 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)
-    3 :     Get TK.IDNT(IDENTIFIER, 'b', V=None)
+tree1:  1 >> -1
+    1  : Flow(TK.APPLY, v=[Int(), UnaryOp()], '>>')
+    2  :     Int(TK.INT, 1)
+    3  :     UnaryOp(TK.NEG, TK.NEG, '-')
+    4  :         Int(TK.INT, 1)
 
-tree1:(post)  a / b
-result: Lit(None)
-    1 : BinOp TK.DIV(BINOP, '/', V=None)
-    2 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)
-    3 :     Get TK.IDNT(IDENTIFIER, 'b', V=None)
+tree1:(post)  1 >> -1
+result: list([Int(), Literal()])
+    1  : Flow(TK.APPLY, v=[Int(), Literal()], '>>')
+    2  :     Int(TK.INT, 1)
+    3  :     Literal(TK.INT, -1)

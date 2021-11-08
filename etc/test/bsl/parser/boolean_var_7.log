@@ -4,6 +4,6 @@ test: 7:
 a > b
 
 tree1:  a > b
-    1 : BinOp TK.GTR(BINOP, '>', V=None)
-    2 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)
-    3 :     Get TK.IDNT(IDENTIFIER, 'b', V=None)
+    1  : BinOp(TK.GTR, '>')
+    2  :     Get(TK.IDNT, 'a')
+    3  :     Get(TK.IDNT, 'b')

@@ -4,13 +4,13 @@ test: 7:
 a | b >> c ; d
 
 tree1:  a | b >> c ; d
-    1 : Flow TK.APPLY(NONE, '>>', V=[Flow(), ApplyChainProd()])
-    2 :     Flow TK.CHAIN(NONE, '|', V=[Get(), ApplyChainProd()])
-    3 :         Get TK.IDNT(IDENTIFIER, 'a', V=None)
-    4 :         ApplyChainProd TK.APPLY(UNARY, '|', V=None)
-    5 :             Ref TK.IDNT(IDENTIFIER, 'b', V=None)
-    6 :     ApplyChainProd TK.APPLY(UNARY, '>>', V=None)
-    7 :         Ref TK.IDNT(IDENTIFIER, 'c', V=None)
+    1  : Flow(TK.APPLY, v=[Flow(), ApplyChainProd()], '>>')
+    2  :     Flow(TK.CHAIN, v=[Get(), ApplyChainProd()], '|')
+    3  :         Get(TK.IDNT, 'a')
+    4  :         ApplyChainProd(TK.DEFINE, TK.APPLY, '|')
+    5  :             Ref(TK.IDNT, 'b')
+    6  :     ApplyChainProd(TK.DEFINE, TK.APPLY, '>>')
+    7  :         Ref(TK.IDNT, 'c')
 
 tree2:  a | b >> c ; d
-    1 : Get TK.IDNT(IDENTIFIER, 'd', V=None)
+    1  : Get(TK.IDNT, 'd')

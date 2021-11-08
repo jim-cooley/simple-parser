@@ -1,28 +1,22 @@
 
 
 test: 12:
-"a, b, c"
+a, b, c
 
 tree1:  a, b, c
-result: Lit(None)
-    1 : Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    1  : Get(TK.IDNT, 'a')
 
 tree2:  a, b, c
-result: Lit(None)
-    1 : Get TK.IDNT(IDENTIFIER, 'b', V=None)
+    1  : Get(TK.IDNT, 'b')
 
 tree3:  a, b, c
-result: Lit(None)
-    1 : Get TK.IDNT(IDENTIFIER, 'c', V=None)
+    1  : Get(TK.IDNT, 'c')
 
 tree1:(post)  a, b, c
-result: Lit(None)
-    1 : Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    1  : Get(TK.IDNT, 'a')
 
 tree2:(post)  a, b, c
-result: Lit(None)
-    1 : Get TK.IDNT(IDENTIFIER, 'b', V=None)
+    1  : Get(TK.IDNT, 'b')
 
 tree3:(post)  a, b, c
-result: Lit(None)
-    1 : Get TK.IDNT(IDENTIFIER, 'c', V=None)
+    1  : Get(TK.IDNT, 'c')

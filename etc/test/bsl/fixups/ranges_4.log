@@ -1,24 +1,21 @@
 
 
 test: 4:
-"[a..b, 1..2]"
+[a..b, 1..2]
 
 tree1:  [a..b, 1..2]
-result: list([BinOp(), BinOp()])
-    1 : List TK.LIST(LITERAL, '[', V=[BinOp(), BinOp()])
-    2 :     BinOp TK.RANGE(BINOP, '..', V=None)
-    3 :         Ref TK.IDNT(IDENTIFIER, 'a', V=None)
-    4 :         Get TK.IDNT(IDENTIFIER, 'b', V=None)
-    5 :     BinOp TK.RANGE(BINOP, '.', V=None)
-    6 :         Float TK.FLOT(LITERAL, '1.', V=1.0)
-    7 :         Int TK.INT(LITERAL, '2', V=2)
+    1  : List(TK.LIST, [BinOp(), BinOp()])
+    2  :     BinOp(TK.RANGE, '..')
+    3  :         Ref(TK.IDNT, 'a')
+    4  :         Get(TK.IDNT, 'b')
+    5  :     BinOp(TK.RANGE, '.')
+    6  :         Float(TK.FLOT, 1.0)
+    7  :         Int(TK.INT, 2)
 
 tree1:(post)  [a..b, 1..2]
-result: list([BinOp(), BinOp()])
-    1 : List TK.LIST(LITERAL, '[', V=[BinOp(), BinOp()])
-    2 :     BinOp TK.RANGE(BINOP, '..', V=None)
-    3 :         Ref TK.IDNT(IDENTIFIER, 'a', V=None)
-    4 :         Get TK.IDNT(IDENTIFIER, 'b', V=None)
-    5 :     BinOp TK.RANGE(BINOP, '.', V=None)
-    6 :         Float TK.FLOT(LITERAL, '1.', V=1.0)
-    7 :         Int TK.INT(LITERAL, '2', V=2)
+result: list([BinOp(), Literal()])
+    1  : List(TK.LIST, [BinOp(), Literal()])
+    2  :     BinOp(TK.RANGE, '..')
+    3  :         Ref(TK.IDNT, 'a')
+    4  :         Get(TK.IDNT, 'b')
+    5  :     Literal(TK.NONE, None)

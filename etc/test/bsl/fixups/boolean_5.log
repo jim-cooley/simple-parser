@@ -1,13 +1,11 @@
 
 
 test: 5:
-"not {}"
+not {}
 
 tree1:  not {}
-result: Lit(None)
-    1 : UnaryOp TK.NOT(UNARY, 'not', V=None)
-    2 :     Set TK.EMPTY(LITERAL, '{}', V={})
+    1  : UnaryOp(TK.NOT, TK.NOT, 'not')
+    2  :     Set(TK.EMPTY, [])
 
 tree1:(post)  not {}
-result: Lit(None)
-    1 : Set TK.EMPTY(LITERAL, '{}', V=True)
+    1  : Bool(TK.BOOL, True)

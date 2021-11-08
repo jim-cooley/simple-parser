@@ -1,4 +1,4 @@
-from conversion import c_box, c_to_bool, c_to_int, c_unbox
+from conversion import c_box, c_to_bool, c_to_float, c_to_int, c_unbox
 from environment import Environment
 from exceptions import runtime_error
 from tokens import TK
@@ -11,6 +11,7 @@ from tokens import TK
 
 _SUPPORTED_ASSIGN_OPERATIONS = [
     TK.ASSIGN, 
+    TK.DEFINE, 
 ]
 
 _INTRINSIC_VALUE_TYPES = ['any', 'int', 'float', 'bool', 'str', 'timedelta', 'Object', 'Block']
@@ -69,7 +70,7 @@ def eval_assign_dispatch(node, left, right):
         r_value = Environment.current.scope.find(right.token).value
     if l_value is None or r_value is None:
         return None
-    return eval_assign_dispatch2(node.token.id, l_value, r_value)
+    return eval_assign_dispatch2(node.op, l_value, r_value)
 
 
 def eval_assign_dispatch2(tkid, l_value, r_value):
@@ -90,17 +91,17 @@ def eval_assign_dispatch2(tkid, l_value, r_value):
 
 
 def _assign__any_any(l_value, r_value):
+    c_box(l_value, c_unbox(r_value))
+    return l_value
+
+
+def _assign__int_any(l_value, r_value):
     l_value = r_value
     return l_value
 
 
-def _assign__object_any(l_value, r_value):
-    l_value = c_unbox(r_value)
-    return l_value
-
-
 def _assign__any_object(l_value, r_value):
-    l_value = r_value.value
+    c_box(l_value, r_value)
     return l_value
 
 
@@ -110,12 +111,32 @@ def _assign__object_object(l_value, r_value):
 
 
 def _assign__block_object(l_value, r_value):
-    l_value = l_value.from_block(r_value)
+    l_value.from_block(r_value)
     return l_value
 
 
-def _assign__object_block(l_value, r_value):
-    l_value = r_value.from_block(l_value)
+def _define__any_any(l_value, r_value):
+    c_box(l_value, c_unbox(r_value))
+    return l_value
+
+
+def _define__int_any(l_value, r_value):
+    l_value = r_value
+    return l_value
+
+
+def _define__any_object(l_value, r_value):
+    c_box(l_value, r_value)
+    return l_value
+
+
+def _define__object_object(l_value, r_value):
+    l_value.from_object(r_value)
+    return l_value
+
+
+def _define__block_object(l_value, r_value):
+    l_value.from_block(r_value)
     return l_value
 
 
@@ -128,20 +149,36 @@ def _invalid_assign(left, right):
     runtime_error(f'Type mismatch for operator assign({type(left)}, {type(right)})', loc=None)
 
 
+def _invalid_define(left, right):
+    runtime_error(f'Type mismatch for operator define({type(left)}, {type(right)})', loc=None)
+
+
 # --------------------------------------------------
 #            D I S P A T C H   T A B L E 
 # --------------------------------------------------
 _assign_dispatch_table = {
     TK.ASSIGN: [
         #          any                     int                    float                    bool                    str                  timedelta                 Object                  Block          
-        [_assign__any_any,       _assign__any_any,       _assign__any_any,       _assign__any_any,       _assign__any_any,       _assign__any_any,       _assign__object_any,    _invalid_assign],   # any      
-        [_assign__any_any,       _assign__any_any,       _assign__any_any,       _assign__any_any,       _assign__any_any,       _assign__any_any,       _invalid_assign,        _invalid_assign],   # int      
-        [_assign__any_any,       _assign__any_any,       _assign__any_any,       _assign__any_any,       _assign__any_any,       _assign__any_any,       _invalid_assign,        _invalid_assign],   # float      
-        [_assign__any_any,       _assign__any_any,       _assign__any_any,       _assign__any_any,       _assign__any_any,       _assign__any_any,       _invalid_assign,        _invalid_assign],   # bool      
-        [_assign__any_any,       _assign__any_any,       _assign__any_any,       _invalid_assign,        _assign__any_any,       _invalid_assign,        _invalid_assign,        _invalid_assign],   # str      
-        [_assign__any_any,       _assign__any_any,       _assign__any_any,       _assign__any_any,       _assign__any_any,       _assign__any_any,       _invalid_assign,        _invalid_assign],   # timedelta      
-        [_assign__any_object,    _invalid_assign,        _invalid_assign,        _invalid_assign,        _invalid_assign,        _invalid_assign,        _assign__object_object, _assign__block_object],   # Object      
-        [_invalid_assign,        _invalid_assign,        _invalid_assign,        _invalid_assign,        _invalid_assign,        _invalid_assign,        _assign__object_block,  _assign__any_any],   # Block      
+        [_assign__any_any,       _assign__int_any,       _assign__int_any,       _assign__int_any,       _assign__int_any,       _assign__int_any,       _assign__any_any,       _invalid_assign],   # any      
+        [_assign__int_any,       _assign__int_any,       _assign__int_any,       _assign__int_any,       _assign__int_any,       _assign__int_any,       _assign__any_any,       _invalid_assign],   # int      
+        [_assign__int_any,       _assign__int_any,       _assign__int_any,       _assign__int_any,       _assign__int_any,       _assign__int_any,       _assign__any_any,       _invalid_assign],   # float      
+        [_assign__int_any,       _assign__int_any,       _assign__int_any,       _assign__int_any,       _assign__int_any,       _assign__int_any,       _assign__any_any,       _invalid_assign],   # bool      
+        [_assign__int_any,       _assign__int_any,       _assign__int_any,       _invalid_assign,        _assign__int_any,       _invalid_assign,        _assign__any_any,       _invalid_assign],   # str      
+        [_assign__int_any,       _assign__int_any,       _assign__int_any,       _assign__int_any,       _assign__int_any,       _assign__int_any,       _assign__any_any,       _invalid_assign],   # timedelta      
+        [_assign__any_object,    _assign__any_object,    _invalid_assign,        _invalid_assign,        _invalid_assign,        _invalid_assign,        _assign__object_object, _assign__block_object],   # Object      
+        [_invalid_assign,        _invalid_assign,        _invalid_assign,        _invalid_assign,        _invalid_assign,        _invalid_assign,        _assign__block_object,  _assign__int_any],   # Block      
+    
+    ],
+    TK.DEFINE: [
+        #          any                     int                    float                    bool                    str                  timedelta                 Object                  Block          
+        [_define__any_any,       _define__int_any,       _define__int_any,       _define__int_any,       _define__int_any,       _define__int_any,       _define__any_any,       _invalid_define],   # any      
+        [_define__int_any,       _define__int_any,       _define__int_any,       _define__int_any,       _define__int_any,       _define__int_any,       _define__any_any,       _invalid_define],   # int      
+        [_define__int_any,       _define__int_any,       _define__int_any,       _define__int_any,       _define__int_any,       _define__int_any,       _define__any_any,       _invalid_define],   # float      
+        [_define__int_any,       _define__int_any,       _define__int_any,       _define__int_any,       _define__int_any,       _define__int_any,       _define__any_any,       _invalid_define],   # bool      
+        [_define__int_any,       _define__int_any,       _define__int_any,       _invalid_define,        _define__int_any,       _invalid_define,        _define__any_any,       _invalid_define],   # str      
+        [_define__int_any,       _invalid_define,        _define__int_any,       _define__int_any,       _define__int_any,       _define__int_any,       _define__any_any,       _invalid_define],   # timedelta      
+        [_define__any_object,    _define__any_object,    _invalid_define,        _invalid_define,        _invalid_define,        _invalid_define,        _define__object_object, _define__block_object],   # Object      
+        [_invalid_define,        _invalid_define,        _invalid_define,        _invalid_define,        _invalid_define,        _invalid_define,        _define__block_object,  _define__int_any],   # Block      
     
     ],
 }

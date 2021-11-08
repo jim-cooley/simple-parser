@@ -1,0 +1,9 @@
+
+
+test: 31:
+2 |> none
+
+tree1:  2 |> none
+    1  : BinOp(TK.RISE_ABOVE, '|>')
+    2  :     Int(TK.INT, 2)
+    3  :     Literal(TK.NONE, None)

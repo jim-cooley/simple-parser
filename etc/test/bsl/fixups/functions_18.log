@@ -1,20 +1,18 @@
 
 
 test: 18:
-"def trade_size = position * 10%"
+def trade_size = position * 10%
 
 tree1:  def trade_size = position * 10%
-result: Lit(None)
-    1 : Define TK.EQLS(BINOP, '=', V=None)
-    2 :     Ref TK.IDNT(IDENTIFIER, 'trade_size', V=None)
-    3 :     BinOp TK.MUL(BINOP, '*', V=None)
-    4 :         Ref TK.IDNT(IDENTIFIER, 'position', V=None)
-    5 :         Percent TK.PCT(LITERAL, '10%', V=0.1)
+    1  : Define(TK.DEFINE, TK.EQLS, '=')
+    2  :     Ref(TK.IDNT, 'trade_size')
+    3  :     BinOp(TK.MUL, '*')
+    4  :         Ref(TK.IDNT, 'position')
+    5  :         Percent(TK.PCT, 0.1)
 
 tree1:(post)  def trade_size = position * 10%
-result: Lit(None)
-    1 : Define TK.EQLS(BINOP, '=', V=None)
-    2 :     Ref TK.IDNT(IDENTIFIER, 'trade_size', V=None)
-    3 :     BinOp TK.MUL(BINOP, '*', V=None)
-    4 :         Ref TK.IDNT(IDENTIFIER, 'position', V=None)
-    5 :         Percent TK.PCT(LITERAL, '10%', V=0.1)
+    1  : Define(TK.DEFINE, TK.EQLS, '=')
+    2  :     Ref(TK.IDNT, 'trade_size')
+    3  :     BinOp(TK.MUL, '*')
+    4  :         Ref(TK.IDNT, 'position')
+    5  :         Percent(TK.PCT, 0.1)

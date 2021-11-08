@@ -1,4 +1,4 @@
 
 
 test: 8:
-"# :(a = 5) - syntax error"
+# :(a = 5) - syntax error

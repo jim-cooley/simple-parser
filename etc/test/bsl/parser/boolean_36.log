@@ -4,6 +4,6 @@ test: 36:
 true & true
 
 tree1:  true & true
-    1 : BinOp TK.AND(BINOP, '&', V=None)
-    2 :     Bool TK.TRUE(LITERAL, 'true', V=True)
-    3 :     Bool TK.TRUE(LITERAL, 'true', V=True)
+    1  : BinOp(TK.AND, '&')
+    2  :     Bool(TK.TRUE, True)
+    3  :     Bool(TK.TRUE, True)

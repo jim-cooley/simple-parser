@@ -1,0 +1,14 @@
+
+
+test: 27:
+a |> b
+
+tree1:  a |> b
+    1  : BinOp(TK.RISE_ABOVE, '|>')
+    2  :     Get(TK.IDNT, 'a')
+    3  :     Get(TK.IDNT, 'b')
+
+tree1:(post)  a |> b
+    1  : BinOp(TK.RISE_ABOVE, '|>')
+    2  :     Get(TK.IDNT, 'a')
+    3  :     Get(TK.IDNT, 'b')

@@ -1,18 +1,17 @@
 
 
 test: 5:
-"a | n"
+a | n
 
 tree1:  a | n
-result: list([Get(), ApplyChainProd()])
-    1 : Flow TK.CHAIN(NONE, '|', V=[Get(), ApplyChainProd()])
-    2 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)
-    3 :     ApplyChainProd TK.APPLY(UNARY, '', V=None)
-    4 :         Ref TK.IDNT(IDENTIFIER, 'n', V=None)
+    1  : Flow(TK.CHAIN, v=[Get(), ApplyChainProd()], '|')
+    2  :     Get(TK.IDNT, 'a')
+    3  :     ApplyChainProd(TK.DEFINE, TK.APPLY, '|')
+    4  :         Ref(TK.IDNT, 'n')
 
 tree1:(post)  a | n
 result: list([Get(), ApplyChainProd()])
-    1 : Flow TK.CHAIN(NONE, '|', V=[Get(), ApplyChainProd()])
-    2 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)
-    3 :     ApplyChainProd TK.APPLY(UNARY, '', V=None)
-    4 :         Ref TK.IDNT(IDENTIFIER, 'n', V=None)
+    1  : Flow(TK.CHAIN, v=[Get(), ApplyChainProd()], '|')
+    2  :     Get(TK.IDNT, 'a')
+    3  :     ApplyChainProd(TK.DEFINE, TK.APPLY, '|')
+    4  :         Ref(TK.IDNT, 'n')

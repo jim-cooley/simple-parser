@@ -4,4 +4,4 @@ test: 20:
 none
 
 tree1:  none
-    1 : Literal TK.NONE(LITERAL, 'none', V=None)
+    1  : Literal(TK.NONE, None)

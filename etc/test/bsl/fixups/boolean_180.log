@@ -1,0 +1,12 @@
+
+
+test: 180:
+"a" == "b"
+
+tree1:  "a" == "b"
+    1 : BinOp TK.ISEQ(BINOP, '==', V=None)
+    2 :     Str TK.STR(LITERAL, 'a', V=a)
+    3 :     Str TK.STR(LITERAL, 'b', V=b)
+
+tree1:(post)  "a" == "b"
+    1 : Literal TK.ISEQ(LITERAL, '', V=False)

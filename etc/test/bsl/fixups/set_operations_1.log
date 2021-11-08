@@ -1,16 +1,14 @@
 
 
 test: 1:
-"{a} - {b}"
+{a} - {b}
 
 tree1:  {a} - {b}
-result: Lit(None)
-    1 : BinOp TK.SUB(BINOP, '-', V=None)
-    2 :     Set TK.SET(LITERAL, '{', V=None)
-    3 :     Set TK.SET(LITERAL, '{', V=None)
+    1  : BinOp(TK.SUB, '-')
+    2  :     Set(TK.SET, [Get()])
+    3  :         Get(TK.IDNT, 'a')
+    4  :     Set(TK.SET, [Get()])
+    5  :         Get(TK.IDNT, 'b')
 
 tree1:(post)  {a} - {b}
-result: Lit(None)
-    1 : BinOp TK.SUB(BINOP, '-', V=None)
-    2 :     Set TK.SET(LITERAL, '{', V=None)
-    3 :     Set TK.SET(LITERAL, '{', V=None)
+    1  : Literal(TK.NONE, None)

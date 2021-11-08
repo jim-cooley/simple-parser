@@ -1,0 +1,12 @@
+
+
+test: 174:
+none ^ true
+
+tree1:  none ^ true
+    1  : BinOp(TK.POW, '^')
+    2  :     Literal(TK.NONE, None)
+    3  :     Bool(TK.TRUE, True)
+
+tree1:(post)  none ^ true
+    1  : Literal(TK.NONE, None)

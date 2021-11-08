@@ -4,6 +4,6 @@ test: 76:
 0 > 1
 
 tree1:  0 > 1
-    1 : BinOp TK.GTR(BINOP, '>', V=None)
-    2 :     Int TK.INT(LITERAL, '0', V=0)
-    3 :     Int TK.INT(LITERAL, '1', V=1)
+    1  : BinOp(TK.GTR, '>')
+    2  :     Int(TK.INT, 0)
+    3  :     Int(TK.INT, 1)

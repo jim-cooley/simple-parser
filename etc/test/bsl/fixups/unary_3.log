@@ -1,14 +1,12 @@
 
 
 test: 3:
-"not b"
+not b
 
 tree1:  not b
-result: Lit(None)
-    1 : UnaryOp TK.NOT(UNARY, 'not', V=None)
-    2 :     Get TK.IDNT(IDENTIFIER, 'b', V=None)
+    1  : UnaryOp(TK.NOT, TK.NOT, 'not')
+    2  :     Get(TK.IDNT, 'b')
 
 tree1:(post)  not b
-result: Lit(None)
-    1 : UnaryOp TK.NOT(UNARY, 'not', V=None)
-    2 :     Get TK.IDNT(IDENTIFIER, 'b', V=None)
+    1  : UnaryOp(TK.NOT, TK.NOT, 'not')
+    2  :     Get(TK.IDNT, 'b')

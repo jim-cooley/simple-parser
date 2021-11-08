@@ -1,14 +1,12 @@
 
 
 test: 8:
-"! b"
+! b
 
 tree1:  ! b
-result: Lit(None)
-    1 : UnaryOp TK.NOT(UNARY, '!', V=None)
-    2 :     Get TK.IDNT(IDENTIFIER, 'b', V=None)
+    1  : UnaryOp(TK.NOT, TK.NOT, '!')
+    2  :     Get(TK.IDNT, 'b')
 
 tree1:(post)  ! b
-result: Lit(None)
-    1 : UnaryOp TK.NOT(UNARY, '!', V=None)
-    2 :     Get TK.IDNT(IDENTIFIER, 'b', V=None)
+    1  : UnaryOp(TK.NOT, TK.NOT, '!')
+    2  :     Get(TK.IDNT, 'b')

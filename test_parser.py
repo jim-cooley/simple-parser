@@ -1,4 +1,4 @@
-#!./bin/python3
+#!/Volumes/HD2/Lab/Repository/jimc/python3.9/bin/python3
 import sys
 from abc import ABC
 
@@ -21,11 +21,10 @@ class ParserTestRunner(TestSuiteRunner, ABC):
     def __init__(self, td, skip_tests=None):
         super().__init__(td, skip_tests, log_dir='./etc/test/log/parser')
 
-    def run_unprotected_test(self, log, name, test):
-        self.environment = Environment()
-        parser = Parser(self.environment)
+    def run_unprotected_test(self, environment, name, test):
+        parser = Parser(environment)
         parser.parse(text=test)
-        _dump_environment(self.environment, log, print_results=False)
+        _dump_environment(environment, print_results=False)
 
 
 # this is only for execution under debugger or via command-line

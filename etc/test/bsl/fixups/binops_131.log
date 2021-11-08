@@ -1,0 +1,12 @@
+
+
+test: 131:
+true * true
+
+tree1:  true * true
+    1  : BinOp(TK.MUL, '*')
+    2  :     Bool(TK.TRUE, True)
+    3  :     Bool(TK.TRUE, True)
+
+tree1:(post)  true * true
+    1  : Literal(TK.INT, 1)

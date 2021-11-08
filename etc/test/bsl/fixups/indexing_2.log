@@ -1,16 +1,14 @@
 
 
 test: 2:
-"a []"
+a []
 
 tree1:  a []
-result: Lit(None)
-    1 : Index TK.INDEX(BINOP, '[', V=None)
-    2 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)
-    3 :     List TK.TUPLE(LITERAL, '[', V=[])
+    1  : Index('a')
+    2  :     Get(TK.IDNT, 'a')
+    3  :     List(TK.TUPLE, [])
 
 tree1:(post)  a []
-result: Lit(None)
-    1 : Index TK.INDEX(BINOP, '[', V=None)
-    2 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)
-    3 :     List TK.TUPLE(LITERAL, '[', V=[])
+    1  : Index('a')
+    2  :     Get(TK.IDNT, 'a')
+    3  :     List(TK.TUPLE, [])

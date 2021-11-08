@@ -1,24 +1,22 @@
 
 
 test: 2:
-"a().b.c"
+a().b.c
 
 tree1:  a().b.c
-result: Lit(None)
-    1 : BinOp TK.DOT(BINOP, '.', V=None)
-    2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
-    3 :         Get TK.IDNT(IDENTIFIER, 'a', V=None)
-    4 :         List TK.TUPLE(LITERAL, '(', V=[])
-    5 :     PropRef TK.REF(BINOP, '.', V=None)
-    6 :         Get TK.IDNT(IDENTIFIER, 'b', V=None)
-    7 :         Get TK.IDNT(IDENTIFIER, 'c', V=None)
+    1  : BinOp(TK.DOT, '.')
+    2  :     FnCall('a')
+    3  :         Get(TK.IDNT, 'a')
+    4  :         List(TK.TUPLE, [])
+    5  :     PropRef(TK.REF, '.')
+    6  :         Get(TK.IDNT, 'b')
+    7  :         Get(TK.IDNT, 'c')
 
 tree1:(post)  a().b.c
-result: Lit(None)
-    1 : BinOp TK.DOT(BINOP, '.', V=None)
-    2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
-    3 :         Get TK.IDNT(IDENTIFIER, 'a', V=None)
-    4 :         List TK.TUPLE(LITERAL, '(', V=[])
-    5 :     PropRef TK.REF(BINOP, '.', V=None)
-    6 :         Get TK.IDNT(IDENTIFIER, 'b', V=None)
-    7 :         Get TK.IDNT(IDENTIFIER, 'c', V=None)
+    1  : BinOp(TK.DOT, '.')
+    2  :     FnCall('a')
+    3  :         Get(TK.IDNT, 'a')
+    4  :         List(TK.TUPLE, [])
+    5  :     PropRef(TK.REF, '.')
+    6  :         Get(TK.IDNT, 'b')
+    7  :         Get(TK.IDNT, 'c')

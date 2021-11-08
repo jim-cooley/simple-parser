@@ -4,4 +4,4 @@ test: 6:
 trades
 
 tree1:  trades
-    1 : Get TK.IDNT(IDENTIFIER, 'trades', V=None)
+    1  : Get(TK.IDNT, 'trades')

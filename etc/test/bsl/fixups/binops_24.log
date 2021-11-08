@@ -1,0 +1,15 @@
+
+
+test: 24:
+none >> empty
+
+tree1:  none >> empty
+    1  : Flow(TK.APPLY, v=[Literal(), Set()], '>>')
+    2  :     Literal(TK.NONE, None)
+    3  :     Set(TK.EMPTY, {})
+
+tree1:(post)  none >> empty
+result: list([Literal(), Set()])
+    1  : Flow(TK.APPLY, v=[Literal(), Set()], '>>')
+    2  :     Literal(TK.NONE, None)
+    3  :     Set(TK.EMPTY, {})

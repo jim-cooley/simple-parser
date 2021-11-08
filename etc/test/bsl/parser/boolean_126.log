@@ -4,8 +4,8 @@ test: 126:
 -1 >= -2
 
 tree1:  -1 >= -2
-    1 : BinOp TK.GTE(BINOP, '>=', V=None)
-    2 :     UnaryOp TK.NEG(UNARY, '-', V=None)
-    3 :         Int TK.INT(LITERAL, '1', V=1)
-    4 :     UnaryOp TK.NEG(UNARY, '-', V=None)
-    5 :         Int TK.INT(LITERAL, '2', V=2)
+    1  : BinOp(TK.GTE, '>=')
+    2  :     UnaryOp(TK.NEG, TK.NEG, '-')
+    3  :         Int(TK.INT, 1)
+    4  :     UnaryOp(TK.NEG, TK.NEG, '-')
+    5  :         Int(TK.INT, 2)

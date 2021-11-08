@@ -1,10 +1,27 @@
 
 
 test: 2:
-"%%load_quotes(file='./etc/spq500.csv'); backtest(period='train5'); report('trades', 'stops')"
+%%load_quotes(file='./etc/spq500.csv'); backtest(period='train5'); report('trades', 'stops')
 
 tree1:  %%load_quotes(file='./etc/spq500.csv'); backtest(period='train5'); report('trades', 'stops')
+    1  : Command(TK.IDNT, TK.IDNT, '%%load_quotes')
+    2  :     Define(TK.DEFINE, TK.EQLS, '=')
+    3  :         Ref(TK.IDNT, 'file')
+    4  :         Str(TK.STR, ./etc/spq500.csv)
 
 tree2:  %%load_quotes(file='./etc/spq500.csv'); backtest(period='train5'); report('trades', 'stops')
+    1  : Command(TK.IDNT, TK.IDNT, '%%backtest')
+    2  :     FnCall('backtest')
+    3  :         Get(TK.IDNT, 'backtest')
+    4  :         List(TK.TUPLE, [Define()])
+    5  :             Define(TK.DEFINE, TK.EQLS, '=')
+    6  :                 Ref(TK.IDNT, 'period')
+    7  :                 Str(TK.STR, train5)
 
 tree3:  %%load_quotes(file='./etc/spq500.csv'); backtest(period='train5'); report('trades', 'stops')
+    1  : Command(TK.IDNT, TK.IDNT, '%%report')
+    2  :     FnCall('report')
+    3  :         Get(TK.IDNT, 'report')
+    4  :         List(TK.TUPLE, [Str(), Str()])
+    5  :             Str(TK.STR, trades)
+    6  :             Str(TK.STR, stops)

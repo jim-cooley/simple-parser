@@ -1,16 +1,14 @@
 
 
 test: 1:
-"a and b"
+a and b
 
 tree1:  a and b
-result: Lit(None)
-    1 : BinOp TK.AND(BINOP, 'and', V=None)
-    2 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)
-    3 :     Get TK.IDNT(IDENTIFIER, 'b', V=None)
+    1  : BinOp(TK.AND, 'and')
+    2  :     Get(TK.IDNT, 'a')
+    3  :     Get(TK.IDNT, 'b')
 
 tree1:(post)  a and b
-result: Lit(None)
-    1 : BinOp TK.AND(BINOP, 'and', V=None)
-    2 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)
-    3 :     Get TK.IDNT(IDENTIFIER, 'b', V=None)
+    1  : BinOp(TK.AND, 'and')
+    2  :     Get(TK.IDNT, 'a')
+    3  :     Get(TK.IDNT, 'b')

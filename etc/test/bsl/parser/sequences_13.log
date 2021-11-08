@@ -4,11 +4,11 @@ test: 13:
 a(x,y) | b
 
 tree1:  a(x,y) | b
-    1 : Flow TK.CHAIN(NONE, '|', V=[FnCall(), ApplyChainProd()])
-    2 :     FnCall TK.FUNCTION(BINOP, '(', V=None)
-    3 :         Get TK.IDNT(IDENTIFIER, 'a', V=None)
-    4 :         List TK.TUPLE(LITERAL, '(', V=[Get(), Get()])
-    5 :             Get TK.IDNT(IDENTIFIER, 'x', V=None)
-    6 :             Get TK.IDNT(IDENTIFIER, 'y', V=None)
-    7 :     ApplyChainProd TK.APPLY(UNARY, '|', V=None)
-    8 :         Ref TK.IDNT(IDENTIFIER, 'b', V=None)
+    1  : Flow(TK.CHAIN, v=[FnCall(), ApplyChainProd()], '|')
+    2  :     FnCall('a')
+    3  :         Get(TK.IDNT, 'a')
+    4  :         List(TK.TUPLE, [Get(), Get()])
+    5  :             Get(TK.IDNT, 'x')
+    6  :             Get(TK.IDNT, 'y')
+    7  :     ApplyChainProd(TK.DEFINE, TK.APPLY, '|')
+    8  :         Ref(TK.IDNT, 'b')

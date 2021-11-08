@@ -1,16 +1,17 @@
 
 
 test: 4:
-"a + b"
+a >> b
 
-tree1:  a + b
-result: Lit(None)
-    1 : BinOp TK.ADD(BINOP, '+', V=None)
-    2 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)
-    3 :     Get TK.IDNT(IDENTIFIER, 'b', V=None)
+tree1:  a >> b
+    1  : Flow(TK.APPLY, v=[Get(), ApplyChainProd()], '>>')
+    2  :     Get(TK.IDNT, 'a')
+    3  :     ApplyChainProd(TK.DEFINE, TK.APPLY, '>>')
+    4  :         Ref(TK.IDNT, 'b')
 
-tree1:(post)  a + b
-result: Lit(None)
-    1 : BinOp TK.ADD(BINOP, '+', V=None)
-    2 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)
-    3 :     Get TK.IDNT(IDENTIFIER, 'b', V=None)
+tree1:(post)  a >> b
+result: list([Get(), ApplyChainProd()])
+    1  : Flow(TK.APPLY, v=[Get(), ApplyChainProd()], '>>')
+    2  :     Get(TK.IDNT, 'a')
+    3  :     ApplyChainProd(TK.DEFINE, TK.APPLY, '>>')
+    4  :         Ref(TK.IDNT, 'b')

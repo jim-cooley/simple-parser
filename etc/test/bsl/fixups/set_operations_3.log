@@ -1,16 +1,14 @@
 
 
 test: 3:
-"{a} and {b}"
+{a} and {b}
 
 tree1:  {a} and {b}
-result: Lit(None)
-    1 : BinOp TK.AND(BINOP, 'and', V=None)
-    2 :     Set TK.SET(LITERAL, '{', V=None)
-    3 :     Set TK.SET(LITERAL, '{', V=None)
+    1  : BinOp(TK.AND, 'and')
+    2  :     Set(TK.SET, [Get()])
+    3  :         Get(TK.IDNT, 'a')
+    4  :     Set(TK.SET, [Get()])
+    5  :         Get(TK.IDNT, 'b')
 
 tree1:(post)  {a} and {b}
-result: Lit(None)
-    1 : BinOp TK.AND(BINOP, 'and', V=None)
-    2 :     Set TK.SET(LITERAL, '{', V=None)
-    3 :     Set TK.SET(LITERAL, '{', V=None)
+    1  : Literal(TK.NONE, None)

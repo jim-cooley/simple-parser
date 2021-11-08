@@ -1,16 +1,12 @@
 
 
 test: 156:
-""a" != "a""
+"a" != "a"
 
 tree1:  "a" != "a"
-result: Lit(None)
-    1 : BinOp TK.NEQ(BINOP, '!=', V=None)
-    2 :     Str TK.STR(LITERAL, 'a', V=a)
-    3 :     Str TK.STR(LITERAL, 'a', V=a)
+    1  : BinOp(TK.NEQ, '!=')
+    2  :     Str(TK.STR, a)
+    3  :     Str(TK.STR, a)
 
 tree1:(post)  "a" != "a"
-result: Lit(None)
-    1 : BinOp TK.NEQ(BINOP, '!=', V=None)
-    2 :     Str TK.STR(LITERAL, 'a', V=a)
-    3 :     Str TK.STR(LITERAL, 'a', V=a)
+    1  : Bool(TK.BOOL, False)

@@ -1,16 +1,12 @@
 
 
 test: 124:
-"0 >= 1"
+0 >= 1
 
 tree1:  0 >= 1
-result: Lit(None)
-    1 : BinOp TK.GTE(BINOP, '>=', V=None)
-    2 :     Int TK.INT(LITERAL, '0', V=0)
-    3 :     Int TK.INT(LITERAL, '1', V=1)
+    1  : BinOp(TK.GTE, '>=')
+    2  :     Int(TK.INT, 0)
+    3  :     Int(TK.INT, 1)
 
 tree1:(post)  0 >= 1
-result: Lit(None)
-    1 : BinOp TK.GTE(BINOP, '>=', V=None)
-    2 :     Int TK.INT(LITERAL, '0', V=0)
-    3 :     Int TK.INT(LITERAL, '1', V=1)
+    1  : Bool(TK.BOOL, False)

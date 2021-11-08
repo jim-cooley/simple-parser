@@ -4,10 +4,10 @@ test: 11:
 a{x, y, z}
 
 tree1:  a{x, y, z}
-    1 : Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    1  : Get(TK.IDNT, 'a')
 
 tree2:  a{x, y, z}
-    1 : Set TK.SET(LITERAL, '{', V=[Get(), Get(), Get()])
-    2 :     Get TK.IDNT(IDENTIFIER, 'x', V=None)
-    3 :     Get TK.IDNT(IDENTIFIER, 'y', V=None)
-    4 :     Get TK.IDNT(IDENTIFIER, 'z', V=None)
+    1  : Set(TK.SET, [Get(), Get(), Get()])
+    2  :     Get(TK.IDNT, 'x')
+    3  :     Get(TK.IDNT, 'y')
+    4  :     Get(TK.IDNT, 'z')

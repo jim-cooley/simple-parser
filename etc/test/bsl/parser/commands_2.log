@@ -4,3 +4,9 @@ test: 2:
 %%backtest (rules, period='train')
 
 tree1:  %%backtest (rules, period='train')
+    1  : Command(TK.IDNT, TK.IDNT, '%%backtest')
+    2  :     List(TK.TUPLE, [Get(), Define()])
+    3  :         Get(TK.IDNT, 'rules')
+    4  :         Define(TK.DEFINE, TK.EQLS, '=')
+    5  :             Ref(TK.IDNT, 'period')
+    6  :             Str(TK.STR, train)

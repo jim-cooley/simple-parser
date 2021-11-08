@@ -1,16 +1,12 @@
 
 
 test: 3:
-"none and true"
+none and true
 
 tree1:  none and true
-result: Lit(None)
-    1 : BinOp TK.AND(BINOP, 'and', V=None)
-    2 :     Literal TK.NONE(LITERAL, 'none', V=None)
-    3 :     Bool TK.TRUE(LITERAL, 'true', V=True)
+    1  : BinOp(TK.AND, 'and')
+    2  :     Literal(TK.NONE, None)
+    3  :     Bool(TK.TRUE, True)
 
 tree1:(post)  none and true
-result: Lit(None)
-    1 : BinOp TK.AND(BINOP, 'and', V=None)
-    2 :     Literal TK.NONE(LITERAL, 'none', V=None)
-    3 :     Bool TK.TRUE(LITERAL, 'true', V=True)
+    1  : Literal(TK.NONE, None)

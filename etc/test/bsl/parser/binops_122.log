@@ -1,0 +1,9 @@
+
+
+test: 122:
+1 * false
+
+tree1:  1 * false
+    1  : BinOp(TK.MUL, '*')
+    2  :     Int(TK.INT, 1)
+    3  :     Bool(TK.FALSE, False)

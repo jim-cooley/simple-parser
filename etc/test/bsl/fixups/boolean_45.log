@@ -1,17 +1,13 @@
 
 
 test: 45:
-"-1 and 1"
+-1 and 1
 
 tree1:  -1 and 1
-result: Lit(None)
-    1 : BinOp TK.AND(BINOP, 'and', V=None)
-    2 :     UnaryOp TK.NEG(UNARY, '-', V=None)
-    3 :         Int TK.INT(LITERAL, '1', V=1)
-    4 :     Int TK.INT(LITERAL, '1', V=1)
+    1  : BinOp(TK.AND, 'and')
+    2  :     UnaryOp(TK.NEG, TK.NEG, '-')
+    3  :         Int(TK.INT, 1)
+    4  :     Int(TK.INT, 1)
 
 tree1:(post)  -1 and 1
-result: Lit(None)
-    1 : BinOp TK.AND(BINOP, 'and', V=None)
-    2 :     Int TK.INT(LITERAL, '1', V=-1)
-    3 :     Int TK.INT(LITERAL, '1', V=1)
+    1  : Literal(TK.INT, 1)

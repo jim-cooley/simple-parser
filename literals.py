@@ -42,7 +42,6 @@ class Literal(Object):
             return LIT_NONE
         if other is not None:
             if other.token is not None:
-                tid = other.token.id
                 loc = other.token.location
         if tid is not None:
             return Literal(tid=tid, value=val)
@@ -51,7 +50,7 @@ class Literal(Object):
         elif isinstance(val, datetime):
             return Literal(tid=TK.TIME, value=val)
         elif isinstance(val, float):
-            return Literal(tid=TK.FLOAT, value=val)
+            return Literal(tid=TK.FLOT, value=val)
         elif isinstance(val, int):
             return Literal(tid=TK.INT, value=val)
         elif isinstance(val, str):

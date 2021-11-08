@@ -1,30 +1,29 @@
 
 
 test: 15:
-"a.b(x,y) | c"
+a.b(x,y) | c
 
 tree1:  a.b(x,y) | c
-result: list([PropRef(), ApplyChainProd()])
-    1 : Flow TK.CHAIN(NONE, '|', V=[PropRef(), ApplyChainProd()])
-    2 :     PropRef TK.REF(BINOP, '.', V=None)
-    3 :         Get TK.IDNT(IDENTIFIER, 'a', V=None)
-    4 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
-    5 :             Get TK.IDNT(IDENTIFIER, 'b', V=None)
-    6 :             List TK.TUPLE(LITERAL, '(', V=[Get(), Get()])
-    7 :                 Get TK.IDNT(IDENTIFIER, 'x', V=None)
-    8 :                 Get TK.IDNT(IDENTIFIER, 'y', V=None)
-    9 :     ApplyChainProd TK.APPLY(UNARY, '', V=None)
-   10 :         Ref TK.IDNT(IDENTIFIER, 'c', V=None)
+    1  : Flow(TK.CHAIN, v=[PropRef(), ApplyChainProd()], '|')
+    2  :     PropRef(TK.REF, '.')
+    3  :         Get(TK.IDNT, 'a')
+    4  :         FnCall('b')
+    5  :             Get(TK.IDNT, 'b')
+    6  :             List(TK.TUPLE, [Get(), Get()])
+    7  :                 Get(TK.IDNT, 'x')
+    8  :                 Get(TK.IDNT, 'y')
+    9  :     ApplyChainProd(TK.DEFINE, TK.APPLY, '|')
+   10  :         Ref(TK.IDNT, 'c')
 
 tree1:(post)  a.b(x,y) | c
 result: list([PropRef(), ApplyChainProd()])
-    1 : Flow TK.CHAIN(NONE, '|', V=[PropRef(), ApplyChainProd()])
-    2 :     PropRef TK.REF(BINOP, '.', V=None)
-    3 :         Get TK.IDNT(IDENTIFIER, 'a', V=None)
-    4 :         FnCall TK.FUNCTION(BINOP, '(', V=None)
-    5 :             Get TK.IDNT(IDENTIFIER, 'b', V=None)
-    6 :             List TK.TUPLE(LITERAL, '(', V=[Get(), Get()])
-    7 :                 Get TK.IDNT(IDENTIFIER, 'x', V=None)
-    8 :                 Get TK.IDNT(IDENTIFIER, 'y', V=None)
-    9 :     ApplyChainProd TK.APPLY(UNARY, '', V=None)
-   10 :         Ref TK.IDNT(IDENTIFIER, 'c', V=None)
+    1  : Flow(TK.CHAIN, v=[PropRef(), ApplyChainProd()], '|')
+    2  :     PropRef(TK.REF, '.')
+    3  :         Get(TK.IDNT, 'a')
+    4  :         FnCall('b')
+    5  :             Get(TK.IDNT, 'b')
+    6  :             List(TK.TUPLE, [Get(), Get()])
+    7  :                 Get(TK.IDNT, 'x')
+    8  :                 Get(TK.IDNT, 'y')
+    9  :     ApplyChainProd(TK.DEFINE, TK.APPLY, '|')
+   10  :         Ref(TK.IDNT, 'c')

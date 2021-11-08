@@ -1,0 +1,15 @@
+
+
+test: 14:
+false >> empty
+
+tree1:  false >> empty
+    1  : Flow(TK.APPLY, v=[Bool(), Set()], '>>')
+    2  :     Bool(TK.FALSE, False)
+    3  :     Set(TK.EMPTY, {})
+
+tree1:(post)  false >> empty
+result: list([Bool(), Set()])
+    1  : Flow(TK.APPLY, v=[Bool(), Set()], '>>')
+    2  :     Bool(TK.FALSE, False)
+    3  :     Set(TK.EMPTY, {})

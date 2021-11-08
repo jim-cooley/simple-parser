@@ -1,4 +1,4 @@
 
 
 test: 10:
-"# a{}.b.c  # invalid assignment target"
+# a{}.b.c  # invalid assignment target

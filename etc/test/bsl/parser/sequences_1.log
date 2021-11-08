@@ -4,7 +4,7 @@ test: 1:
 a | b
 
 tree1:  a | b
-    1 : Flow TK.CHAIN(NONE, '|', V=[Get(), ApplyChainProd()])
-    2 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)
-    3 :     ApplyChainProd TK.APPLY(UNARY, '|', V=None)
-    4 :         Ref TK.IDNT(IDENTIFIER, 'b', V=None)
+    1  : Flow(TK.CHAIN, v=[Get(), ApplyChainProd()], '|')
+    2  :     Get(TK.IDNT, 'a')
+    3  :     ApplyChainProd(TK.DEFINE, TK.APPLY, '|')
+    4  :         Ref(TK.IDNT, 'b')

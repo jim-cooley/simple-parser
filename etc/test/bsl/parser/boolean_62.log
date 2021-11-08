@@ -4,7 +4,7 @@ test: 62:
 -1 or 1
 
 tree1:  -1 or 1
-    1 : BinOp TK.OR(BINOP, 'or', V=None)
-    2 :     UnaryOp TK.NEG(UNARY, '-', V=None)
-    3 :         Int TK.INT(LITERAL, '1', V=1)
-    4 :     Int TK.INT(LITERAL, '1', V=1)
+    1  : BinOp(TK.OR, 'or')
+    2  :     UnaryOp(TK.NEG, TK.NEG, '-')
+    3  :         Int(TK.INT, 1)
+    4  :     Int(TK.INT, 1)

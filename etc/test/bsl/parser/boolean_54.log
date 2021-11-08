@@ -4,6 +4,6 @@ test: 54:
 false or true
 
 tree1:  false or true
-    1 : BinOp TK.OR(BINOP, 'or', V=None)
-    2 :     Bool TK.FALSE(LITERAL, 'false', V=False)
-    3 :     Bool TK.TRUE(LITERAL, 'true', V=True)
+    1  : BinOp(TK.OR, 'or')
+    2  :     Bool(TK.FALSE, False)
+    3  :     Bool(TK.TRUE, True)

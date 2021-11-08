@@ -1,0 +1,9 @@
+
+
+test: 78:
+3 + empty
+
+tree1:  3 + empty
+    1  : BinOp(TK.ADD, '+')
+    2  :     Int(TK.INT, 3)
+    3  :     Set(TK.EMPTY, {})

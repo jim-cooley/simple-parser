@@ -1,0 +1,9 @@
+
+
+test: 44:
+none |> true
+
+tree1:  none |> true
+    1  : BinOp(TK.RISE_ABOVE, '|>')
+    2  :     Literal(TK.NONE, None)
+    3  :     Bool(TK.TRUE, True)

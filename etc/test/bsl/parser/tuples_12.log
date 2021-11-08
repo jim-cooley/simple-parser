@@ -4,6 +4,6 @@ test: 12:
 ((a,),)                      # tuple in a tuple
 
 tree1:  ((a,),)                      # tuple in a tuple
-    1 : List TK.TUPLE(LITERAL, '(', V=[List()])
-    2 :     List TK.TUPLE(LITERAL, '(', V=[Get()])
-    3 :         Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    1  : List(TK.TUPLE, [List()])
+    2  :     List(TK.TUPLE, [Get()])
+    3  :         Get(TK.IDNT, 'a')

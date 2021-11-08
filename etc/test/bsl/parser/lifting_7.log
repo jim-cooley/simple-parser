@@ -4,6 +4,6 @@ test: 7:
 -(-1)
 
 tree1:  -(-1)
-    1 : UnaryOp TK.NEG(UNARY, '-', V=None)
-    2 :     UnaryOp TK.NEG(UNARY, '-', V=None)
-    3 :         Int TK.INT(LITERAL, '1', V=1)
+    1  : UnaryOp(TK.NEG, TK.NEG, '-')
+    2  :     UnaryOp(TK.NEG, TK.NEG, '-')
+    3  :         Int(TK.INT, 1)

@@ -1,16 +1,15 @@
 
 
 test: 14:
-"((a, b))                     # grouping of tuple"
+((a, b))                     # grouping of tuple
 
 tree1:  ((a, b))                     # grouping of tuple
-result: list([Get(), Get()])
-    1 : List TK.TUPLE(LITERAL, '(', V=[Get(), Get()])
-    2 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)
-    3 :     Get TK.IDNT(IDENTIFIER, 'b', V=None)
+    1  : List(TK.TUPLE, [Get(), Get()])
+    2  :     Get(TK.IDNT, 'a')
+    3  :     Get(TK.IDNT, 'b')
 
 tree1:(post)  ((a, b))                     # grouping of tuple
 result: list([Get(), Get()])
-    1 : List TK.TUPLE(LITERAL, '(', V=[Get(), Get()])
-    2 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)
-    3 :     Get TK.IDNT(IDENTIFIER, 'b', V=None)
+    1  : List(TK.TUPLE, [Get(), Get()])
+    2  :     Get(TK.IDNT, 'a')
+    3  :     Get(TK.IDNT, 'b')

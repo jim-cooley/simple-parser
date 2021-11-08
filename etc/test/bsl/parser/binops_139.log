@@ -1,0 +1,9 @@
+
+
+test: 139:
+none * empty
+
+tree1:  none * empty
+    1  : BinOp(TK.MUL, '*')
+    2  :     Literal(TK.NONE, None)
+    3  :     Set(TK.EMPTY, {})

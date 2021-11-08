@@ -4,3 +4,4 @@ test: 1:
 %%backtest
 
 tree1:  %%backtest
+    1  : Command(TK.IDNT, TK.IDNT, '%%backtest')

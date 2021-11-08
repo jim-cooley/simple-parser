@@ -2,7 +2,8 @@
 import sys
 from tokens import TK
 
-from tool.codewriter import LogWriter, CodeWriter, TY
+from tool.codewriter import CodeWriter, TY
+from logwriter import LogWriter
 from tool.tables import _assign_obj_fn, _evaluate_boolops_fn, _evaluate_binops_fn
 
 
@@ -28,6 +29,7 @@ class GenerateEvalDispatch:
         self.fname = None
         self.file = None
         self._functions = {}
+        self._fragments = {}
         self.o = None
         self.source = None
         self.is_assign_style = False
@@ -83,7 +85,7 @@ class GenerateEvalDispatch:
         self.generate_dispatch_table(name)
 
     def write_header(self, name, insert_fixup_dispatch=True, insert_assignment_fixup=False):
-        self.o.imports({'conversion':['c_box', 'c_to_bool', 'c_to_int', 'c_unbox'],
+        self.o.imports({'conversion':['c_box', 'c_to_bool', 'c_to_float', 'c_to_int', 'c_unbox'],
                         'environment':['Environment'],
                         'exceptions':['runtime_error'],
                         'tokens':['TK'],
@@ -137,7 +139,7 @@ class GenerateEvalDispatch:
                           "        r_value = Environment.current.scope.find(right.token).value\n"
                           "    if l_value is None or r_value is None:\n"
                           "        return None\n"
-                          f"    return eval_{name}_dispatch2(node.token.id, l_value, r_value)")
+                          f"    return eval_{name}_dispatch2(node.op, l_value, r_value)")
 
     def write_dispatch_inner(self, name):
         self.o.blank_line(2)
@@ -154,10 +156,10 @@ class GenerateEvalDispatch:
 
     def generate_eval_functions(self, name):
         self.o.banner("OPERATOR FUNCTIONS")
-        for code in self._functions.keys():
-            fn = self._functions[code]
+        for fk in self._functions.keys():
+            fn = self._functions[fk]
             if fn[:len('_invalid_')] != '_invalid_':
-                self.write_eval_fn(fn, code)
+                self.write_eval_fn(fn, self._fragments[fn])
 
     def write_eval_fn(self, name, code):
         self.o.blank_line(2)
@@ -167,7 +169,7 @@ class GenerateEvalDispatch:
             if code[0] == '.':
                 self.o.l_print(1, f'l_value{code}')
             else:
-                self.o.l_print(1, f'l_value = {code}')
+                self.o.l_print(1, f'{code}')
             self.o.l_print(1, 'return l_value')
         else:
             self.o.l_print(1, f'return {code}')
@@ -209,14 +211,15 @@ class GenerateEvalDispatch:
             for c in range(0, _len):
                 code = table[r][c]
                 ex = _expand_fragment2(code, row=r, col=c)
+                fk = _fkey(op, ex)
                 if ex == 'invalid':
                     fn = f'_invalid_{op.name.lower()}'
                     self.o.print(f'{fn}', end='', append=True)
                 else:
-                    fn = self._functions[ex].lower()
+                    fn = self._functions[fk].lower()
                     self.o.print(f'{fn}', end='', append=True)
                 if c < _len - 1:
-                    pad = max(width-len(fn), 0)
+                    pad = max(width-len(fn), 1)
                     self.o.print(f'{sep:{pad}s}', end='', append=True)
             self.o.print('],   # ', end='', append=True)
             self.o.print(f'{_COLUMNS[r]}      ', append=True)
@@ -232,11 +235,13 @@ class GenerateEvalDispatch:
                 for c in range(0, len(table[r])):
                     code = table[r][c]
                     ex = _expand_fragment2(code, row=r, col=c)
+                    fk = _fkey(op, ex)
                     print(f'{r}, {c}: {code} -> {ex}')
-                    if ex in self._functions:
+                    if fk in self._functions:
                         continue
                     fn = f'_{op.name.lower()}__{_COLUMNS[c]}_{_COLUMNS[r]}' if code != 'invalid' else f'_invalid_{op.name.lower()}'
-                    self._functions[ex] = fn
+                    self._functions[fk] = fn
+                    self._fragments[fn] = ex
 
     # -------------------------------
 
@@ -309,16 +314,19 @@ def _expand_fragment2(code, row=None, col=None):
     code = code.replace(" B)", " TK.BOOL)").replace(" I)", " TK.INT)") \
         .replace(" D)", " TK.DUR)").replace(" F)", " TK.FLOT)") \
         .replace(" L)", " TK.LIST)").replace(" O)", " TK.OBJECT)").replace(" S)", " TK.STR)") \
-        .replace("2i:l", xcl("c_to_int", row)).replace("2b:l", xcl("c_to_bool", row)) \
-        .replace("2f:l", xcl("c_to_float", row)).replace("2d:l", xcl("c_to_dur", row)) \
+        .replace("2i:l", xcl("c_to_int", col)).replace("2b:l", xcl("c_to_bool", col)) \
+        .replace("2f:l", xcl("c_to_float", col)).replace("2d:l", xcl("c_to_dur", col)) \
         .replace("l.b", "l.from_block(r)").replace("l.o", ".from_object(r)").replace("l.v", "l.value") \
-        .replace("u:l", "c_unbox(l)").replace("b:l", "c_box(l)") \
-        .replace("2i:r", xcr("c_to_int", col)).replace("2b:r", xcr("c_to_bool", col)) \
-        .replace("2f:r", xcr("c_to_float", col)).replace("2d:r", xcr("c_to_dur", col)) \
+        .replace("u:l", "c_unbox(l)")\
+        .replace("b:l,u:r", "c_box(l, u:r)").replace("b:l,r", "c_box(l, r)") \
+        .replace("2i:r", xcr("c_to_int", row)).replace("2b:r", xcr("c_to_bool", row)) \
+        .replace("2f:r", xcr("c_to_float", row)).replace("2d:r", xcr("c_to_dur", row)) \
         .replace("r.b", "r.from_block(l)").replace("r.o", ".from_object(l)").replace("r.v", "r.value") \
-        .replace("u:r", "c_unbox(r)").replace("b:r", "c_box(r)") \
+        .replace("u:r", "c_unbox(r)")\
+        .replace("b:r,u:l", "c_box(r, u:l)").replace("b:r,l", "c_box(r, l)") \
         .replace("s:l",  "f'{l}'").replace("s:r",  "f'{r}'") \
         .replace("l ", "l_value ").replace(" r", " r_value") \
+        .replace("l=", "l_value =").replace("=r", "= r_value") \
         .replace("l.", "l_value.").replace("r.", "r_value.") \
         .replace("r}", "r_value}").replace("l}", "l_value}") \
         .replace("r)", "r_value)").replace("l)", "l_value)") \
@@ -326,8 +334,9 @@ def _expand_fragment2(code, row=None, col=None):
         .replace("X", "invalid").replace("---", "invalid")
     return code
 
-# .replace(".b(r)", ".from_block(r)").replace("u(", "c_unbox(").replace("b(", "c_box(") \
-#         .replace("s(l)", "f'{l}'").replace("s(r)", "f'{r}'") \
+
+def _fkey(op, code):
+    return f'{op.name}_{code}'
 
 
 def xcl(base, rc):

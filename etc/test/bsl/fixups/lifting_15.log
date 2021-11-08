@@ -1,19 +1,17 @@
 
 
 test: 15:
-"fn(-1)"
+fn(-1)
 
 tree1:  fn(-1)
-result: Lit(None)
-    1 : FnCall TK.FUNCTION(BINOP, '(', V=None)
-    2 :     Get TK.IDNT(IDENTIFIER, 'fn', V=None)
-    3 :     List TK.TUPLE(LITERAL, '(', V=[UnaryOp()])
-    4 :         UnaryOp TK.NEG(UNARY, '-', V=None)
-    5 :             Int TK.INT(LITERAL, '1', V=1)
+    1  : FnCall('fn')
+    2  :     Get(TK.IDNT, 'fn')
+    3  :     List(TK.TUPLE, [UnaryOp()])
+    4  :         UnaryOp(TK.NEG, TK.NEG, '-')
+    5  :             Int(TK.INT, 1)
 
 tree1:(post)  fn(-1)
-result: Lit(None)
-    1 : FnCall TK.FUNCTION(BINOP, '(', V=None)
-    2 :     Get TK.IDNT(IDENTIFIER, 'fn', V=None)
-    3 :     List TK.TUPLE(LITERAL, '(', V=[Int()])
-    4 :         Int TK.INT(LITERAL, '1', V=-1)
+    1  : FnCall('fn')
+    2  :     Get(TK.IDNT, 'fn')
+    3  :     List(TK.TUPLE, [Literal()])
+    4  :         Literal(TK.INT, -1)

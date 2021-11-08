@@ -4,4 +4,4 @@ test: 2:
 abcdefghijklmnopqrstuvwxyz
 
 tree1:  abcdefghijklmnopqrstuvwxyz
-    1 : Get TK.IDNT(IDENTIFIER, 'abcdefghijklmnopqrstuvwxyz', V=None)
+    1  : Get(TK.IDNT, 'abcdefghijklmnopqrstuvwxyz')

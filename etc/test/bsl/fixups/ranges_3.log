@@ -1,18 +1,15 @@
 
 
 test: 3:
-"[1..2]"
+[1..2]
 
 tree1:  [1..2]
-result: list([BinOp()])
-    1 : List TK.LIST(LITERAL, '[', V=[BinOp()])
-    2 :     BinOp TK.RANGE(BINOP, '.', V=None)
-    3 :         Float TK.FLOT(LITERAL, '1.', V=1.0)
-    4 :         Int TK.INT(LITERAL, '2', V=2)
+    1  : List(TK.LIST, [BinOp()])
+    2  :     BinOp(TK.RANGE, '.')
+    3  :         Float(TK.FLOT, 1.0)
+    4  :         Int(TK.INT, 2)
 
 tree1:(post)  [1..2]
-result: list([BinOp()])
-    1 : List TK.LIST(LITERAL, '[', V=[BinOp()])
-    2 :     BinOp TK.RANGE(BINOP, '.', V=None)
-    3 :         Float TK.FLOT(LITERAL, '1.', V=1.0)
-    4 :         Int TK.INT(LITERAL, '2', V=2)
+result: list([Literal()])
+    1  : List(TK.LIST, [Literal()])
+    2  :     Literal(TK.NONE, None)

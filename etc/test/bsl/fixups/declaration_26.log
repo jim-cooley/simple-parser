@@ -1,20 +1,18 @@
 
 
 test: 26:
-"f(x) = x * 4"
+f(x) = x * 4
 
 tree1:  f(x) = x * 4
-result: Lit(None)
-    1 : DefineFn TK.EQLS(BINOP, '=', V=None)
-    2 :     Ref TK.IDNT(IDENTIFIER, 'f', V=None)
-    3 :     BinOp TK.MUL(BINOP, '*', V=None)
-    4 :         Get TK.IDNT(IDENTIFIER, 'x', V=None)
-    5 :         Int TK.INT(LITERAL, '4', V=4)
+    1  : DefineFn(TK.DEFINE, TK.EQLS, '=')
+    2  :     Ref(TK.IDNT, 'f')
+    3  :     BinOp(TK.MUL, '*')
+    4  :         Get(TK.IDNT, 'x')
+    5  :         Int(TK.INT, 4)
 
 tree1:(post)  f(x) = x * 4
-result: Lit(None)
-    1 : DefineFn TK.EQLS(BINOP, '=', V=None)
-    2 :     Ref TK.IDNT(IDENTIFIER, 'f', V=None)
-    3 :     BinOp TK.MUL(BINOP, '*', V=None)
-    4 :         Get TK.IDNT(IDENTIFIER, 'x', V=None)
-    5 :         Int TK.INT(LITERAL, '4', V=4)
+    1  : DefineFn(TK.DEFINE, TK.EQLS, '=')
+    2  :     Ref(TK.IDNT, 'f')
+    3  :     BinOp(TK.MUL, '*')
+    4  :         Get(TK.IDNT, 'x')
+    5  :         Int(TK.INT, 4)

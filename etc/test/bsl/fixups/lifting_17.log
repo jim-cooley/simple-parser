@@ -1,17 +1,21 @@
 
 
 test: 17:
-"{a,b,c}:(-1)"
+{a,b,c}:(-1)
 
 tree1:  {a,b,c}:(-1)
-result: Lit(None)
-    1 : Define TK.COLN(NONE, ':', V=None)
-    2 :     Set TK.SET(LITERAL, '{', V=None)
-    3 :     UnaryOp TK.NEG(UNARY, '-', V=None)
-    4 :         Int TK.INT(LITERAL, '1', V=1)
+    1  : Define(TK.DEFINE, TK.COLN, ':')
+    2  :     Set(TK.SET, [Ref(), Ref(), Ref()])
+    3  :         Ref(TK.IDNT, 'a')
+    4  :         Ref(TK.IDNT, 'b')
+    5  :         Ref(TK.IDNT, 'c')
+    6  :     UnaryOp(TK.NEG, TK.NEG, '-')
+    7  :         Int(TK.INT, 1)
 
 tree1:(post)  {a,b,c}:(-1)
-result: Lit(None)
-    1 : Define TK.COLN(NONE, ':', V=None)
-    2 :     Set TK.SET(LITERAL, '{', V=None)
-    3 :     Int TK.INT(LITERAL, '1', V=-1)
+    1  : Define(TK.DEFINE, TK.COLN, ':')
+    2  :     Set(TK.SET, [Ref(), Ref(), Ref()])
+    3  :         Ref(TK.IDNT, 'a')
+    4  :         Ref(TK.IDNT, 'b')
+    5  :         Ref(TK.IDNT, 'c')
+    6  :     Literal(TK.INT, -1)

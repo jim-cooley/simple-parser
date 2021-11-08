@@ -1,0 +1,9 @@
+
+
+test: 91:
+none + false
+
+tree1:  none + false
+    1  : BinOp(TK.ADD, '+')
+    2  :     Literal(TK.NONE, None)
+    3  :     Bool(TK.FALSE, False)
