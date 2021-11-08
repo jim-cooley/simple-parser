@@ -37,6 +37,9 @@ class IndexedDict(object):
     def __setitem__(self, key, value):
         self._set_item_by_key(key, value)
 
+    def __str__(self):
+        return self.format()
+
     def items(self):
         k = list(self.__dict__.items())
         return k[1:]
@@ -62,6 +65,20 @@ class IndexedDict(object):
 
     def update(self, items):
         self.__dict__.update(items)
+
+    def format(self):
+        if self.__dict__ is None:
+            return '{}'
+        else:
+            fstr = ''
+            _max = (len(self.__dict__.keys())-1)
+            if _max == 1:
+                fstr += f'{self._get_item_by_index(0)}'  # skips '__dict__'
+            else:
+                for idx in range(0, _max-1):
+                    fstr += f'{self._get_item_by_index(idx)}'  # skips '__dict__'
+                    fstr += ',' if idx < max else ''
+            return '{' + f'{fstr}' + '}'
 
     def _get_item_by_index(self, index, default=None):
         keys = list(self.__dict__.keys())

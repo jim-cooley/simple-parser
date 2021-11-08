@@ -406,31 +406,32 @@ class Parser(object):
         seq = []
         tk = self.peek()
         loc = tk.location
-        is_l_value = True
-        is_l_value_strict = True    # no assignment or operators on rhs of included exprs
+        is_lvalue = True
+        is_lvalue_strict = True    # no assignment or operators on rhs of included exprs
 
         while self.peek().id != TK.EOF and self.peek().id != TK.RBRC:
             decl = self.declaration()
             seq.append(decl)
             #            if self.peek().id == TK.RBRC:   # must check closure before (empty set) and after as decl can finish parsing
             #                break
-            if is_l_value:
+            if is_lvalue:
                 if getattr(decl, 'is_lvalue', None) is not None:
-                    is_l_value = decl.is_lvalue
+                    is_lvalue = decl.is_lvalue
                 elif not isinstance(decl, Literal) and not isinstance(decl, Get):
                     if decl.token.id not in [TK.COLN, TK.EQLS]:
-                        is_l_value_strict = is_l_value = False
-                if is_l_value_strict:
+                        is_lvalue_strict = is_lvalue = False
+                if is_lvalue_strict:
                     if decl.token.id not in _VALUE_TOKENS:
                         if decl.token.id in [TK.COLN]:
-                            is_l_value_strict = False
-                            if decl.right.token.id in _VALUE_TOKENS:
-                                is_l_value_strict = True
-                        else:
-                            is_l_value_strict = False
+                            is_lvalue_strict = False
+                            if decl.right is not None:
+                                if decl.right.token.id in _VALUE_TOKENS:
+                                    is_lvalue_strict = True
+                            else:
+                                is_lvalue_strict = False
         if len(seq) == 0:
             return Set(TK_EMPTY, seq)
-        elif is_l_value and is_l_value_strict:
+        elif is_lvalue and is_lvalue_strict:
             return Set(Token(TK.SET, TCL.LITERAL, '{', loc=loc), seq)
         else:
             return Block(items=seq, loc=loc)

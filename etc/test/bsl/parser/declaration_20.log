@@ -9,7 +9,7 @@ tree1:  def f(x) := { x * 4 }
     3  :         Ref(TK.IDNT, 'f')
     4  :         List(TK.TUPLE, [Ref()])
     5  :             Ref(TK.IDNT, 'x')
-    6  :     Block(TK.BLOCK, v=[BinOp()], '')
+    6  :     Set(TK.SET, [BinOp()])
     7  :         BinOp(TK.MUL, '*')
     8  :             Ref(TK.IDNT, 'x')
     9  :             Int(TK.INT, 4)

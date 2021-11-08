@@ -4,13 +4,13 @@ test: 13:
 { b }:{node} => {b.left = b.right}
 
 tree1:  { b }:{node} => {b.left = b.right}
-    1  : Flow(TK.PRODUCE, v=[Define(), Block()], '=>')
+    1  : Flow(TK.PRODUCE, v=[Define(), Set()], '=>')
     2  :     Define(TK.DEFINE, TK.COLN, ':')
     3  :         Set(TK.SET, [Ref()])
     4  :             Ref(TK.IDNT, 'b')
     5  :         Set(TK.SET, [Get()])
     6  :             Get(TK.IDNT, 'node')
-    7  :     Block(TK.BLOCK, v=[Define()], '')
+    7  :     Set(TK.SET, [Define()])
     8  :         Define(TK.DEFINE, TK.EQLS, '=')
     9  :             PropRef(TK.REF, '.')
    10  :                 Ref(TK.IDNT, 'b')

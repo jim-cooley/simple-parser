@@ -6,6 +6,7 @@ from eval_binops import eval_binops_dispatch, _binops_dispatch_table
 from eval_boolean import eval_boolean_dispatch, _boolean_dispatch_table
 from eval_unary import not_literal, increment_literal, decrement_literal, negate_literal
 from exceptions import getErrorFacility, runtime_error, runtime_strict_warning
+from indexed_dict import IndexedDict
 from literals import LIT_NONE
 from tokens import TK, TCL
 from tree import Ref
@@ -60,6 +61,20 @@ def reduce_propget(left=None, right=None):
     if prop is None:
         runtime_strict_warning(f'Symbol `{right.token.lexeme}` referenced before initialized', loc=right.token.location)
     return prop
+
+
+def reduce_parameters(scope=None, node=None):
+    items = {}
+    for ref in node:
+        sym = reduce_ref(scope=scope, ref=ref)
+        items[sym.name] = sym
+    return IndexedDict(items)
+
+
+def update_ref(scope=None, sym=None, value=None):
+    scope = Environment.current.scope if scope is None else scope
+    symbol = scope.update_local(sym.name, value)
+    return symbol   # should be Object type
 
 
 def evaluate_identifier(stack, node):

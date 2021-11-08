@@ -6,7 +6,7 @@ var f = { a=5 }      # should be block, not set
 tree1:  var f = { a=5 }      # should be block, not set
     1  : DefineVar(TK.DEFINE, TK.EQLS, '=')
     2  :     Ref(TK.IDNT, 'f')
-    3  :     Block(TK.BLOCK, v=[Define()], '')
+    3  :     Set(TK.SET, [Define()])
     4  :         Define(TK.DEFINE, TK.EQLS, '=')
     5  :             Ref(TK.IDNT, 'a')
     6  :             Int(TK.INT, 5)

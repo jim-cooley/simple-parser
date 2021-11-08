@@ -38,9 +38,9 @@ tree1:  a | { b:1 } | c
     8  :         Ref(TK.IDNT, 'c')
 
 tree2:  a | { b=1, 'k':v } | c
-    1  : Flow(TK.CHAIN, v=[Get(), Block(), ApplyChainProd()], '|')
+    1  : Flow(TK.CHAIN, v=[Get(), Set(), ApplyChainProd()], '|')
     2  :     Get(TK.IDNT, 'a')
-    3  :     Block(TK.BLOCK, v=[Define(), Define()], '')
+    3  :     Set(TK.SET, [Define(), Define()])
     4  :         Define(TK.DEFINE, TK.EQLS, '=')
     5  :             Ref(TK.IDNT, 'b')
     6  :             Int(TK.INT, 1)
@@ -51,9 +51,9 @@ tree2:  a | { b=1, 'k':v } | c
    11  :         Ref(TK.IDNT, 'c')
 
 tree3:  a | { b + 1 } | c
-    1  : Flow(TK.CHAIN, v=[Get(), Block(), ApplyChainProd()], '|')
+    1  : Flow(TK.CHAIN, v=[Get(), Set(), ApplyChainProd()], '|')
     2  :     Get(TK.IDNT, 'a')
-    3  :     Block(TK.BLOCK, v=[BinOp()], '')
+    3  :     Set(TK.SET, [BinOp()])
     4  :         BinOp(TK.ADD, '+')
     5  :             Ref(TK.IDNT, 'b')
     6  :             Int(TK.INT, 1)
@@ -195,9 +195,9 @@ tree19:  a | b => c | d
    10  :         Ref(TK.IDNT, 'd')
 
 tree20:  a | { b + 1 } | c
-    1  : Flow(TK.CHAIN, v=[Get(), Block(), ApplyChainProd()], '|')
+    1  : Flow(TK.CHAIN, v=[Get(), Set(), ApplyChainProd()], '|')
     2  :     Get(TK.IDNT, 'a')
-    3  :     Block(TK.BLOCK, v=[BinOp()], '')
+    3  :     Set(TK.SET, [BinOp()])
     4  :         BinOp(TK.ADD, '+')
     5  :             Ref(TK.IDNT, 'b')
     6  :             Int(TK.INT, 1)
@@ -216,10 +216,10 @@ result: list([Get(), Set(), ApplyChainProd()])
     8  :         Ref(TK.IDNT, 'c')
 
 tree2:(post)  a | { b=1, 'k':v } | c
-result: list([Get(), Block(), ApplyChainProd()])
-    1  : Flow(TK.CHAIN, v=[Get(), Block(), ApplyChainProd()], '|')
+result: list([Get(), Set(), ApplyChainProd()])
+    1  : Flow(TK.CHAIN, v=[Get(), Set(), ApplyChainProd()], '|')
     2  :     Get(TK.IDNT, 'a')
-    3  :     Block(TK.BLOCK, v=[Define(), Define()], '')
+    3  :     Set(TK.SET, [Define(), Define()])
     4  :         Define(TK.DEFINE, TK.EQLS, '=')
     5  :             Ref(TK.IDNT, 'b')
     6  :             Int(TK.INT, 1)
@@ -230,10 +230,10 @@ result: list([Get(), Block(), ApplyChainProd()])
    11  :         Ref(TK.IDNT, 'c')
 
 tree3:(post)  a | { b + 1 } | c
-result: list([Get(), Block(), ApplyChainProd()])
-    1  : Flow(TK.CHAIN, v=[Get(), Block(), ApplyChainProd()], '|')
+result: list([Get(), Set(), ApplyChainProd()])
+    1  : Flow(TK.CHAIN, v=[Get(), Set(), ApplyChainProd()], '|')
     2  :     Get(TK.IDNT, 'a')
-    3  :     Block(TK.BLOCK, v=[BinOp()], '')
+    3  :     Set(TK.SET, [BinOp()])
     4  :         BinOp(TK.ADD, '+')
     5  :             Ref(TK.IDNT, 'b')
     6  :             Int(TK.INT, 1)
@@ -389,10 +389,10 @@ result: list([Flow(), ApplyChainProd()])
    10  :         Ref(TK.IDNT, 'd')
 
 tree20:(post)  a | { b + 1 } | c
-result: list([Get(), Block(), ApplyChainProd()])
-    1  : Flow(TK.CHAIN, v=[Get(), Block(), ApplyChainProd()], '|')
+result: list([Get(), Set(), ApplyChainProd()])
+    1  : Flow(TK.CHAIN, v=[Get(), Set(), ApplyChainProd()], '|')
     2  :     Get(TK.IDNT, 'a')
-    3  :     Block(TK.BLOCK, v=[BinOp()], '')
+    3  :     Set(TK.SET, [BinOp()])
     4  :         BinOp(TK.ADD, '+')
     5  :             Ref(TK.IDNT, 'b')
     6  :             Int(TK.INT, 1)
@@ -401,7 +401,7 @@ result: list([Get(), Block(), ApplyChainProd()])
 
 tree1:  %%option{strict=false}
     1  : Command(TK.IDNT, TK.IDNT, '%%option')
-    2  :     Block(TK.BLOCK, v=[Define()], '')
+    2  :     Set(TK.SET, [Define()])
     3  :         Define(TK.DEFINE, TK.EQLS, '=')
     4  :             Ref(TK.IDNT, 'strict')
     5  :             Bool(TK.FALSE, False)

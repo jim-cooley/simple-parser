@@ -61,19 +61,30 @@ class Scope:
         self._fqname = self._name
         return self
 
+    def update(self, name, value):
+        sym = self.find_update_name(name, value)
+        if sym is None:
+            raise ValueError(f'Symbol `{name}` does not exist')
+        return sym
+
     def find(self, token, default=None):
         scope = self
+        return self.find_name(token.lexeme, default)
+
+    def find_name(self, name, default=None):
+        scope = self
         while scope is not None:
-            if token.lexeme in scope._symbols:
-                tk = copy(scope._symbols[token.lexeme])
-                tk.location = token.location
-                return tk
+            if name in scope._symbols:
+                return scope._symbols[name]
             scope = scope.parent_scope
         return default
 
     def find_local(self, token, default=None):
-        if token.lexeme in self._symbols:
-            return self._symbols[token.lexeme]
+        return self.find_local_name(token.lexeme, default)
+
+    def find_local_name(self, name, default=None):
+        if name in self._symbols:
+            return self._symbols[name]
         return default
 
     def find_add(self, token, value=None):
@@ -97,6 +108,21 @@ class Scope:
                 symbol.value = deepcopy(value)
             self._symbols[token.lexeme] = symbol
         return symbol
+
+    def update_local(self, name, value=None):
+        if name in self._symbols:
+            self._symbols[name] = value
+            return self._symbols[name]
+        return None
+
+    def update_name(self, name, value=None):
+        scope = self
+        while scope is not None:
+            if name in scope._symbols:
+                scope._symbols[name] = value
+                return scope._symbols[name]
+            scope = scope.parent_scope
+        return None
 
     def _add_symbol(self, tkid, tcl, lex):
         tk = Token(tid=tkid, tcl=tcl, lex=lex, loc=Token.Loc())
@@ -125,6 +151,8 @@ class Object(AST, Scope):
         super().__init__(token=token, value=value, parent=parent, parent_scope=None)
         self.is_lvalue = True
 #       self.value = token.value
+        self.code = None
+        self.parameters = None
         if self.token is None or self.token.lexeme is None:
             self._name = ''
         else:
@@ -150,8 +178,11 @@ class Object(AST, Scope):
 
     def format(self):
         tk = self.token
-        v = f'{tk.value}' if tk.value is not None else 'None'
-        return f'{self.qualname} = {v}'
+        if self.code is not None:
+            return f'{self.name}({self.parameters}) = {self.code}'
+        else:
+            v = f'{tk.value}' if tk.value is not None else 'None'
+            return f'{self.name} = {v}'
 
 
 # -----------------------------------
@@ -164,7 +195,7 @@ class Block(Expression, Object):
         super().__init__(token=op, is_lvalue=False)
         self.items = items if items is not None else []
         self.value = self.items
-        self.is_l_value = False
+        self.is_lvalue = False
 
     def __len__(self):
         return len(self.items)

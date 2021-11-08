@@ -32,7 +32,7 @@ tree3:  a = 4
 tree4:  s = { a=5 }
     1  : Define(TK.DEFINE, TK.EQLS, '=')
     2  :     Ref(TK.IDNT, 's')
-    3  :     Block(TK.BLOCK, v=[Define()], '')
+    3  :     Set(TK.SET, [Define()])
     4  :         Define(TK.DEFINE, TK.EQLS, '=')
     5  :             Ref(TK.IDNT, 'a')
     6  :             Int(TK.INT, 5)
