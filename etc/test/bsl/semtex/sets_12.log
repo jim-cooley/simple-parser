@@ -1,0 +1,22 @@
+
+
+test: 12:
+{'a':5, 'b':'c', d}
+
+tree1:(post)  {'a':5, 'b':'c', d}
+    1  : Set(TK.SET, [Define(), Define(), Get()])
+    2  :     Define(TK.DEFINE, TK.COLN, ':')
+    3  :         Str(TK.STR, a)
+    4  :         Int(TK.INT, 5)
+    5  :     Define(TK.DEFINE, TK.COLN, ':')
+    6  :         Str(TK.STR, b)
+    7  :         Str(TK.STR, c)
+    8  :     Get(TK.IDNT, 'd')
+
+
+# --------------------------------------------------
+#                       R U N 
+# --------------------------------------------------
+
+
+symbols: 

@@ -1,0 +1,22 @@
+
+
+test: 13:
+{a=5, b='c', d}
+
+tree1:(post)  {a=5, b='c', d}
+    1  : Block(TK.BLOCK, v=[Define(), Define(), Get()], '')
+    2  :     Define(TK.DEFINE, TK.EQLS, '=')
+    3  :         Ref(TK.IDNT, 'a')
+    4  :         Int(TK.INT, 5)
+    5  :     Define(TK.DEFINE, TK.EQLS, '=')
+    6  :         Ref(TK.IDNT, 'b')
+    7  :         Str(TK.STR, c)
+    8  :     Get(TK.IDNT, 'd')
+
+
+# --------------------------------------------------
+#                       R U N 
+# --------------------------------------------------
+
+
+symbols: 

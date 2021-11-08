@@ -1,7 +1,7 @@
 
 
 test:
-"4
+4
 4 * 3
 a = 4
 s = { a=5 }
@@ -14,90 +14,85 @@ c = b
 s.b
 ++s.b
 
-"
+
 
 tree1:(post)  4
-result: int(4)
-    1 : Int TK.INT(LITERAL, '4', V=4)
+    1  : Int(TK.INT, 4)
 
-tree2:(post)  4 * 3
-result: int(12)
-    1 : BinOp TK.MUL(BINOP, '*', V=12)
-    2 :     Int TK.INT(LITERAL, '4', V=4)
-    3 :     Int TK.INT(LITERAL, '3', V=3)
+tree2:(post)  4
+    1  : Literal(TK.INT, 12)
 
 tree3:(post)  a = 4
-result: int(4)
-    1 : Define TK.EQLS(BINOP, '=', V=None)
-    2 :     Ref TK.IDNT(IDENTIFIER, 'a', V=None)
-    3 :     Int TK.INT(LITERAL, '4', V=4)
+    1  : Define(TK.DEFINE, TK.EQLS, '=')
+    2  :     Ref(TK.IDNT, 'a')
+    3  :     Int(TK.INT, 4)
 
 tree4:(post)  s = { a=5 }
-result: Object(s = None)
-    1 : Define TK.EQLS(BINOP, '=', V=None)
-    2 :     Ref TK.IDNT(IDENTIFIER, 's', V=None)
-    3 :     Block TK.BLOCK(SCOPE, '', V=None)
+    1  : Define(TK.DEFINE, TK.EQLS, '=')
+    2  :     Ref(TK.IDNT, 's')
+    3  :     Block(TK.BLOCK, v=[Define()], '')
+    4  :         Define(TK.DEFINE, TK.EQLS, '=')
+    5  :             Ref(TK.IDNT, 'a')
+    6  :             Int(TK.INT, 5)
 
 tree5:(post)  s.a
-result: int(5)
-    1 : PropRef TK.REF(BINOP, '.', V=None)
-    2 :     Get TK.IDNT(IDENTIFIER, 's', V=None)
-    3 :     Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    1  : PropRef(TK.REF, '.')
+    2  :     Get(TK.IDNT, 's')
+    3  :     Get(TK.IDNT, 'a')
 
 tree6:(post)  s.b = s.a * a
-result: int(20)
-    1 : Define TK.EQLS(BINOP, '=', V=None)
-    2 :     PropRef TK.REF(BINOP, '.', V=None)
-    3 :         Ref TK.IDNT(IDENTIFIER, 's', V=None)
-    4 :         Ref TK.IDNT(IDENTIFIER, 'b', V=None)
-    5 :     BinOp TK.MUL(BINOP, '*', V=None)
-    6 :         PropRef TK.REF(BINOP, '.', V=None)
-    7 :             Get TK.IDNT(IDENTIFIER, 's', V=None)
-    8 :             Get TK.IDNT(IDENTIFIER, 'a', V=None)
-    9 :         Get TK.IDNT(IDENTIFIER, 'a', V=None)
+    1  : Define(TK.DEFINE, TK.EQLS, '=')
+    2  :     PropRef(TK.REF, '.')
+    3  :         Ref(TK.IDNT, 's')
+    4  :         Ref(TK.IDNT, 'b')
+    5  :     BinOp(TK.MUL, '*')
+    6  :         PropRef(TK.REF, '.')
+    7  :             Get(TK.IDNT, 's')
+    8  :             Get(TK.IDNT, 'a')
+    9  :         Get(TK.IDNT, 'a')
 
 tree7:(post)  s.b
-result: int(20)
-    1 : PropRef TK.REF(BINOP, '.', V=None)
-    2 :     Get TK.IDNT(IDENTIFIER, 's', V=None)
-    3 :     Get TK.IDNT(IDENTIFIER, 'b', V=None)
+    1  : PropRef(TK.REF, '.')
+    2  :     Get(TK.IDNT, 's')
+    3  :     Get(TK.IDNT, 'b')
 
 tree8:(post)  b = a * 3
-result: int(12)
-    1 : Define TK.EQLS(BINOP, '=', V=None)
-    2 :     Ref TK.IDNT(IDENTIFIER, 'b', V=None)
-    3 :     BinOp TK.MUL(BINOP, '*', V=None)
-    4 :         Get TK.IDNT(IDENTIFIER, 'a', V=None)
-    5 :         Int TK.INT(LITERAL, '3', V=3)
+    1  : Define(TK.DEFINE, TK.EQLS, '=')
+    2  :     Ref(TK.IDNT, 'b')
+    3  :     BinOp(TK.MUL, '*')
+    4  :         Get(TK.IDNT, 'a')
+    5  :         Int(TK.INT, 3)
 
 tree9:(post)  c = b
-result: int(12)
-    1 : Define TK.EQLS(BINOP, '=', V=None)
-    2 :     Ref TK.IDNT(IDENTIFIER, 'c', V=None)
-    3 :     Get TK.IDNT(IDENTIFIER, 'b', V=None)
+    1  : Define(TK.DEFINE, TK.EQLS, '=')
+    2  :     Ref(TK.IDNT, 'c')
+    3  :     Get(TK.IDNT, 'b')
 
 tree10:(post)  s.b
-result: int(20)
-    1 : PropRef TK.REF(BINOP, '.', V=None)
-    2 :     Get TK.IDNT(IDENTIFIER, 's', V=None)
-    3 :     Get TK.IDNT(IDENTIFIER, 'b', V=None)
+    1  : PropRef(TK.REF, '.')
+    2  :     Get(TK.IDNT, 's')
+    3  :     Get(TK.IDNT, 'b')
 
 tree11:(post)  ++s.b
-result: int(21)
-    1 : UnaryOp TK.INCREMENT(UNARY, '++', V=None)
-    2 :     PropRef TK.REF(BINOP, '.', V=None)
-    3 :         Get TK.IDNT(IDENTIFIER, 's', V=None)
-    4 :         Get TK.IDNT(IDENTIFIER, 'b', V=None)
+    1  : UnaryOp(TK.INCREMENT, TK.INCREMENT, '++')
+    2  :     PropRef(TK.REF, '.')
+    3  :         Get(TK.IDNT, 's')
+    4  :         Get(TK.IDNT, 'b')
+
+
+# --------------------------------------------------
+#                       R U N 
+# --------------------------------------------------
 
 
 symbols: 
 
 global scope:
-    0:  `a`: a : Object(TK.IDNT(IDENTIFIER, 'a', V=4))
+    0:  `a`: a : Object(TK.IDNT(IDENTIFIER, 'a', V=None))
     1:  `s`: s : Object(TK.IDNT(IDENTIFIER, 's', V=None))
-    2:  `b`: b : Object(TK.IDNT(IDENTIFIER, 'b', V=12))
-    3:  `c`: c : Object(TK.IDNT(IDENTIFIER, 'c', V=12))
+    2:  `b`: b : Object(TK.IDNT(IDENTIFIER, 'b', V=None))
+    3:  `c`: c : Object(TK.IDNT(IDENTIFIER, 'c', V=None))
 
 scope: s
-    4:  `a`: s.a : Object(TK.IDNT(IDENTIFIER, 'a', V=5))
-    5:  `b`: s.b : Object(TK.IDNT(IDENTIFIER, 'b', V=21))
+    4:  `a`: s.a : Object(TK.IDNT(IDENTIFIER, 'a', V=None))
+    5:  `b`: s.b : Object(TK.IDNT(IDENTIFIER, 'b', V=None))

@@ -1,0 +1,18 @@
+
+
+test: 18:
+(a, b, c,)                   # tuple
+
+tree1:(post)  (a, b, c,)                   # tuple
+    1  : List(TK.TUPLE, [Get(), Get(), Get()])
+    2  :     Get(TK.IDNT, 'a')
+    3  :     Get(TK.IDNT, 'b')
+    4  :     Get(TK.IDNT, 'c')
+
+
+# --------------------------------------------------
+#                       R U N 
+# --------------------------------------------------
+
+
+symbols: 

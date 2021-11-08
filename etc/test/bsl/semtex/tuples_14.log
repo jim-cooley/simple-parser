@@ -1,0 +1,17 @@
+
+
+test: 14:
+((a, b))                     # grouping of tuple
+
+tree1:(post)  ((a, b))                     # grouping of tuple
+    1  : List(TK.TUPLE, [Get(), Get()])
+    2  :     Get(TK.IDNT, 'a')
+    3  :     Get(TK.IDNT, 'b')
+
+
+# --------------------------------------------------
+#                       R U N 
+# --------------------------------------------------
+
+
+symbols: 

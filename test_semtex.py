@@ -4,12 +4,10 @@ import sys
 from abc import ABC
 
 from command_interpreter import CommandInterpreter
-from environment import Environment, _t_print
 from fixups import Fixups
 from interpreter import Interpreter
 from parser import Parser
 from test.suite_runner import TestSuiteRunner, _log_exception, _dump_environment
-from treeprint import print_forest
 from test.test_setup import test_data
 
 _test_suite = True       # False is useful for debugging, interactive.  True for test suites
@@ -17,22 +15,22 @@ _skip_tests = [
     'regression',
     'regress',
 
-#   'assignment',
+    'assignment',
     'binops',
-#   'blocks',
+    'blocks',
 #   'boolean',
-    'boolean_var',
+#   'boolean_var',
     'commands',
 #   'constant_expr',
-#   'declaration',
+    'declaration',
     'declarations_multiline',
 #   'duration',
     'empty_sets',
-    #'eval_sequences',
+    'eval_sequences',
     #'eval_test',
     'expressions',
     'functions',
-    'grouping',
+    #'grouping',
     'identifiers',
     'indexed_properties',
     'indexing',
@@ -43,14 +41,14 @@ _skip_tests = [
     'lists',
     'none',
     'parameters',
-    'prime',
-    #'properties',
-    #'ranges',
-    #'sequences',
-    'set_operations',
-    'set_parameters',
-    'set_unary',
-    'sets',
+    #'prime',
+    'properties',
+    'ranges',
+    'sequences',
+    #'set_operations',
+    #'set_parameters',
+    #'set_unary',
+    #'sets',
     'shell',
     'simple',
     'simple2',
@@ -58,17 +56,17 @@ _skip_tests = [
     'statements',
     'system1',
     'system2',
-    'time',
+    #'time',
     'trading',
-    'tuples',
-    'unary',
+    #'tuples',
+    #'unary',
     'var',
 ]
 
 
 class SemanticAnalysisTestRunner(TestSuiteRunner, ABC):
 
-    def __init__(self, test_data, skip_tests=None):
+    def __init__(self, test_data, skip_tests=_skip_tests):
         super().__init__(test_data, skip_tests, log_dir='./etc/test/log/semtex')
         self.verbose = True
         self.test = True
