@@ -1,4 +1,6 @@
+import sys
 from dataclasses import dataclass
+from pandas.compat import numpy as np
 from scope import Object
 import pandas as pd
 
@@ -36,3 +38,20 @@ def create_dataset(args):
 def create_series(args):
     r = Series()
     return r
+
+
+def set_print_options():
+    np.set_printoptions(threshold=sys.maxsize)
+    return pd.option_context(
+        'display.max_rows', None,
+        'display.max_columns', None,
+        'display.width', 16384,
+    )
+
+
+def print_dataframe(_df, label=None):
+    with set_print_options():
+        if label:
+            print(label)
+        print(_df)
+
