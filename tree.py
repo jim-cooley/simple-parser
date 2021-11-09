@@ -245,9 +245,10 @@ class FnDef(BinOp):
 
 # holds a reference
 class Ref(Expression):
-    def __init__(self, r_token):
+    def __init__(self, r_token, name=None):
         super().__init__(token=r_token)
         self.token = r_token
+        self.name = name or r_token.lexeme
         r_token.t_class = TCL.IDENTIFIER
 
     def to_get(self):
@@ -262,10 +263,8 @@ class Ref(Expression):
 
 # dereferences to value
 class Get(Ref):
-    def __init__(self, r_token):
-        super().__init__(r_token=r_token)
-        self.token = r_token
-        r_token.t_class = TCL.IDENTIFIER
+    def __init__(self, r_token, name=None):
+        super().__init__(r_token=r_token, name=name)
 
     def to_ref(self):
         ref = Ref(self.token)

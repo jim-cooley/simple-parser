@@ -115,6 +115,7 @@ class TK(IntEnum):
     # higher-level / derived tokens
     #
     ADD = auto()  # +
+    APPLY = auto()  # >>
     ASSIGN = auto()  # =
     BLOCK = auto()
     BOOL = auto()
@@ -131,7 +132,6 @@ class TK(IntEnum):
     FUNCTION = auto()
     IDIV = auto()   # integer division
     INCREMENT = auto()
-    INDEX = auto()  # indexing expression
     ISEQ = auto()  # ==
     KVPAIR = auto()  # key:value
     LIST = auto()
@@ -157,22 +157,21 @@ class TK(IntEnum):
     AND = auto()
     ANON = auto()  # anonymous parameter '_'
     ANY = auto()   # any:
-    APPLY = auto()  # >>
     BUY = auto()
-    DATAFRAME = auto()
+    DATASET = auto()
     DIV = auto()  # /
     EMPTY = auto()  # ø empty set
     FALSE = auto()
     IN = auto()
+    INDEX = auto()
     MOD = auto()
+    NAN = auto()
     NONE = auto()
     NONEOF = auto()  # none:
     NOT = auto()
     NOW = auto()
     RANGE = auto()
     SELL = auto()
-    SIGNAL = auto()
-    TODAY = auto()
     TRUE = auto()
     VAR = auto()
 
@@ -232,7 +231,6 @@ _tk2lit = {
     TK.QUOT: TK.STR,
     TK.STR: TK.STR,
     TK.TIME: TK.TIME,
-    TK.TODAY: TK.TIME,
 }
 # token type mapping
 _tk2type = {
@@ -263,7 +261,6 @@ _tk2type = {
     TK.STAR: TCL.BINOP,
     TK.STR: TCL.LITERAL,
     TK.TIME: TCL.LITERAL,
-    TK.TODAY: TCL.FUNCTION,
     TK.TUPLE: TCL.TUPLE,
     TK.VAR: TCL.UNARY,
     TK.WHT: TCL.NONE,
@@ -312,7 +309,6 @@ _tk2glyph = {
     TK.NONE: 'none',
     TK.NONEOF: 'noneof',  # none:
     TK.NOT: 'not',
-    TK.NOW: 'now',
     TK.OR: 'or',
     TK.PCT: '%',
     TK.PLEQ: '+=',
@@ -325,10 +321,8 @@ _tk2glyph = {
     TK.RISE_ABOVE: '|>',  # >|
     TK.SELL: 'sell',
     TK.SET: 'set',
-    TK.SIGNAL: 'signal',
     TK.STR: 'str',
     TK.SUB: '-',  # - (subtract)
-    TK.TODAY: 'today',
     TK.TRUE: 'true',
     TK.TUPLE: '',
     TK.VAR: 'var',

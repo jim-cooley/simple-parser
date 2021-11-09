@@ -43,6 +43,23 @@ done
 prefx=$1
 suite=$2
 
+  case "$prefx" in
+    p | parser)
+        prefx="parser"
+        ;;
+    f | fixups)
+        prefx="fixups"
+        ;;
+    s | semtex | focal)
+        prefx="semtex"
+        ;;
+    *)
+        prefx="parser"
+        ;;
+  esac
+  if [ "$prefx" == "" ]; then prefx="parser"; fi
+
+
 printf $suite
 
 printf "\n\ncomparing tests\n\n"

@@ -9,6 +9,6 @@ tree1:  { 'train': (today-2y)..today }
     3  :         Str(TK.STR, train)
     4  :         BinOp(TK.RANGE, '..')
     5  :             BinOp(TK.SUB, '-')
-    6  :                 Get(TK.TODAY, 'today')
+    6  :                 Get(TK.IDNT, 'today')
     7  :                 Duration(TK.DUR, 730 days, 0:00:00)
-    8  :             Get(TK.TODAY, 'today')
+    8  :             Get(TK.IDNT, 'today')

@@ -170,7 +170,9 @@ class List(Literal):
         self.value[index] = value
 
     def is_empty(self):
-        return self.value is not None and len(self.values()) > 0
+        if self.value is None:
+            return True
+        return len(self.values()) == 0
 
     def append(self, o):
         self.value.append(o)

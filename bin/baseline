@@ -5,6 +5,23 @@ bslpath="./etc/test/bsl"
 prefx=$1
 suite=$2
 
+  case "$prefx" in
+    p | parser)
+        prefx="parser"
+        ;;
+    f | fixups)
+        prefx="fixups"
+        ;;
+    s | semtex | focal)
+        prefx="semtex"
+        ;;
+    *)
+        prefx="parser"
+        ;;
+  esac
+  if [ "$prefx" == "" ]; then prefx="parser"; fi
+
+
 printf "\n\nupdating baselines\n\n"
 printf "================================\n"
 for test in $logpath/$prefx/$suite*; do

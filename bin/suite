@@ -56,6 +56,21 @@ else
   printf "running tests\n"
   printf "================================\n"
 
+  case "$prefx" in
+    p | parser)
+        prefx="parser"
+        ;;
+    f | fixups)
+        prefx="fixups"
+        ;;
+    s | semtex | focal)
+        prefx="semtex"
+        ;;
+    *)
+        prefx="parser"
+        ;;
+  esac
+  
   if [ "$prefx" == "" ]; then prefx="parser"; fi
 
   start=$(date +%s)

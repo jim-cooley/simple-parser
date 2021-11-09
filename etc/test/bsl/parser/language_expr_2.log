@@ -27,7 +27,7 @@ tree1:  any:{ close >| sma(10), close <| sma(20) }:(threshold=0.01) | signal >> 
    21  :                         Ref(TK.IDNT, 'threshold')
    22  :                         Float(TK.FLOT, 0.01)
    23  :                 ApplyChainProd(TK.DEFINE, TK.APPLY, '|')
-   24  :                     Ref(TK.SIGNAL, 'signal')
+   24  :                     Ref(TK.IDNT, 'signal')
    25  :             ApplyChainProd(TK.DEFINE, TK.APPLY, '>>')
    26  :                 Ref(TK.IDNT, 'avg')
    27  :         FnCall('delay')

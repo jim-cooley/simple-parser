@@ -78,11 +78,9 @@ _tk2pfx = {
     TK.RISE_ABOVE: 'if_above',  # >|
     TK.SELL: 'sell',
     TK.SET: 'set',
-    TK.SIGNAL: 'signal',
     TK.STR: 'str',
     TK.SUB: 'sub',  # - (subtract)
     TK.TIME: 'time',
-    TK.TODAY: 'today',
     TK.TRUE: 'b',
     TK.TUPLE: 'tup',
     TK.VAR: 'var',

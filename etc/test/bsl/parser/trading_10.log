@@ -14,7 +14,7 @@ tree1:  close <| sma(10) | signal >> delay(1d) | atr => sell
     8  :                     List(TK.TUPLE, [Int()])
     9  :                         Int(TK.INT, 10)
    10  :             ApplyChainProd(TK.DEFINE, TK.APPLY, '|')
-   11  :                 Ref(TK.SIGNAL, 'signal')
+   11  :                 Ref(TK.IDNT, 'signal')
    12  :         FnCall('delay')
    13  :             Ref(TK.IDNT, 'delay')
    14  :             List(TK.TUPLE, [Duration()])

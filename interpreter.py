@@ -1,7 +1,9 @@
 from environment import Environment
 from evaluate import reduce_value, evaluate_binary_operation, evaluate_unary_operation, evaluate_identifier, \
-    evaluate_set, reduce_get, reduce_propref, reduce_ref, update_ref, reduce_parameters
+    evaluate_set, reduce_get, reduce_propref, reduce_ref, update_ref, reduce_parameters, invoke_fn
+from intrinsics import is_intrinsic, invoke_intrinsic
 from scope import Block
+from tree import FnCall
 from visitor import TreeFilter, BINARY_NODE
 
 _VISIT_ASSIGNMENT = 'visit_assignment'
@@ -13,6 +15,7 @@ _VISiT_LEAF = 'visit_value'
 _PROCESS_APPLY = 'process_apply'
 _PROCESS_BINOP = 'process_binop'
 _PROCESS_BLOCK = 'process_block'
+_PROCESS_DEFINE = 'process_define'
 _PROCESS_DEFINE_FN = 'process_define_fn'
 _PROCESS_FLOW = 'process_flow'
 _PROCESS_GET = 'process_get'
@@ -33,10 +36,10 @@ _interpreterVisitNodeMappings = {
     'Bool': _VISIT_LITERAL,
     'DateDiff': _VISIT_LITERAL,
     'DateTime': _VISIT_LITERAL,
-    'Define': _VISIT_DEFINITION,
+    'Define': _PROCESS_DEFINE,
     'DefineChainProd': _VISIT_DEFINITION,
     'DefineFn': _PROCESS_DEFINE_FN,
-    'DefineVar': _VISIT_DEFINITION,
+    'DefineVar': _PROCESS_DEFINE,
     'DefineVarFn': _PROCESS_DEFINE_FN,
     'Duration': _VISIT_LITERAL,
     'Float': _VISIT_LITERAL,
@@ -155,6 +158,31 @@ class Interpreter(TreeFilter):
         Environment.leave()
         self.stack.push(block)
 
+    def process_define(self, node, label=None):
+        self._print_node(node)
+        left = node.left
+        right = node.right
+        self.indent()
+        self.visit(left)
+        self._print_node(right)
+        self.dedent()
+        if isinstance(right, FnCall):
+            name = right.left.name  # should be either Ref() or Get()
+            args = right.right
+            args = reduce_parameters(scope=None, args=args)
+#           self._c_process_sequence(args.value)  # reduce and stack args
+            if is_intrinsic(name):
+                result = invoke_intrinsic(name, args)
+            else:
+                ident = reduce_get(get=right.left)
+                result = invoke_fn(ident, args)
+            var = reduce_ref(ref=left, value=result)
+            update_ref(var, result)
+        else:
+            var = reduce_ref(ref=left, value=right)
+
+        self.stack.push(var)
+
     def process_define_fn(self, node, label=None):
         self._print_node(node)
         left = node.left
@@ -167,7 +195,7 @@ class Interpreter(TreeFilter):
         self.dedent()
         fn = reduce_ref(ref=left)
         fn.code = right
-        fn.parameters = reduce_parameters(scope=fn, node=args)
+        fn.parameters = reduce_parameters(scope=fn, args=args)
         self.stack.push(fn)
 
     def process_flow(self, node, label=None):
@@ -228,6 +256,21 @@ class Interpreter(TreeFilter):
         self.visit(node.expr)
         left = self.stack.pop()
         self.stack.push(evaluate_unary_operation(node, left))
+
+    def _c_process_sequence(self, seq):
+        """
+        processes a sequence (list) of items in reverse order (c-style). used by invoke_fn to process arguments.
+        """
+        self.indent()
+        values = seq.values()
+        if values is None:
+            return seq
+        for idx in range(len(values), 0, -1):
+            n = values[idx]
+            if n is None:
+                continue
+            self.visit(n)
+        self.dedent()
 
     def _process_sequence(self, seq):
         self.indent()

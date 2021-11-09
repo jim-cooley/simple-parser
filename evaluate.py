@@ -29,9 +29,9 @@ def reduce_value(stack: RuntimeStack, node):
     stack.push(node.value)
 
 
-def reduce_ref(scope=None, ref=None):
+def reduce_ref(scope=None, ref=None, value=None):
     scope = Environment.current.scope if scope is None else scope
-    symbol = scope.find_add_local(ref.token)
+    symbol = scope.find_add_local(ref.token, value)
     return symbol   # should be Object type
 
 
@@ -63,10 +63,10 @@ def reduce_propget(left=None, right=None):
     return prop
 
 
-def reduce_parameters(scope=None, node=None):
+def reduce_parameters(scope=None, args=None):
     items = {}
-    if node is not None:
-        for ref in node:
+    if args is not None:
+        for ref in args:
             sym = reduce_ref(scope=scope, ref=ref)
             items[sym.name] = sym
     return IndexedDict(items)
@@ -153,3 +153,7 @@ def evaluate_unary_operation(node, left):
 
     left = c_box(left, l_value)
     return left
+
+
+def invoke_fn(node):
+    pass

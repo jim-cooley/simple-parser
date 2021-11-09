@@ -19,7 +19,7 @@ tree1:  close >| sma(10) and close <| sma(20) | signal
    13  :                 List(TK.TUPLE, [Int()])
    14  :                     Int(TK.INT, 20)
    15  :     ApplyChainProd(TK.DEFINE, TK.APPLY, '|')
-   16  :         Ref(TK.SIGNAL, 'signal')
+   16  :         Ref(TK.IDNT, 'signal')
 
 tree1:(post)  close >| sma(10) and close <| sma(20) | signal
 result: list([BinOp(), BinOp(), ApplyChainProd()])
@@ -38,4 +38,4 @@ result: list([BinOp(), BinOp(), ApplyChainProd()])
    13  :                 List(TK.TUPLE, [Int()])
    14  :                     Int(TK.INT, 20)
    15  :     ApplyChainProd(TK.DEFINE, TK.APPLY, '|')
-   16  :         Ref(TK.SIGNAL, 'signal')
+   16  :         Ref(TK.IDNT, 'signal')
