@@ -98,26 +98,24 @@ tree4:  var f = { a(x):x*x }
     2  :     Ref(TK.IDNT, 'f')
     3  :     Block(TK.BLOCK, v=[DefineFn()], '')
     4  :         DefineFn(TK.DEFINE, TK.COLN, ':')
-    5  :             DefineFn(TK.DEFINE, TK.FUNCTION, '(')
-    6  :                 Ref(TK.IDNT, 'a')
-    7  :                 List(TK.TUPLE, [Ref()])
-    8  :                     Ref(TK.IDNT, 'x')
-    9  :             BinOp(TK.MUL, '*')
+    5  :             Ref(TK.IDNT, 'a')
+    6  :             BinOp(TK.MUL, '*')
+    7  :                 Ref(TK.IDNT, 'x')
+    8  :                 Ref(TK.IDNT, 'x')
+    9  :             List(TK.TUPLE, [Ref()])
    10  :                 Ref(TK.IDNT, 'x')
-   11  :                 Ref(TK.IDNT, 'x')
 
 tree5:  var f = { a(_):_*_ }
     1  : DefineVar(TK.DEFINE, TK.EQLS, '=')
     2  :     Ref(TK.IDNT, 'f')
     3  :     Block(TK.BLOCK, v=[DefineFn()], '')
     4  :         DefineFn(TK.DEFINE, TK.COLN, ':')
-    5  :             DefineFn(TK.DEFINE, TK.FUNCTION, '(')
-    6  :                 Ref(TK.IDNT, 'a')
-    7  :                 List(TK.TUPLE, [Ref()])
-    8  :                     Ref(TK.ANON, '_')
-    9  :             BinOp(TK.MUL, '*')
+    5  :             Ref(TK.IDNT, 'a')
+    6  :             BinOp(TK.MUL, '*')
+    7  :                 Ref(TK.ANON, '_')
+    8  :                 Ref(TK.ANON, '_')
+    9  :             List(TK.TUPLE, [Ref()])
    10  :                 Ref(TK.ANON, '_')
-   11  :                 Ref(TK.ANON, '_')
 
 tree6:  var f = { 5 }
     1  : DefineVar(TK.DEFINE, TK.EQLS, '=')
@@ -126,60 +124,59 @@ tree6:  var f = { 5 }
     4  :         Int(TK.INT, 5)
 
 tree7:  var f := 5
-    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
     2  :     Ref(TK.IDNT, 'f')
     3  :     Int(TK.INT, 5)
 
 tree8:  var f := { 5 }
-    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
     2  :     Ref(TK.IDNT, 'f')
     3  :     Set(TK.SET, [Int()])
     4  :         Int(TK.INT, 5)
 
 tree9:  def f(x) := x * 4;
-    1  : DefineFn(TK.DEFINE, TK.COEQ, ':=')
-    2  :     DefineFn(TK.DEFINE, TK.FUNCTION, '(')
-    3  :         Ref(TK.IDNT, 'f')
-    4  :         List(TK.TUPLE, [Ref()])
-    5  :             Ref(TK.IDNT, 'x')
-    6  :     BinOp(TK.MUL, '*')
-    7  :         Ref(TK.IDNT, 'x')
-    8  :         Int(TK.INT, 4)
-
-tree10:  def f(x) = x * 4
-    1  : DefineFn(TK.DEFINE, TK.EQLS, '=')
+    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
     2  :     Ref(TK.IDNT, 'f')
     3  :     BinOp(TK.MUL, '*')
     4  :         Ref(TK.IDNT, 'x')
     5  :         Int(TK.INT, 4)
+    6  :     List(TK.TUPLE, [Ref()])
+    7  :         Ref(TK.IDNT, 'x')
+
+tree10:  def f(x) = x * 4
+    1  : DefineFn(TK.DEFINE, TK.ASSIGN, '=')
+    2  :     Ref(TK.IDNT, 'f')
+    3  :     BinOp(TK.MUL, '*')
+    4  :         Ref(TK.IDNT, 'x')
+    5  :         Int(TK.INT, 4)
+    6  :     List(TK.TUPLE, [Ref()])
+    7  :         Ref(TK.IDNT, 'x')
 
 tree11:  def f(x) := { x * 4 }
-    1  : DefineFn(TK.DEFINE, TK.COEQ, ':=')
-    2  :     DefineFn(TK.DEFINE, TK.FUNCTION, '(')
-    3  :         Ref(TK.IDNT, 'f')
-    4  :         List(TK.TUPLE, [Ref()])
+    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    2  :     Ref(TK.IDNT, 'f')
+    3  :     Set(TK.SET, [BinOp()])
+    4  :         BinOp(TK.MUL, '*')
     5  :             Ref(TK.IDNT, 'x')
-    6  :     Set(TK.SET, [BinOp()])
-    7  :         BinOp(TK.MUL, '*')
-    8  :             Ref(TK.IDNT, 'x')
-    9  :             Int(TK.INT, 4)
+    6  :             Int(TK.INT, 4)
+    7  :     List(TK.TUPLE, [Ref()])
+    8  :         Ref(TK.IDNT, 'x')
 
 tree12:  def f(x) := {
-    1  : DefineFn(TK.DEFINE, TK.COEQ, ':=')
-    2  :     DefineFn(TK.DEFINE, TK.FUNCTION, '(')
-    3  :         Ref(TK.IDNT, 'f')
-    4  :         List(TK.TUPLE, [Ref()])
+    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    2  :     Ref(TK.IDNT, 'f')
+    3  :     Set(TK.SET, [Define(), Define(), BinOp()])
+    4  :         Define(TK.DEFINE, TK.EQLS, '=')
     5  :             Ref(TK.IDNT, 'x')
-    6  :     Set(TK.SET, [Define(), Define(), BinOp()])
+    6  :             Int(TK.INT, 4)
     7  :         Define(TK.DEFINE, TK.EQLS, '=')
-    8  :             Ref(TK.IDNT, 'x')
-    9  :             Int(TK.INT, 4)
-   10  :         Define(TK.DEFINE, TK.EQLS, '=')
-   11  :             Ref(TK.IDNT, 'y')
-   12  :             Int(TK.INT, 7)
-   13  :         BinOp(TK.MUL, '*')
-   14  :             Ref(TK.IDNT, 'x')
-   15  :             Ref(TK.IDNT, 'y')
+    8  :             Ref(TK.IDNT, 'y')
+    9  :             Int(TK.INT, 7)
+   10  :         BinOp(TK.MUL, '*')
+   11  :             Ref(TK.IDNT, 'x')
+   12  :             Ref(TK.IDNT, 'y')
+   13  :     List(TK.TUPLE, [Ref()])
+   14  :         Ref(TK.IDNT, 'x')
 
 tree13:  (x, y, z)
     1  : List(TK.TUPLE, [Get(), Get(), Get()])
@@ -466,7 +463,7 @@ tree36:  a = (x=1, y=2, z=3)
    12  :             Int(TK.INT, 3)
 
 tree37:  b := {x, y, z}
-    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
     2  :     Ref(TK.IDNT, 'b')
     3  :     Set(TK.SET, [Get(), Get(), Get()])
     4  :         Get(TK.IDNT, 'x')
@@ -474,7 +471,7 @@ tree37:  b := {x, y, z}
     6  :         Get(TK.IDNT, 'z')
 
 tree38:  b := {1, 2, 3}
-    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
     2  :     Ref(TK.IDNT, 'b')
     3  :     Set(TK.SET, [Int(), Int(), Int()])
     4  :         Int(TK.INT, 1)
@@ -482,7 +479,7 @@ tree38:  b := {1, 2, 3}
     6  :         Int(TK.INT, 3)
 
 tree39:  b := {x:1, y:2, z:3}
-    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
     2  :     Ref(TK.IDNT, 'b')
     3  :     Set(TK.SET, [Define(), Define(), Define()])
     4  :         Define(TK.DEFINE, TK.COLN, ':')
@@ -496,7 +493,7 @@ tree39:  b := {x:1, y:2, z:3}
    12  :             Int(TK.INT, 3)
 
 tree40:  b := {x=1, y=2, z=3}
-    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
     2  :     Ref(TK.IDNT, 'b')
     3  :     Set(TK.SET, [Define(), Define(), Define()])
     4  :         Define(TK.DEFINE, TK.EQLS, '=')
@@ -510,7 +507,7 @@ tree40:  b := {x=1, y=2, z=3}
    12  :             Int(TK.INT, 3)
 
 tree41:  b := {x=1, y=2, z=3*(x+y)}
-    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
     2  :     Ref(TK.IDNT, 'b')
     3  :     Set(TK.SET, [Define(), Define(), Define()])
     4  :         Define(TK.DEFINE, TK.EQLS, '=')
@@ -698,26 +695,24 @@ tree4:(post)  var f = { a(x):x*x }
     2  :     Ref(TK.IDNT, 'f')
     3  :     Block(TK.BLOCK, v=[DefineFn()], '')
     4  :         DefineFn(TK.DEFINE, TK.COLN, ':')
-    5  :             DefineFn(TK.DEFINE, TK.FUNCTION, '(')
-    6  :                 Ref(TK.IDNT, 'a')
-    7  :                 List(TK.TUPLE, [Ref()])
-    8  :                     Ref(TK.IDNT, 'x')
-    9  :             BinOp(TK.MUL, '*')
+    5  :             Ref(TK.IDNT, 'a')
+    6  :             BinOp(TK.MUL, '*')
+    7  :                 Ref(TK.IDNT, 'x')
+    8  :                 Ref(TK.IDNT, 'x')
+    9  :             List(TK.TUPLE, [Ref()])
    10  :                 Ref(TK.IDNT, 'x')
-   11  :                 Ref(TK.IDNT, 'x')
 
 tree5:(post)  var f = { a(_):_*_ }
     1  : DefineVar(TK.DEFINE, TK.EQLS, '=')
     2  :     Ref(TK.IDNT, 'f')
     3  :     Block(TK.BLOCK, v=[DefineFn()], '')
     4  :         DefineFn(TK.DEFINE, TK.COLN, ':')
-    5  :             DefineFn(TK.DEFINE, TK.FUNCTION, '(')
-    6  :                 Ref(TK.IDNT, 'a')
-    7  :                 List(TK.TUPLE, [Ref()])
-    8  :                     Ref(TK.ANON, '_')
-    9  :             BinOp(TK.MUL, '*')
+    5  :             Ref(TK.IDNT, 'a')
+    6  :             BinOp(TK.MUL, '*')
+    7  :                 Ref(TK.ANON, '_')
+    8  :                 Ref(TK.ANON, '_')
+    9  :             List(TK.TUPLE, [Ref()])
    10  :                 Ref(TK.ANON, '_')
-   11  :                 Ref(TK.ANON, '_')
 
 tree6:(post)  var f = { 5 }
     1  : DefineVar(TK.DEFINE, TK.EQLS, '=')
@@ -726,60 +721,59 @@ tree6:(post)  var f = { 5 }
     4  :         Int(TK.INT, 5)
 
 tree7:(post)  var f := 5
-    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
     2  :     Ref(TK.IDNT, 'f')
     3  :     Int(TK.INT, 5)
 
 tree8:(post)  var f := { 5 }
-    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
     2  :     Ref(TK.IDNT, 'f')
     3  :     Set(TK.SET, [Int()])
     4  :         Int(TK.INT, 5)
 
 tree9:(post)  def f(x) := x * 4;
-    1  : DefineFn(TK.DEFINE, TK.COEQ, ':=')
-    2  :     DefineFn(TK.DEFINE, TK.FUNCTION, '(')
-    3  :         Ref(TK.IDNT, 'f')
-    4  :         List(TK.TUPLE, [Ref()])
-    5  :             Ref(TK.IDNT, 'x')
-    6  :     BinOp(TK.MUL, '*')
-    7  :         Ref(TK.IDNT, 'x')
-    8  :         Int(TK.INT, 4)
-
-tree10:(post)  def f(x) = x * 4
-    1  : DefineFn(TK.DEFINE, TK.EQLS, '=')
+    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
     2  :     Ref(TK.IDNT, 'f')
     3  :     BinOp(TK.MUL, '*')
     4  :         Ref(TK.IDNT, 'x')
     5  :         Int(TK.INT, 4)
+    6  :     List(TK.TUPLE, [Ref()])
+    7  :         Ref(TK.IDNT, 'x')
+
+tree10:(post)  def f(x) = x * 4
+    1  : DefineFn(TK.DEFINE, TK.ASSIGN, '=')
+    2  :     Ref(TK.IDNT, 'f')
+    3  :     BinOp(TK.MUL, '*')
+    4  :         Ref(TK.IDNT, 'x')
+    5  :         Int(TK.INT, 4)
+    6  :     List(TK.TUPLE, [Ref()])
+    7  :         Ref(TK.IDNT, 'x')
 
 tree11:(post)  def f(x) := { x * 4 }
-    1  : DefineFn(TK.DEFINE, TK.COEQ, ':=')
-    2  :     DefineFn(TK.DEFINE, TK.FUNCTION, '(')
-    3  :         Ref(TK.IDNT, 'f')
-    4  :         List(TK.TUPLE, [Ref()])
+    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    2  :     Ref(TK.IDNT, 'f')
+    3  :     Set(TK.SET, [BinOp()])
+    4  :         BinOp(TK.MUL, '*')
     5  :             Ref(TK.IDNT, 'x')
-    6  :     Set(TK.SET, [BinOp()])
-    7  :         BinOp(TK.MUL, '*')
-    8  :             Ref(TK.IDNT, 'x')
-    9  :             Int(TK.INT, 4)
+    6  :             Int(TK.INT, 4)
+    7  :     List(TK.TUPLE, [Ref()])
+    8  :         Ref(TK.IDNT, 'x')
 
 tree12:(post)  def f(x) := {
-    1  : DefineFn(TK.DEFINE, TK.COEQ, ':=')
-    2  :     DefineFn(TK.DEFINE, TK.FUNCTION, '(')
-    3  :         Ref(TK.IDNT, 'f')
-    4  :         List(TK.TUPLE, [Ref()])
+    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    2  :     Ref(TK.IDNT, 'f')
+    3  :     Set(TK.SET, [Define(), Define(), BinOp()])
+    4  :         Define(TK.DEFINE, TK.EQLS, '=')
     5  :             Ref(TK.IDNT, 'x')
-    6  :     Set(TK.SET, [Define(), Define(), BinOp()])
+    6  :             Int(TK.INT, 4)
     7  :         Define(TK.DEFINE, TK.EQLS, '=')
-    8  :             Ref(TK.IDNT, 'x')
-    9  :             Int(TK.INT, 4)
-   10  :         Define(TK.DEFINE, TK.EQLS, '=')
-   11  :             Ref(TK.IDNT, 'y')
-   12  :             Int(TK.INT, 7)
-   13  :         BinOp(TK.MUL, '*')
-   14  :             Ref(TK.IDNT, 'x')
-   15  :             Ref(TK.IDNT, 'y')
+    8  :             Ref(TK.IDNT, 'y')
+    9  :             Int(TK.INT, 7)
+   10  :         BinOp(TK.MUL, '*')
+   11  :             Ref(TK.IDNT, 'x')
+   12  :             Ref(TK.IDNT, 'y')
+   13  :     List(TK.TUPLE, [Ref()])
+   14  :         Ref(TK.IDNT, 'x')
 
 tree13:(post)  (x, y, z)
 result: list([Get(), Get(), Get()])
@@ -1079,7 +1073,7 @@ tree36:(post)  a = (x=1, y=2, z=3)
    12  :             Int(TK.INT, 3)
 
 tree37:(post)  b := {x, y, z}
-    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
     2  :     Ref(TK.IDNT, 'b')
     3  :     Set(TK.SET, [Get(), Get(), Get()])
     4  :         Get(TK.IDNT, 'x')
@@ -1087,7 +1081,7 @@ tree37:(post)  b := {x, y, z}
     6  :         Get(TK.IDNT, 'z')
 
 tree38:(post)  b := {1, 2, 3}
-    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
     2  :     Ref(TK.IDNT, 'b')
     3  :     Set(TK.SET, [Int(), Int(), Int()])
     4  :         Int(TK.INT, 1)
@@ -1095,7 +1089,7 @@ tree38:(post)  b := {1, 2, 3}
     6  :         Int(TK.INT, 3)
 
 tree39:(post)  b := {x:1, y:2, z:3}
-    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
     2  :     Ref(TK.IDNT, 'b')
     3  :     Set(TK.SET, [Define(), Define(), Define()])
     4  :         Define(TK.DEFINE, TK.COLN, ':')
@@ -1109,7 +1103,7 @@ tree39:(post)  b := {x:1, y:2, z:3}
    12  :             Int(TK.INT, 3)
 
 tree40:(post)  b := {x=1, y=2, z=3}
-    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
     2  :     Ref(TK.IDNT, 'b')
     3  :     Set(TK.SET, [Define(), Define(), Define()])
     4  :         Define(TK.DEFINE, TK.EQLS, '=')
@@ -1123,7 +1117,7 @@ tree40:(post)  b := {x=1, y=2, z=3}
    12  :             Int(TK.INT, 3)
 
 tree41:(post)  b := {x=1, y=2, z=3*(x+y)}
-    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
     2  :     Ref(TK.IDNT, 'b')
     3  :     Set(TK.SET, [Define(), Define(), Define()])
     4  :         Define(TK.DEFINE, TK.EQLS, '=')

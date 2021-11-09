@@ -57,6 +57,22 @@ class TreeModifier(NodeVisitor, ABC):
         self.dedent()
         return node
 
+    def visit_trinary_node(self, node, label=None):
+        self.visit_node(node, label)
+        self.indent()
+        if self.apply_parent_fixups:
+            if node.left is not None:
+                node.left.parent = node
+            if node.right is not None:
+                node.right.parent = node
+            if node.args is not None:
+                node.args.parent = node
+        node.left = self.visit(node.left)
+        node.right = self.visit(node.right)
+        node.args = self.visit(node.args)
+        self.dedent()
+        return node
+
     def visit_unary_node(self, node, label=None):
         self.visit_node(node, label)
         self.indent()

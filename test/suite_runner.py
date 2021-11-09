@@ -131,24 +131,22 @@ def _dump_environment(env, label=None,
         _dump_tokens(env)
         logger.flush()
     if print_trees:
-        print('\n-----------------------------------------------')
-        print('               P A R S E   T R E E')
-        print('-----------------------------------------------')
+        _print_banner("parse tree")
         print_forest(env, logger, label, print_results=print_results, print_notation=print_notation)
         logger.flush()
     if print_commands:
         _print_commands(env, env.commands, logger=logger)
         logger.flush()
     if print_symbols:
+        _print_banner("symbols")
+        _dump_keywords(logger, env.keywords)
         _dump_symbols(logger, env.scope)
         logger.flush()
 
 
 def _print_commands(env, commands, logger=None, label=None):
     if len(commands) > 0:
-        print('\n-----------------------------------------------')
-        print('                C O M M A N D S')
-        print('-----------------------------------------------')
+        _print_banner("commands")
         idx = 0
         for i in range(0, len(commands)):
             t = commands[i]
@@ -167,9 +165,6 @@ def _dump_tokens(env):
 
 
 def _dump_symbols(logger, scope):
-    print('\n-----------------------------------------------')
-    print('                    S Y M B O L S')
-    print('-----------------------------------------------\n')
     logger.print("\n\nsymbols: ")
     idx = 0
     q = SimpleQueue()
@@ -188,3 +183,35 @@ def _dump_symbols(logger, scope):
                 q.put(v)
                 logger.print(f'{idx:5d}:  `{k}`: {v.qualname} : Object({v.token})')
                 idx += 1
+
+
+def _dump_keywords(logger, scope):
+    if scope._symbols is None or len(scope._symbols) == 0:
+        return
+    logger.print(f'\nkeywords:')
+    idx = 0
+    for k in scope._symbols.keys():
+        v = scope._symbols[k]
+        if type(v).__name__ == 'Token':
+            logger.print(f'{idx:5d}:  `{k}`: {v}')
+            idx += 1
+
+
+def _print_banner(label, width=None):
+    width = width or 50
+    print("\n")
+    title = _expand_text(label.upper())
+    _l = (width // 2) - len(title) // 2
+    _l = max(_l, 0)
+    print(f'# {"-" * width}')
+    print(f'# {" ".ljust(_l)}{title}')
+    print(f'# {"-" * width}')
+
+
+def _expand_text(text):
+    t = []
+    for c in text:
+        t.append(f'{c} ')
+    return ''.join(t)
+
+

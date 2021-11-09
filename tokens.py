@@ -48,7 +48,6 @@ class TK(IntEnum):
     DOT = auto()  # .
     DOT2 = auto()  # ..
     DUR = auto()  # 1s, 1m, 1d, 1w, 1m, 1y
-    EMPTY = auto() # ø empty set
     EQEQ = auto()  # ==
     EQGT = auto()  # =>
     EQLS = auto()  # =
@@ -116,60 +115,66 @@ class TK(IntEnum):
     # higher-level / derived tokens
     #
     ADD = auto()  # +
-    ALL = auto()  # all:
-    AND = auto()
-    ANON = auto()  # anonymous parameter '_'
-    ANY = auto()  # any:
-    APPLY = auto()  # >>
     ASSIGN = auto()  # =
     BLOCK = auto()
     BOOL = auto()
-    BUY = auto()
     CHAIN = auto()
     COMMAND = auto()
     COMPARE = auto()    # ?  a ? b is to compare a to b
     DECREMENT = auto()  # --
     DEF = auto()     # set version of REF
     DEFINE = auto()     # :=, 'def'
-    DIV = auto()  # /
+    DEFINE_FN = auto()     # =>,  'def' f(x)
     DOTPROD = auto()  # •
     EVENT = auto()  # from =>
     FALL_BELOW = auto()  # <|
-    FALSE = auto()
     FUNCTION = auto()
-    IN = auto()
     IDIV = auto()   # integer division
     INCREMENT = auto()
     INDEX = auto()  # indexing expression
     ISEQ = auto()  # ==
     KVPAIR = auto()  # key:value
     LIST = auto()
-    MOD = auto()
     MUL = auto()  # *
     NATIVE = auto()    # token represents native literal
     NEG = auto()  # unary - (negate)
-    NONE = auto()
-    NONEOF = auto()  # none:
-    NOT = auto()
-    NOW = auto()
     OBJECT = auto()  # unknown type
     OR = auto()
     POS = auto()  # unary +
     POW = auto()  # ^
     PRODUCE = auto()  # => signal
-    RANGE = auto()
+    RAISE = auto()  # ->
     REF = auto()
     RISE_ABOVE = auto()  # >|
-    SELL = auto()
     SET = auto()
-    SIGNAL = auto()
     SUB = auto()  # - (subtract)
-    TODAY = auto()
-    TRUE = auto()
     TUPLE = auto()
-    VAR = auto()
 
     LAST = 299  # last reserved token id
+
+    # keywords & intrinsic functions
+    ALL = auto()   # all:
+    AND = auto()
+    ANON = auto()  # anonymous parameter '_'
+    ANY = auto()   # any:
+    APPLY = auto()  # >>
+    BUY = auto()
+    DATAFRAME = auto()
+    DIV = auto()  # /
+    EMPTY = auto()  # ø empty set
+    FALSE = auto()
+    IN = auto()
+    MOD = auto()
+    NONE = auto()
+    NONEOF = auto()  # none:
+    NOT = auto()
+    NOW = auto()
+    RANGE = auto()
+    SELL = auto()
+    SIGNAL = auto()
+    TODAY = auto()
+    TRUE = auto()
+    VAR = auto()
 
 
 # token conversion tables, could be array lookups rather than hashtable, but this is easier to maintain and not large.
@@ -202,7 +207,7 @@ _tk2binop = {
     TK.PCT: TK.PCT,
     TK.PLUS: TK.ADD,
     TK.QSTN: TK.COMPARE,
-    TK.RARR: TK.PRODUCE,
+    TK.RARR: TK.RAISE,
     TK.RBAR: TK.RISE_ABOVE,
     TK.SLSH: TK.DIV,
     TK.STAR: TK.MUL,
@@ -279,6 +284,7 @@ _tk2glyph = {
     TK.COMPARE: '?',
     TK.DECREMENT: '--',
     TK.DEFINE: ':=',
+    TK.DEFINE_FN: '=>',
     TK.DIV: '/',
     TK.DUR: 'dur',
     TK.EMPTY: 'Ø',  # empty set
@@ -348,17 +354,17 @@ u16_to_tkid = {
 
 # token sets for the parser
 _ADDITION_TOKENS = [TK.PLUS, TK.MNUS]
-_ASSIGNMENT_TOKENS = [TK.COEQ, TK.EQLS, TK.ASSIGN, TK.MNEQ, TK.PLEQ]
+_ASSIGNMENT_TOKENS = [TK.COEQ, TK.EQLS, TK.ASSIGN, TK.GTR2, TK.MNEQ, TK.PLEQ]
 _ASSIGNMENT_TOKENS_EX = [TK.COEQ, TK.EQLS, TK.ASSIGN, TK.MNEQ, TK.PLEQ, TK.COLN]
-_ASSIGNMENT_TOKENS_REF = [TK.COEQ, TK.EQLS, TK.ASSIGN, TK.COLN]
+_ASSIGNMENT_TOKENS_REF = [TK.COEQ, TK.EQLS, TK.EQGT, TK.ASSIGN, TK.COLN]
 _COMPARISON_TOKENS = [TK.LESS, TK.LTE, TK.GTR, TK.GTE, TK.IN, TK.LBAR, TK.RBAR]
-_FLOW_TOKENS = [TK.BAR, TK.EQGT, TK.GTR2, TK.RARR]
+_FLOW_TOKENS = [TK.BAR, TK.GTR2, TK.APPLY, TK.RARR]
 _EQUALITY_TEST_TOKENS = [TK.EQEQ, TK.NEQ]
 _LOGIC_TOKENS = [TK.AND, TK.OR, TK.AMPS, TK.CLN2, TK.QSTN]
 _MULTIPLICATION_TOKENS = [TK.SLSH, TK.STAR, TK.EXPN, TK.DOT, TK.DOT2, TK.IDIV, TK.MOD]
 _UNARY_TOKENS = [TK.PLUS, TK.MNUS, TK.NOT, TK.EXCL, TK.MNU2, TK.PLU2]
 _SET_UNARY_TOKENS = [TK.NONE, TK.ALL, TK.ANY]
-_IDENTIFIER_TYPES = [TCL.KEYWORD, TCL.DATASET, TCL.IDENTIFIER, TCL.TUPLE]
+_IDENTIFIER_TYPES = [TCL.KEYWORD, TCL.DATASET, TCL.IDENTIFIER, TCL.TUPLE, TCL.FUNCTION]
 _IDENTIFIER_TOKENS = [TK.IDNT, TK.ANON, TK.REF, TK.DOT, TK.TUPLE, TK.FUNCTION]
 _IDENTIFIER_TOKENS_EX = [TK.IDNT, TK.ANON, TK.REF, TK.DOT, TK.TUPLE, TK.FUNCTION, TK.COLN, TK.BLOCK, TK.BUY, TK.SELL, TK.CHAIN]
 _VALUE_TOKENS = [TK.BOOL, TK.FLOT, TK.EMPTY, TK.INT, TK.NONE, TK.STR, TK.DUR, TK.OBJECT, TK.SET, TK.LIST, TK.IDNT]

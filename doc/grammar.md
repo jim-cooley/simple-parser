@@ -19,15 +19,15 @@ element | production
 | | &#124; ` `  `none:{` _block_ `}`
 *_expression_ := | _assignment_
 | | &#124; ` ` _assignment_  ` ` &#124; ` ` _assignment_ | chain expressions
-| | &#124; ` `  _assignment_ `=>` _assignment_ | produce (raise)
-| | &#124; ` `  _assignment_ `>>` _assignment_ | apply
-| | &#124; ` `  _assignment_ `->` _assignment_ | tbd
 *_assignment_ := | _boolean_expr_
 | | &#124; ` `  `(` _tuple_ `)`
 | | &#124; ` `  `(` _tuple_ `) =` _expression_
 | | &#124; ` `  `(` _tuple_ `) :=` _expression_
 | | &#124; ` `  `(` _tuple_ `) +=` _expression_
 | | &#124; ` `  `(` _tuple_ `) -=` _expression_
+| | &#124; ` `  `(` _tuple_ `) =>` _block_expression_ | produce (raise)
+| | &#124; ` `  `(` _tuple_ `) >>` _expression_ | apply
+| | &#124; ` `  `(` _tuple_ `) ->` _expression_ | tbd
 *_tuple_ := | _boolean_expr_
 | | &#124; ` ` `all: ` _tuple_
 | | &#124; ` ` `any: ` _tuple_

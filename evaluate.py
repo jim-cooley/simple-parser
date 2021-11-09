@@ -65,9 +65,10 @@ def reduce_propget(left=None, right=None):
 
 def reduce_parameters(scope=None, node=None):
     items = {}
-    for ref in node:
-        sym = reduce_ref(scope=scope, ref=ref)
-        items[sym.name] = sym
+    if node is not None:
+        for ref in node:
+            sym = reduce_ref(scope=scope, ref=ref)
+            items[sym.name] = sym
     return IndexedDict(items)
 
 

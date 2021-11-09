@@ -16,6 +16,7 @@ _FUNCTION_NODE = BINARY_NODE
 _IDENT_NODE = 'visit_identifier'
 _NATIVE_VALUE = 'visit_node'
 _VISIT_DEFINITION = 'visit_definition'
+_VISIT_DEFINE_FN = 'visit_define_fn'
 ASSIGNMENT_NODE = 'visit_assignment'
 
 BINARY_NODE = 'process_binops'
@@ -31,9 +32,9 @@ _fixupNodeTypeMappings = {
     'DateTime': VALUE_NODE,
     'Define': _VISIT_DEFINITION,
     'DefineChainProd': _VISIT_DEFINITION,
-    'DefineFn': _VISIT_DEFINITION,
+    'DefineFn': _VISIT_DEFINE_FN,
     'DefineVar': _VISIT_DEFINITION,
-    'DefineVarFn': _VISIT_DEFINITION,
+    'DefineVarFn': _VISIT_DEFINE_FN,
     'Duration': VALUE_NODE,
     'Float': VALUE_NODE,
     'Flow': SEQUENCE_NODE,
@@ -96,6 +97,9 @@ class Fixups(TreeModifier, ABC):
 
     def visit_definition(self, node, label=None):
         return self.visit_binary_node(node, label)
+
+    def visit_define_fn(self, node, label=None):
+        return self.visit_trinary_node(node, label)
 
     # encountered if 'tree' is actually a 'forest'
     def visit_list(self, list, label=None):

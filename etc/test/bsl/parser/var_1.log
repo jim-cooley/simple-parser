@@ -4,16 +4,18 @@ test: 1:
 var f(x) = { var a.b(x):x*x }
 
 tree1:  var f(x) = { var a.b(x):x*x }
-    1  : DefineVarFn(TK.DEFINE, TK.EQLS, '=')
+    1  : DefineVarFn(TK.DEFINE, TK.ASSIGN, '=')
     2  :     Ref(TK.IDNT, 'f')
     3  :     Block(TK.BLOCK, v=[DefineVar()], '')
     4  :         DefineVar(TK.DEFINE, TK.COLN, ':')
     5  :             PropRef(TK.REF, '.')
     6  :                 Ref(TK.IDNT, 'a')
-    7  :                 DefineFn(TK.DEFINE, TK.FUNCTION, '(')
+    7  :                 FnDef(TK.FUNCTION, '(')
     8  :                     Ref(TK.IDNT, 'b')
     9  :                     List(TK.TUPLE, [Ref()])
    10  :                         Ref(TK.IDNT, 'x')
    11  :             BinOp(TK.MUL, '*')
    12  :                 Ref(TK.IDNT, 'x')
    13  :                 Ref(TK.IDNT, 'x')
+   14  :     List(TK.TUPLE, [Ref()])
+   15  :         Ref(TK.IDNT, 'x')

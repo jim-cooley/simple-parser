@@ -3,9 +3,10 @@ from literals import Literal
 from notation_fn import FunctionalNotationPrinter
 from tree import Ref, UnaryOp, Command, PropRef, BinOp, FnCall
 from visitor import NodeVisitor, BINARY_NODE, UNARY_NODE, SEQUENCE_NODE, DEFAULT_NODE, VALUE_NODE, NATIVE_VALUE, \
-    ASSIGNMENT_NODE
+    ASSIGNMENT_NODE, TRINARY_NODE
 
 _nodeTypeMappings = {
+    'Apply': ASSIGNMENT_NODE,
     'ApplyChainProd': ASSIGNMENT_NODE,
     'Assign': ASSIGNMENT_NODE,
     'BinOp': BINARY_NODE,
@@ -16,13 +17,14 @@ _nodeTypeMappings = {
     'DateTime': VALUE_NODE,
     'Define': ASSIGNMENT_NODE,
     'DefineChainProd': ASSIGNMENT_NODE,
-    'DefineFn': ASSIGNMENT_NODE,
+    'DefineFn': TRINARY_NODE,
     'DefineVar': ASSIGNMENT_NODE,
-    'DefineVarFn': ASSIGNMENT_NODE,
+    'DefineVarFn': TRINARY_NODE,
     'Duration': VALUE_NODE,
     'Float': VALUE_NODE,
     'Flow': SEQUENCE_NODE,
     'FnCall': BINARY_NODE,
+    'FnDef': BINARY_NODE,
     'Get': VALUE_NODE,
     'Ident': VALUE_NODE,
     'Index': BINARY_NODE,
@@ -107,6 +109,16 @@ class TreePrint(NodeVisitor):
             for n in li:
                 if n is not None:
                     self.visit(n)
+        self.dedent()
+
+    def visit_trinary_node(self, node, label=None):
+        self._print_node(node, label)
+        node._num = self._ncount
+        self._ncount += 1
+        self.indent()
+        self.visit(node.left)
+        self.visit(node.right)
+        self.visit(node.args)
         self.dedent()
 
     def visit_unary_node(self, node, label=None):

@@ -64,5 +64,9 @@ _KEYWORDS = [
     (TK.IDNT, TCL.KEYWORD, 'select'),
     (TK.IDNT, TCL.FUNCTION, "ema"),
     (TK.IDNT, TCL.FUNCTION, "sma"),
+
+    # intrinsics
+    (TK.DATAFRAME, TCL.FUNCTION, 'dataframe')
+
 ]
 

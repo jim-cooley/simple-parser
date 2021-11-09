@@ -5,7 +5,7 @@ from copy import copy, deepcopy
 from dataclasses import dataclass
 from queue import SimpleQueue
 
-from tokens import Token, TCL, TK, TK_NONE
+from tokens import Token, TCL, TK
 from tree import AST, Expression
 
 
@@ -15,7 +15,7 @@ class Scope:
         super().__init__(**kwargs)
         self.parent_scope = parent_scope
         self._name = name
-        self._fqname = self._calc_fqname()
+        self._fqname = None
         self._symbols = {}
 
     def __len__(self):
@@ -27,13 +27,14 @@ class Scope:
 
     @property
     def qualname(self):
-        return self._name if self._fqname is None else self._fqname
+        if self._fqname is None:
+            self._fqname = self._calc_fqname()
+        return self._fqname
 
     def from_block(self, block):
         self._symbols = block._symbols
         for s in self._symbols.values():
             s.parent_scope = self
-            s._calc_fqname()
         return self
 
     def assign(self, token, expr):
@@ -48,17 +49,14 @@ class Scope:
 
     def define(self, token, expr):
         sym = self._find_add_local(token, expr)
-        sym._calc_qualname()
         return sym
 
     def link(self, scope):
         self.parent_scope = scope
-        self._fqname = self._calc_fqname()
         return self
 
     def unlink(self):
         self.parent_scope = None
-        self._fqname = self._name
         return self
 
     def update(self, name, value):
@@ -68,8 +66,18 @@ class Scope:
         return sym
 
     def find(self, token, default=None):
-        scope = self
         return self.find_name(token.lexeme, default)
+
+    def find_local(self, token, default=None):
+        return self.find_local_name(token.lexeme, default)
+
+    def find_add(self, token, value=None):
+        symbol = self.find(token)
+        if symbol is None:
+            symbol = Object(copy(token))
+            symbol.value = value
+            self._symbols[token.lexeme] = symbol
+        return symbol
 
     def find_name(self, name, default=None):
         scope = self
@@ -79,21 +87,10 @@ class Scope:
             scope = scope.parent_scope
         return default
 
-    def find_local(self, token, default=None):
-        return self.find_local_name(token.lexeme, default)
-
     def find_local_name(self, name, default=None):
         if name in self._symbols:
             return self._symbols[name]
         return default
-
-    def find_add(self, token, value=None):
-        symbol = self.find(token)
-        if symbol is None:
-            symbol = Object(copy(token))
-            symbol.value = value
-            self._symbols[token.lexeme] = symbol
-        return symbol
 
     def find_add_local(self, token, value=None):
         symbol = self.find_local(token)
@@ -147,12 +144,11 @@ class Scope:
 
 @dataclass
 class Object(AST, Scope):
-    def __init__(self, token=None, value=None, parent=None):
+    def __init__(self, token=None, name=None, value=None, parent=None):
         super().__init__(token=token, value=value, parent=parent, parent_scope=None)
-        self.is_lvalue = True
-#       self.value = token.value
         self.code = None
         self.parameters = None
+        self.is_lvalue = True
         if self.token is None or self.token.lexeme is None:
             self._name = ''
         else:
@@ -179,7 +175,7 @@ class Object(AST, Scope):
     def format(self):
         tk = self.token
         if self.code is not None:
-            return f'{self.name}({self.parameters}) = {self.code}'
+            return f'{self.name}{self.parameters} = {self.code}'
         else:
             v = f'{tk.value}' if tk.value is not None else 'None'
             return f'{self.name} = {v}'

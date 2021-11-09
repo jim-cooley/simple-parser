@@ -72,6 +72,7 @@ _tk2pfx = {
     TK.POS: 'pos',  # unary +
     TK.POW: 'pow',  # ^
     TK.PRODUCE: 'produce',  # =>
+    TK.RAISE: 'raise',  # ->
     TK.RANGE: 'range',
     TK.REF: 'ref',
     TK.RISE_ABOVE: 'if_above',  # >|
@@ -99,6 +100,7 @@ _tk2grp = {
 _DEFAULT_GRP = ['(', ', ', ')', '()']
 
 _DEFINITION_NODE = 'visit_define_node'
+_DEFINE_FN_NODE = 'visit_define_fn_node'
 _FUNCTION_NODE = 'visit_function_call'
 _IDENT_NODE = 'visit_identifier'
 
@@ -113,9 +115,9 @@ _postfixNodeTypeMappings = {
     'DateTime': VALUE_NODE,
     'Define': _DEFINITION_NODE,
     'DefineChainProd': _DEFINITION_NODE,
-    'DefineFn': _DEFINITION_NODE,
+    'DefineFn': _DEFINE_FN_NODE,
     'DefineVar': _DEFINITION_NODE,
-    'DefineVarFn': _DEFINITION_NODE,
+    'DefineVarFn': _DEFINE_FN_NODE,
     'Duration': VALUE_NODE,
     'Float': VALUE_NODE,
     'Flow': SEQUENCE_NODE,
@@ -181,10 +183,25 @@ class FunctionalNotationPrinter(TreeFilter):
         self._process_binary_node(node)
 
     def visit_define_node(self, node, label=None):
-#       text = f'{label.lower()}{_tk2glyph[node.op]} ' if node.op in _tk2glyph else f'{label.lower()} '
         text = f'{label.lower()} '
         self._print_indented(text)
         self._process_binary_node(node)
+
+    def visit_define_fn_node(self, node, label=None):
+        text = f'{label.lower()} '
+        self._print_indented(text)
+        self._process_trinary_node(node)
+
+    def _process_trinary_node(self, node):
+        self._print_open(node.token, append=True)
+        self.indent()
+        self.visit(node.left)
+        self._print_sep(node.token, append=True)
+        self.visit(node.args)
+        self._print_sep(node.token, append=True)
+        self.visit(node.right)
+        self.dedent()
+        self._print_close(node.token)
 
     def _process_binary_node(self, node):
         self._print_open(node.token, append=True)

@@ -57,7 +57,7 @@ tree2:  sma_period = [3,5,10..20,28]
     9  :         Int(TK.INT, 28)
 
 tree3:  atr := (high + low) / 2
-    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
     2  :     Ref(TK.IDNT, 'atr')
     3  :     BinOp(TK.DIV, '/')
     4  :         BinOp(TK.ADD, '+')
@@ -66,7 +66,7 @@ tree3:  atr := (high + low) / 2
     7  :         Int(TK.INT, 2)
 
 tree4:  median_price := (open + close) / 2
-    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
     2  :     Ref(TK.IDNT, 'median_price')
     3  :     BinOp(TK.DIV, '/')
     4  :         BinOp(TK.ADD, '+')
@@ -75,7 +75,7 @@ tree4:  median_price := (open + close) / 2
     7  :         Int(TK.INT, 2)
 
 tree5:  price10a := price.delay(1d)[10:00]
-    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
     2  :     Ref(TK.IDNT, 'price10a')
     3  :     PropRef(TK.REF, '.')
     4  :         Get(TK.IDNT, 'price')
@@ -89,7 +89,7 @@ tree6:  price10a := price.delay(1d)[10:00]
     2  :     Time(TK.TIME, 10:00:00)
 
 tree7:  report := { trades | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price') }
-    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
     2  :     Ref(TK.IDNT, 'report')
     3  :     Block(TK.BLOCK, v=[Flow()], '')
     4  :         Flow(TK.CHAIN, v=[Get(), FnCall()], '|')
@@ -236,7 +236,7 @@ tree2:(post)  sma_period = [3,5,10..20,28]
     7  :         Int(TK.INT, 28)
 
 tree3:(post)  atr := (high + low) / 2
-    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
     2  :     Ref(TK.IDNT, 'atr')
     3  :     BinOp(TK.DIV, '/')
     4  :         BinOp(TK.ADD, '+')
@@ -245,7 +245,7 @@ tree3:(post)  atr := (high + low) / 2
     7  :         Int(TK.INT, 2)
 
 tree4:(post)  median_price := (open + close) / 2
-    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
     2  :     Ref(TK.IDNT, 'median_price')
     3  :     BinOp(TK.DIV, '/')
     4  :         BinOp(TK.ADD, '+')
@@ -254,7 +254,7 @@ tree4:(post)  median_price := (open + close) / 2
     7  :         Int(TK.INT, 2)
 
 tree5:(post)  price10a := price.delay(1d)[10:00]
-    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
     2  :     Ref(TK.IDNT, 'price10a')
     3  :     PropRef(TK.REF, '.')
     4  :         Get(TK.IDNT, 'price')
@@ -269,7 +269,7 @@ result: list([Time()])
     2  :     Time(TK.TIME, 10:00:00)
 
 tree7:(post)  report := { trades | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price') }
-    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
     2  :     Ref(TK.IDNT, 'report')
     3  :     Block(TK.BLOCK, v=[Flow()], '')
     4  :         Flow(TK.CHAIN, v=[Get(), FnCall()], '|')

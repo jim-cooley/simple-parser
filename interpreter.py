@@ -159,10 +159,15 @@ class Interpreter(TreeFilter):
         self._print_node(node)
         left = node.left
         right = node.right
-        fn = reduce_ref(ref=left.left)
+        args = node.args
+        self.indent()
+        self.visit(left)
+        self.visit(args)
+        self._print_node(right)     # can't visit right w/o executing it
+        self.dedent()
+        fn = reduce_ref(ref=left)
         fn.code = right
-        fn.parameters = reduce_parameters(scope=fn, node=left.right)
-#       self.process_binop(node, label)
+        fn.parameters = reduce_parameters(scope=fn, node=args)
         self.stack.push(fn)
 
     def process_flow(self, node, label=None):

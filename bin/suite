@@ -2,6 +2,7 @@
 logpath="./etc/test/log"
 bslpath="./etc/test/bsl"
 suitelog=./etc/log/suite.log
+results=./etc/log/results.log
 
 declare -i ignore_baselines=0
 declare -i quiet=0
@@ -45,6 +46,7 @@ if [ $display_help -gt 0 ]; then
 
 else
   echo "" > $suitelog
+  echo "" > $results
   declare -i pass=0
   declare -i total=0
   declare -i no_baseline=0
@@ -91,6 +93,7 @@ else
           fi
           if [ "$reason" != "pass" ]; then
               printf "$(basename $test):\t$reason\n" >> $suitelog &>> $suitelog
+              printf "$(basename $test):\t$reason\n" >> $results &>> $results
           fi
       else
           if [ $ignore_baselines -eq 0 ]; then
@@ -108,8 +111,10 @@ else
           fi
           if [ $ignore_baselines -eq 0 ]; then
               printf "$(basename $test):\tfail: $reason\n" >> $suitelog &>> $suitelog
+              printf "$(basename $test):\tfail: $reason\n" >> $results &>> $results
           elif [ "$reason" != "" ]; then
               printf "$(basename $test):\tfail: $reason\n" >> $suitelog &>> $suitelog
+              printf "$(basename $test):\tfail: $reason\n" >> $results &>> $results
           fi
       fi
       if [ "$reason" == "fail (exception)" ]; then
@@ -117,8 +122,17 @@ else
       fi
   done
 
-  printf "\n\nresults summary:\n" >> $suitelog
+  printf "\n\nresults summary:\n" >> $results
   fail=$((total-pass-no_baseline))
+  printf "================================\n" >> $results
+  printf "  pass:        $pass\n" >> $results
+  printf "  fail:        $((total-pass-no_baseline))\n" >> $results
+  printf "  exceptions:  $exceptions\n" >> $results
+  printf "  no baseline: $no_baseline\n" >> $results
+  printf "  total:       $total\n" >> $results
+  printf "================================\n\n" >> $results
+
+  printf "\n\nresults summary:\n" >> $suitelog
   printf "================================\n" >> $suitelog
   printf "  pass:        $pass\n" >> $suitelog
   printf "  fail:        $((total-pass-no_baseline))\n" >> $suitelog
@@ -126,6 +140,7 @@ else
   printf "  no baseline: $no_baseline\n" >> $suitelog
   printf "  total:       $total\n" >> $suitelog
   printf "================================\n\n" >> $suitelog
+
   printf "\n\nresults summary:\n"
   printf "================================\n"
   printf "  pass:        $pass   $((pass*100/total)) pct \n"

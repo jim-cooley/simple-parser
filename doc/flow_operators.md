@@ -5,7 +5,7 @@ Flow operators are '|', '=>', and '>>'.  Here is how they differ:
 operator | name | description
 :---: | --- | ---
 &#124; | `chain` or `pipe` | Connects transform functions together, producing a flow of data through various transformations 
-`>>` | `apply` | Assigns the product of a series of flow transitions to storage.  Example: `a >> b`, would assign `a` to `b`
+`>>` | `apply` | Assigns the product of a series of flow transitions to storage.  Example: `a >> b`, would be equivalent to `b` = `a`
 `=>` | `produce` or `yield` |  Used as a pattern substitution / ananymous function declaration.  Example: `x => x + 1` would apply the anonymous function `x + 1`, where `x` occurred.  In this case, `x` is an anonymous variable and its name does not matter.  The expression could also be written: ` _ => _ + 1`
 
 ## Valid Forms

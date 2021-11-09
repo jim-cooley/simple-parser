@@ -1,0 +1,561 @@
+
+
+test:
+
+x => x:x + 1
+
+sugar(x) => { x + 1 }
+
+sugar(x) := { x + 1 }
+
+sugar(x) = { x + 1 }
+
+def simple(x) := {
+    x + 1
+}
+
+def factorial(x) := {
+    x * factorial(x - 1)
+}
+
+# simple inline functions
+a := 3
+a := a + 1
+a => a + 1
+
+# inline functions:
+def atr = (high + low) / 2
+def avg_daily_price = (open + close) / 2
+def trade_size = position * 10%
+atr := (high + low) / 2
+avg_daily_price := (open + close) / 2
+trade_size := position * 10%
+
+# from tuples:
+(a, b, c,)                   # tuple
+(a, b, c) = (4, 5, 6)        # tuple assignment
+(a, b, c) := (4, 5, 6)       # tuple assignment (var)
+(a, b, c) = (a:5, b:3, c:4)  # tuple assignment k:v
+{a, b, c}:(4, 5, 6)          # set parameterization
+{a, b, c}:(a:5, b:3, c:4)    # set parameterization k:v
+{a, b, c}:(a=5, b=3, c=4)    # set parameterization k=v (error?)
+{a, b, c}:{a=5, b=3, c=4}    # set parameterization k=v (block)
+{a, b, c}:{a:5, b:3, c:4}    # set parameterization k=v (block)
+
+
+
+
+tree1:  x => x:x + 1
+    1  : DefineFn(TK.DEFINE, TK.EQGT, '=>')
+    2  :     Ref(TK.IDNT, 'x')
+    3  :     BinOp(TK.ADD, '+')
+    4  :         Get(TK.IDNT, 'x')
+    5  :         Int(TK.INT, 1)
+    6  :     List(TK.TUPLE, [Ref()])
+    7  :         Ref(TK.IDNT, 'x')
+
+tree2:  sugar(x) => { x + 1 }
+    1  : DefineFn(TK.DEFINE, TK.EQGT, '=>')
+    2  :     Ref(TK.IDNT, 'sugar')
+    3  :     Block(TK.BLOCK, v=[BinOp()], '')
+    4  :         BinOp(TK.ADD, '+')
+    5  :             Get(TK.IDNT, 'x')
+    6  :             Int(TK.INT, 1)
+    7  :     List(TK.TUPLE, [Ref()])
+    8  :         Ref(TK.IDNT, 'x')
+
+tree3:  sugar(x) := { x + 1 }
+    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    2  :     Ref(TK.IDNT, 'sugar')
+    3  :     Set(TK.SET, [BinOp()])
+    4  :         BinOp(TK.ADD, '+')
+    5  :             Get(TK.IDNT, 'x')
+    6  :             Int(TK.INT, 1)
+    7  :     List(TK.TUPLE, [Ref()])
+    8  :         Ref(TK.IDNT, 'x')
+
+tree4:  sugar(x) = { x + 1 }
+    1  : DefineFn(TK.DEFINE, TK.ASSIGN, '=')
+    2  :     Ref(TK.IDNT, 'sugar')
+    3  :     Set(TK.SET, [BinOp()])
+    4  :         BinOp(TK.ADD, '+')
+    5  :             Get(TK.IDNT, 'x')
+    6  :             Int(TK.INT, 1)
+    7  :     List(TK.TUPLE, [Ref()])
+    8  :         Ref(TK.IDNT, 'x')
+
+tree5:  def simple(x) := {
+    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    2  :     Ref(TK.IDNT, 'simple')
+    3  :     Set(TK.SET, [BinOp()])
+    4  :         BinOp(TK.ADD, '+')
+    5  :             Ref(TK.IDNT, 'x')
+    6  :             Int(TK.INT, 1)
+    7  :     List(TK.TUPLE, [Ref()])
+    8  :         Ref(TK.IDNT, 'x')
+
+tree6:  def factorial(x) := {
+    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    2  :     Ref(TK.IDNT, 'factorial')
+    3  :     Block(TK.BLOCK, v=[BinOp()], '')
+    4  :         BinOp(TK.MUL, '*')
+    5  :             Ref(TK.IDNT, 'x')
+    6  :             FnDef(TK.FUNCTION, '(')
+    7  :                 Ref(TK.IDNT, 'factorial')
+    8  :                 List(TK.TUPLE, [BinOp()])
+    9  :                     BinOp(TK.SUB, '-')
+   10  :                         Ref(TK.IDNT, 'x')
+   11  :                         Int(TK.INT, 1)
+   12  :     List(TK.TUPLE, [Ref()])
+   13  :         Ref(TK.IDNT, 'x')
+
+tree7:  a := 3
+    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
+    2  :     Ref(TK.IDNT, 'a')
+    3  :     Int(TK.INT, 3)
+
+tree8:  a := a + 1
+    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
+    2  :     Ref(TK.IDNT, 'a')
+    3  :     BinOp(TK.ADD, '+')
+    4  :         Get(TK.IDNT, 'a')
+    5  :         Int(TK.INT, 1)
+
+tree9:  a => a + 1
+    1  : DefineFn(TK.DEFINE, TK.EQGT, '=>')
+    2  :     Ref(TK.IDNT, 'a')
+    3  :     BinOp(TK.ADD, '+')
+    4  :         Get(TK.IDNT, 'a')
+    5  :         Int(TK.INT, 1)
+
+tree10:  def atr = (high + low) / 2
+    1  : Define(TK.DEFINE, TK.EQLS, '=')
+    2  :     Ref(TK.IDNT, 'atr')
+    3  :     BinOp(TK.DIV, '/')
+    4  :         BinOp(TK.ADD, '+')
+    5  :             Ref(TK.IDNT, 'high')
+    6  :             Ref(TK.IDNT, 'low')
+    7  :         Int(TK.INT, 2)
+
+tree11:  def avg_daily_price = (open + close) / 2
+    1  : Define(TK.DEFINE, TK.EQLS, '=')
+    2  :     Ref(TK.IDNT, 'avg_daily_price')
+    3  :     BinOp(TK.DIV, '/')
+    4  :         BinOp(TK.ADD, '+')
+    5  :             Ref(TK.IDNT, 'open')
+    6  :             Ref(TK.IDNT, 'close')
+    7  :         Int(TK.INT, 2)
+
+tree12:  def trade_size = position * 10%
+    1  : Define(TK.DEFINE, TK.EQLS, '=')
+    2  :     Ref(TK.IDNT, 'trade_size')
+    3  :     BinOp(TK.MUL, '*')
+    4  :         Ref(TK.IDNT, 'position')
+    5  :         Percent(TK.PCT, 0.1)
+
+tree13:  atr := (high + low) / 2
+    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
+    2  :     Ref(TK.IDNT, 'atr')
+    3  :     BinOp(TK.DIV, '/')
+    4  :         BinOp(TK.ADD, '+')
+    5  :             Get(TK.IDNT, 'high')
+    6  :             Get(TK.IDNT, 'low')
+    7  :         Int(TK.INT, 2)
+
+tree14:  avg_daily_price := (open + close) / 2
+    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
+    2  :     Ref(TK.IDNT, 'avg_daily_price')
+    3  :     BinOp(TK.DIV, '/')
+    4  :         BinOp(TK.ADD, '+')
+    5  :             Get(TK.IDNT, 'open')
+    6  :             Get(TK.IDNT, 'close')
+    7  :         Int(TK.INT, 2)
+
+tree15:  trade_size := position * 10%
+    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
+    2  :     Ref(TK.IDNT, 'trade_size')
+    3  :     BinOp(TK.MUL, '*')
+    4  :         Get(TK.IDNT, 'position')
+    5  :         Percent(TK.PCT, 0.1)
+
+tree16:  (a, b, c,)                   # tuple
+    1  : List(TK.TUPLE, [Get(), Get(), Get()])
+    2  :     Get(TK.IDNT, 'a')
+    3  :     Get(TK.IDNT, 'b')
+    4  :     Get(TK.IDNT, 'c')
+
+tree17:  (a, b, c) = (4, 5, 6)        # tuple assignment
+    1  : Define(TK.DEFINE, TK.EQLS, '=')
+    2  :     List(TK.TUPLE, [Ref(), Ref(), Ref()])
+    3  :         Ref(TK.IDNT, 'a')
+    4  :         Ref(TK.IDNT, 'b')
+    5  :         Ref(TK.IDNT, 'c')
+    6  :     List(TK.TUPLE, [Int(), Int(), Int()])
+    7  :         Int(TK.INT, 4)
+    8  :         Int(TK.INT, 5)
+    9  :         Int(TK.INT, 6)
+
+tree18:  (a, b, c) := (4, 5, 6)       # tuple assignment (var)
+    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
+    2  :     List(TK.TUPLE, [Ref(), Ref(), Ref()])
+    3  :         Ref(TK.IDNT, 'a')
+    4  :         Ref(TK.IDNT, 'b')
+    5  :         Ref(TK.IDNT, 'c')
+    6  :     List(TK.TUPLE, [Int(), Int(), Int()])
+    7  :         Int(TK.INT, 4)
+    8  :         Int(TK.INT, 5)
+    9  :         Int(TK.INT, 6)
+
+tree19:  (a, b, c) = (a:5, b:3, c:4)  # tuple assignment k:v
+    1  : Define(TK.DEFINE, TK.EQLS, '=')
+    2  :     List(TK.TUPLE, [Ref(), Ref(), Ref()])
+    3  :         Ref(TK.IDNT, 'a')
+    4  :         Ref(TK.IDNT, 'b')
+    5  :         Ref(TK.IDNT, 'c')
+    6  :     List(TK.TUPLE, [Define(), Define(), Define()])
+    7  :         Define(TK.DEFINE, TK.COLN, ':')
+    8  :             Ref(TK.IDNT, 'a')
+    9  :             Int(TK.INT, 5)
+   10  :         Define(TK.DEFINE, TK.COLN, ':')
+   11  :             Ref(TK.IDNT, 'b')
+   12  :             Int(TK.INT, 3)
+   13  :         Define(TK.DEFINE, TK.COLN, ':')
+   14  :             Ref(TK.IDNT, 'c')
+   15  :             Int(TK.INT, 4)
+
+tree20:  {a, b, c}:(4, 5, 6)          # set parameterization
+    1  : Define(TK.DEFINE, TK.COLN, ':')
+    2  :     Set(TK.SET, [Ref(), Ref(), Ref()])
+    3  :         Ref(TK.IDNT, 'a')
+    4  :         Ref(TK.IDNT, 'b')
+    5  :         Ref(TK.IDNT, 'c')
+    6  :     List(TK.TUPLE, [Int(), Int(), Int()])
+    7  :         Int(TK.INT, 4)
+    8  :         Int(TK.INT, 5)
+    9  :         Int(TK.INT, 6)
+
+tree21:  {a, b, c}:(a:5, b:3, c:4)    # set parameterization k:v
+    1  : Define(TK.DEFINE, TK.COLN, ':')
+    2  :     Set(TK.SET, [Ref(), Ref(), Ref()])
+    3  :         Ref(TK.IDNT, 'a')
+    4  :         Ref(TK.IDNT, 'b')
+    5  :         Ref(TK.IDNT, 'c')
+    6  :     List(TK.TUPLE, [Define(), Define(), Define()])
+    7  :         Define(TK.DEFINE, TK.COLN, ':')
+    8  :             Ref(TK.IDNT, 'a')
+    9  :             Int(TK.INT, 5)
+   10  :         Define(TK.DEFINE, TK.COLN, ':')
+   11  :             Ref(TK.IDNT, 'b')
+   12  :             Int(TK.INT, 3)
+   13  :         Define(TK.DEFINE, TK.COLN, ':')
+   14  :             Ref(TK.IDNT, 'c')
+   15  :             Int(TK.INT, 4)
+
+tree22:  {a, b, c}:(a=5, b=3, c=4)    # set parameterization k=v (error?)
+    1  : Define(TK.DEFINE, TK.COLN, ':')
+    2  :     Set(TK.SET, [Ref(), Ref(), Ref()])
+    3  :         Ref(TK.IDNT, 'a')
+    4  :         Ref(TK.IDNT, 'b')
+    5  :         Ref(TK.IDNT, 'c')
+    6  :     List(TK.TUPLE, [Define(), Define(), Define()])
+    7  :         Define(TK.DEFINE, TK.EQLS, '=')
+    8  :             Ref(TK.IDNT, 'a')
+    9  :             Int(TK.INT, 5)
+   10  :         Define(TK.DEFINE, TK.EQLS, '=')
+   11  :             Ref(TK.IDNT, 'b')
+   12  :             Int(TK.INT, 3)
+   13  :         Define(TK.DEFINE, TK.EQLS, '=')
+   14  :             Ref(TK.IDNT, 'c')
+   15  :             Int(TK.INT, 4)
+
+tree23:  {a, b, c}:{a=5, b=3, c=4}    # set parameterization k=v (block)
+    1  : Define(TK.DEFINE, TK.COLN, ':')
+    2  :     Set(TK.SET, [Ref(), Ref(), Ref()])
+    3  :         Ref(TK.IDNT, 'a')
+    4  :         Ref(TK.IDNT, 'b')
+    5  :         Ref(TK.IDNT, 'c')
+    6  :     Set(TK.SET, [Define(), Define(), Define()])
+    7  :         Define(TK.DEFINE, TK.EQLS, '=')
+    8  :             Ref(TK.IDNT, 'a')
+    9  :             Int(TK.INT, 5)
+   10  :         Define(TK.DEFINE, TK.EQLS, '=')
+   11  :             Ref(TK.IDNT, 'b')
+   12  :             Int(TK.INT, 3)
+   13  :         Define(TK.DEFINE, TK.EQLS, '=')
+   14  :             Ref(TK.IDNT, 'c')
+   15  :             Int(TK.INT, 4)
+
+tree24:  {a, b, c}:{a:5, b:3, c:4}    # set parameterization k=v (block)
+    1  : Define(TK.DEFINE, TK.COLN, ':')
+    2  :     Set(TK.SET, [Ref(), Ref(), Ref()])
+    3  :         Ref(TK.IDNT, 'a')
+    4  :         Ref(TK.IDNT, 'b')
+    5  :         Ref(TK.IDNT, 'c')
+    6  :     Set(TK.SET, [Define(), Define(), Define()])
+    7  :         Define(TK.DEFINE, TK.COLN, ':')
+    8  :             Ref(TK.IDNT, 'a')
+    9  :             Int(TK.INT, 5)
+   10  :         Define(TK.DEFINE, TK.COLN, ':')
+   11  :             Ref(TK.IDNT, 'b')
+   12  :             Int(TK.INT, 3)
+   13  :         Define(TK.DEFINE, TK.COLN, ':')
+   14  :             Ref(TK.IDNT, 'c')
+   15  :             Int(TK.INT, 4)
+
+tree1:(post)  x => x:x + 1
+    1  : DefineFn(TK.DEFINE, TK.EQGT, '=>')
+    2  :     Ref(TK.IDNT, 'x')
+    3  :     BinOp(TK.ADD, '+')
+    4  :         Get(TK.IDNT, 'x')
+    5  :         Int(TK.INT, 1)
+    6  :     List(TK.TUPLE, [Ref()])
+    7  :         Ref(TK.IDNT, 'x')
+
+tree2:(post)  sugar(x) => { x + 1 }
+    1  : DefineFn(TK.DEFINE, TK.EQGT, '=>')
+    2  :     Ref(TK.IDNT, 'sugar')
+    3  :     Block(TK.BLOCK, v=[BinOp()], '')
+    4  :         BinOp(TK.ADD, '+')
+    5  :             Get(TK.IDNT, 'x')
+    6  :             Int(TK.INT, 1)
+    7  :     List(TK.TUPLE, [Ref()])
+    8  :         Ref(TK.IDNT, 'x')
+
+tree3:(post)  sugar(x) := { x + 1 }
+    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    2  :     Ref(TK.IDNT, 'sugar')
+    3  :     Set(TK.SET, [BinOp()])
+    4  :         BinOp(TK.ADD, '+')
+    5  :             Get(TK.IDNT, 'x')
+    6  :             Int(TK.INT, 1)
+    7  :     List(TK.TUPLE, [Ref()])
+    8  :         Ref(TK.IDNT, 'x')
+
+tree4:(post)  sugar(x) = { x + 1 }
+    1  : DefineFn(TK.DEFINE, TK.ASSIGN, '=')
+    2  :     Ref(TK.IDNT, 'sugar')
+    3  :     Set(TK.SET, [BinOp()])
+    4  :         BinOp(TK.ADD, '+')
+    5  :             Get(TK.IDNT, 'x')
+    6  :             Int(TK.INT, 1)
+    7  :     List(TK.TUPLE, [Ref()])
+    8  :         Ref(TK.IDNT, 'x')
+
+tree5:(post)  def simple(x) := {
+    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    2  :     Ref(TK.IDNT, 'simple')
+    3  :     Set(TK.SET, [BinOp()])
+    4  :         BinOp(TK.ADD, '+')
+    5  :             Ref(TK.IDNT, 'x')
+    6  :             Int(TK.INT, 1)
+    7  :     List(TK.TUPLE, [Ref()])
+    8  :         Ref(TK.IDNT, 'x')
+
+tree6:(post)  def factorial(x) := {
+    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    2  :     Ref(TK.IDNT, 'factorial')
+    3  :     Block(TK.BLOCK, v=[BinOp()], '')
+    4  :         BinOp(TK.MUL, '*')
+    5  :             Ref(TK.IDNT, 'x')
+    6  :             FnDef(TK.FUNCTION, '(')
+    7  :                 Ref(TK.IDNT, 'factorial')
+    8  :                 List(TK.TUPLE, [BinOp()])
+    9  :                     BinOp(TK.SUB, '-')
+   10  :                         Ref(TK.IDNT, 'x')
+   11  :                         Int(TK.INT, 1)
+   12  :     List(TK.TUPLE, [Ref()])
+   13  :         Ref(TK.IDNT, 'x')
+
+tree7:(post)  a := 3
+    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
+    2  :     Ref(TK.IDNT, 'a')
+    3  :     Int(TK.INT, 3)
+
+tree8:(post)  a := a + 1
+    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
+    2  :     Ref(TK.IDNT, 'a')
+    3  :     BinOp(TK.ADD, '+')
+    4  :         Get(TK.IDNT, 'a')
+    5  :         Int(TK.INT, 1)
+
+tree9:(post)  a => a + 1
+    1  : DefineFn(TK.DEFINE, TK.EQGT, '=>')
+    2  :     Ref(TK.IDNT, 'a')
+    3  :     BinOp(TK.ADD, '+')
+    4  :         Get(TK.IDNT, 'a')
+    5  :         Int(TK.INT, 1)
+
+tree10:(post)  def atr = (high + low) / 2
+    1  : Define(TK.DEFINE, TK.EQLS, '=')
+    2  :     Ref(TK.IDNT, 'atr')
+    3  :     BinOp(TK.DIV, '/')
+    4  :         BinOp(TK.ADD, '+')
+    5  :             Ref(TK.IDNT, 'high')
+    6  :             Ref(TK.IDNT, 'low')
+    7  :         Int(TK.INT, 2)
+
+tree11:(post)  def avg_daily_price = (open + close) / 2
+    1  : Define(TK.DEFINE, TK.EQLS, '=')
+    2  :     Ref(TK.IDNT, 'avg_daily_price')
+    3  :     BinOp(TK.DIV, '/')
+    4  :         BinOp(TK.ADD, '+')
+    5  :             Ref(TK.IDNT, 'open')
+    6  :             Ref(TK.IDNT, 'close')
+    7  :         Int(TK.INT, 2)
+
+tree12:(post)  def trade_size = position * 10%
+    1  : Define(TK.DEFINE, TK.EQLS, '=')
+    2  :     Ref(TK.IDNT, 'trade_size')
+    3  :     BinOp(TK.MUL, '*')
+    4  :         Ref(TK.IDNT, 'position')
+    5  :         Percent(TK.PCT, 0.1)
+
+tree13:(post)  atr := (high + low) / 2
+    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
+    2  :     Ref(TK.IDNT, 'atr')
+    3  :     BinOp(TK.DIV, '/')
+    4  :         BinOp(TK.ADD, '+')
+    5  :             Get(TK.IDNT, 'high')
+    6  :             Get(TK.IDNT, 'low')
+    7  :         Int(TK.INT, 2)
+
+tree14:(post)  avg_daily_price := (open + close) / 2
+    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
+    2  :     Ref(TK.IDNT, 'avg_daily_price')
+    3  :     BinOp(TK.DIV, '/')
+    4  :         BinOp(TK.ADD, '+')
+    5  :             Get(TK.IDNT, 'open')
+    6  :             Get(TK.IDNT, 'close')
+    7  :         Int(TK.INT, 2)
+
+tree15:(post)  trade_size := position * 10%
+    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
+    2  :     Ref(TK.IDNT, 'trade_size')
+    3  :     BinOp(TK.MUL, '*')
+    4  :         Get(TK.IDNT, 'position')
+    5  :         Percent(TK.PCT, 0.1)
+
+tree16:(post)  (a, b, c,)                   # tuple
+result: list([Get(), Get(), Get()])
+    1  : List(TK.TUPLE, [Get(), Get(), Get()])
+    2  :     Get(TK.IDNT, 'a')
+    3  :     Get(TK.IDNT, 'b')
+    4  :     Get(TK.IDNT, 'c')
+
+tree17:(post)  (a, b, c) = (4, 5, 6)        # tuple assignment
+    1  : Define(TK.DEFINE, TK.EQLS, '=')
+    2  :     List(TK.TUPLE, [Ref(), Ref(), Ref()])
+    3  :         Ref(TK.IDNT, 'a')
+    4  :         Ref(TK.IDNT, 'b')
+    5  :         Ref(TK.IDNT, 'c')
+    6  :     List(TK.TUPLE, [Int(), Int(), Int()])
+    7  :         Int(TK.INT, 4)
+    8  :         Int(TK.INT, 5)
+    9  :         Int(TK.INT, 6)
+
+tree18:(post)  (a, b, c) := (4, 5, 6)       # tuple assignment (var)
+    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
+    2  :     List(TK.TUPLE, [Ref(), Ref(), Ref()])
+    3  :         Ref(TK.IDNT, 'a')
+    4  :         Ref(TK.IDNT, 'b')
+    5  :         Ref(TK.IDNT, 'c')
+    6  :     List(TK.TUPLE, [Int(), Int(), Int()])
+    7  :         Int(TK.INT, 4)
+    8  :         Int(TK.INT, 5)
+    9  :         Int(TK.INT, 6)
+
+tree19:(post)  (a, b, c) = (a:5, b:3, c:4)  # tuple assignment k:v
+    1  : Define(TK.DEFINE, TK.EQLS, '=')
+    2  :     List(TK.TUPLE, [Ref(), Ref(), Ref()])
+    3  :         Ref(TK.IDNT, 'a')
+    4  :         Ref(TK.IDNT, 'b')
+    5  :         Ref(TK.IDNT, 'c')
+    6  :     List(TK.TUPLE, [Define(), Define(), Define()])
+    7  :         Define(TK.DEFINE, TK.COLN, ':')
+    8  :             Ref(TK.IDNT, 'a')
+    9  :             Int(TK.INT, 5)
+   10  :         Define(TK.DEFINE, TK.COLN, ':')
+   11  :             Ref(TK.IDNT, 'b')
+   12  :             Int(TK.INT, 3)
+   13  :         Define(TK.DEFINE, TK.COLN, ':')
+   14  :             Ref(TK.IDNT, 'c')
+   15  :             Int(TK.INT, 4)
+
+tree20:(post)  {a, b, c}:(4, 5, 6)          # set parameterization
+    1  : Define(TK.DEFINE, TK.COLN, ':')
+    2  :     Set(TK.SET, [Ref(), Ref(), Ref()])
+    3  :         Ref(TK.IDNT, 'a')
+    4  :         Ref(TK.IDNT, 'b')
+    5  :         Ref(TK.IDNT, 'c')
+    6  :     List(TK.TUPLE, [Int(), Int(), Int()])
+    7  :         Int(TK.INT, 4)
+    8  :         Int(TK.INT, 5)
+    9  :         Int(TK.INT, 6)
+
+tree21:(post)  {a, b, c}:(a:5, b:3, c:4)    # set parameterization k:v
+    1  : Define(TK.DEFINE, TK.COLN, ':')
+    2  :     Set(TK.SET, [Ref(), Ref(), Ref()])
+    3  :         Ref(TK.IDNT, 'a')
+    4  :         Ref(TK.IDNT, 'b')
+    5  :         Ref(TK.IDNT, 'c')
+    6  :     List(TK.TUPLE, [Define(), Define(), Define()])
+    7  :         Define(TK.DEFINE, TK.COLN, ':')
+    8  :             Ref(TK.IDNT, 'a')
+    9  :             Int(TK.INT, 5)
+   10  :         Define(TK.DEFINE, TK.COLN, ':')
+   11  :             Ref(TK.IDNT, 'b')
+   12  :             Int(TK.INT, 3)
+   13  :         Define(TK.DEFINE, TK.COLN, ':')
+   14  :             Ref(TK.IDNT, 'c')
+   15  :             Int(TK.INT, 4)
+
+tree22:(post)  {a, b, c}:(a=5, b=3, c=4)    # set parameterization k=v (error?)
+    1  : Define(TK.DEFINE, TK.COLN, ':')
+    2  :     Set(TK.SET, [Ref(), Ref(), Ref()])
+    3  :         Ref(TK.IDNT, 'a')
+    4  :         Ref(TK.IDNT, 'b')
+    5  :         Ref(TK.IDNT, 'c')
+    6  :     List(TK.TUPLE, [Define(), Define(), Define()])
+    7  :         Define(TK.DEFINE, TK.EQLS, '=')
+    8  :             Ref(TK.IDNT, 'a')
+    9  :             Int(TK.INT, 5)
+   10  :         Define(TK.DEFINE, TK.EQLS, '=')
+   11  :             Ref(TK.IDNT, 'b')
+   12  :             Int(TK.INT, 3)
+   13  :         Define(TK.DEFINE, TK.EQLS, '=')
+   14  :             Ref(TK.IDNT, 'c')
+   15  :             Int(TK.INT, 4)
+
+tree23:(post)  {a, b, c}:{a=5, b=3, c=4}    # set parameterization k=v (block)
+    1  : Define(TK.DEFINE, TK.COLN, ':')
+    2  :     Set(TK.SET, [Ref(), Ref(), Ref()])
+    3  :         Ref(TK.IDNT, 'a')
+    4  :         Ref(TK.IDNT, 'b')
+    5  :         Ref(TK.IDNT, 'c')
+    6  :     Set(TK.SET, [Define(), Define(), Define()])
+    7  :         Define(TK.DEFINE, TK.EQLS, '=')
+    8  :             Ref(TK.IDNT, 'a')
+    9  :             Int(TK.INT, 5)
+   10  :         Define(TK.DEFINE, TK.EQLS, '=')
+   11  :             Ref(TK.IDNT, 'b')
+   12  :             Int(TK.INT, 3)
+   13  :         Define(TK.DEFINE, TK.EQLS, '=')
+   14  :             Ref(TK.IDNT, 'c')
+   15  :             Int(TK.INT, 4)
+
+tree24:(post)  {a, b, c}:{a:5, b:3, c:4}    # set parameterization k=v (block)
+    1  : Define(TK.DEFINE, TK.COLN, ':')
+    2  :     Set(TK.SET, [Ref(), Ref(), Ref()])
+    3  :         Ref(TK.IDNT, 'a')
+    4  :         Ref(TK.IDNT, 'b')
+    5  :         Ref(TK.IDNT, 'c')
+    6  :     Set(TK.SET, [Define(), Define(), Define()])
+    7  :         Define(TK.DEFINE, TK.COLN, ':')
+    8  :             Ref(TK.IDNT, 'a')
+    9  :             Int(TK.INT, 5)
+   10  :         Define(TK.DEFINE, TK.COLN, ':')
+   11  :             Ref(TK.IDNT, 'b')
+   12  :             Int(TK.INT, 3)
+   13  :         Define(TK.DEFINE, TK.COLN, ':')
+   14  :             Ref(TK.IDNT, 'c')
+   15  :             Int(TK.INT, 4)

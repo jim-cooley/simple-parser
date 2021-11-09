@@ -1,0 +1,179 @@
+
+
+test:
+x => x:x + 1
+
+sugar(x) => { x + 1 }
+
+sugar(x) := { x + 1 }
+
+sugar(x) = { x + 1 }
+
+def simple(x) := {
+    x + 1
+}
+
+def factorial(x) := {
+    x * factorial(x - 1)
+}
+
+a := 3
+a := a + 1
+a => a + 1
+
+
+tree1:  x => x:x + 1
+    1  : DefineFn(TK.DEFINE, TK.EQGT, '=>')
+    2  :     Ref(TK.IDNT, 'x')
+    3  :     BinOp(TK.ADD, '+')
+    4  :         Get(TK.IDNT, 'x')
+    5  :         Int(TK.INT, 1)
+    6  :     List(TK.TUPLE, [Ref()])
+    7  :         Ref(TK.IDNT, 'x')
+
+tree2:  sugar(x) => { x + 1 }
+    1  : DefineFn(TK.DEFINE, TK.EQGT, '=>')
+    2  :     Ref(TK.IDNT, 'sugar')
+    3  :     Block(TK.BLOCK, v=[BinOp()], '')
+    4  :         BinOp(TK.ADD, '+')
+    5  :             Get(TK.IDNT, 'x')
+    6  :             Int(TK.INT, 1)
+    7  :     List(TK.TUPLE, [Ref()])
+    8  :         Ref(TK.IDNT, 'x')
+
+tree3:  sugar(x) := { x + 1 }
+    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    2  :     Ref(TK.IDNT, 'sugar')
+    3  :     Set(TK.SET, [BinOp()])
+    4  :         BinOp(TK.ADD, '+')
+    5  :             Get(TK.IDNT, 'x')
+    6  :             Int(TK.INT, 1)
+    7  :     List(TK.TUPLE, [Ref()])
+    8  :         Ref(TK.IDNT, 'x')
+
+tree4:  sugar(x) = { x + 1 }
+    1  : DefineFn(TK.DEFINE, TK.ASSIGN, '=')
+    2  :     Ref(TK.IDNT, 'sugar')
+    3  :     Set(TK.SET, [BinOp()])
+    4  :         BinOp(TK.ADD, '+')
+    5  :             Get(TK.IDNT, 'x')
+    6  :             Int(TK.INT, 1)
+    7  :     List(TK.TUPLE, [Ref()])
+    8  :         Ref(TK.IDNT, 'x')
+
+tree5:  def simple(x) := {
+    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    2  :     Ref(TK.IDNT, 'simple')
+    3  :     Set(TK.SET, [BinOp()])
+    4  :         BinOp(TK.ADD, '+')
+    5  :             Ref(TK.IDNT, 'x')
+    6  :             Int(TK.INT, 1)
+    7  :     List(TK.TUPLE, [Ref()])
+    8  :         Ref(TK.IDNT, 'x')
+
+tree6:  def factorial(x) := {
+    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    2  :     Ref(TK.IDNT, 'factorial')
+    3  :     Block(TK.BLOCK, v=[BinOp()], '')
+    4  :         BinOp(TK.MUL, '*')
+    5  :             Ref(TK.IDNT, 'x')
+    6  :             FnDef(TK.FUNCTION, '(')
+    7  :     List(TK.TUPLE, [Ref()])
+    8  :         Ref(TK.IDNT, 'x')
+
+tree7:  a := 3
+    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
+    2  :     Ref(TK.IDNT, 'a')
+    3  :     Int(TK.INT, 3)
+
+tree8:  a := a + 1
+    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
+    2  :     Ref(TK.IDNT, 'a')
+    3  :     BinOp(TK.ADD, '+')
+    4  :         Get(TK.IDNT, 'a')
+    5  :         Int(TK.INT, 1)
+
+tree9:  a => a + 1
+    1  : DefineFn(TK.DEFINE, TK.EQGT, '=>')
+    2  :     Ref(TK.IDNT, 'a')
+    3  :     BinOp(TK.ADD, '+')
+    4  :         Get(TK.IDNT, 'a')
+    5  :         Int(TK.INT, 1)
+
+tree1:(post)  x => x:x + 1
+    1  : DefineFn(TK.DEFINE, TK.EQGT, '=>')
+    2  :     Ref(TK.IDNT, 'x')
+    3  :     BinOp(TK.ADD, '+')
+    4  :         Get(TK.IDNT, 'x')
+    5  :         Int(TK.INT, 1)
+    6  :     List(TK.TUPLE, [Ref()])
+    7  :         Ref(TK.IDNT, 'x')
+
+tree2:(post)  sugar(x) => { x + 1 }
+    1  : DefineFn(TK.DEFINE, TK.EQGT, '=>')
+    2  :     Ref(TK.IDNT, 'sugar')
+    3  :     Block(TK.BLOCK, v=[BinOp()], '')
+    4  :         BinOp(TK.ADD, '+')
+    5  :             Get(TK.IDNT, 'x')
+    6  :             Int(TK.INT, 1)
+    7  :     List(TK.TUPLE, [Ref()])
+    8  :         Ref(TK.IDNT, 'x')
+
+tree3:(post)  sugar(x) := { x + 1 }
+    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    2  :     Ref(TK.IDNT, 'sugar')
+    3  :     Set(TK.SET, [BinOp()])
+    4  :         BinOp(TK.ADD, '+')
+    5  :             Get(TK.IDNT, 'x')
+    6  :             Int(TK.INT, 1)
+    7  :     List(TK.TUPLE, [Ref()])
+    8  :         Ref(TK.IDNT, 'x')
+
+tree4:(post)  sugar(x) = { x + 1 }
+    1  : DefineFn(TK.DEFINE, TK.ASSIGN, '=')
+    2  :     Ref(TK.IDNT, 'sugar')
+    3  :     Set(TK.SET, [BinOp()])
+    4  :         BinOp(TK.ADD, '+')
+    5  :             Get(TK.IDNT, 'x')
+    6  :             Int(TK.INT, 1)
+    7  :     List(TK.TUPLE, [Ref()])
+    8  :         Ref(TK.IDNT, 'x')
+
+tree5:(post)  def simple(x) := {
+    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    2  :     Ref(TK.IDNT, 'simple')
+    3  :     Set(TK.SET, [BinOp()])
+    4  :         BinOp(TK.ADD, '+')
+    5  :             Ref(TK.IDNT, 'x')
+    6  :             Int(TK.INT, 1)
+    7  :     List(TK.TUPLE, [Ref()])
+    8  :         Ref(TK.IDNT, 'x')
+
+tree6:(post)  def factorial(x) := {
+    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    2  :     Ref(TK.IDNT, 'factorial')
+    3  :     Block(TK.BLOCK, v=[BinOp()], '')
+    4  :         BinOp(TK.MUL, '*')
+    5  :             Ref(TK.IDNT, 'x')
+    6  :             FnDef(TK.FUNCTION, '(')
+    7  :     List(TK.TUPLE, [Ref()])
+    8  :         Ref(TK.IDNT, 'x')
+
+tree7:(post)  a := 3
+    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
+    2  :     Ref(TK.IDNT, 'a')
+    3  :     Int(TK.INT, 3)
+
+tree8:(post)  a := a + 1
+    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
+    2  :     Ref(TK.IDNT, 'a')
+    3  :     BinOp(TK.ADD, '+')
+    4  :         Get(TK.IDNT, 'a')
+    5  :         Int(TK.INT, 1)
+
+tree9:(post)  a => a + 1
+    1  : DefineFn(TK.DEFINE, TK.EQGT, '=>')
+    2  :     Ref(TK.IDNT, 'a')
+    3  :     BinOp(TK.ADD, '+')
+    4  :         Get(TK.IDNT, 'a')
+    5  :         Int(TK.INT, 1)

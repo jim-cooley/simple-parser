@@ -4,8 +4,8 @@ test: 10:
 node => { _ : _.left = _.right}
 
 tree1:  node => { _ : _.left = _.right}
-    1  : Flow(TK.PRODUCE, v=[Get(), Block()], '=>')
-    2  :     Get(TK.IDNT, 'node')
+    1  : DefineFn(TK.DEFINE, TK.EQGT, '=>')
+    2  :     Ref(TK.IDNT, 'node')
     3  :     Block(TK.BLOCK, v=[Define()], '')
     4  :         Define(TK.DEFINE, TK.COLN, ':')
     5  :             Ref(TK.ANON, '_')
@@ -14,13 +14,12 @@ tree1:  node => { _ : _.left = _.right}
     8  :                     Ref(TK.ANON, '_')
     9  :                     Ref(TK.IDNT, 'left')
    10  :                 PropRef(TK.REF, '.')
-   11  :                     Ref(TK.ANON, '_')
-   12  :                     Ref(TK.IDNT, 'right')
+   11  :                     Get(TK.ANON, '_')
+   12  :                     Get(TK.IDNT, 'right')
 
 tree1:(post)  node => { _ : _.left = _.right}
-result: list([Get(), Block()])
-    1  : Flow(TK.PRODUCE, v=[Get(), Block()], '=>')
-    2  :     Get(TK.IDNT, 'node')
+    1  : DefineFn(TK.DEFINE, TK.EQGT, '=>')
+    2  :     Ref(TK.IDNT, 'node')
     3  :     Block(TK.BLOCK, v=[Define()], '')
     4  :         Define(TK.DEFINE, TK.COLN, ':')
     5  :             Ref(TK.ANON, '_')
@@ -29,5 +28,5 @@ result: list([Get(), Block()])
     8  :                     Ref(TK.ANON, '_')
     9  :                     Ref(TK.IDNT, 'left')
    10  :                 PropRef(TK.REF, '.')
-   11  :                     Ref(TK.ANON, '_')
-   12  :                     Ref(TK.IDNT, 'right')
+   11  :                     Get(TK.ANON, '_')
+   12  :                     Get(TK.IDNT, 'right')

@@ -6,6 +6,7 @@ DEFAULT_NODE = 'visit_node'
 NATIVE_VALUE = 'visit_intrinsic'
 NATIVE_LIST = 'visit_list'
 SEQUENCE_NODE = 'visit_sequence'
+TRINARY_NODE = 'visit_trinary_node'
 UNARY_NODE = 'visit_unary_node'
 VALUE_NODE = 'visit_value'
 
@@ -17,9 +18,9 @@ _defaultNodeTypeMappings = {
     'Command': UNARY_NODE,
     'Define': BINARY_NODE,
     'DefineChainProd': BINARY_NODE,
-    'DefineFn': BINARY_NODE,
+    'DefineFn': TRINARY_NODE,
     'DefineVar': BINARY_NODE,
-    'DefineVarFn': BINARY_NODE,
+    'DefineVarFn': TRINARY_NODE,
     'FnCall': BINARY_NODE,
     'Flow': SEQUENCE_NODE,
     'Index': BINARY_NODE,
@@ -111,6 +112,21 @@ class TreeFilter(NodeVisitor, ABC):
                 continue
             n.parent = node if self.apply_parent_fixups else n.parent
             self.visit(n)
+        self.dedent()
+
+    def visit_trinary_node(self, node, label=None):
+        self.visit_node(node, label)
+        self.indent()
+        if self.apply_parent_fixups:
+            if node.left is not None:
+                node.left.parent = node
+            if node.right is not None:
+                node.right.parent = node
+            if node.args is not None:
+                node.args.parent = node
+        self.visit(node.left)
+        self.visit(node.right)
+        self.visit(node.args)
         self.dedent()
 
     def visit_unary_node(self, node, label=None):

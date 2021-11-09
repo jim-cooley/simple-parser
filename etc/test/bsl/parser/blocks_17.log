@@ -1,11 +1,4 @@
 
 
 test: 17:
-{ b } => buy
-
-tree1:  { b } => buy
-    1  : Flow(TK.PRODUCE, v=[Set(), ApplyChainProd()], '=>')
-    2  :     Set(TK.SET, [Get()])
-    3  :         Get(TK.IDNT, 'b')
-    4  :     ApplyChainProd(TK.DEFINE, TK.APPLY, '=>')
-    5  :         Ref(TK.BUY, 'buy')
+# { b } => buy    # buy is an invalid assignment target

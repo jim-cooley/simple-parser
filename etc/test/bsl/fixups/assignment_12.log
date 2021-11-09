@@ -4,14 +4,14 @@ test: 12:
 trade_size := position * 10%
 
 tree1:  trade_size := position * 10%
-    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
     2  :     Ref(TK.IDNT, 'trade_size')
     3  :     BinOp(TK.MUL, '*')
     4  :         Get(TK.IDNT, 'position')
     5  :         Percent(TK.PCT, 0.1)
 
 tree1:(post)  trade_size := position * 10%
-    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
     2  :     Ref(TK.IDNT, 'trade_size')
     3  :     BinOp(TK.MUL, '*')
     4  :         Get(TK.IDNT, 'position')

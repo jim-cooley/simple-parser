@@ -145,7 +145,7 @@ class Lexer:
             break
         if tk.id == TK.IDNT:
             tk.t_class = TCL.IDENTIFIER
-            tk = self.keywords.find(tk, tk)
+            tk = self.keywords.find_name(tk.lexeme, tk)
         else:
             tk.map2tclass()
         self.token = tk

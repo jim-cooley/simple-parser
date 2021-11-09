@@ -11,7 +11,7 @@ tree1:  a.b.c.d() = 1
     5  :             Ref(TK.IDNT, 'b')
     6  :             PropRef(TK.REF, '.')
     7  :                 Ref(TK.IDNT, 'c')
-    8  :                 DefineFn(TK.DEFINE, TK.FUNCTION, '(')
+    8  :                 FnDef(TK.FUNCTION, '(')
     9  :                     Ref(TK.IDNT, 'd')
    10  :                     List(TK.TUPLE, [])
    11  :     Int(TK.INT, 1)

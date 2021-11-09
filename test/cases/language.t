@@ -56,4 +56,4 @@ f := { a(x):x*x }
 a | b | c >> d
 { b => b.left = b.right}:(node)
 { _ => _.left = _.right}:(node)
-{ b } => buy
+{ b } -> buy

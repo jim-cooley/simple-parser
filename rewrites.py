@@ -5,7 +5,7 @@ import copy
 from abc import ABC
 
 from modifytree import TreeModifier
-from tree import DefineFn
+from tree import DefineFn, FnDef
 from visitor import BINARY_NODE, UNARY_NODE, SEQUENCE_NODE
 
 _rewriteBaseNodeTypeMapping = {
@@ -62,6 +62,22 @@ class RewriteGets2Refs(BaseRewriter, ABC):
         return ref
 
 
+# turns FnCalls and Gets in LHS into FnDefs and Ref's
+class RewriteFnCall2FnDef(RewriteGets2Refs, ABC):
+    def __init__(self, mapping=None, apply_parent_fixups=True):
+        m = dict(_rewriteBaseNodeTypeMapping if mapping is None else mapping)
+        m.update(_rewriteFnCallNodeTypeMapping)
+        super().__init__(mapping=m, apply_parent_fixups=apply_parent_fixups)
+
+    def rewrite_fncall(self, node, label=None):
+        node.left = self.visit(node.left)
+        node.right = self.visit(node.right)
+        n = FnDef(ref=node.left, op=node.token, plist=node.right, loc=node.token.location)
+        node.left.parent = n
+        node.right.parent = n
+        return n
+
+
 # turns FnCalls and Gets in LHS into DefineFns and Ref's
 class RewriteFnCall2DefineFn(RewriteGets2Refs, ABC):
     def __init__(self, mapping=None, apply_parent_fixups=True):
@@ -72,7 +88,7 @@ class RewriteFnCall2DefineFn(RewriteGets2Refs, ABC):
     def rewrite_fncall(self, node, label=None):
         node.left = self.visit(node.left)
         node.right = self.visit(node.right)
-        n = DefineFn(left=node.left, op=node.token, right=node.right)
+        n = FnDef(ref=node.left, op=node.token, plist=node.right, loc=node.token.location)
         node.left.parent = n
         node.right.parent = n
         return n

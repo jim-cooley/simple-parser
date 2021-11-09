@@ -5,11 +5,10 @@ f(x) := { x * 4 }
 
 tree1:  f(x) := { x * 4 }
     1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
-    2  :     DefineFn(TK.DEFINE, TK.FUNCTION, '(')
-    3  :         Ref(TK.IDNT, 'f')
-    4  :         List(TK.TUPLE, [Ref()])
-    5  :             Ref(TK.IDNT, 'x')
-    6  :     Set(TK.SET, [BinOp()])
-    7  :         BinOp(TK.MUL, '*')
-    8  :             Get(TK.IDNT, 'x')
-    9  :             Int(TK.INT, 4)
+    2  :     Ref(TK.IDNT, 'f')
+    3  :     Set(TK.SET, [BinOp()])
+    4  :         BinOp(TK.MUL, '*')
+    5  :             Get(TK.IDNT, 'x')
+    6  :             Int(TK.INT, 4)
+    7  :     List(TK.TUPLE, [Ref()])
+    8  :         Ref(TK.IDNT, 'x')

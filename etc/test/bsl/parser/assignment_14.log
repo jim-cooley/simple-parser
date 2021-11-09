@@ -4,7 +4,7 @@ test: 14:
 report := ( trades | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price') )
 
 tree1:  report := ( trades | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price') )
-    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
     2  :     Ref(TK.IDNT, 'report')
     3  :     Flow(TK.CHAIN, v=[Get(), FnCall()], '|')
     4  :         Get(TK.IDNT, 'trades')

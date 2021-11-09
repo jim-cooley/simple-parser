@@ -13,7 +13,7 @@ a | { b => b + 1 } | c
 a = 5
 4 | b
 4 >> b
-4 => b
+b => 4
 # a | b: b + 1 | c
 a | b + 1 | c
 a | _ + 1 | c
@@ -61,10 +61,10 @@ tree3:  a | { b + 1 } | c
     8  :         Ref(TK.IDNT, 'c')
 
 tree4:  a | { b => b + 1 } | c
-    1  : Flow(TK.CHAIN, v=[Get(), Block(), ApplyChainProd()], '|')
+    1  : Flow(TK.CHAIN, v=[Get(), Set(), ApplyChainProd()], '|')
     2  :     Get(TK.IDNT, 'a')
-    3  :     Block(TK.BLOCK, v=[Flow()], '')
-    4  :         Flow(TK.PRODUCE, v=[Ref(), BinOp()], '=>')
+    3  :     Set(TK.SET, [DefineFn()])
+    4  :         DefineFn(TK.DEFINE, TK.EQGT, '=>')
     5  :             Ref(TK.IDNT, 'b')
     6  :             BinOp(TK.ADD, '+')
     7  :                 Ref(TK.IDNT, 'b')
@@ -89,10 +89,10 @@ tree6:  a | ( b : b + 1 ) | c
     9  :         Ref(TK.IDNT, 'c')
 
 tree7:  a | { b => b + 1 } | c
-    1  : Flow(TK.CHAIN, v=[Get(), Block(), ApplyChainProd()], '|')
+    1  : Flow(TK.CHAIN, v=[Get(), Set(), ApplyChainProd()], '|')
     2  :     Get(TK.IDNT, 'a')
-    3  :     Block(TK.BLOCK, v=[Flow()], '')
-    4  :         Flow(TK.PRODUCE, v=[Ref(), BinOp()], '=>')
+    3  :     Set(TK.SET, [DefineFn()])
+    4  :         DefineFn(TK.DEFINE, TK.EQGT, '=>')
     5  :             Ref(TK.IDNT, 'b')
     6  :             BinOp(TK.ADD, '+')
     7  :                 Ref(TK.IDNT, 'b')
@@ -117,11 +117,10 @@ tree10:  4 >> b
     3  :     ApplyChainProd(TK.DEFINE, TK.APPLY, '>>')
     4  :         Ref(TK.IDNT, 'b')
 
-tree11:  4 => b
-    1  : Flow(TK.PRODUCE, v=[Int(), ApplyChainProd()], '=>')
-    2  :     Int(TK.INT, 4)
-    3  :     ApplyChainProd(TK.DEFINE, TK.APPLY, '=>')
-    4  :         Ref(TK.IDNT, 'b')
+tree11:  b => 4
+    1  : DefineFn(TK.DEFINE, TK.EQGT, '=>')
+    2  :     Ref(TK.IDNT, 'b')
+    3  :     Int(TK.INT, 4)
 
 tree12:  a | b + 1 | c
     1  : Flow(TK.CHAIN, v=[Get(), BinOp(), ApplyChainProd()], '|')
@@ -173,26 +172,22 @@ tree17:  a | b >> c
     7  :         Ref(TK.IDNT, 'c')
 
 tree18:  a | b | c => d
-    1  : Flow(TK.PRODUCE, v=[Flow(), ApplyChainProd()], '=>')
-    2  :     Flow(TK.CHAIN, v=[Get(), Ref(), ApplyChainProd()], '|')
-    3  :         Get(TK.IDNT, 'a')
-    4  :         Ref(TK.IDNT, 'b')
-    5  :         ApplyChainProd(TK.DEFINE, TK.APPLY, '|')
-    6  :             Ref(TK.IDNT, 'c')
-    7  :     ApplyChainProd(TK.DEFINE, TK.APPLY, '=>')
-    8  :         Ref(TK.IDNT, 'd')
+    1  : Flow(TK.CHAIN, v=[Get(), Ref(), DefineFn()], '|')
+    2  :     Get(TK.IDNT, 'a')
+    3  :     Ref(TK.IDNT, 'b')
+    4  :     DefineFn(TK.DEFINE, TK.EQGT, '=>')
+    5  :         Ref(TK.IDNT, 'c')
+    6  :         Ref(TK.IDNT, 'd')
 
 tree19:  a | b => c | d
-    1  : Flow(TK.CHAIN, v=[Flow(), ApplyChainProd()], '|')
-    2  :     Flow(TK.PRODUCE, v=[Flow(), ApplyChainProd()], '=>')
-    3  :         Flow(TK.CHAIN, v=[Get(), ApplyChainProd()], '|')
-    4  :             Get(TK.IDNT, 'a')
-    5  :             ApplyChainProd(TK.DEFINE, TK.APPLY, '|')
-    6  :                 Ref(TK.IDNT, 'b')
-    7  :         ApplyChainProd(TK.DEFINE, TK.APPLY, '=>')
-    8  :             Ref(TK.IDNT, 'c')
-    9  :     ApplyChainProd(TK.DEFINE, TK.APPLY, '|')
-   10  :         Ref(TK.IDNT, 'd')
+    1  : Flow(TK.CHAIN, v=[Get(), DefineFn()], '|')
+    2  :     Get(TK.IDNT, 'a')
+    3  :     DefineFn(TK.DEFINE, TK.EQGT, '=>')
+    4  :         Ref(TK.IDNT, 'b')
+    5  :         Flow(TK.CHAIN, v=[Ref(), ApplyChainProd()], '|')
+    6  :             Ref(TK.IDNT, 'c')
+    7  :             ApplyChainProd(TK.DEFINE, TK.APPLY, '|')
+    8  :                 Ref(TK.IDNT, 'd')
 
 tree20:  a | { b + 1 } | c
     1  : Flow(TK.CHAIN, v=[Get(), Set(), ApplyChainProd()], '|')

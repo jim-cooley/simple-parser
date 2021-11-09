@@ -4,15 +4,19 @@ test: 14:
 var f(x) = x * 4
 
 tree1:  var f(x) = x * 4
-    1  : DefineVarFn(TK.DEFINE, TK.EQLS, '=')
+    1  : DefineVarFn(TK.DEFINE, TK.ASSIGN, '=')
     2  :     Ref(TK.IDNT, 'f')
     3  :     BinOp(TK.MUL, '*')
     4  :         Ref(TK.IDNT, 'x')
     5  :         Int(TK.INT, 4)
+    6  :     List(TK.TUPLE, [Ref()])
+    7  :         Ref(TK.IDNT, 'x')
 
 tree1:(post)  var f(x) = x * 4
-    1  : DefineVarFn(TK.DEFINE, TK.EQLS, '=')
+    1  : DefineVarFn(TK.DEFINE, TK.ASSIGN, '=')
     2  :     Ref(TK.IDNT, 'f')
     3  :     BinOp(TK.MUL, '*')
     4  :         Ref(TK.IDNT, 'x')
     5  :         Int(TK.INT, 4)
+    6  :     List(TK.TUPLE, [Ref()])
+    7  :         Ref(TK.IDNT, 'x')
