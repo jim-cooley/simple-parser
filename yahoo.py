@@ -115,6 +115,40 @@ def get_quotefilename(basename, folder=None, _suffix=DAILY):
         return f'{data_root}{_suffix}/{basename}_{_suffix}.csv'
 
 
+def read_symbol_list(name):
+    symbol_list_filename = get_config_filename(name)
+    symbol_list = create_symbols_table()
+    if os.path.isfile(symbol_list_filename) and os.access(symbol_list_filename, os.R_OK):
+        ext = get_file_type(symbol_list_filename)
+        if ext == '.csv':
+            symbol_list = pd.read_csv(symbol_list_filename,
+                                      encoding='utf-8',
+                                      index_col='symbol',
+                                      na_filter=True)
+        else:
+            group = 'default'
+            with open(f'{symbol_list_filename}') as fin:
+                for line in fin:
+                    _c = line[0]
+                    if _c == '#':
+                        group = line[1:].strip()
+                    elif _c == '(':
+                        continue  # like '( line )' is disabled
+                    else:
+                        fields = line.split('#')
+                        if fields:
+                            description = ''
+                            symbol = fields[0].strip()
+                            if len(fields) > 1:
+                                description = fields[1].strip()
+                            symbol_list = symbol_list.append(
+                                {'symbol': symbol, 'group': group, 'description': description}, ignore_index=True)
+                symbol_list = symbol_list.set_index('symbol')
+    symbol_list = symbol_list.loc[~symbol_list.index.duplicated(keep='first')]
+#   write_symbol_list(name, symbol_list.sort_index())
+    return symbol_list
+
+
 def read_quotefile(symbol, interval):
     quotes = None
     symbol_filename = get_quotefilename(symbol, interval)
@@ -124,5 +158,29 @@ def read_quotefile(symbol, interval):
                              index_col='Date',
                              na_filter=True)
     return quotes
+
+
+def create_symbols_table(symbols=None):
+    df = pd.DataFrame(columns=[
+        'symbol', 'group', 'description'
+    ])
+    if symbols:
+        df.append(symbols)
+    return df
+
+
+def get_file_type(file_path):
+    fn_ext = os.path.splitext(file_path)
+    return fn_ext[1].lower() if fn_ext[1] else '.txt'
+
+
+def get_config_filename(file_path, suffix=None, ext='.txt'):
+    file_path = file_path.lower()
+    fn = os.path.split(file_path)
+    path = fn[0] if fn[0] else config_root
+    fn_ext = os.path.splitext(file_path)
+    file_name = fn_ext[0]
+    ext = fn_ext[1] if fn_ext[1] else ext
+    return f'{path}{file_name}{suffix}{ext}' if suffix else f'{path}{file_name}{ext}'
 
 

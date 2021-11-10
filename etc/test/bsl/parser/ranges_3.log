@@ -1,9 +1,9 @@
 
 
 test: 3:
-[1..2]
+[1..2]  # UNDONE: same issue, 1..2 becomes 1.0 .. 2
 
-tree1:  [1..2]
+tree1:  [1..2]  # UNDONE: same issue, 1..2 becomes 1.0 .. 2
     1  : List(TK.LIST, [BinOp()])
     2  :     BinOp(TK.RANGE, '.')
     3  :         Float(TK.FLOT, 1.0)
