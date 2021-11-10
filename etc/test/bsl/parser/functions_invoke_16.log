@@ -1,0 +1,20 @@
+
+
+test: 16:
+f(a, b, c):{a=5, b='c', d}
+
+tree1:  f(a, b, c):{a=5, b='c', d}
+    1  : DefineFn(TK.DEFINE, TK.COLN, ':')
+    2  :     Ref(TK.IDNT, 'f')
+    3  :     Set(TK.SET, [Define(), Define(), Get()])
+    4  :         Define(TK.DEFINE, TK.EQLS, '=')
+    5  :             Ref(TK.IDNT, 'a')
+    6  :             Int(TK.INT, 5)
+    7  :         Define(TK.DEFINE, TK.EQLS, '=')
+    8  :             Ref(TK.IDNT, 'b')
+    9  :             Str(TK.STR, c)
+   10  :         Get(TK.IDNT, 'd')
+   11  :     List(TK.TUPLE, [Ref(), Ref(), Ref()])
+   12  :         Ref(TK.IDNT, 'a')
+   13  :         Ref(TK.IDNT, 'b')
+   14  :         Ref(TK.IDNT, 'c')

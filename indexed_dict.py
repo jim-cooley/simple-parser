@@ -77,7 +77,7 @@ class IndexedDict(object):
             else:
                 for idx in range(0, _max-1):
                     fstr += f'{self._get_item_by_index(idx)}'  # skips '__dict__'
-                    fstr += ',' if idx < max else ''
+                    fstr += ',' if idx < _max else ''
             return '{' + f'{fstr}' + '}'
 
     def _get_item_by_index(self, index, default=None):
