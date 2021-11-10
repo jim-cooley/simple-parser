@@ -1,4 +1,17 @@
-# Flow Operators
+# Flows
+
+Flows are a series of transforms applied to a datasource that ultimately wind up producing or storing something.  If you are familiar with Shell scripting, then a flow is very similar to a series of 'pipe' expressions and the i/o redirect operator '>>'.  In Focal, flows consist of a `source`, a series of `transforms`, and a `destination`.  
+
+### Source
+The source may be a literal value, a dataset or other variable, or a function that produces an output.
+
+### Transforms, Transform Functions
+Transforms are operations that are applied to the results of the previous expression and in the case of sets, may be applied either element-wise or to the set as a whole.
+
+### Destination
+A Flow destination may be a variable, event, or function that produces an output.
+
+## Flow Operators
 
 Flow operators are '|', '=>', and '>>'.  Here is how they differ:
 
@@ -7,6 +20,7 @@ operator | name | description
 &#124; | `chain` or `pipe` | Connects transform functions together, producing a flow of data through various transformations 
 `>>` | `apply` | Assigns the product of a series of flow transitions to storage.  Example: `a >> b`, would be equivalent to `b` = `a`
 `=>` | `produce` or `yield` |  Used as a pattern substitution / ananymous function declaration.  Example: `x => x + 1` would apply the anonymous function `x + 1`, where `x` occurred.  In this case, `x` is an anonymous variable and its name does not matter.  The expression could also be written: ` _ => _ + 1`
+`->` | `raise` | Used to raise a signal or invoke a function for each non-zero value in the dataset.  Raise is similar to `apply` in that it could send the output to variable or dataset, but unlike `apply`, values would aggretate in the destination.
 
 ## Valid Forms
 
