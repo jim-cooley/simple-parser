@@ -9,10 +9,10 @@ df = {
     "three": Series( rand(3), index=["b", "c", "d"] ),
 }
 
-=
-pd = dataset(df)    # would be nice if df was already a dataframe from the decl above.
+# would be nice if df was already a dataframe from the decl above.
+pd = dataset(df)
 
-
+# future definition with generators?
 df = {
     "one": { rand(3) => _ } : index=['a', 'b', 'c']
 }

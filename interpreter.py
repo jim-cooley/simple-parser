@@ -6,57 +6,61 @@ from scope import Block
 from tree import FnCall
 from visitor import TreeFilter, BINARY_NODE
 
-_VISIT_ASSIGNMENT = 'visit_assignment'
-_VISIT_DEFINITION = 'visit_definition'
 _VISIT_IDENT = 'visit_ident'
 _VISIT_LITERAL = 'visit_literal'
 _VISiT_LEAF = 'visit_value'
 
 _PROCESS_APPLY = 'process_apply'
+_PROCESS_ASSIGN = 'process_assignment'
 _PROCESS_BINOP = 'process_binop'
 _PROCESS_BLOCK = 'process_block'
 _PROCESS_DEFINE = 'process_define'
+_PROCESS_CHAIN_PROD = 'process_chain_prod'
 _PROCESS_DEFINE_FN = 'process_define_fn'
 _PROCESS_FLOW = 'process_flow'
+_PROCESS_FNCALL = 'process_fncall'
 _PROCESS_GET = 'process_get'
+_PROCESS_INDEX = 'process_index'
+_PROCESS_LIST = 'process_list_object'
+_PROCESS_PROPCALL = 'process_propcall'
 _PROCESS_PROPREF = 'process_propref'
 _PROCESS_REF = 'process_ref'
-_PROCESS_SEQUENCE = 'process_sequence_node'
+_PROCESS_SET = 'process_set_object'
 _PROCESS_UNOP = 'process_unop'
 
-_NATIVE_LIST = 'visit_list'
-_NATIVE_VALUE = 'process_intrinsic'
+_NATIVE_LIST = 'process_native_list'
+_NATIVE_VALUE = 'process_native_value'
 
 
 _interpreterVisitNodeMappings = {
     'ApplyChainProd': _PROCESS_APPLY,
-    'Assign': _VISIT_ASSIGNMENT,
+    'Assign': _PROCESS_ASSIGN,
     'BinOp': _PROCESS_BINOP,
     'Block': _PROCESS_BLOCK,
     'Bool': _VISIT_LITERAL,
     'DateDiff': _VISIT_LITERAL,
     'DateTime': _VISIT_LITERAL,
     'Define': _PROCESS_DEFINE,
-    'DefineChainProd': _VISIT_DEFINITION,
+    'DefineChainProd': _PROCESS_CHAIN_PROD,
     'DefineFn': _PROCESS_DEFINE_FN,
     'DefineVar': _PROCESS_DEFINE,
     'DefineVarFn': _PROCESS_DEFINE_FN,
     'Duration': _VISIT_LITERAL,
     'Float': _VISIT_LITERAL,
     'Flow': _PROCESS_FLOW,
-    'FnCall': BINARY_NODE,
+    'FnCall': _PROCESS_FNCALL,
     'Get': _PROCESS_GET,
     'Ident': _VISIT_IDENT,
-    'Index': BINARY_NODE,
+    'Index': _PROCESS_INDEX,
     'Int': _VISIT_LITERAL,
-    'List': _PROCESS_SEQUENCE,
+    'List': _PROCESS_LIST,
     'Literal': _VISIT_LITERAL,
     'Node': _VISiT_LEAF,
     'Percent': _VISIT_LITERAL,
-    'PropCall': BINARY_NODE,
+    'PropCall': _PROCESS_PROPCALL,
     'PropRef': _PROCESS_PROPREF,
     'Ref': _PROCESS_REF,
-    'Set': 'process_set_object',
+    'Set': _PROCESS_SET,
     'Str': _VISIT_LITERAL,
     'Time': _VISIT_LITERAL,
     'UnaryOp': _PROCESS_UNOP,
@@ -98,39 +102,22 @@ class Interpreter(TreeFilter):
         self._print_node(node)
         self.stack.push(node.value)
 
-    # encountered if 'tree' is actually a 'forest'
-    def visit_list(self, list, label=None):
-        self._print_node(list)
-        count = 0
-        values = []
-        for n in list:
-            count += 1
-            if self._verbose:
-                print(f'\ntree:{count}')
-            values.append(self.visit(n))
-        self.stack.push(values)
-
     def visit_literal(self, node, label=None):
         self._print_node(node)
         reduce_value(self.stack, node)
 
-    # node is to be returned (thinks like Ref, etc)
     def visit_value(self, node, label=None):
         self._print_node(node)
         self.stack.push(node)
-
-    # non-converting visitation
-    def visit_assignment(self, node, label=None):
-        self.process_binop(node, label)
-
-    def visit_definition(self, node, label=None):
-        self.process_binop(node, label)
 
     def visit_ident(self, node, label=None):
         self._print_node(node)
         self.stack.push(evaluate_identifier(node))
 
+    # -------------------
     # worker nodes
+    # -------------------
+    # ApplyChainProd
     def process_apply(self, node, label=None):
         self._print_node(node)
         r_value = self.stack.pop()
@@ -138,6 +125,10 @@ class Interpreter(TreeFilter):
         l_value = self.stack.pop()
         l_value = evaluate_binary_operation(node, l_value, r_value)
         self.stack.push(l_value)
+
+    # Assign
+    def process_assignment(self, node, label=None):
+        self.process_binop(node, label)
 
     def process_binop(self, node, label=None):
         self._print_node(node)
@@ -150,6 +141,7 @@ class Interpreter(TreeFilter):
         l_value = evaluate_binary_operation(node, l_value, r_value)
         self.stack.push(l_value)
 
+    # Block
     def process_block(self, node, label=None):
         self._print_node(node)
         block = Block(loc=node.token.location)
@@ -158,6 +150,11 @@ class Interpreter(TreeFilter):
         Environment.leave()
         self.stack.push(block)
 
+    # DefineChainProd.  ApplyChainProd is handled via 'Apply'
+    def process_chain_prod(self, node, label=None):
+        self.process_binop(node, label)
+
+    # Define, DefineVar
     def process_define(self, node, label=None):
         self._print_node(node)
         left = node.left
@@ -166,6 +163,7 @@ class Interpreter(TreeFilter):
         self.visit(left)
         self._print_node(right)
         self.dedent()
+        # UNDONE: need to handle all cases of ':' operator here as well - or split out
         if isinstance(right, FnCall):
             name = right.left.name  # should be either Ref() or Get()
             args = right.right
@@ -180,9 +178,9 @@ class Interpreter(TreeFilter):
             update_ref(var, result)
         else:
             var = reduce_ref(ref=left, value=right)
-
         self.stack.push(var)
 
+    # DefineFn, DefineVarFn
     def process_define_fn(self, node, label=None):
         self._print_node(node)
         left = node.left
@@ -198,6 +196,7 @@ class Interpreter(TreeFilter):
         fn.parameters = reduce_parameters(scope=fn, args=args)
         self.stack.push(fn)
 
+    # Flow
     def process_flow(self, node, label=None):
         self._print_node(node)
         self.indent()
@@ -213,16 +212,41 @@ class Interpreter(TreeFilter):
                 if prev is not None:
                     pass  # look for something to assign it to
                 self.visit(n)
-           #    prev = self.stack.pop()
         self.dedent()
 
+    # FnCall
+    def process_fncall(self, node, label=None):
+        self.process_binop(node, label)
+
+    # Get
     def process_get(self, node, label=None):
         self._print_node(node)
         self.stack.push(reduce_get(get=node))
 
-    def process_intrinsic(self, value, lable=None):
+    def process_index(self, node, label=None):
+        self.process_binop(node, label)
+
+    # encountered if 'tree' is actually a 'forest'
+    def process_native_list(self, list, label=None):
+        self._print_node(list)
+        count = 0
+        values = []
+        for n in list:
+            count += 1
+            if self._verbose:
+                print(f'\ntree:{count}')
+            values.append(self.visit(n))
+        self.stack.push(values)
+
+    # int, float, str, ...
+    def process_native_value(self, value, lable=None):
         self.stack.push(value)
 
+    # PropCall
+    def process_propcall(self, node, label=None):
+        self.process_binop(node, label)
+
+    # PropRef
     def process_propref(self, node, label=None):
         self._print_node(node)
         self.visit(node.left)
@@ -233,14 +257,17 @@ class Interpreter(TreeFilter):
         right = self.stack.pop()
         self.stack.push(reduce_propref(left, right))
 
+    # Ref
     def process_ref(self, node, label=None):
         self._print_node(node)
         self.stack.push(reduce_ref(ref=node))
 
-    def process_sequence_node(self, node, label=None):
+    # List
+    def process_list_object(self, node, label=None):
         self._print_node(node)
         self._process_sequence(node)
 
+    # Set
     def process_set_object(self, node, label=None):
         self._print_node(node)
         values = node.values()

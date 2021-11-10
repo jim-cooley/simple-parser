@@ -3,7 +3,9 @@ from yahoo import do_yahoo
 
 
 def is_intrinsic(name):
-    return name in _intrinsic_dispatch
+    if name in _intrinsic_dispatch:
+        return name
+    return name in _instrinsic_aliases
 
 
 def invoke_intrinsic(name, args):
@@ -18,3 +20,7 @@ _intrinsic_dispatch = {
     'yahoo': do_yahoo,
 }
 
+# these are allowable aliases (which can easily be overridden)
+_instrinsic_aliases = {
+    'dataframe': create_dataset,    # allowable for now
+}

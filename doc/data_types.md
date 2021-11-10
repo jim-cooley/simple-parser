@@ -1,13 +1,13 @@
 # Data Types
 > <h2>*what's the difference between set, tuple, and block?*</h2>
-#
+
 type | description
 --- | ---
-block | contains statements and expressions
-set | contains statements, and expressions, with k-v pairs (but could be anonymous?)
-list, tuple | sequenctial, ordered, iterable, heterogeneous, allows duplicates, nestable
-set | unordered, heterogeneous, no duplicates (coalesced), nestable
-dictionary | k,v pairs
+`block` | Contains statements and expressions, with k:v pairs defining symbols w/in scope
+`dataset` / `dataframe` | Pandas DataFrame.  </br>NOTE: will likely be merged into `set` 
+`list` | Sequenctial, ordered, iterable, heterogeneous, allows duplicates, nestable
+`tuple` | Sequenctial, ordered, iterable, heterogeneous, allows duplicates, nestable </br>Can be used to assign to multiple variables.  parameter list
+`set` | Contains statements, and expressions, with k-v pairs (but could be anonymous?) </br>Unordered, heterogeneous, no duplicates (coalesced), nestable
 
 ## parsing
 
@@ -17,3 +17,21 @@ parser expression | code | alternate
 `list = '[' + item + [',' + item]* + ']'` | list() | []
 `set = '{' + item + [',' + item]* + ']'` | set()
 `dictionary = '{' + key:value + [',' + key:value]* + '}'` | dict() | {}
+
+## other datatypes
+
+type | description | notes
+--- | --- | ---
+`int` | `int64` | do we support uint64?
+`category` | `Enum` | categorical value
+`duration` | `timedelta64` |
+`float` | `float64` |
+`key` | `EnumInt` | category that translates into an int key
+`object` | `object` | unknown, late-bound access
+`str` | `str` |
+`time` | `datetime` |
+
+&nbsp;
+
+> NOTE: we need to support category types as well as other integer, float, date, time precisions for Pandas & NumPy
+

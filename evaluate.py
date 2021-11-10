@@ -32,6 +32,7 @@ def reduce_value(stack: RuntimeStack, node):
 def reduce_ref(scope=None, ref=None, value=None):
     scope = Environment.current.scope if scope is None else scope
     symbol = scope.find_add_local(ref.token, value)
+    # UNDONE: need to update definitions if symbol exists.  need to call assignment, not update_ref
     return symbol   # should be Object type
 
 
@@ -155,5 +156,5 @@ def evaluate_unary_operation(node, left):
     return left
 
 
-def invoke_fn(node):
+def invoke_fn(node, args):
     pass

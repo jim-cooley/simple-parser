@@ -1,6 +1,10 @@
-# row, col access
+# Datasets
+_Datasets_ and their cousin _Series_ represent the tie into the Pandas / DataFrame universe.  
 
-## Examples
+> NOTE: long-term the Dataset may merge with Set as there may not be need for two such vehicles in the system as the attributes of Set that are not found in DataFrames could be picked up by _Block_
+
+
+## Pandas examples
    
    example | description
    --- | ---
@@ -16,7 +20,9 @@
    a{1d}               | maybe use {} for row-based query?
    a.col1              | alternate syntax
    a.col1[1d]          | good for single column
-   a['col1', 'col2' > 0, 'col3']
+   a['col1', 'col2' > 0, 'col3'] |
    a[col1:, col2:, col3: ]  | uses table metadata and bypasses string lookups
    a[col1:, col2: > 10, col3: ]  | uses table metadata and bypasses string lookups
+
+# non Pandas examples
 

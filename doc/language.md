@@ -1,249 +1,120 @@
-#
-# Focal - Formulaic Calculator (ExCal - ?)
-#
-# Expression based
-#
-#
-#   '=' for static evaluation - evaluates formula, stores result
-#   ':=' for var evaluation - stores formuala, re-evaluates on get, like inline function
-#   'def' + target + '=' is the same as target + ':='   # why 2 syntax?
-#   ',' # separator for lists, tuples, sets, etc
-#   ';' # statement separator, discards evaluation on lhs
-#
-#   expression + '|' + expression      - expression separator, chains evaluation from lhs to rhs
-#                                      - '3 | a' should be the same as 'a = 3'
-#                                      - but might be better expressed as '3 >> a'
-#
-#   expression + '>>' + target    # apply operator -- sets or stores lhs expression
-#
-#   set + ':' + set     - applies the rhs to the lhs set : modifies contents, parameterizes
-#   set + ':' + tuple   - same
-#
-# what's the difference between set, tuple, and block?
-#
-#   block - contains statements and expressions
-#   set - contains statements, and expressions, with k-v pairs (but could be anonymous?)
-#
-#   list, tuple - sequenctial, ordered, iterable, heterogeneous, allows duplicates, nestable
-#   set - unordered, heterogeneous, no duplicates (coalesced), nestable
-#   dictionary - k,v pairs
-#
-#   tuple = '(' + item + [',' + item]* + ')'                    tuple(), ()
-#   list = '[' + item + [',' + item]* + ']'                     list(), []
-#   set = '{' + item + [',' + item]* + ']'                      set()
-#   dictionary = '{' + key:value + [',' + key:value]* + '}'     dict(), {}
-#
-#   indexing:
-#   a[1]        - single value
-#   a[0..10]    - range query
-#   a[a > 10]   - select from a where a > 10
-# can appear on lhs
-#   a[a > 10] = 0
-#
-# row, col:
-#   a['col']              - select col from a
-#   a['col1', 'col2', 'col3'] - select col1, col2, col3 from a
-#   a['col'][0]           - first row of select col from a
-#   a[col] | top        - top from a[col]
-#   a[col][10/31/2021]  - range for 10/31/2021 (all values that date)
-#   a[col][1d]          - past 1d from a[col]
-#   a[col='col', row='10/31/2021']  - alternate syntax
-#   a[1d]               - when using duration, time, or integers, row is assumed if not specified
-#   a[row=1d]           - formal syntax
-#   a{1d}               - maybe use {} for row-based query?
-#   a.col1              - alternate syntax
-#   a.col1[1d]          - good for single column
-#   a['col1', 'col2' > 0, 'col3']
-#   a[col1:, col2:, col3: ]  - uses table metadata and bypasses string lookups
-#   a[col1:, col2: > 10, col3: ]  - uses table metadata and bypasses string lookups
-#
-# sets: can contain formula, expressions
-#   a := {
-#       buy: close >| sma(10) | signal | delay(1d) >> atr
-#       sell: close <| sma(10) | signal | delay(1d) >> atr
-#   }
-#
-# some scala notation:
-# (x: R) => x * x           - anonymous function
-# (1 to 5).map(_ * 2)       - anonymous function
-# (1 to 5).map(x => x * x)  - use of arg twice, must name
-# (1 to 5).reduceLeft(_ + _) - use of unnamed args
-#
-# inline functions: re-evaluated each access
-# def f(x) := { x * x } - define function
-# def f(x) := println(x)
-# def f(x) := x * x
-# def f(x) := { a | b | c }:{threshold = x}
-# f(x) := x * x             - alternate syntax
-# f(x) = x * x              - ?
-#
-# more scala:
-# (1 to 5) filter {
-#    _ % 2 == 0
-#  } map {
-#    _ * 2
-#  }
-#
-# focal equivalent:
-# (1..5) | filter:{where: _ % 2 == 0} | map:{_ * 2}
-# (1..5) | map:{_ % 2 == 0 => _ * 2}
-# (1..5) | map[_ % 2 == 0] => _ * 2
-# (1..5) | map[_ % 2 == 0] *= 2
-# (1..5) | map:{ _ % 2 == 0 => _ * 2 }
-#
-# scala:
-# val zscore =
-#    (mean: R, sd: R) =>
-#      (x: R) =>
-#        (x - mean) / sd
-# val normer = zscore(7, 0.4) _
-#
-# focal:
-# zscore(mean:, sd:) = { (x - mean) / sd }
-# normer = zscore(7,0.4)
-#
-# zscore(mean:, sd:) = { (x - mean) / sd }
-# normer = zscore:{mean=7, sd=0.4}
-# scores['score']:{zscore:(mean=7, sd=0.4)}      # apply to table 'scores'
-# scores['score']:{zscore:(mean=7, sd=0.4)} | normalized_scores
-# scores['score']:{normer} | normalized_scores
-# scores['score']:{normer} >> normalized_scores
-#
-# variables
-# var x = 5                 - mutable, denotes dimension of simulation
-# x = 5                     - immutable
-# var (x, y, z) = (1, 2, 3)
-# (x, y, z) = (1, 2, 3)
-#
-# conditionals:
-# happy if check
-# happy if check else sad
-# a = happy if check
-# a = happy if check else sad
-#
-# implicit looping: (while-do)
-# (x < 5) {
-#   println(x)
-#   x += 1
-# }
-#
-# {                 (do-while)
-#   println(x),
-#   x += 1
-# }:(x=0, x < 5)
-#
-# scala:
-# (xs zip ys) map {
-#    case (x, y) => x * y
-#  }
-#
-# for (x <- xs; y <- ys)
-#    yield x * y
-#
-# (i <- 1 to 5) {
-#    println(i)
-#  }
-#
-# val v42 = 42
-#  3 match {
-#    case `v42` => println("42")
-#    case _     => println("Not 42")
-#  }
-#
-# python:
-#   a_list = [1, ‘4’, 9, ‘a’, 0, 4]
-#
-#   squared_ints = [ e**2 for e in a_list if type(e) == types.IntType ]
-#
-# filter(lambda e: type(e) == types.IntType, a_list)
-# map(lambda e: e**2, a_list)
-# map(lambda e: e**2, filter(lambda e: type(e) == types.IntType, a_list))
-# [ [ 1 if item_idx == row_idx else 0 for item_idx in range(0, 3) ] for row_idx in range(0, 3) ]
-# multiples = [i for i in range(30) if i % 3 == 0]
-# squared = [x**2 for x in range(10)]
-#
-#
-# mcase = {'a': 10, 'b': 34, 'A': 7, 'Z': 3}
-#
-# mcase_frequency = {
-#    k.lower(): mcase.get(k.lower(), 0) + mcase.get(k.upper(), 0)
-#    for k in mcase.keys()
-# }
-# >> mcase_frequency == {'a': 17, 'z': 3, 'b': 34}
-#
-#   {v: k for k, v in some_dict.items()}
-#
-# python generator:
-# multiples_gen = (i for i in range(30) if i % 3 == 0)
-# print(multiples_gen)
-# Output: <generator object <genexpr> at 0x7fdaa8e407d8>
-# for x in multiples_gen:
-#   print(x)
-#
-# python lambdas:
-# lambda argument: manipulate(argument)
-# add = lambda x, y: x + y
-# a = [(1, 2), (4, 1), (9, 10), (13, -3)]
-# a.sort(key=lambda x: x[1])
-#
-# data = zip(list1, list2)
-#  data = sorted(data)
-#  list1, list2 = map(lambda t: list(t), zip(*data))
-#
-# python ternary:
-# (if_test_is_false, if_test_is_true)[test]
-# nice = True
-# personality = ("mean", "nice")[nice]
-# print("The cat is ", personality)
-#
-# output = None
-# message = output or "no input received"
-#
-# Output: The cat is nice
-#
-# Python ternary 'tag'
-# True or "Some"
-# False or "Some"
-#
-# in a flow:
-#   a[a > 10] = 0 | b   - lhs is propigated by '|'.  similar to '=' but left to right evaluation
-#   a = b = c           - c is assigned to b, is assigned to a
-#   a | b | c           - a is assigned to b, is assigned to c
-#
-# pandas formulae:
-#   a | rolling(window=n) | mean
-#   a | rolling:{window=n} | mean
-#   { a | rolling | mean}:(window=n)
-#
-# implicit looping:
-#   n = [0..10]
-#   { a | rolling | mean}:(window=n)
-#   - evaluates for n=0..10
-#
-#expression :=   literal
-                | unary
-                | binary
-                | assignment
-                | fn_call
-                | '(' + expression + ')'
-                | expression + ';' + expression
-                | expression + '|' + expression
-                | expression + '>>' + target
-                | '{' + expression + [ ';', ',', '|' ] expression + '}'
+# Language Examples
 
-assignment := ['def' | 'var'] + target + ['=' | ':='] + expression
+## sample rules file for qtradr system
+The following is an illustration of using Focal to implement a trading system backtest
 
-tuple := '(' + expression + [',' + expression ]* + ')'
+```
+periods = {
+    'train': (today-2y)..today
+}
 
-parameter_list := '(' + expression + [',' + expression ]* + ')'
+var sma_periods1 = [3,5,10..20,28]
+var sma_periods2 = [5,10,12,20,30,60,90]
 
-term := factor [[ '-' | '+' ] factor ]*
+(open, high, low, close, adj_close) = yahoo( file='spq500.csv', periods['train5'] )
+atr = (high + low) / 2
+median_price = (open + close) / 2
+price10a := _.delay(1d)[10:00]
 
-factor := unary [[ '/' | '*' | 'div' | 'mod' ] factor ]*
+report := { trades(buy, sell) | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price') }
 
-unary := [ '-' | '!' | 'not' ] unary
-         | primary
+rules := {
+    baseline = {
+        any:{ close |> sma(10), close |> sma(20), sma(10) |> sma(20) }:(threshold=0.01) | signal(close) >> delay(1d) -> buy(atr),
+        close <| sma(10) | signal(close) >> delay(1d) -> sell
+    },
+    scenario1 = {
+        { close |> sma(r2) } | delay(1d) | signal(atr)  -> buy,
+        close <| sma(r1) | delay(1d) | signal(atr) -> sell
+    },
+    scenario2 = {
+        { close |> sma(r1) }:(threshold=0.01) | delay(1d) | signal -> buy,
+        close <| sma(r1) | delay(1d) | signal -> sell
+    },
+    scenario3 = {
+        { sma(r1) |> sma(r2) } | delay(1d) | signal -> buy,
+        close <| sma(r1) | delay(1d) | signal -> sell
+    },
+    {
+        { close |> sma(r1) } | delay(1d) | signal -> buy,
+        close <| sma(r2) | delay(1d) | signal -> sell
+    }
+}
 
-primary :=  number | datetime | duration | set | STRING | 'true' | 'false' | 'none'
-            | '(' expression ')'
+backtest( rules:{r1=sma_periods1, r2=sma_periods2}, period=period['train'])
+rules => report | print
+```
+
+## discussion
+Now, lets walk through what is happening in this example:
+
+### Step 1
+```
+periods = {
+    'train': (today-2y)..today  # also range(-2y) would work
+}
+```
+This sets up a _Dictionary_ with a named range representing the duration of the last 2yrs, with a comment as to an alternate syntax for this.
+
+### Step 2
+```
+var sma_periods1 = [3,5,10..20,28]
+var sma_periods2 = [5,10,12,20,30,60,90]
+```
+This establishes two lists of values to be used for the backtest later on.  The keyword `var` indicates that these variables will may take on any value in the set, this is akin to defining them as a range() with explicit values.  Here, the intrinsic `range` is implied later on when they are used.
+
+### Step 3
+```
+(open, high, low, close, adj_close) = yahoo( file='spq500.csv', periods['train5' )
+```
+Here, we download historic stock data for the period of the simulation using the `yahoo` intrinsic function.  The output from yahoo finance(tm) includes the colums `open`, `high`, `low`, `close`, `adj_close`; these are assigned to the separate data series: `open`, `high`, `low`, `close`, `adj_close`
+
+#### Step 4
+```
+atr = (high + low) / 2
+median_price = (open + close) / 2
+```
+Two new data series are produced via derivation from the historic data.  This is `atr` or Average Trading Range, and `median` to denote Median Daily Price.
+
+#### Step 5
+```
+price10a := _.delay(1d)[10:00]
+```
+This defines an inline transform that will enable subscripting on an existing datastream, for example: `price.price10a` would be equivalent to `price.delay(1d)[10:00]`.  This is also equivalent to `price | delay(1d) | select(time=10:00)`
+
+#### Step 6
+```
+report := { trades | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price') }
+```
+This sets up an inline function to use when reporting.  When `report` is invoked, it will transform into `trades | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price')`
+
+#### Step 7
+```
+rules := {
+```
+
+This defines a _Block_ containing what will be the 'rules' used in the backtest.  In this case 'rules' are just named expressions that will be evaluated later.  Lets explain these one at a time.
+
+#### Step 8
+```
+baseline = {
+    any:{ close |> sma(10), close |> sma(20), sma(10) |> sma(20) }:(threshold=0.01) | signal(close) >> delay(1d) -> buy(atr),
+    close <| sma(10) | signal >> delay(1d) -> sell(atr)
+},
+```
+This etablishes a named set of expressions called `baseline`.  In the backtest later on, it will be the set of values that we compare others to, but the name `backtest` serves no special purpose other than to denote this for ourselves.
+
+#### Step 9
+```
+any:{ close |> sma(10), close |> sma(20), sma(10) |> sma(20) }:(threshold=0.01) | signal(close) | delay(1d) -> buy(atr),
+```
+This is a parameterized set with a set operator `all:` applied.  It indicates that _all_ of the mebers of the set must be true to indicate success.  The execution of this will evaluate the subexpressions `close |> sma(10)` which is true where the close series values rise above the series `sma(10)`.  `sma` is an intrinsic which evaluates to the _Simple Moving Average_ of the data series.  When that is not specified (as in: `close.sma(10)`), then focal takes that to be applied to the argument of the lefthand side.  Equivalent to `close |>= sma(10)` if there was such an operator.  The `:(threshold=0.01)` is known as a `set parameter`, or a `parameterization expression`.  This sets up the key:value pair of `threshold=0.01` to be available by the items in the inner block.  Essentially _injecting_ a parameter into the block.  In this case, that is used by the `|>` and `<|` operators to indicate at what precision the crossing detection is made.
+&nbsp;
+The above expression evaluates to a new series with True appearing where the expression evaluates to True, and False otherwise.  This new series is transformed by the `signal` intrinsic function which translates this into a new series with the values from the `close` series replacing True and `0` replacing False.
+&nbsp;
+This series is delayed by 1d and then used to raise a `buy` signal using the _Average Trading Range_ series.  In this example, `buy` is an intrinsic, but this could be any function.  The _raise_ operator `->` invokes the function on the righthand side for each value of the lefthand side that evaluates to True (nonzero)
+&nbsp;
+This example is a little contrived to show the expressive nature of Flow equations but could be simplified to</br>
+` | delay(1d) -> buy(atr)` or `| signal(close) | delay(1d) -> buy`
+
 
