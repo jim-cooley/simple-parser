@@ -23,9 +23,7 @@ def c_box(u, val):
 
 
 def c_unbox(u):
-    if isinstance(u, Object):
-        u = u.value
-    if getattr(u, 'value', False):
+    if hasattr(u, 'value'):
         u = u.value
     return u
 

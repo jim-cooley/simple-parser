@@ -18,4 +18,4 @@ tree1:(post)  a | n
 symbols: 
 
 global scope:
-    0:  `n`: n : Object(TK.IDNT(IDENTIFIER, 'n', V=None))
+    0:  `n`: .n : Object(TK.IDNT(IDENTIFIER, 'n', V=None))

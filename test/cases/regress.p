@@ -4,5 +4,7 @@ def factorial(x) := {
     x * factorial(x - 1)
 }
 
+print('hello')
 f(5)
-f(a)
+factorial(5)
+

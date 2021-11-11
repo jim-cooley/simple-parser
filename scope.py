@@ -107,23 +107,6 @@ class Scope:
             scope = scope.parent_scope
         return default
 
-    def update(self, name, value=None, local=False):
-        scope = self
-        while scope is not None:
-            if name in self._members:
-                if value is not None:
-                    sym = self._members[name]
-                    if hasattr(value, '_name'):
-                        value._name = name
-                    if hasattr(sym, 'token') and hasattr(value, 'token') and sym.token is not None:
-                        value.token.location = sym.token.location
-                self._members[name] = value
-                return self._members[name]
-            if local:
-                break
-            scope = scope.parent_scope
-        return None
-
     def _add_symbol(self, tkid, tcl, lex):
         tk = Token(tid=tkid, tcl=tcl, lex=lex, loc=Token.Loc())
         self._members[lex] = tk

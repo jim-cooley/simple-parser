@@ -8,7 +8,6 @@ from eval_boolean import eval_boolean_dispatch, _boolean_dispatch_table
 from eval_unary import not_literal, increment_literal, decrement_literal, negate_literal
 from exceptions import runtime_error, runtime_strict_warning, getLogFacility
 from indexed_dict import IndexedDict
-from intrinsic_dispatch import invoke_fn, is_intrinsic, invoke_intrinsic
 from literals import LIT_NONE, Literal
 from tokens import TK
 from tree import Ref, Define
@@ -85,7 +84,7 @@ def reduce_parameters(scope=None, args=None):
                 items[sym.name] = sym
             elif isinstance(ref, Literal):
                 slot = items.keys()[idx]
-                items[slot] = c_unbox(ref),
+                items[slot] = c_unbox(ref)
     return IndexedDict(items)
 
 
@@ -123,22 +122,6 @@ def evaluate_binary_operation(node, left, right):
 def evaluate_identifier(stack, node):
     left = Environment.current.scope.find(node.token.lexeme)
     stack.push(left)
-
-
-def evaluate_invoke(node):
-    fnode = node.left
-    args = node.right
-    name = fnode.name  # should be either Ref() or Get()
-    fn = reduce_get(get=fnode)
-    if fn is None:
-        runtime_error(f'Function {name} is undefined')
-    args = reduce_parameters(scope=fn, args=args)  # need to have scope be a new parameters object (block?)
-    if is_intrinsic(name):
-        result = invoke_intrinsic(name, args)
-    else:
-        ident = reduce_get(get=node.left)
-        result = invoke_fn(ident, args)
-    return result
 
 
 def evaluate_set(node, visitor=None):

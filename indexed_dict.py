@@ -35,7 +35,7 @@ class IndexedDict(object):
         return self._get_item_by_key(key, self._get_default(key, None))
 
     def __setitem__(self, key, value):
-        self._set_item_by_key(key, value)
+        self.set_item_by_key(key, value)
 
     def __str__(self):
         return self.format()
@@ -100,14 +100,14 @@ class IndexedDict(object):
         keys = list(self.__dict__.keys())
         if index < 0 or index > len(keys):
             raise IndexError('Index out of range')
-        return self._set_item_by_key(keys[index], value)
+        return self.set_item_by_key(keys[index], value)
 
     def _get_item_by_key(self, key, default=None):
         if key not in self.__dict__:
             return default
         return self.__dict__[key]
 
-    def _set_item_by_key(self, key, value=None):
+    def set_item_by_key(self, key, value=None):
         self.__dict__[key] = value
 
     def _get_default(self, key, default):

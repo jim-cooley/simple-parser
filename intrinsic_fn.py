@@ -45,7 +45,7 @@ def do_print(args):
 
 
 def _t_print(logger, message, end='\n'):
-    print(message, end=end)
-    if logger is not None:
-        logger.write(f'{message}', end=end)
-        logger.flush()
+    if logger is None:
+        logger = getLogFacility('semtex')
+    logger.write(f'{message}', end=end)
+    logger.flush()

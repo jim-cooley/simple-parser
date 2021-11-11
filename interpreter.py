@@ -1,7 +1,9 @@
 from environment import Environment
 from evaluate import reduce_value, evaluate_binary_operation, evaluate_unary_operation, evaluate_identifier, \
-    evaluate_set, reduce_get, reduce_propref, reduce_ref, update_ref, reduce_parameters, evaluate_invoke
-from scope import Block
+    evaluate_set, reduce_get, reduce_propref, reduce_ref, update_ref, reduce_parameters
+from exceptions import runtime_error
+from intrinsic_dispatch import is_intrinsic, invoke_intrinsic
+from scope import Block, Object, Scope
 from tree import FnCall
 from visitor import TreeFilter
 
@@ -18,6 +20,7 @@ _PROCESS_CHAIN_PROD = 'process_chain_prod'
 _PROCESS_DEFINE_FN = 'process_define_fn'
 _PROCESS_FLOW = 'process_flow'
 _PROCESS_FNCALL = 'process_fncall'
+_PROCESS_FNDEF = 'process_fndef'
 _PROCESS_GET = 'process_get'
 _PROCESS_INDEX = 'process_index'
 _PROCESS_LIST = 'process_list_object'
@@ -48,6 +51,7 @@ _interpreterVisitNodeMappings = {
     'Float': _VISIT_LITERAL,
     'Flow': _PROCESS_FLOW,
     'FnCall': _PROCESS_FNCALL,
+    'FnDef': _PROCESS_FNDEF,
     'Get': _PROCESS_GET,
     'Ident': _VISIT_IDENT,
     'Index': _PROCESS_INDEX,
@@ -184,7 +188,10 @@ class Interpreter(TreeFilter):
         self._print_node(right)     # can't visit right w/o executing it
         self.dedent()
         fn = reduce_ref(ref=left)
-        fn.code = right
+        if isinstance(right, Scope):
+            fn.code = right.items
+        else:
+            fn.code = right
         fn.defaults = fn.parameters = reduce_parameters(scope=fn, args=args)
         self.stack.push(fn)
 
@@ -208,9 +215,14 @@ class Interpreter(TreeFilter):
 
     # FnCall
     def process_fncall(self, node, label=None):
-        result = evaluate_invoke(node)
-#       var = reduce_ref(ref=left, value=result)
-        self.stack.push(result)
+        self._print_node(node)
+        self.indent()
+        self.visit(node.left)
+        self.evaluate_invoke(node)
+
+    # FnDef
+    def process_fndef(self, node, label=None):
+        self.process_fncall(node, label)
 
     # Get
     def process_get(self, node, label=None):
@@ -320,7 +332,11 @@ class Interpreter(TreeFilter):
     def _print_node(self, node, label=None):
         op = ''
         self._count += 1
-        line = '{}{} {}'.format(type(node).__name__, op, node.token.format())
+        if hasattr(node, 'token'):
+            tk = node.token.format()
+        else:
+            tk = ''
+        line = '{}{} {}'.format(type(node).__name__, op, tk)
         self._print_indented(line)
 
     # undone: preserving
@@ -333,3 +349,23 @@ class Interpreter(TreeFilter):
                 if getattr(parent, '_num', False):
                     id = f'{parent._num + 1}' if parent._num is not None else ' '
             self._print_indented(f'{node}: {node.token.format()}, parent:{id}')
+
+    def evaluate_invoke(self, node):
+        fnode = node.left
+        args = node.right
+        name = fnode.name  # should be either Ref() or Get()
+        fn = reduce_get(get=fnode)
+        if fn is None:
+            runtime_error(f'Function {name} is undefined')
+        args = reduce_parameters(scope=fn, args=args)  # need to have scope be a new parameters object (block?)
+        if is_intrinsic(name):
+            result = invoke_intrinsic(name, args)
+            self.stack.push(result)
+        else:
+            self.invoke_fn(fn, args)
+
+    def invoke_fn(self, fnode, args):
+        fnode.update_members(args)
+        Environment.enter(fnode)
+        self.visit(fnode.code)
+        Environment.leave()

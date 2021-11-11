@@ -13,11 +13,6 @@ class SLOT(IntEnum):
     INIT = 1
 
 
-def invoke_fn(node, args):
-    node.update_members(args)
-    return node
-
-
 def is_intrinsic(name):
     if name in _intrinsic_fundesc:
         return name
