@@ -59,48 +59,46 @@ class Scope:
     def contains(self, token):
         return token.lexeme in self._members
 
-    def define(self, name, value=None, local=False, overwrite=False):
+    def define(self, name=None, value=None, token=None, local=False, update=False):
         """
         Searches for a symbol, defining it if it does not exist.  If a symbol exists in the current scope or parent scopes, then it will
         be found and returned.  The behavior is always to define the symbol in the current scope, 'local' can be used
         to truncate the search for any existing symbols but allocation is always current.
         If the symbol exists, it will not be overwritten, use 'update' to update the value instead.
         :param name: name of symbol to find/define
+        :param token: (optional) if present, token will be used instead of name for searching / defining the symbol
         :param value: value to assign if value is created.
         :param local: whether or not parent scopes should be examined while searching for an existing symbol.
-        :param overwrite: whether or not an existing value should be overwritten.  This is dangerous if 'local' is not False
+        :param update: whether or not an existing value should be overwritten.  This is dangerous if 'local' is not False
         :return: the found / defined / updated symbol
         """
+        if token is not None:
+            name = token.lexeme
         symbol = self.find(name, local=local)
-        if symbol is None:
-            symbol = Object(name=name)
+        if symbol is None and not update:
+            if symbol is None:
+                symbol = Object(name=name, token=token)
+            if value is not None:
+                if hasattr(symbol, 'token') and hasattr(value, 'token'):
+                    if value.token is not None and symbol.token is not None:
+                        symbol.token.location = value.token.location
+                if hasattr(value, '_members'):
+                    symbol._members = deepcopy(value._members)
+                    symbol._value = deepcopy(value.value)
+                else:
+                    if hasattr(value, 'value'):
+                        symbol._value = deepcopy(value.value)
+                    else:
+                        symbol._value = deepcopy(value)
             symbol.parent_scope = self
             symbol._calc_fqname()
-            if getattr(value, '_members', False):
-                symbol._members = deepcopy(value._members)
-                symbol._value = symbol
-            else:
-                symbol._value = deepcopy(value)
             self._members[name] = symbol
         return symbol
 
-        """
-        symbol = self.find(token.lexeme, local=local)
-        if symbol is None:
-            symbol = Object(token=deepcopy(token))
-            symbol.parent_scope = self
-            symbol._calc_fqname()
-            if getattr(value, '_members', False):
-                symbol._members = deepcopy(value._members)
-                symbol._value = symbol
-            else:
-                symbol._value = deepcopy(value)
-            self._members[token.lexeme] = symbol
-        return symbol
-        """
-
-    def find(self, name, default=None, local=False):
+    def find(self, name=None, token=None, default=None, local=False):
         scope = self
+        if token is not None:
+            name = token.lexeme
         while scope is not None:
             if name in scope._members:
                 return scope._members[name]

@@ -145,7 +145,7 @@ class Lexer:
             break
         if tk.id == TK.IDNT:
             tk.t_class = TCL.IDENTIFIER
-            tk = self.keywords.find(tk.lexeme, tk)
+            tk = self.keywords.find(name=tk.lexeme, default=tk)
             if not isinstance(tk, Token):
                 tk = tk.token
             tk = copy.deepcopy(tk)

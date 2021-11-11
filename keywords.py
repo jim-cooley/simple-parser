@@ -18,8 +18,9 @@ class Keywords(Scope):
         return
 
     # cannot add to the keywords dynamically
-    def define(self, token, expr):
-        return
+    def define(self, name=None, value=None, token=None, local=False, update=False):
+        assert False, "Attempt to add to keyword scope."
+        return None
 
     def load_keywords(self, keywords=None):
         keywords = keywords if keywords is not None else _KEYWORDS

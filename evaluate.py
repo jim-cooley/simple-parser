@@ -33,14 +33,14 @@ def reduce_value(stack: RuntimeStack, node):
 
 def reduce_ref(scope=None, ref=None, value=None):
     scope = Environment.current.scope if scope is None else scope
-    symbol = scope.define(ref.token.lexeme, value)
+    symbol = scope.define(token=ref.token, value=value)
     # UNDONE: need to update definitions if symbol exists.  need to call assignment, not update_ref
     return symbol  # should be Object type
 
 
 def reduce_get(scope=None, get=None):
     scope = Environment.current.scope if scope is None else scope
-    symbol = scope.find(get.token.lexeme)
+    symbol = scope.find(token=get.token)
     if symbol is None:
         runtime_strict_warning(f'Symbol `{get.token.lexeme}` referenced before initialized', loc=get.token.location)
     return symbol
@@ -48,7 +48,7 @@ def reduce_get(scope=None, get=None):
 
 def reduce_propref(left=None, right=None):
     scope = Environment.current.scope
-    symbol = scope.find(left.token.lexeme)
+    symbol = scope.find(token=left.token)
     if symbol is None:
         runtime_strict_warning(f'Symbol `{left.token.lexeme}` referenced before initialized', loc=left.token.location)
     prop = symbol.define(right.token.lexeme, local=True)
@@ -57,7 +57,7 @@ def reduce_propref(left=None, right=None):
 
 def reduce_propget(left=None, right=None):
     scope = Environment.current.scope
-    symbol = scope.find(left.token.lexeme)
+    symbol = scope.find(token=left.token)
     if symbol is None:
         runtime_strict_warning(f'Symbol `{left.token.lexeme}` referenced before initialized', loc=left.token.location)
     prop = symbol.find(right.token.lexeme)
@@ -91,7 +91,7 @@ def reduce_parameters(scope=None, args=None):
 
 def update_ref(scope=None, sym=None, value=None):
     scope = Environment.current.scope if scope is None else scope
-    symbol = scope.update(sym.name, value, local=True)
+    symbol = scope.define(sym.name, value, local=True, update=True)
     return symbol  # should be Object type
 
 
