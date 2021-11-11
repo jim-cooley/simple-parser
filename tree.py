@@ -18,9 +18,9 @@ class AST:
         super().__init__(**kwargs)
         self.parent = parent
         self.token = token
-        if token is not None:
+        self._value = value
+        if value is None and token is not None:
             self._value = token.value
-        self._value = value if value is not None else self._value
 
     @property
     def value(self):

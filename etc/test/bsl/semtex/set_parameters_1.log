@@ -20,4 +20,3 @@ tree1:(post)  {a}:(threshold=0.05)
 symbols: 
 
 global scope:
-    0:  `threshold`: threshold : Object(TK.IDNT(IDENTIFIER, 'threshold', V=None))

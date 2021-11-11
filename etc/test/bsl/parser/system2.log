@@ -393,7 +393,7 @@ tree11:  backtest( rules:{r1=sma_periods1, r2=sma_periods2}, period=period['trai
 tree12:  rules => report | print
     1  : DefineFn(TK.DEFINE, TK.EQGT, '=>')
     2  :     Ref(TK.IDNT, 'rules')
-    3  :     Flow(TK.CHAIN, v=[Get(), ApplyChainProd()], '|')
+    3  :     Flow(TK.CHAIN, v=[Get(), FnCall()], '|')
     4  :         Get(TK.IDNT, 'report')
-    5  :         ApplyChainProd(TK.DEFINE, TK.APPLY, '|')
+    5  :         FnCall('print')
     6  :             Ref(TK.IDNT, 'print')

@@ -4,7 +4,7 @@ test: 44:
 1m - 5d
 
 tree1:(post)  1m - 5d
-    1  : Literal(TK.DUR, -5 days, 0:01:00)
+    1  : Duration(TK.DUR, -5 days, 0:01:00)
 
 
 # --------------------------------------------------

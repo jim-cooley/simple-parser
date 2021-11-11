@@ -17,6 +17,7 @@ class Keywords(Scope):
     def __setitem__(self, key, value):
         return
 
+    # cannot add to the keywords dynamically
     def define(self, token, expr):
         return
 

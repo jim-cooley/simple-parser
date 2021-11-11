@@ -1,0 +1,33 @@
+
+
+test: 3:
+f(x) = { var a(x):x*x }
+
+tree1:(post)  f(x) = { var a(x):x*x }
+    1  : DefineFn(TK.DEFINE, TK.ASSIGN, '=')
+    2  :     Ref(TK.IDNT, 'f')
+    3  :     Block(TK.BLOCK, v=[DefineVarFn()], '')
+    4  :         DefineVarFn(TK.DEFINE, TK.COLN, ':')
+    5  :             Ref(TK.IDNT, 'a')
+    6  :             BinOp(TK.MUL, '*')
+    7  :                 Ref(TK.IDNT, 'x')
+    8  :                 Ref(TK.IDNT, 'x')
+    9  :             List(TK.TUPLE, [Ref()])
+   10  :                 Ref(TK.IDNT, 'x')
+   11  :     List(TK.TUPLE, [Ref()])
+   12  :         Ref(TK.IDNT, 'x')
+
+
+# --------------------------------------------------
+#                       R U N 
+# --------------------------------------------------
+
+
+symbols: 
+
+global scope:
+    0:  `f`: f : Object(TK.IDNT(IDENTIFIER, 'f', V=None))
+    1:  `x`: x : Object(TK.IDNT(IDENTIFIER, 'x', V=None))
+
+scope: f
+    2:  `x`: f.x : Object(TK.IDNT(IDENTIFIER, 'x', V=None))

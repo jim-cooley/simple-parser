@@ -1,7 +1,7 @@
 from enum import unique, IntEnum
 
 from dataframe import create_dataset, create_series
-from intrinsic_fn import do_now
+from intrinsic_fn import do_now, do_print, init_print
 
 from scope import IntrinsicFunction
 from yahoo import do_yahoo, init_yahoo
@@ -14,6 +14,7 @@ class SLOT(IntEnum):
 
 
 def invoke_fn(node, args):
+    node.update_members(args)
     return node
 
 
@@ -54,6 +55,7 @@ def init_intrinsic(name):
 _intrinsic_fundesc = {
     'dataset': (create_dataset, None),
     'now': (do_now, None),
+    'print': (do_print, init_print),
     'series': (create_series, None),
     'today': (do_now, None),
     'yahoo': (do_yahoo, init_yahoo),

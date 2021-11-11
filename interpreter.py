@@ -180,12 +180,12 @@ class Interpreter(TreeFilter):
         args = node.args
         self.indent()
         self.visit(left)
-        self.visit(args)
+        self._print_node(args)      # don't visit args on fn def
         self._print_node(right)     # can't visit right w/o executing it
         self.dedent()
         fn = reduce_ref(ref=left)
         fn.code = right
-        fn.parameters = reduce_parameters(scope=fn, args=args)
+        fn.defaults = fn.parameters = reduce_parameters(scope=fn, args=args)
         self.stack.push(fn)
 
     # Flow
@@ -208,7 +208,9 @@ class Interpreter(TreeFilter):
 
     # FnCall
     def process_fncall(self, node, label=None):
-        self.process_binop(node, label)
+        result = evaluate_invoke(node)
+#       var = reduce_ref(ref=left, value=result)
+        self.stack.push(result)
 
     # Get
     def process_get(self, node, label=None):

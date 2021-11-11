@@ -6,7 +6,7 @@ from eval_assignment import eval_assign_dispatch, _SUPPORTED_ASSIGNMENT_TOKENS
 from eval_binops import eval_binops_dispatch, _binops_dispatch_table
 from eval_boolean import eval_boolean_dispatch, _boolean_dispatch_table
 from eval_unary import not_literal, increment_literal, decrement_literal, negate_literal
-from exceptions import getErrorFacility, runtime_error, runtime_strict_warning
+from exceptions import runtime_error, runtime_strict_warning, getLogFacility
 from indexed_dict import IndexedDict
 from intrinsic_dispatch import invoke_fn, is_intrinsic, invoke_intrinsic
 from literals import LIT_NONE, Literal
@@ -24,7 +24,7 @@ _unary2binop = {
 
 
 def get_logger():
-    return getErrorFacility('semtex')
+    return getLogFacility('semtex')
 
 
 def reduce_value(stack: RuntimeStack, node):
@@ -33,14 +33,14 @@ def reduce_value(stack: RuntimeStack, node):
 
 def reduce_ref(scope=None, ref=None, value=None):
     scope = Environment.current.scope if scope is None else scope
-    symbol = scope.find_add_local(ref.token, value)
+    symbol = scope.define(ref.token.lexeme, value)
     # UNDONE: need to update definitions if symbol exists.  need to call assignment, not update_ref
     return symbol  # should be Object type
 
 
 def reduce_get(scope=None, get=None):
     scope = Environment.current.scope if scope is None else scope
-    symbol = scope.find(get.token)
+    symbol = scope.find(get.token.lexeme)
     if symbol is None:
         runtime_strict_warning(f'Symbol `{get.token.lexeme}` referenced before initialized', loc=get.token.location)
     return symbol
@@ -48,19 +48,19 @@ def reduce_get(scope=None, get=None):
 
 def reduce_propref(left=None, right=None):
     scope = Environment.current.scope
-    symbol = scope.find(left.token)
+    symbol = scope.find(left.token.lexeme)
     if symbol is None:
         runtime_strict_warning(f'Symbol `{left.token.lexeme}` referenced before initialized', loc=left.token.location)
-    prop = symbol.find_add_local(right.token)
+    prop = symbol.define(right.token.lexeme, local=True)
     return prop
 
 
 def reduce_propget(left=None, right=None):
     scope = Environment.current.scope
-    symbol = scope.find(left.token)
+    symbol = scope.find(left.token.lexeme)
     if symbol is None:
         runtime_strict_warning(f'Symbol `{left.token.lexeme}` referenced before initialized', loc=left.token.location)
-    prop = symbol.find(right.token)
+    prop = symbol.find(right.token.lexeme)
     if prop is None:
         runtime_strict_warning(f'Symbol `{right.token.lexeme}` referenced before initialized', loc=right.token.location)
     return prop
@@ -68,8 +68,10 @@ def reduce_propget(left=None, right=None):
 
 def reduce_parameters(scope=None, args=None):
     items = {}
-    if scope is not None and scope.defaults is not None:
-        items = deepcopy(scope.defaults)
+    if scope is not None:
+        if hasattr(scope, 'defaults'):
+            if scope.defaults is not None:
+                items = deepcopy(scope.defaults)
     if args is not None:
         for idx in range(0, len(args)):
             ref = args[idx]
@@ -80,16 +82,16 @@ def reduce_parameters(scope=None, args=None):
                 items[sym.name] = value
             elif isinstance(ref, Ref):
                 sym = reduce_ref(scope=scope, ref=ref)
-                items[sym.name] = value
+                items[sym.name] = sym
             elif isinstance(ref, Literal):
                 slot = items.keys()[idx]
-                items[slot] = ref,
+                items[slot] = c_unbox(ref),
     return IndexedDict(items)
 
 
 def update_ref(scope=None, sym=None, value=None):
     scope = Environment.current.scope if scope is None else scope
-    symbol = scope.update_local(sym.name, value)
+    symbol = scope.update(sym.name, value, local=True)
     return symbol  # should be Object type
 
 
@@ -105,8 +107,8 @@ def evaluate_binary_operation(node, left, right):
         return eval_boolean_dispatch(node, left, right)
     elif op in [TK.DEF, TK.REF]:
         scope = Environment.current.scope
-        symbol = scope.find_add(left.token)
-        ref = symbol.find_add_local(right.token)
+        symbol = scope.define(left.token.lexeme)
+        ref = symbol.define(right.token.lexeme, local=True)
         return ref if ref is not None else LIT_NONE
     elif op in [TK.ASSIGN, TK.DEFINE, TK.APPLY]:
         if op in _SUPPORTED_ASSIGNMENT_TOKENS:
@@ -119,7 +121,7 @@ def evaluate_binary_operation(node, left, right):
 
 
 def evaluate_identifier(stack, node):
-    left = Environment.current.scope.find(node.token)
+    left = Environment.current.scope.find(node.token.lexeme)
     stack.push(left)
 
 
@@ -128,6 +130,8 @@ def evaluate_invoke(node):
     args = node.right
     name = fnode.name  # should be either Ref() or Get()
     fn = reduce_get(get=fnode)
+    if fn is None:
+        runtime_error(f'Function {name} is undefined')
     args = reduce_parameters(scope=fn, args=args)  # need to have scope be a new parameters object (block?)
     if is_intrinsic(name):
         result = invoke_intrinsic(name, args)

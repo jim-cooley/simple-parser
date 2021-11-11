@@ -1,6 +1,5 @@
 # parsing and semantic analysis exception handling and helper functions
 import traceback
-import warnings
 
 from indexed_dict import IndexedDict
 from logwriter import IndentedLogWriter
@@ -26,40 +25,40 @@ class SemtexRuntimeWarning(RuntimeWarning):
         super().__init__(*args, **kwargs)
 
 
-def getErrorFacility(name, options=None, env=None, file=None):
+def getLogFacility(name, options=None, env=None, file=None):
     if name not in _facilities:
         f = ExceptionReporter(name, env=env, options=options, file=file)
         _facilities[name] = f
     return _facilities[name]
 
 
-def removeErrorFacility(fac):
+def removeLogFacility(fac):
     if fac.name not in _facilities:
         return
     fac = _facilities.pop(fac.name, None)
     return fac
 
 
+def setLogConfiguration(name, options, env=None):
+    f = getLogFacility(name, options, env)
+    f.set_options(options)
+    f.environment = f.environment if env is None else env
+
+
 def runtime_error(message, loc=None):
-    f = getErrorFacility('semtex')
+    f = getLogFacility('semtex')
     f.runtime_error(message, loc)
 
 
 # strict warning becomes error if option.strict is true (variable used before being declared)
 def runtime_strict_warning(message, loc=None):
-    f = getErrorFacility('semtex')
+    f = getLogFacility('semtex')
     f.runtime_strict_warning(message, loc)
 
 
 def runtime_warning(message, loc=None):
-    f = getErrorFacility('semtex')
+    f = getLogFacility('semtex')
     f.runtime_warning(message, loc)
-
-
-def setErrorConfiguration(name, options, env=None):
-    f = getErrorFacility(name, options, env)
-    f.set_options(options)
-    f.environment = f.environment if env is None else env
 
 
 class ExceptionReporter(IndentedLogWriter):

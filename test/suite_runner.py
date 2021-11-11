@@ -3,7 +3,7 @@ import traceback
 from abc import abstractmethod, ABC
 from multiprocessing import SimpleQueue
 
-from environment import _t_print, Environment
+from environment import Environment
 from treeprint import print_forest, print_node
 
 _LOG_DIRECTORY = "./etc/test/log"
@@ -188,12 +188,12 @@ def _dump_symbols(logger, scope):
 def _dump_keywords(logger, scope):
     if scope._members is None or len(scope._members) == 0:
         return
-    logger.print(f'\nkeywords:')
+    print(f'\nkeywords:')
     idx = 0
     for k in scope._members.keys():
         v = scope._members[k]
         if type(v).__name__ == 'Token':
-            logger.print(f'{idx:5d}:  `{k}`: {v}')
+            print(f'{idx:5d}:  `{k}`: {v}')
             idx += 1
 
 
@@ -215,3 +215,8 @@ def _expand_text(text):
     return ''.join(t)
 
 
+def _t_print(f, message):
+    print(message)
+    if f is not None:
+        f.write(f'{message}\n')
+        f.flush()

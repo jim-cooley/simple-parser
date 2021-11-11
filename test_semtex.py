@@ -7,7 +7,7 @@ from command_interpreter import CommandInterpreter
 from fixups import Fixups
 from interpreter import Interpreter
 from parser import Parser
-from test.suite_runner import TestSuiteRunner, _log_exception, _dump_environment
+from test.suite_runner import TestSuiteRunner, _dump_environment
 from test.test_setup import test_data
 
 _test_suite = True       # False is useful for debugging, interactive.  True for test suites

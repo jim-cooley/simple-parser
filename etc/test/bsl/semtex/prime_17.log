@@ -4,7 +4,7 @@ test: 17:
 False
 
 tree1:(post)  False
-    1  : Bool(TK.FALSE, False)
+    1  : Bool(TK.BOOL, False)
 
 
 # --------------------------------------------------

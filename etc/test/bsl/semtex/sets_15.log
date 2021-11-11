@@ -29,6 +29,3 @@ tree1:(post)  {a, b, c}:(c=4, a=5, b=6)
 symbols: 
 
 global scope:
-    0:  `c`: c : Object(TK.IDNT(IDENTIFIER, 'c', V=None))
-    1:  `a`: a : Object(TK.IDNT(IDENTIFIER, 'a', V=None))
-    2:  `b`: b : Object(TK.IDNT(IDENTIFIER, 'b', V=None))

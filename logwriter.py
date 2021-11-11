@@ -1,3 +1,5 @@
+
+
 class LogWriter:
     def __init__(self, file=None, auto_flush=True):
         self.file = file
@@ -87,4 +89,3 @@ def _expand_text(text):
 
 def _get_indent(level):
     return '' if level < 1 else ' '.ljust(level * 4)
-

@@ -66,9 +66,9 @@ def do_yahoo(args):
     if isinstance(symbols, str):
         symbols = read_symbol_list(symbols)
     ds = get_yahoo(symbols=symbols,
-                   first=c_unbox(args.first),
-                   last=c_unbox(args.last),
-                   span=c_unbox(args.span),
+                   first=args.first,
+                   last=args.last,
+                   span=args.span,
                    frequency=_map2freq[args.frequency],
                    dropna=args.dropna,
                    offline=args.offline)

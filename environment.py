@@ -2,7 +2,8 @@ from collections import deque
 from dataclasses import dataclass
 
 import exceptions
-from exceptions import getErrorFacility
+import logwriter
+from exceptions import getLogFacility
 from indexed_dict import IndexedDict
 from keywords import Keywords
 from scope import Scope
@@ -69,7 +70,7 @@ class Environment(object):
         self.source = self.set_source(source) if source is not None else None
         self.tokens = None
         self.options = IndexedDict(items=options, defaults=_option_defaults)
-        self.logger = getErrorFacility('semtex', env=self, file=file)
+        self.logger = getLogFacility('semtex', env=self, file=file)
         self.stack = RuntimeStack()
         Environment.current = self
 
@@ -79,7 +80,7 @@ class Environment(object):
     def close(self):
         if self.logger:
             self.logger.close()
-            exceptions.removeErrorFacility(self.logger)
+            exceptions.removeLogFacility(self.logger)
             self.logger = None
 
     @staticmethod
@@ -126,10 +127,3 @@ def _get_line(loc, lines):
     if loc.line < len(lines):
         return lines[loc.line]
     return ''
-
-
-def _t_print(f, message):
-    print(message)
-    if f is not None:
-        f.write(f'{message}\n')
-        f.flush()

@@ -2,9 +2,7 @@
 import sys
 from abc import ABC
 
-from environment import Environment, _t_print
 from test.suite_runner import TestSuiteRunner, _log_exception, _dump_environment
-from treeprint import print_forest
 from parser import Parser
 from test.test_setup import test_data
 

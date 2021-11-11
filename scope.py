@@ -32,26 +32,6 @@ class Scope:
             self._fqname = self._calc_fqname()
         return self._fqname
 
-    def from_block(self, block):
-        self._members = block._members
-        for s in self._members.values():
-            s.parent_scope = self
-        return self
-
-    def assign(self, token, expr):
-        sym = self.find(token)
-        if sym is None:
-            raise ValueError(f'Symbol `{token.lexeme}` does not exist')
-        sym.from_value(expr)
-        return sym
-
-    def contains(self, token):
-        return token.lexeme in self._members
-
-    def define(self, token, expr):
-        sym = self._find_add_local(token, expr)
-        return sym
-
     def link(self, scope):
         self.parent_scope = scope
         return self
@@ -60,77 +40,89 @@ class Scope:
         self.parent_scope = None
         return self
 
-    def update(self, name, value):
-        sym = self.find_update_name(name, value)
+    def update_members(self, other):
+        self._members.update(other)
+
+    def from_block(self, block):
+        self._members = block._members
+        for s in self._members.values():
+            s.parent_scope = self
+        return self
+
+    def assign(self, name, expr):
+        sym = self.find(name)
         if sym is None:
             raise ValueError(f'Symbol `{name}` does not exist')
+        sym.from_value(expr)
         return sym
 
-    def find(self, token, default=None):
-        return self.find_name(token.lexeme, default)
+    def contains(self, token):
+        return token.lexeme in self._members
 
-    def find_local(self, token, default=None):
-        return self.find_local_name(token.lexeme, default)
-
-    def find_add(self, token, value=None):
-        symbol = self.find(token)
+    def define(self, name, value=None, local=False, overwrite=False):
+        """
+        Searches for a symbol, defining it if it does not exist.  If a symbol exists in the current scope or parent scopes, then it will
+        be found and returned.  The behavior is always to define the symbol in the current scope, 'local' can be used
+        to truncate the search for any existing symbols but allocation is always current.
+        If the symbol exists, it will not be overwritten, use 'update' to update the value instead.
+        :param name: name of symbol to find/define
+        :param value: value to assign if value is created.
+        :param local: whether or not parent scopes should be examined while searching for an existing symbol.
+        :param overwrite: whether or not an existing value should be overwritten.  This is dangerous if 'local' is not False
+        :return: the found / defined / updated symbol
+        """
+        symbol = self.find(name, local=local)
         if symbol is None:
-            symbol = Object(token=copy(token))
-            symbol._value = value
-            self._members[token.lexeme] = symbol
+            symbol = Object(name=name)
+            symbol.parent_scope = self
+            symbol._calc_fqname()
+            if getattr(value, '_members', False):
+                symbol._members = deepcopy(value._members)
+                symbol._value = symbol
+            else:
+                symbol._value = deepcopy(value)
+            self._members[name] = symbol
         return symbol
 
-    def find_name(self, name, default=None):
-        scope = self
-        while scope is not None:
-            if name in scope._members:
-                return scope._members[name]
-            scope = scope.parent_scope
-        return default
-
-    def find_local_name(self, name, default=None):
-        if name in self._members:
-            return self._members[name]
-        return default
-
-    def find_add_local(self, token, value=None):
-        symbol = self.find_local(token)
+        """
+        symbol = self.find(token.lexeme, local=local)
         if symbol is None:
             symbol = Object(token=deepcopy(token))
             symbol.parent_scope = self
             symbol._calc_fqname()
-            if getattr(value, '_symbols', False):
+            if getattr(value, '_members', False):
                 symbol._members = deepcopy(value._members)
                 symbol._value = symbol
             else:
                 symbol._value = deepcopy(value)
             self._members[token.lexeme] = symbol
         return symbol
+        """
 
-    def update_local(self, name, value=None):
-        if name in self._members:
-            if value is not None:
-                sym = self._members[name]
-                if hasattr(value, '_name'):
-                    value._name = name
-                if hasattr(sym, 'token') and hasattr(value, 'token') and sym.token is not None:
-                    value.token.location = sym.token.location
-            self._members[name] = value
-            return self._members[name]
-        return None
-
-    def update_name(self, name, value=None):
+    def find(self, name, default=None, local=False):
         scope = self
         while scope is not None:
             if name in scope._members:
-                sym = scope._members[name]
+                return scope._members[name]
+            if local:
+                break
+            scope = scope.parent_scope
+        return default
+
+    def update(self, name, value=None, local=False):
+        scope = self
+        while scope is not None:
+            if name in self._members:
                 if value is not None:
+                    sym = self._members[name]
                     if hasattr(value, '_name'):
                         value._name = name
-                    if hasattr(sym, 'token') and sym.token is not None:
+                    if hasattr(sym, 'token') and hasattr(value, 'token') and sym.token is not None:
                         value.token.location = sym.token.location
-                scope._members[name] = value
-                return scope._members[name]
+                self._members[name] = value
+                return self._members[name]
+            if local:
+                break
             scope = scope.parent_scope
         return None
 
@@ -245,7 +237,11 @@ class Function(Block):
         self.is_lvalue = is_lvalue
         self.code = None
         self.parameters = None
-        self.defaults = defaults
+        self.defaults = None
+        if defaults is not None:
+            if not isinstance(defaults, IndexedDict):
+                defaults = IndexedDict(items=defaults)
+            self.defaults = defaults
 
 
 @dataclass

@@ -24,5 +24,3 @@ tree1:(post)  {a}:(threshold=0.05, how='any')
 symbols: 
 
 global scope:
-    0:  `threshold`: threshold : Object(TK.IDNT(IDENTIFIER, 'threshold', V=None))
-    1:  `how`: how : Object(TK.IDNT(IDENTIFIER, 'how', V=None))
