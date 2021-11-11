@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 
-from scope import Scope
+from scope import Scope, Function, IntrinsicFunction
 from tokens import TK, TCL
+from intrinsic_dispatch import init_intrinsic, _intrinsic_fundesc, _intrinsic_not_impl
 
 
 @dataclass
@@ -9,6 +10,8 @@ class Keywords(Scope):
     def __init__(self, parent_scope=None):
         super().__init__(parent_scope)
         self.load_keywords()
+        self.load_intrinsics()
+        self.load_intrinsics_not_impl()
 
     # Keywords are r/o
     def __setitem__(self, key, value):
@@ -22,7 +25,20 @@ class Keywords(Scope):
         for (tkid, typ, val) in keywords:
             self._add_symbol(tkid, typ, val)
 
+    def load_intrinsics(self, intrinsics=None):
+        intrinsics = intrinsics or _intrinsic_fundesc
+        for fname, desc in intrinsics.items():
+            fn = init_intrinsic(fname)
+            self._add_name(fname, fn)
 
+    def load_intrinsics_not_impl(self, not_impl=None):
+        not_impl = not_impl or _intrinsic_not_impl
+        for fname in not_impl:
+            fn = IntrinsicFunction(name=fname, tid=TK.IDNT)
+            self._add_name(fname, fn)
+
+
+# UNDONE: True, False, None, NaN, Empty could all be identifiers/Literals and not Keywords
 _KEYWORDS = [
     (TK.ALL, TCL.KEYWORD, 'all'),
     (TK.ANY, TCL.KEYWORD, 'any'),
@@ -38,21 +54,13 @@ _KEYWORDS = [
     (TK.NAN, TCL.KEYWORD, 'NaN'),
     (TK.NAN, TCL.KEYWORD, 'nan'),
     (TK.NONE, TCL.KEYWORD, 'none'),
-    (TK.NOW, TCL.KEYWORD, 'now'),
-    (TK.SELL, TCL.KEYWORD, "sell"), # UNODNE: remove sell as a keyword
+    (TK.SELL, TCL.KEYWORD, "sell"),  # UNODNE: remove sell as a keyword
     (TK.TRUE, TCL.KEYWORD, 'True'),
     (TK.TRUE, TCL.KEYWORD, 'true'),
 
     # special identities
     (TK.ANON, TCL.IDENTIFIER, '_'),
     (TK.IDNT, TCL.IDENTIFIER, 'pi'),
-    (TK.IDNT, TCL.IDENTIFIER, 'today'),
-
-    # type constructors
-    (TK.DATASET, TCL.FUNCTION, 'Dataset'),
-    (TK.DATASET, TCL.FUNCTION, 'dataset'),
-    (TK.IDNT, TCL.FUNCTION, "Series"),
-    (TK.IDNT, TCL.FUNCTION, "series"),
 
     # unary
     (TK.NOT, TCL.UNARY, 'not'),
@@ -66,45 +74,5 @@ _KEYWORDS = [
     (TK.OR, TCL.BINOP, 'or'),
     (TK.MOD, TCL.BINOP, 'mod'),
     (TK.IDNT, TCL.BINOP, 'rand'),
-
-    # functions (intrinsics)
-    (TK.IDNT, TCL.FUNCTION, "ema"),
-    (TK.IDNT, TCL.FUNCTION, "sma"),
-    (TK.IDNT, TCL.FUNCTION, 'columns'),
-    (TK.IDNT, TCL.FUNCTION, 'fillempty'),
-    (TK.IDNT, TCL.FUNCTION, 'select'),
-    (TK.IDNT, TCL.FUNCTION, "signal"),
-
-    # NumPy
-    (TK.IDNT, TCL.FUNCTION, 'arrange'),     # create array of evenly spaced values
-    (TK.IDNT, TCL.FUNCTION, 'corrcoef'),    # correlation coefficient
-    (TK.IDNT, TCL.FUNCTION, 'cos'),
-    (TK.IDNT, TCL.FUNCTION, 'cumsum'),      # cummulative sum
-    (TK.IDNT, TCL.FUNCTION, 'dot'),         # CONSIDER: turn this into operator ?
-    (TK.IDNT, TCL.FUNCTION, 'eye'),         # create identity matrix
-    (TK.IDNT, TCL.FUNCTION, 'exp'),
-    (TK.IDNT, TCL.FUNCTION, 'fill'),        # create a constant array (np: full)
-    (TK.IDNT, TCL.FUNCTION, 'log'),
-    (TK.IDNT, TCL.FUNCTION, 'linspace'),    # create array of evenly spaced values (number of samples)
-    (TK.IDNT, TCL.FUNCTION, 'max'),
-    (TK.IDNT, TCL.FUNCTION, 'mean'),
-    (TK.IDNT, TCL.FUNCTION, 'median'),
-    (TK.IDNT, TCL.FUNCTION, 'min'),
-    (TK.IDNT, TCL.FUNCTION, 'ones'),        # create an array of ones
-    (TK.IDNT, TCL.FUNCTION, 'random'),      # create array of random values
-    (TK.IDNT, TCL.FUNCTION, 'rand'),        # generate a random number (single sample)
-    (TK.IDNT, TCL.FUNCTION, 'std'),         # standard deviation
-    (TK.IDNT, TCL.FUNCTION, 'sqrt'),
-    (TK.IDNT, TCL.FUNCTION, 'sin'),
-    (TK.IDNT, TCL.FUNCTION, 'sum'),
-    (TK.IDNT, TCL.FUNCTION, 'zeros'),       # create an array of zeros
-
-    # Pandas
-    (TK.IDNT, TCL.FUNCTION, 'rank'),        # assign ranks to entries
-
-    # I/O
-    (TK.IDNT, TCL.FUNCTION, 'load'),        # format=numpy will load numpy data, format=txt will save text. fomats to support: focal, numpy, pandas, excel, csv, text/other
-    (TK.IDNT, TCL.FUNCTION, 'save'),        # format=numpy will save numpy data, format=txt will save text
-
 ]
 

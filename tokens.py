@@ -107,7 +107,9 @@ class TK(IntEnum):
     #
     # the length of tokens up to here is fixed at 4 chars.  its a pain, but otherwise the state table is unmaintainable.
 
+    # reserved identifier
     RESERVED = 200
+
     # last reserved token value (below 128 can be used in state machine, 128-255 error & reserved)
     #
 
@@ -119,24 +121,26 @@ class TK(IntEnum):
     ASSIGN = auto()  # =
     BLOCK = auto()
     BOOL = auto()
+    CATEGORY = auto()  # category enumeration
     CHAIN = auto()
     COMMAND = auto()
-    COMPARE = auto()    # ?  a ? b is to compare a to b
+    COMPARE = auto()  # ?  a ? b is to compare a to b
     DECREMENT = auto()  # --
-    DEF = auto()     # set version of REF
-    DEFINE = auto()     # :=, 'def'
-    DEFINE_FN = auto()     # =>,  'def' f(x)
+    DEF = auto()  # set version of REF
+    DEFINE = auto()  # :=, 'def'
+    DEFINE_FN = auto()  # =>,  'def' f(x)
     DOTPROD = auto()  # •
+    ENUM = auto()  # Integer enumeration
     EVENT = auto()  # from =>
     FALL_BELOW = auto()  # <|
     FUNCTION = auto()
-    IDIV = auto()   # integer division
+    IDIV = auto()  # integer division
     INCREMENT = auto()
     ISEQ = auto()  # ==
     KVPAIR = auto()  # key:value
     LIST = auto()
     MUL = auto()  # *
-    NATIVE = auto()    # token represents native literal
+    NATIVE = auto()  # token represents native literal
     NEG = auto()  # unary - (negate)
     OBJECT = auto()  # unknown type
     OR = auto()
@@ -153,10 +157,10 @@ class TK(IntEnum):
     LAST = 299  # last reserved token id
 
     # keywords & intrinsic functions
-    ALL = auto()   # all:
+    ALL = auto()  # all:
     AND = auto()
     ANON = auto()  # anonymous parameter '_'
-    ANY = auto()   # any:
+    ANY = auto()  # any:
     BUY = auto()
     DATASET = auto()
     DIV = auto()  # /
@@ -172,6 +176,7 @@ class TK(IntEnum):
     NOW = auto()
     RANGE = auto()
     SELL = auto()
+    TODAY = auto()
     TRUE = auto()
     VAR = auto()
 
@@ -194,12 +199,15 @@ _tk2binop = {
     TK.GTE: TK.GTE,
     TK.GTR2: TK.APPLY,
     TK.GTR: TK.GTR,
+    TK.IDIV: TK.IDIV,
+    TK.IN: TK.IN,
     TK.LBAR: TK.FALL_BELOW,
     TK.LBRK: TK.INDEX,
     TK.LESS: TK.LESS,
     TK.LSS2: TK.LSS2,
     TK.LTE: TK.LTE,
     TK.MNUS: TK.SUB,
+    TK.MOD: TK.MOD,
     TK.NEQ: TK.NEQ,
     TK.OR: TK.OR,
     TK.PCT2: TK.COMMAND,
@@ -216,21 +224,24 @@ _tk2unop = {
     TK.ANY: TK.ANY,
     TK.EXCL: TK.NOT,  # !
     TK.MNUS: TK.NEG,  # unary -
-    TK.MNU2: TK.DECREMENT, # unary --
+    TK.MNU2: TK.DECREMENT,  # unary --
     TK.NONE: TK.NONEOF,
     TK.NOT: TK.NOT,
     TK.PLUS: TK.POS,  # unary +
-    TK.PLU2: TK.INCREMENT, # unary ++
+    TK.PLU2: TK.INCREMENT,  # unary ++
 }
 _tk2lit = {
     TK.BOOL: TK.BOOL,
     TK.DUR: TK.DUR,
+    TK.FALSE: TK.BOOL,
     TK.FLOT: TK.FLOT,
     TK.INT: TK.INT,
     TK.LBRK: TK.LIST,  # ]
     TK.QUOT: TK.STR,
     TK.STR: TK.STR,
     TK.TIME: TK.TIME,
+    TK.TODAY: TK.TIME,
+    TK.TRUE: TK.BOOL,
 }
 # token type mapping
 _tk2type = {
@@ -261,6 +272,7 @@ _tk2type = {
     TK.STAR: TCL.BINOP,
     TK.STR: TCL.LITERAL,
     TK.TIME: TCL.LITERAL,
+    TK.TODAY: TCL.FUNCTION,
     TK.TUPLE: TCL.TUPLE,
     TK.VAR: TCL.UNARY,
     TK.WHT: TCL.NONE,
@@ -290,7 +302,7 @@ _tk2glyph = {
     TK.EVENT: '=>',
     TK.FALL_BELOW: '<|',
     TK.FALSE: 'false',
-#   TK.FUNCTION: 'fn',
+    #   TK.FUNCTION: 'fn',
     TK.GTE: '>=',
     TK.GTR: '>',
     TK.IDIV: 'div',
@@ -309,6 +321,7 @@ _tk2glyph = {
     TK.NONE: 'none',
     TK.NONEOF: 'noneof',  # none:
     TK.NOT: 'not',
+    TK.NOW: 'now',
     TK.OR: 'or',
     TK.PCT: '%',
     TK.PLEQ: '+=',
@@ -323,6 +336,7 @@ _tk2glyph = {
     TK.SET: 'set',
     TK.STR: 'str',
     TK.SUB: '-',  # - (subtract)
+    TK.TODAY: 'today',
     TK.TRUE: 'true',
     TK.TUPLE: '',
     TK.VAR: 'var',
@@ -331,9 +345,9 @@ _tk2glyph = {
 native2tkid = {
     'bool': TK.BOOL,
     'float': TK.FLOT,
-    'int':  TK.INT,
+    'int': TK.INT,
     'NoneType': TK.NONE,
-    'object': TK.NONE,
+    'object': TK.NONE,  # CONSIDER: TK.OBJECT ?
     'str': TK.STR,
     'timedelta': TK.DUR,
     'Object': TK.OBJECT,
@@ -347,21 +361,28 @@ u16_to_tkid = {
 }
 
 # token sets for the parser
-_ADDITION_TOKENS = [TK.PLUS, TK.MNUS]
 _ASSIGNMENT_TOKENS = [TK.COEQ, TK.EQLS, TK.ASSIGN, TK.GTR2, TK.MNEQ, TK.PLEQ]
 _ASSIGNMENT_TOKENS_EX = [TK.COEQ, TK.EQLS, TK.ASSIGN, TK.MNEQ, TK.PLEQ, TK.COLN]
 _ASSIGNMENT_TOKENS_REF = [TK.COEQ, TK.EQLS, TK.EQGT, TK.ASSIGN, TK.COLN]
-_COMPARISON_TOKENS = [TK.LESS, TK.LTE, TK.GTR, TK.GTE, TK.IN, TK.LBAR, TK.RBAR]
 _FLOW_TOKENS = [TK.BAR, TK.GTR2, TK.APPLY, TK.RARR]
-_EQUALITY_TEST_TOKENS = [TK.EQEQ, TK.NEQ]
-_LOGIC_TOKENS = [TK.AND, TK.OR, TK.AMPS, TK.CLN2, TK.QSTN]
-_MULTIPLICATION_TOKENS = [TK.SLSH, TK.STAR, TK.EXPN, TK.DOT, TK.DOT2, TK.IDIV, TK.MOD]
-_UNARY_TOKENS = [TK.PLUS, TK.MNUS, TK.NOT, TK.EXCL, TK.MNU2, TK.PLU2]
-_SET_UNARY_TOKENS = [TK.NONE, TK.ALL, TK.ANY]
+
 _IDENTIFIER_TYPES = [TCL.KEYWORD, TCL.DATASET, TCL.IDENTIFIER, TCL.TUPLE, TCL.FUNCTION]
 _IDENTIFIER_TOKENS = [TK.IDNT, TK.ANON, TK.REF, TK.DOT, TK.TUPLE, TK.FUNCTION]
-_IDENTIFIER_TOKENS_EX = [TK.IDNT, TK.ANON, TK.REF, TK.DOT, TK.TUPLE, TK.FUNCTION, TK.COLN, TK.BLOCK, TK.BUY, TK.SELL, TK.CHAIN]
+_IDENTIFIER_TOKENS_EX = [TK.IDNT, TK.ANON, TK.REF, TK.DOT, TK.TUPLE, TK.FUNCTION, TK.COLN, TK.BLOCK, TK.BUY, TK.SELL,
+                         TK.CHAIN]
 _VALUE_TOKENS = [TK.BOOL, TK.FLOT, TK.EMPTY, TK.INT, TK.NONE, TK.STR, TK.DUR, TK.OBJECT, TK.SET, TK.LIST, TK.IDNT]
+
+_ADDITION_TOKENS = [TK.PLUS, TK.MNUS, TK.SUB, TK.ADD]
+_COMPARISON_TOKENS = [TK.LESS, TK.LTE, TK.GTR, TK.GTE, TK.IN, TK.LBAR, TK.RBAR,TK.FALL_BELOW, TK.RISE_ABOVE]
+_EQUALITY_TEST_TOKENS = [TK.EQEQ, TK.NEQ, TK.ISEQ]
+_LOGIC_TOKENS = [TK.AND, TK.OR, TK.AMPS, TK.CLN2, TK.QSTN]
+_MULTIPLICATION_TOKENS = [TK.SLSH, TK.DIV, TK.STAR, TK.MUL, TK.EXPN, TK.POW, TK.DOT, TK.DOT2,
+                          TK.RANGE, TK.IDIV, TK.MOD]
+_UNARY_TOKENS = [TK.PLUS, TK.MNUS, TK.NOT, TK.EXCL, TK.MNU2, TK.PLU2]
+_SET_UNARY_TOKENS = [TK.NONE, TK.ALL, TK.ANY]
+
+_EXPRESSION_TOKENS = _ADDITION_TOKENS + _MULTIPLICATION_TOKENS + _UNARY_TOKENS \
+                     + _LOGIC_TOKENS + _EQUALITY_TEST_TOKENS + _COMPARISON_TOKENS + _SET_UNARY_TOKENS
 
 
 @dataclass
@@ -372,12 +393,13 @@ class Token:
             self.line = line
             self.offset = offset
 
-    def __init__(self, tid, tcl=None, lex="", val=None, loc=None):
+    def __init__(self, tid, tcl=None, lex="", val=None, loc=None, reserved=False):
         self.id = tid
         self.t_class: TCL = TCL(tcl) if tcl is not None else TCL.NONE
         self.lexeme = lex
         self.value = val
         self.location = loc if loc is not None else Token.Loc()
+        self.is_reserved = reserved
 
     def __repr__(self):
         return self.format()
@@ -399,14 +421,24 @@ class Token:
     def map2binop(self):
         return self._map(_tk2binop)
 
-    def map2unop(self):
-        return self._map(_tk2unop)
-
     def map2litval(self):
         return self._map(_tk2lit)
 
-    def map2tclass(self):
-        return self._map_cl(_tk2type)
+    def remap2binop(self):
+        self.id = self._map(_tk2binop)
+        return self
+
+    def remap2unop(self):
+        self.id = self._map(_tk2unop)
+        return self
+
+    def remap2litval(self):
+        self.id = self._map(_tk2lit)
+        return self
+
+    def remap2tclass(self):
+        self.t_class = self._map(_tk2type)
+        return self
 
     def format(self):
         _tn = f'.{self.id.name}(' if hasattr(self.id, "name") else f'({self.id}, '
@@ -415,18 +447,20 @@ class Token:
         _tl = f'\'{self.lexeme}\'' if self.lexeme is not None else 'None'
         if _tl == '\'\n\'':
             _tl = "'\\n'"
-#       _tloc = f'line:{self.location.line + 1}, pos:{self.location.offset - 1}'
+        #       _tloc = f'line:{self.location.line + 1}, pos:{self.location.offset - 1}'
         return f'TK{_tn}{_tcl}, {_tl}, V={_tv})'
 
     def _map(self, tk_map):
         if self.id in tk_map:
-            self.id = tk_map[self.id]
-        return self
+            return tk_map[self.id]
+        else:
+            return self.id
 
     def _map_cl(self, tcl_map):
         if self.id in tcl_map:
-            self.t_class = tcl_map[self.id]
-        return self
+            return tcl_map[self.id]
+        else:
+            return self.t_class
 
     @staticmethod
     def format_token(tk):

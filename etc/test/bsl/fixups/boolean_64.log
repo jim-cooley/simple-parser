@@ -9,4 +9,4 @@ tree1:  0 or "0"
     3  :     Str(TK.STR, 0)
 
 tree1:(post)  0 or "0"
-    1  : Literal(TK.INT, 0)
+    1  : Int(TK.INT, 0)

@@ -5,5 +5,5 @@ false >> none
 
 tree1:  false >> none
     1  : Flow(TK.APPLY, v=[Bool(), Literal()], '>>')
-    2  :     Bool(TK.FALSE, False)
+    2  :     Bool(TK.BOOL, False)
     3  :     Literal(TK.NONE, None)

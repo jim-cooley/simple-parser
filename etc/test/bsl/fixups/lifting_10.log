@@ -10,4 +10,4 @@ tree1:  1+-1
     4  :         Int(TK.INT, 1)
 
 tree1:(post)  1+-1
-    1  : Literal(TK.INT, 0)
+    1  : Int(TK.INT, 0)

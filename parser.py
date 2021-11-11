@@ -115,7 +115,7 @@ class Parser(object):
     def block_expr(self):
         tk = self.peek()
         if tk.id == TK.LBRC:
-            node = self.expression()
+            node = self.expression()    # UNDONE: self.definition(), or just parse the block() ?
             if self.match1(TK.COLN):
                 op = self.peek(-1)
                 tid = self.peek().id
@@ -214,7 +214,7 @@ class Parser(object):
         op = copy(self.peek())
         while op.id in _FLOW_TOKENS:
             sep = op.id
-            seq = Flow(op.map2binop(), [node] if node is not None else [])
+            seq = Flow(op.remap2binop(), [node] if node is not None else [])
             while self.match1(sep):
                 node = self.assignment()
                 if node is not None:
@@ -246,7 +246,7 @@ class Parser(object):
                 op.id = tid
                 op.lexeme = l_expr.token.lexeme + ':'
                 self.advance()
-                l_expr = UnaryOp(op.map2unop(), self.tuple())
+                l_expr = UnaryOp(op.remap2unop(), self.tuple())
                 return l_expr
             while self.match1(TK.COLN):
                 l_expr = _rewriteGets(l_expr)
@@ -266,8 +266,16 @@ class Parser(object):
             return l_expr
         elif self.match(_ASSIGNMENT_TOKENS):
             if l_expr.token.id in _IDENTIFIER_TOKENS_EX:
-                r_expr = self.block_expr()
-                return self.process_assignment(op=op, l_expr=l_expr, r_expr=r_expr)
+                if hasattr(l_expr, 'left'):
+                    if l_expr.left.token.is_reserved:
+                        self.logger.error(f'Invalid assignment target: {l_expr.left.token.lexeme} is reserved',
+                                          op.location)
+                if l_expr.is_lvalue:
+                    r_expr = self.block_expr()
+                    return self.process_assignment(op=op, l_expr=l_expr, r_expr=r_expr)
+
+                if isinstance(l_expr, BinOp):
+                    self.logger.error(f'Invalid assignment target: {l_expr.left.token.lexeme}', op.location)
             self.logger.error(f'Invalid assignment target: {l_expr.token}', op.location)
         elif self.match1(TK.EQGT):
             if l_expr.token.id not in _IDENTIFIER_TOKENS_EX:
@@ -280,7 +288,8 @@ class Parser(object):
                 return DefineFn(left=l_expr.left, op=op, right=r_expr, args=l_expr.right)
             elif isinstance(l_expr, Ref):
                 if isinstance(r_expr, Define):
-                    return DefineFn(left=l_expr, op=op, right=r_expr.right, args=List(Token(TK.TUPLE, TCL.LITERAL), [r_expr.left]))
+                    return DefineFn(left=l_expr, op=op, right=r_expr.right, args=List([r_expr.left],
+                                                                                      Token(TK.TUPLE, TCL.LITERAL)))
             return DefineFn(left=l_expr, op=op, right=r_expr, args=None)  # parameterless function
         return l_expr
 
@@ -308,7 +317,7 @@ class Parser(object):
                 l_expr = _rewriteFnCall2Definition(l_expr)
             if op.id in [TK.EQLS, TK.EQGT]:
                 if isinstance(l_expr, FnCall) or isinstance(l_expr, FnDef) or isinstance(l_expr, DefineFn):
-                    return DefineFn(left=l_expr.left, op=op.map2binop(), right=r_expr, args=l_expr.right)
+                    return DefineFn(left=l_expr.left, op=op.remap2binop(), right=r_expr, args=l_expr.right)
                 else:
                     return Define(l_expr, op, r_expr)
             elif op.id == TK.COEQ:
@@ -325,7 +334,7 @@ class Parser(object):
         node = self.equality()
         op = self.peek()
         while self.match(_LOGIC_TOKENS):
-            node = BinOp(node, op.map2binop(), self.equality())
+            node = BinOp(node, op.remap2binop(), self.equality())
             op = self.peek()
         return node
 
@@ -333,7 +342,7 @@ class Parser(object):
         node = self.comparison()
         op = self.peek()
         while self.match(_EQUALITY_TEST_TOKENS):
-            node = BinOp(node, op.map2binop(), self.comparison())
+            node = BinOp(node, op.remap2binop(), self.comparison())
             op = self.peek()
         return node
 
@@ -341,7 +350,7 @@ class Parser(object):
         node = self.term()
         op = self.peek()
         while self.match(_COMPARISON_TOKENS):
-            node = BinOp(node, op.map2binop(), self.term())
+            node = BinOp(node, op.remap2binop(), self.term())
             op = self.peek()
         return node
 
@@ -349,7 +358,7 @@ class Parser(object):
         node = self.factor()
         op = self.peek()
         while self.match(_ADDITION_TOKENS):
-            node = BinOp(node, op.map2binop(), self.factor())
+            node = BinOp(node, op.remap2binop(), self.factor())
             op = self.peek()
         return node
 
@@ -368,18 +377,18 @@ class Parser(object):
                     r_node.token.id = TK.FLOT
                     r_node.token.lexeme = s_val
                     r_node.value = float(s_val)
-                    l_node = Float(r_node.token)
+                    l_node = Float(token=r_node.token)
                     return l_node
             if l_node is None:
                 self.logger.error("Invalid assignment target", op.location)
-            l_node = BinOp(l_node, op.map2binop(), r_node)
+            l_node = BinOp(l_node, op.remap2binop(), r_node)
             op = self.peek()
         return l_node
 
     def unary(self):
         op = self.peek()
         if self.match(_UNARY_TOKENS):
-            node = UnaryOp(op.map2unop(), self.unary())
+            node = UnaryOp(op.remap2unop(), self.unary())
             return node
         node = self.prime()
         if node is not None and node.token.id in [TK.ANY, TK.ALL, TK.NONEOF]:
@@ -392,26 +401,26 @@ class Parser(object):
         if token.id == TK.EOL:
             return node
         if token.id == TK.FALSE:
-            node = Bool(token, False)
+            node = Bool(False, token)
         elif token.id == TK.TRUE:
-            node = Bool(token, True)
+            node = Bool(True, token)
         elif token.id == TK.INT:
-            node = Int(token)
+            node = Int(token=token)
         elif token.id == TK.FLOT:
-            node = Float(token)
+            node = Float(token=token)
         elif token.id == TK.PCT:
-            node = Percent(token)
+            node = Percent(token=token)
         elif token.id == TK.DUR:
-            node = Duration(token)
+            node = Duration(token=token)
         elif token.id == TK.TIME:
-            node = Time(token)
+            node = Time(token=token)
         elif token.id == TK.QUOT:
-            node = Str(token)
+            node = Str(token=token)
         elif token.id == TK.EMPTY:
             node = LIT_EMPTY
             node.token.location = token.location
         elif token.id == TK.NONE:
-            node = Literal(token)
+            node = Literal(token=token)
             token.t_class = TCL.LITERAL
         elif token.id == TK.LBRC:
             self.advance()
@@ -429,7 +438,7 @@ class Parser(object):
             return node
         elif token.id == TK.LBRK:
             self.consume(TK.LBRK)
-            node = List(token.map2litval(), self.sequence())
+            node = List(self.sequence(), token.remap2litval())
             self.consume(TK.RBRK)
             return node
         elif token.t_class in _IDENTIFIER_TYPES or token.id in [TK.IDNT, TK.ANON]:
@@ -454,24 +463,25 @@ class Parser(object):
             #            if self.peek().id == TK.RBRC:   # must check closure before (empty set) and after as decl can finish parsing
             #                break
             if is_lvalue:
-                if getattr(decl, 'is_lvalue', None) is not None:
+                if hasattr(decl, 'is_lvalue'):
                     is_lvalue = decl.is_lvalue
                 elif not isinstance(decl, Literal) and not isinstance(decl, Get):
                     if decl.token.id not in [TK.COLN, TK.EQLS]:
                         is_lvalue_strict = is_lvalue = False
                 if is_lvalue_strict:
                     if decl.token.id not in _VALUE_TOKENS:
-                        if decl.token.id in [TK.COLN]:
+                        if decl.token.id not in [TK.COLN]:
                             is_lvalue_strict = False
-                            if decl.right is not None:
-                                if decl.right.token.id in _VALUE_TOKENS:
-                                    is_lvalue_strict = True
-                            else:
-                                is_lvalue_strict = False
+                            if hasattr(decl, 'right'):
+                                if decl.right is not None:
+                                    if decl.right.token.id in _VALUE_TOKENS:
+                                        is_lvalue_strict = True
+                                else:
+                                    is_lvalue_strict = False
         if len(seq) == 0:
-            return Set(TK_EMPTY, seq)
+            return Set(seq, TK_EMPTY)
         elif is_lvalue and is_lvalue_strict:
-            return Set(Token(TK.SET, TCL.LITERAL, '{', loc=loc), seq)
+            return Set(seq, Token(TK.SET, TCL.LITERAL, '{', loc=loc))
         else:
             return Block(items=seq, loc=loc)
 
@@ -486,7 +496,7 @@ class Parser(object):
             node = PropRef(tk, self.identifier())
         elif token.id == TK.DOT2:
             self.advance()
-            node = BinOp(left=Ref(tk), op=token.map2binop(), right=self.expression())
+            node = BinOp(left=Ref(tk), op=token.remap2binop(), right=self.expression())
         elif token.id == TK.LPRN:
             plist = self.plist()
             plist.token.id = TK.TUPLE
@@ -494,8 +504,11 @@ class Parser(object):
         elif token.id == TK.LBRK:
             node = Index(tk, self.idx_list())
         else:
-            is_lval = self.check(_ASSIGNMENT_TOKENS_REF)
-            node = Ref(tk) if is_lval else Get(tk)
+            if tk.t_class == TCL.FUNCTION:
+                node = FnCall(tk, None)
+            else:
+                is_lval = self.check(_ASSIGNMENT_TOKENS_REF)
+                node = Ref(tk) if is_lval else Get(tk)
         return node
 
     def idx_list(self, node=None):
@@ -509,7 +522,7 @@ class Parser(object):
         token.t_class = TCL.TUPLE
         token.id = TK.TUPLE
         token.lexeme = '['  # fixup token.
-        return List(token, seq)
+        return List(seq, token)
 
     def plist(self, node=None):
         """( EXPR ',' ... )"""
@@ -529,7 +542,7 @@ class Parser(object):
             token.id = TK.LPRN
             token.t_class = TCL.LITERAL
         token.lexeme = '('  # fixup token.
-        return List(token, seq)
+        return List(seq, token)
 
     def sequence(self, node=None):
         """EXPR <sep> EX1PR <sep> ..."""
@@ -574,6 +587,13 @@ class Parser(object):
 
     def check(self, tl_list, rel=0):
         return self.peek(rel=rel).id in tl_list
+
+    def check_lvalue(self, l_expr, location=None):
+        if hasattr(l_expr, 'left'):
+            if l_expr.left.token.is_reserved:
+                self.logger.error(f'Invalid assignment target: {l_expr.left.token.lexeme} is reserved',
+                                  location)
+        return l_expr.is_lvalue
 
     # skip over the expected current token.
     def consume(self, ex_tid, expect=True):

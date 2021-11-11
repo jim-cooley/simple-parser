@@ -51,9 +51,9 @@ tree2:  a | { b=1, 'k':v } | c
    11  :         Ref(TK.IDNT, 'c')
 
 tree3:  a | { b + 1 } | c
-    1  : Flow(TK.CHAIN, v=[Get(), Set(), ApplyChainProd()], '|')
+    1  : Flow(TK.CHAIN, v=[Get(), Block(), ApplyChainProd()], '|')
     2  :     Get(TK.IDNT, 'a')
-    3  :     Set(TK.SET, [BinOp()])
+    3  :     Block(TK.BLOCK, v=[BinOp()], '')
     4  :         BinOp(TK.ADD, '+')
     5  :             Ref(TK.IDNT, 'b')
     6  :             Int(TK.INT, 1)
@@ -61,9 +61,9 @@ tree3:  a | { b + 1 } | c
     8  :         Ref(TK.IDNT, 'c')
 
 tree4:  a | { b => b + 1 } | c
-    1  : Flow(TK.CHAIN, v=[Get(), Set(), ApplyChainProd()], '|')
+    1  : Flow(TK.CHAIN, v=[Get(), Block(), ApplyChainProd()], '|')
     2  :     Get(TK.IDNT, 'a')
-    3  :     Set(TK.SET, [DefineFn()])
+    3  :     Block(TK.BLOCK, v=[DefineFn()], '')
     4  :         DefineFn(TK.DEFINE, TK.EQGT, '=>')
     5  :             Ref(TK.IDNT, 'b')
     6  :             BinOp(TK.ADD, '+')
@@ -89,9 +89,9 @@ tree6:  a | ( b : b + 1 ) | c
     9  :         Ref(TK.IDNT, 'c')
 
 tree7:  a | { b => b + 1 } | c
-    1  : Flow(TK.CHAIN, v=[Get(), Set(), ApplyChainProd()], '|')
+    1  : Flow(TK.CHAIN, v=[Get(), Block(), ApplyChainProd()], '|')
     2  :     Get(TK.IDNT, 'a')
-    3  :     Set(TK.SET, [DefineFn()])
+    3  :     Block(TK.BLOCK, v=[DefineFn()], '')
     4  :         DefineFn(TK.DEFINE, TK.EQGT, '=>')
     5  :             Ref(TK.IDNT, 'b')
     6  :             BinOp(TK.ADD, '+')
@@ -190,9 +190,9 @@ tree19:  a | b => c | d
     8  :                 Ref(TK.IDNT, 'd')
 
 tree20:  a | { b + 1 } | c
-    1  : Flow(TK.CHAIN, v=[Get(), Set(), ApplyChainProd()], '|')
+    1  : Flow(TK.CHAIN, v=[Get(), Block(), ApplyChainProd()], '|')
     2  :     Get(TK.IDNT, 'a')
-    3  :     Set(TK.SET, [BinOp()])
+    3  :     Block(TK.BLOCK, v=[BinOp()], '')
     4  :         BinOp(TK.ADD, '+')
     5  :             Ref(TK.IDNT, 'b')
     6  :             Int(TK.INT, 1)
@@ -204,4 +204,4 @@ tree1:  %%option{strict=false}
     2  :     Set(TK.SET, [Define()])
     3  :         Define(TK.DEFINE, TK.EQLS, '=')
     4  :             Ref(TK.IDNT, 'strict')
-    5  :             Bool(TK.FALSE, False)
+    5  :             Bool(TK.BOOL, False)

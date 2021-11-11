@@ -5,7 +5,7 @@ false |> none
 
 tree1:  false |> none
     1  : BinOp(TK.RISE_ABOVE, '|>')
-    2  :     Bool(TK.FALSE, False)
+    2  :     Bool(TK.BOOL, False)
     3  :     Literal(TK.NONE, None)
 
 tree1:(post)  false |> none

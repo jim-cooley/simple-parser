@@ -1,7 +1,7 @@
 # abstract syntax trees:
 from dataclasses import dataclass
 
-from tokens import TCL, Token, TK
+from tokens import TCL, Token, TK, _EXPRESSION_TOKENS
 
 
 # base classes:
@@ -14,12 +14,21 @@ class AST:
     and will pass additional args and kwargs to other superclass __init__ functions.
     """
 
-    def __init__(self, token=None, value=None, parent=None, **kwargs):
+    def __init__(self, value=None, token=None, parent=None, **kwargs):
         super().__init__(**kwargs)
         self.parent = parent
         self.token = token
-        self.value = token.value if token is not None else None
-        self.value = value if value is not None else self.value
+        if token is not None:
+            self._value = token.value
+        self._value = value if value is not None else self._value
+
+    @property
+    def value(self):
+        return self._value
+
+    @value.setter
+    def value(self, value):
+        self._value = value
 
     def __str__(self):
         if getattr(self, 'format', None) is not None:
@@ -31,7 +40,7 @@ class AST:
 @dataclass
 class ASTCompound(AST):
     def __init__(self, token=None, value=None, parent=None, **kwargs):
-        super().__init__(token=token, value=value, parent=parent, **kwargs)
+        super().__init__(value=value, token=token, parent=parent, **kwargs)
         self.items = []
 
     @property
@@ -56,23 +65,26 @@ class ASTCompound(AST):
             return '{}'
         else:
             fstr = ''
-            max = (len(self.value) - 1)
-            for idx in range(0, len(self.value)):
-                fstr += f'{self.items[idx]}'
-                fstr += ',' if idx < max else ''
+            max = (len(self.items) - 1)
+            if max > 0:
+                for idx in range(0, len(self.value)):
+                    fstr += f'{self.items[idx]}'
+                    fstr += ',' if idx < max else ''
+            else:
+                fstr = f'{self._value}'
             return '{' + f'{fstr}' + '}'
 
 
 @dataclass
 class Expression(ASTCompound):
-    def __init__(self, token=None, value=None, parent=None, is_lvalue=True, **kwargs):
+    def __init__(self, value=None, token=None, parent=None, is_lvalue=True, **kwargs):
         super().__init__(token=token, value=value, parent=parent, **kwargs)
         self.is_lvalue = is_lvalue
 
 
 @dataclass
 class Statement(ASTCompound):
-    def __init__(self, token=None, value=None, parent=None, is_lvalue=True, **kwargs):
+    def __init__(self, value=None, token=None, parent=None, is_lvalue=True, **kwargs):
         super().__init__(token=token, value=value, parent=parent, **kwargs)
         self.is_lvalue = is_lvalue
 
@@ -100,10 +112,12 @@ class Assign(Expression):
 class BinOp(Expression):
     def __init__(self, left, op, right, is_lvalue=None):
         super().__init__(token=op, is_lvalue=True if is_lvalue is None else is_lvalue)
-        op.t_class = TCL.BINOP
+#       op.t_class = TCL.BINOP
         self.left = left
         self.right = right
         self.op = op.id
+        if op.id in _EXPRESSION_TOKENS:
+            self.is_lvalue = False
         if left is not None:
             left.parent = self
             self.is_lvalue &= left.is_lvalue
@@ -231,25 +245,30 @@ class DefineVarFn(DefineVar):
 
 @dataclass
 class FnCall(BinOp):
-    def __init__(self, token, plist, op=None):
-        op = Token(tid=TK.FUNCTION, tcl=TCL.FUNCTION, lex="(", loc=token.location) if op is None else op
-        super().__init__(left=Get(token), op=op, right=plist, is_lvalue=False)
+    def __init__(self, token, plist=None, op=None, name=None):
+        assert token is not None, "Null Token passed to FnCall constructor"
+        op = Token(tid=TK.FUNCTION, tcl=TCL.FUNCTION, lex=name or token.lexeme, loc=token.location) if op is None else op
+        super().__init__(left=Get(token), op=op, right=plist, is_lvalue=True)
+        if token.is_reserved:
+            self.is_lvalue = False
 
 
 @dataclass
 class FnDef(BinOp):
-    def __init__(self, ref, plist, op=None, loc=None):
-        op = Token(tid=TK.FUNCTION, tcl=TCL.FUNCTION, lex="(", loc=loc) if op is None else op
-        super().__init__(left=ref, op=op, right=plist, is_lvalue=False)
+    def __init__(self, ref, plist=None, op=None, loc=None, name=None):
+        op = Token(tid=TK.FUNCTION, tcl=TCL.FUNCTION, lex=name or "", loc=loc) if op is None else op
+        super().__init__(left=ref, op=op, right=plist, is_lvalue=True)
 
 
 # holds a reference
 class Ref(Expression):
-    def __init__(self, r_token, name=None):
-        super().__init__(token=r_token)
+    def __init__(self, r_token, name=None, is_lvalue=True):
+        super().__init__(token=r_token, is_lvalue=is_lvalue)
         self.token = r_token
         self.name = name or r_token.lexeme
         r_token.t_class = TCL.IDENTIFIER
+        if r_token.is_reserved:
+            self.is_lvalue = False
 
     def to_get(self):
         get = Get(self.token)
@@ -263,8 +282,8 @@ class Ref(Expression):
 
 # dereferences to value
 class Get(Ref):
-    def __init__(self, r_token, name=None):
-        super().__init__(r_token=r_token, name=name)
+    def __init__(self, r_token, name=None, is_lvalue=True):
+        super().__init__(r_token=r_token, name=name, is_lvalue=is_lvalue)
 
     def to_ref(self):
         ref = Ref(self.token)
@@ -272,7 +291,7 @@ class Get(Ref):
         return ref
 
     def get(self):
-        return self.value
+        return self._value
 
     def format(self):
         token = 'None' if self.token is None else f'{self.token}'

@@ -11,4 +11,4 @@ tree1:  0.3 * 2 + 1
     5  :     Int(TK.INT, 1)
 
 tree1:(post)  0.3 * 2 + 1
-    1  : Literal(TK.FLOT, 1.6)
+    1  : Float(TK.FLOT, 1.6)

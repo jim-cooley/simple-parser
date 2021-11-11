@@ -5,11 +5,11 @@ true >> false
 
 tree1:  true >> false
     1  : Flow(TK.APPLY, v=[Bool(), Bool()], '>>')
-    2  :     Bool(TK.TRUE, True)
-    3  :     Bool(TK.FALSE, False)
+    2  :     Bool(TK.BOOL, True)
+    3  :     Bool(TK.BOOL, False)
 
 tree1:(post)  true >> false
 result: list([Bool(), Bool()])
     1  : Flow(TK.APPLY, v=[Bool(), Bool()], '>>')
-    2  :     Bool(TK.TRUE, True)
-    3  :     Bool(TK.FALSE, False)
+    2  :     Bool(TK.BOOL, True)
+    3  :     Bool(TK.BOOL, False)

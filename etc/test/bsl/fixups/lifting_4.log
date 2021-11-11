@@ -9,6 +9,6 @@ tree1:  [-1]
     3  :         Int(TK.INT, 1)
 
 tree1:(post)  [-1]
-result: list([Literal()])
-    1  : List(TK.LIST, [Literal()])
-    2  :     Literal(TK.INT, -1)
+result: list([Int()])
+    1  : List(TK.LIST, [Int()])
+    2  :     Int(TK.INT, -1)

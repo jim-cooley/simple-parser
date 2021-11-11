@@ -5,8 +5,8 @@ false ^ 2
 
 tree1:  false ^ 2
     1  : BinOp(TK.POW, '^')
-    2  :     Bool(TK.FALSE, False)
+    2  :     Bool(TK.BOOL, False)
     3  :     Int(TK.INT, 2)
 
 tree1:(post)  false ^ 2
-    1  : Literal(TK.INT, 0)
+    1  : Int(TK.INT, 0)

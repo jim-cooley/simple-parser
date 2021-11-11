@@ -9,4 +9,4 @@ tree1:  1.0 + 2
     3  :     Int(TK.INT, 2)
 
 tree1:(post)  1.0 + 2
-    1  : Literal(TK.FLOT, 3.0)
+    1  : Float(TK.FLOT, 3.0)

@@ -5,7 +5,7 @@ true != 1
 
 tree1:  true != 1
     1  : BinOp(TK.NEQ, '!=')
-    2  :     Bool(TK.TRUE, True)
+    2  :     Bool(TK.BOOL, True)
     3  :     Int(TK.INT, 1)
 
 tree1:(post)  true != 1

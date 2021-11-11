@@ -171,14 +171,14 @@ def _dump_symbols(logger, scope):
     q.put(scope)
     while not q.empty():
         s = q.get()
-        if s._symbols is None or len(s._symbols) == 0:
+        if s._members is None or len(s._members) == 0:
             continue
         if getattr(s, 'token', False):
             logger.print(f'\nscope: {s.token.lexeme}')
         else:
             logger.print(f'\nglobal scope:')
-        for k in s._symbols.keys():
-            v = s._symbols[k]
+        for k in s._members.keys():
+            v = s._members[k]
             if type(v).__name__ == 'Object':
                 q.put(v)
                 logger.print(f'{idx:5d}:  `{k}`: {v.qualname} : Object({v.token})')
@@ -186,12 +186,12 @@ def _dump_symbols(logger, scope):
 
 
 def _dump_keywords(logger, scope):
-    if scope._symbols is None or len(scope._symbols) == 0:
+    if scope._members is None or len(scope._members) == 0:
         return
     logger.print(f'\nkeywords:')
     idx = 0
-    for k in scope._symbols.keys():
-        v = scope._symbols[k]
+    for k in scope._members.keys():
+        v = scope._members[k]
         if type(v).__name__ == 'Token':
             logger.print(f'{idx:5d}:  `{k}`: {v}')
             idx += 1

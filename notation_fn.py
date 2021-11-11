@@ -81,6 +81,7 @@ _tk2pfx = {
     TK.STR: 'str',
     TK.SUB: 'sub',  # - (subtract)
     TK.TIME: 'time',
+    TK.TODAY: 'today',
     TK.TRUE: 'b',
     TK.TUPLE: 'tup',
     TK.VAR: 'var',

@@ -1,17 +1,17 @@
 
 
 test: 20:
-a.b.c.d() = 1
+r = a.b.c.d()
 
-tree1:  a.b.c.d() = 1
+tree1:  r = a.b.c.d()
     1  : Define(TK.DEFINE, TK.EQLS, '=')
-    2  :     PropRef(TK.REF, '.')
-    3  :         Ref(TK.IDNT, 'a')
-    4  :         PropRef(TK.REF, '.')
-    5  :             Ref(TK.IDNT, 'b')
-    6  :             PropRef(TK.REF, '.')
-    7  :                 Ref(TK.IDNT, 'c')
-    8  :                 FnDef(TK.FUNCTION, '(')
-    9  :                     Ref(TK.IDNT, 'd')
-   10  :                     List(TK.TUPLE, [])
-   11  :     Int(TK.INT, 1)
+    2  :     Ref(TK.IDNT, 'r')
+    3  :     PropRef(TK.REF, '.')
+    4  :         Get(TK.IDNT, 'a')
+    5  :         PropRef(TK.REF, '.')
+    6  :             Get(TK.IDNT, 'b')
+    7  :             PropRef(TK.REF, '.')
+    8  :                 Get(TK.IDNT, 'c')
+    9  :                 FnCall('d')
+   10  :                     Get(TK.IDNT, 'd')
+   11  :                     List(TK.TUPLE, [])

@@ -40,6 +40,12 @@ class IndexedDict(object):
     def __str__(self):
         return self.format()
 
+    def __len__(self):
+        return len(self.__dict__.keys()) - 1   # don't count '__dict__'
+
+    def is_empty(self):
+        return len(self.__dict__.keys()) - 1 < 1
+
     def items(self):
         k = list(self.__dict__.items())
         return k[1:]
@@ -62,6 +68,9 @@ class IndexedDict(object):
                     k[ky] = d[ky]
             d = k
         return d
+
+    def to_list(self):
+        return deepcopy(self.values())
 
     def update(self, items):
         self.__dict__.update(items)
@@ -106,7 +115,7 @@ class IndexedDict(object):
 
 
 if __name__ == '__main__':
-    d = IndexedDict(items={'strict':False}, defaults={'strict':False, 'force':False})
+    d = IndexedDict(items={'strict': False}, defaults={'strict': False, 'force': False})
     print(d.strict)
     print(d[0])
     print(d['force'])

@@ -7,7 +7,7 @@ tree1:  f.a(x) = { var a(x):x*x }
     1  : Define(TK.DEFINE, TK.EQLS, '=')
     2  :     PropRef(TK.REF, '.')
     3  :         Ref(TK.IDNT, 'f')
-    4  :         FnDef(TK.FUNCTION, '(')
+    4  :         FnDef(TK.FUNCTION, 'a')
     5  :             Ref(TK.IDNT, 'a')
     6  :             List(TK.TUPLE, [Ref()])
     7  :                 Ref(TK.IDNT, 'x')

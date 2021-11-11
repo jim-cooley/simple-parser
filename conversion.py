@@ -52,7 +52,7 @@ def c_node2bool(node):
     tk.value = c_to_bool(tk.value, tid)
     if tk.value is not None:
         tk.lexeme = None
-        return Bool(tk)
+        return Bool(token=tk)
     runtime_error("Unsupported type for conversion", loc=tk.location)
 
 
@@ -63,7 +63,7 @@ def c_node2int(node):
     tk.value = c_to_int(tk.value, tid)
     if tk.value is not None:
         tk.lexeme = None
-        return Int(tk)
+        return Int(token=tk)
     runtime_error("Unsupported type for conversion", loc=tk.location)
 
 
@@ -74,7 +74,7 @@ def c_node2float(node):
     tk.value = c_to_float(tk.value, tid)
     if tk.value is not None:
         tk.lexeme = None
-        return Float(tk)
+        return Float(token=tk)
     runtime_error("Unsupported type for conversion", loc=tk.location)
 
 

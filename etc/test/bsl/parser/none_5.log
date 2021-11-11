@@ -6,4 +6,4 @@ none or true
 tree1:  none or true
     1  : BinOp(TK.OR, 'or')
     2  :     Literal(TK.NONE, None)
-    3  :     Bool(TK.TRUE, True)
+    3  :     Bool(TK.BOOL, True)

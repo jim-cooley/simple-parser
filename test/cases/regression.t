@@ -1,2 +1,5 @@
-pd = dataset()
-pd = yahoo( symbols='spq500.csv', 2y )
+# pd = dataset()
+t = today
+n = now
+pd = yahoo( symbols='portfolio.csv', span=-5y )
+#

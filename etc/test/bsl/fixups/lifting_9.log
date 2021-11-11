@@ -4,11 +4,11 @@ test: 9:
 {-1}
 
 tree1:  {-1}
-    1  : Set(TK.SET, [UnaryOp()])
+    1  : Block(TK.BLOCK, v=[UnaryOp()], '')
     2  :     UnaryOp(TK.NEG, TK.NEG, '-')
     3  :         Int(TK.INT, 1)
 
 tree1:(post)  {-1}
-result: list([Literal()])
-    1  : Set(TK.SET, [Literal()])
-    2  :     Literal(TK.INT, -1)
+result: list([Int()])
+    1  : Block(TK.BLOCK, v=[Int()], '')
+    2  :     Int(TK.INT, -1)

@@ -25,8 +25,8 @@ type | description | notes
 `int` | `int64` | do we support uint64?
 `category` | `Enum` | categorical value
 `duration` | `timedelta64` |
+`enumeration` | `IntEnum` | categorical values with numeric equivalents
 `float` | `float64` |
-`key` | `EnumInt` | category that translates into an int key
 `object` | `object` | unknown, late-bound access
 `str` | `str` |
 `time` | `datetime` |

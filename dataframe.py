@@ -1,6 +1,7 @@
-import sys
 from dataclasses import dataclass
 from pandas.compat import numpy as np
+
+from indexed_dict import IndexedDict
 from scope import Object
 import pandas as pd
 
@@ -11,8 +12,12 @@ class Dataset(Object):
     This class represents a Pandas DataFrame object.
     """
     def __init__(self, name=None, value=None, parent=None):
-        super().__init__(name=name, token=None, value=value, parent=parent)
-        self._dataframe = value or pd.DataFrame()
+        super().__init__(name=name, value=value, token=None, parent=parent)
+        self._dataframe = value if value is not None else pd.DataFrame()
+        if isinstance(value, dict) or isinstance(value, IndexedDict):
+            self._dataframe = pd.DataFrame(value, columns=list(value.keys()), index=[''])
+        elif type(self.value).__name__ != 'DataFrame':
+            raise ValueError("object is not DataFrame")
 
     # UNDONE: required elements for NumPy
     # .shape = array dimensions
@@ -68,7 +73,7 @@ class Series(Object):
     Pandas Series object
     """
     def __init__(self, name=None, value=None, parent=None):
-        super().__init__(name=name, token=None, value=value, parent=parent)
+        super().__init__(name=name, value=value, token=None, parent=parent)
         self._seroes = value or pd.Series()
 
     def from_series(self, df):
@@ -86,7 +91,7 @@ def create_series(args):
 
 
 def set_print_options():
-    np.set_printoptions(threshold=sys.maxsize)
+#   np.set_printoptions(threshold=sys.maxsize)
     return pd.option_context(
         'display.max_rows', None,
         'display.max_columns', None,

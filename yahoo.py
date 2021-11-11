@@ -1,12 +1,17 @@
 # wrapper around yahoo quotes
+import io
 import math
 import os
-from datetime import datetime
-
-from dataframe import print_dataframe
 import pandas as pd
-import yahoo
+import requests as requests
 
+from conversion import c_unbox
+from dataframe import print_dataframe, Dataset
+from indexed_dict import IndexedDict
+from intrinsic_fn import get_now
+from intrinsic_helpers import _find_file
+from literals import Duration, Literal
+from scope import IntrinsicFunction, Object
 
 file_suffix = {'1d': 'daily', '1wk': 'weekly'}
 config_root = './config/'
@@ -21,9 +26,34 @@ yahoo_span = 'period1={}&period2={}&interval={}&events=history'
 
 columns = ['Date', 'Open', 'High', 'Low', 'Close', 'Adj Close', 'Volume']
 
-DEFAULT_SPAN_YRS = 5
+DEFAULT_SPAN_YRS = '5y'
 WEEKLY = '1wk'
 DAILY = '1d'
+
+_map2freq = {
+    DAILY: DAILY,
+    'd': DAILY,
+    'dy': DAILY,
+    'day': DAILY,
+    'daily': DAILY,
+    WEEKLY: WEEKLY,
+    'w': WEEKLY,
+    'wk': WEEKLY,
+    'week': WEEKLY,
+    'weekly': WEEKLY,
+}
+
+
+def init_yahoo(name):
+    return IntrinsicFunction(name=name,
+                             defaults=IndexedDict({'symbols': None,
+                                                   'first': None,
+                                                   'last': get_now(),
+                                                   'span': Duration(DEFAULT_SPAN_YRS),
+                                                   'frequency': DAILY,
+                                                   'dropna': True,
+                                                   'offline': False
+                                                   }))
 
 
 def do_yahoo(args):
@@ -32,20 +62,37 @@ def do_yahoo(args):
     :param args:
     :return: Block containing {Open, High, Low, Close, Mean, and Volume}
     """
-    ds = fetch_historic(args.symbols, args.last, args.span, args.interval, args.dropna, args.offline)
-    return ds
+    symbols = c_unbox(args.symbols)
+    if isinstance(symbols, str):
+        symbols = read_symbol_list(symbols)
+    ds = get_yahoo(symbols=symbols,
+                   first=c_unbox(args.first),
+                   last=c_unbox(args.last),
+                   span=c_unbox(args.span),
+                   frequency=_map2freq[args.frequency],
+                   dropna=args.dropna,
+                   offline=args.offline)
+
+    for key in ds.keys():
+        val = ds[key]
+        if type(val).__name__ == 'DataFrame' or isinstance(val, dict) or isinstance(val, IndexedDict):
+            ds[key] = Dataset(name=key, value=val)
+        else:
+            ds[key] = Literal.lit(val=val)
+    o = Object()
+    o.from_dict(ds)
+    return o
 
 
-def fetch_historic(symbols, last, span, interval, dropna=True, offline=False):
+def get_yahoo(symbols, first, last, span, frequency, dropna, offline):
     result = dict()
     start = dict()
     end = dict()
     _last = math.floor(last.timestamp())
-    _first = math.floor(datetime(last.year - span, last.month, last.day).timestamp())
-    print('mode: offline\n') if offline else print('mode: online\n')
+    _first = math.floor((last + span).timestamp())
     historic = dict({str: pd.DataFrame})
-    for sym in symbols:
-        hist = fetch_quotes(sym, _first, _last, interval, offline)
+    for sym, row in symbols.iterrows():
+        hist = fetch_quotes(sym, _first, _last, frequency, offline)
         if hist is not None and not hist.empty:
             historic[sym] = hist.copy(deep=True)
             start[sym] = hist.index[0]
@@ -80,19 +127,32 @@ def fetch_historic(symbols, last, span, interval, dropna=True, offline=False):
     return result
 
 
-def fetch_quotes(symbol, start, end, interval, offline=False):
+def fetch_quotes(symbol, start, end, freq, offline=False):
     quotes = pd.DataFrame()
     if offline:
-        quotes = read_quotefile(symbol, interval)
+        quotes = read_quotefile(symbol, freq)
     else:
-        quotes = yahoo.fetch_quotes(symbol, start, end, interval)
+        quotes = _fetch_quotes(symbol, start, end, freq)
+    return quotes
+
+
+def _fetch_quotes(symbol, start, end, interval):
+    quotes = None
+    quote_url = format_yahoo_url(symbol, start, end, interval)
+    headers = {'User-Agent': 'Mozilla/5.0'}  # yahoo is restricting to known user agents as of 06/2021
+    with requests.get(quote_url, headers=headers) as response:
+        if response.status_code == 200:
+            quotes = pd.read_csv(io.StringIO(response.text), index_col='Date')
+        else:
+            print(f'{quote_url}: response = {response.status_code}\n')
     return quotes
 
 
 def zip_historic(quotes, column1, column2=None):
     h = pd.DataFrame(columns=['Date'])
     h.set_index('Date', inplace=True)
-    for _s in sorted(quotes.keys()):
+    keys = sorted(list(quotes.keys())[1:])
+    for _s in keys:
         q = pd.DataFrame(quotes[_s])
         if column2 is None:
             q = q.loc[:, [column1]]  # q = q.loc[:, ['Date', column1]]
@@ -116,7 +176,7 @@ def get_quotefilename(basename, folder=None, _suffix=DAILY):
 
 
 def read_symbol_list(name):
-    symbol_list_filename = get_config_filename(name)
+    symbol_list_filename = _find_file(name, extensions=['.csv'])
     symbol_list = create_symbols_table()
     if os.path.isfile(symbol_list_filename) and os.access(symbol_list_filename, os.R_OK):
         ext = get_file_type(symbol_list_filename)
@@ -145,13 +205,13 @@ def read_symbol_list(name):
                                 {'symbol': symbol, 'group': group, 'description': description}, ignore_index=True)
                 symbol_list = symbol_list.set_index('symbol')
     symbol_list = symbol_list.loc[~symbol_list.index.duplicated(keep='first')]
-#   write_symbol_list(name, symbol_list.sort_index())
+    #   write_symbol_list(name, symbol_list.sort_index())
     return symbol_list
 
 
-def read_quotefile(symbol, interval):
+def read_quotefile(symbol, freq):
     quotes = None
-    symbol_filename = get_quotefilename(symbol, interval)
+    symbol_filename = get_quotefilename(symbol, freq)
     if os.path.isfile(symbol_filename) and os.access(symbol_filename, os.R_OK):
         quotes = pd.read_csv(symbol_filename,
                              encoding='utf-8',
@@ -184,3 +244,13 @@ def get_config_filename(file_path, suffix=None, ext='.txt'):
     return f'{path}{file_name}{suffix}{ext}' if suffix else f'{path}{file_name}{ext}'
 
 
+def format_yahoo_url(symbol, start, end, interval):
+    return f'{yahoo_base}/{symbol}?{yahoo_span.format(start, end, interval)}'
+
+
+def format_yahoo_5yr_url(symbol, interval):
+    return f'{yahoo_base}/{symbol}?{yahoo_5yr.format(interval)}'
+
+
+def format_yahoo_max_url(symbol, interval):
+    return f'{yahoo_base}/{symbol}?{yahoo_max.format(interval)}'

@@ -5,4 +5,4 @@ test: 19:
 
 tree1:  ! true
     1  : UnaryOp(TK.NOT, TK.NOT, '!')
-    2  :     Bool(TK.TRUE, True)
+    2  :     Bool(TK.BOOL, True)

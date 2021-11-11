@@ -6,7 +6,7 @@ f(x) := { x * 4 }
 tree1:  f(x) := { x * 4 }
     1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
     2  :     Ref(TK.IDNT, 'f')
-    3  :     Set(TK.SET, [BinOp()])
+    3  :     Block(TK.BLOCK, v=[BinOp()], '')
     4  :         BinOp(TK.MUL, '*')
     5  :             Get(TK.IDNT, 'x')
     6  :             Int(TK.INT, 4)
@@ -16,7 +16,7 @@ tree1:  f(x) := { x * 4 }
 tree1:(post)  f(x) := { x * 4 }
     1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
     2  :     Ref(TK.IDNT, 'f')
-    3  :     Set(TK.SET, [BinOp()])
+    3  :     Block(TK.BLOCK, v=[BinOp()], '')
     4  :         BinOp(TK.MUL, '*')
     5  :             Get(TK.IDNT, 'x')
     6  :             Int(TK.INT, 4)

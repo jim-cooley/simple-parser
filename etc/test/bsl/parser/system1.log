@@ -41,9 +41,11 @@ tree1:  periods = {
     5  :             Ref(TK.IDNT, 'train')
     6  :             BinOp(TK.RANGE, '..')
     7  :                 BinOp(TK.SUB, '-')
-    8  :                     Get(TK.IDNT, 'today')
-    9  :                     Duration(TK.DUR, 730 days, 0:00:00)
-   10  :                 Get(TK.IDNT, 'today')
+    8  :                     FnCall('today')
+    9  :                         Get(TK.IDNT, 'today')
+   10  :                     Duration(TK.DUR, 730 days, 0:00:00)
+   11  :                 FnCall('today')
+   12  :                     Get(TK.IDNT, 'today')
 
 tree2:  sma_period = [3,5,10..20,28]
     1  : Define(TK.DEFINE, TK.EQLS, '=')
@@ -214,7 +216,7 @@ tree8:  rules: {
   108  :                             List(TK.TUPLE, [Duration()])
   109  :                                 Duration(TK.DUR, 1 day, 0:00:00)
 
-tree1:  %%yahoo (file='spq500.csv', 2y)
+tree1:  # sample rules file for pyser / qtradr
     1  : Command(TK.IDNT, TK.IDNT, '%%yahoo')
     2  :     List(TK.TUPLE, [Define(), Duration()])
     3  :         Define(TK.DEFINE, TK.EQLS, '=')

@@ -5,5 +5,5 @@ true <= false
 
 tree1:  true <= false
     1  : BinOp(TK.LTE, '<=')
-    2  :     Bool(TK.TRUE, True)
-    3  :     Bool(TK.FALSE, False)
+    2  :     Bool(TK.BOOL, True)
+    3  :     Bool(TK.BOOL, False)

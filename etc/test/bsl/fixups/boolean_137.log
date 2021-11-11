@@ -5,8 +5,8 @@ false != false
 
 tree1:  false != false
     1  : BinOp(TK.NEQ, '!=')
-    2  :     Bool(TK.FALSE, False)
-    3  :     Bool(TK.FALSE, False)
+    2  :     Bool(TK.BOOL, False)
+    3  :     Bool(TK.BOOL, False)
 
 tree1:(post)  false != false
     1  : Bool(TK.BOOL, False)

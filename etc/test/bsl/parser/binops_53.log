@@ -6,4 +6,4 @@ test: 53:
 tree1:  1 <| false
     1  : BinOp(TK.FALL_BELOW, '<|')
     2  :     Int(TK.INT, 1)
-    3  :     Bool(TK.FALSE, False)
+    3  :     Bool(TK.BOOL, False)

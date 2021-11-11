@@ -212,7 +212,7 @@ def _lift(node, child):
 
 # fixup helpers:
 def _fixup_coln_plist(node, target):
-    plist = List(Token(TK.TUPLE, tcl=TCL.TUPLE, lex='(', loc=node.token.location), [target])
+    plist = List([target], Token(TK.TUPLE, tcl=TCL.TUPLE, lex='(', loc=node.token.location))
     target.parent = plist
     plist.parent = node
     return plist

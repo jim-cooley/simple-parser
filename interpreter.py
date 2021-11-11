@@ -1,10 +1,9 @@
 from environment import Environment
 from evaluate import reduce_value, evaluate_binary_operation, evaluate_unary_operation, evaluate_identifier, \
-    evaluate_set, reduce_get, reduce_propref, reduce_ref, update_ref, reduce_parameters, invoke_fn
-from intrinsics import is_intrinsic, invoke_intrinsic
+    evaluate_set, reduce_get, reduce_propref, reduce_ref, update_ref, reduce_parameters, evaluate_invoke
 from scope import Block
 from tree import FnCall
-from visitor import TreeFilter, BINARY_NODE
+from visitor import TreeFilter
 
 _VISIT_IDENT = 'visit_ident'
 _VISIT_LITERAL = 'visit_literal'
@@ -165,19 +164,12 @@ class Interpreter(TreeFilter):
         self.dedent()
         # UNDONE: need to handle all cases of ':' operator here as well - or split out
         if isinstance(right, FnCall):
-            name = right.left.name  # should be either Ref() or Get()
-            args = right.right
-            args = reduce_parameters(scope=None, args=args)
-#           self._c_process_sequence(args.value)  # reduce and stack args
-            if is_intrinsic(name):
-                result = invoke_intrinsic(name, args)
-            else:
-                ident = reduce_get(get=right.left)
-                result = invoke_fn(ident, args)
+            result = evaluate_invoke(right)
             var = reduce_ref(ref=left, value=result)
-            update_ref(var, result)
         else:
+            result = right
             var = reduce_ref(ref=left, value=right)
+        var = update_ref(sym=var, value=result)
         self.stack.push(var)
 
     # DefineFn, DefineVarFn

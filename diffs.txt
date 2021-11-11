@@ -1,0 +1,1879 @@
+diff --git a/conversion.py b/conversion.py
+index bdc751b..8a5f092 100644
+--- a/conversion.py
++++ b/conversion.py
+@@ -52,7 +52,7 @@ def c_node2bool(node):
+     tk.value = c_to_bool(tk.value, tid)
+     if tk.value is not None:
+         tk.lexeme = None
+-        return Bool(tk)
++        return Bool(token=tk)
+     runtime_error("Unsupported type for conversion", loc=tk.location)
+ 
+ 
+@@ -63,7 +63,7 @@ def c_node2int(node):
+     tk.value = c_to_int(tk.value, tid)
+     if tk.value is not None:
+         tk.lexeme = None
+-        return Int(tk)
++        return Int(token=tk)
+     runtime_error("Unsupported type for conversion", loc=tk.location)
+ 
+ 
+@@ -74,7 +74,7 @@ def c_node2float(node):
+     tk.value = c_to_float(tk.value, tid)
+     if tk.value is not None:
+         tk.lexeme = None
+-        return Float(tk)
++        return Float(token=tk)
+     runtime_error("Unsupported type for conversion", loc=tk.location)
+ 
+ 
+diff --git a/dataframe.py b/dataframe.py
+index 305f8a4..43b5f4a 100644
+--- a/dataframe.py
++++ b/dataframe.py
+@@ -1,6 +1,7 @@
+-import sys
+ from dataclasses import dataclass
+ from pandas.compat import numpy as np
++
++from indexed_dict import IndexedDict
+ from scope import Object
+ import pandas as pd
+ 
+@@ -11,8 +12,12 @@ class Dataset(Object):
+     This class represents a Pandas DataFrame object.
+     """
+     def __init__(self, name=None, value=None, parent=None):
+-        super().__init__(name=name, token=None, value=value, parent=parent)
+-        self._dataframe = value or pd.DataFrame()
++        super().__init__(name=name, value=value, token=None, parent=parent)
++        self._dataframe = value if value is not None else pd.DataFrame()
++        if isinstance(value, dict) or isinstance(value, IndexedDict):
++            self._dataframe = pd.DataFrame(value, columns=list(value.keys()), index=[''])
++        elif type(self.value).__name__ != 'DataFrame':
++            raise ValueError("object is not DataFrame")
+ 
+     # UNDONE: required elements for NumPy
+     # .shape = array dimensions
+@@ -68,7 +73,7 @@ class Series(Object):
+     Pandas Series object
+     """
+     def __init__(self, name=None, value=None, parent=None):
+-        super().__init__(name=name, token=None, value=value, parent=parent)
++        super().__init__(name=name, value=value, token=None, parent=parent)
+         self._seroes = value or pd.Series()
+ 
+     def from_series(self, df):
+@@ -86,7 +91,7 @@ def create_series(args):
+ 
+ 
+ def set_print_options():
+-    np.set_printoptions(threshold=sys.maxsize)
++#   np.set_printoptions(threshold=sys.maxsize)
+     return pd.option_context(
+         'display.max_rows', None,
+         'display.max_columns', None,
+diff --git a/doc/data_types.md b/doc/data_types.md
+index 263aefc..b32159b 100644
+--- a/doc/data_types.md
++++ b/doc/data_types.md
+@@ -25,8 +25,8 @@ type | description | notes
+ `int` | `int64` | do we support uint64?
+ `category` | `Enum` | categorical value
+ `duration` | `timedelta64` |
++`enumeration` | `IntEnum` | categorical values with numeric equivalents
+ `float` | `float64` |
+-`key` | `EnumInt` | category that translates into an int key
+ `object` | `object` | unknown, late-bound access
+ `str` | `str` |
+ `time` | `datetime` |
+diff --git a/evaluate.py b/evaluate.py
+index 53bd2b8..1f6ae34 100644
+--- a/evaluate.py
++++ b/evaluate.py
+@@ -1,3 +1,4 @@
++from copy import deepcopy
+ 
+ from conversion import c_unbox, c_box
+ from environment import Environment, RuntimeStack
+@@ -7,9 +8,10 @@ from eval_boolean import eval_boolean_dispatch, _boolean_dispatch_table
+ from eval_unary import not_literal, increment_literal, decrement_literal, negate_literal
+ from exceptions import getErrorFacility, runtime_error, runtime_strict_warning
+ from indexed_dict import IndexedDict
+-from literals import LIT_NONE
+-from tokens import TK, TCL
+-from tree import Ref
++from intrinsic_dispatch import invoke_fn, is_intrinsic, invoke_intrinsic
++from literals import LIT_NONE, Literal
++from tokens import TK
++from tree import Ref, Define
+ 
+ _INTRINSIC_VALUE_TYPES = ['bool', 'float', 'int', 'str', 'timedelta']
+ 
+@@ -66,10 +68,22 @@ def reduce_propget(left=None, right=None):
+ 
+ def reduce_parameters(scope=None, args=None):
+     items = {}
++    if scope is not None and scope.defaults is not None:
++        items = deepcopy(scope.defaults)
+     if args is not None:
+-        for ref in args:
++        for idx in range(0, len(args)):
++            ref = args[idx]
++            if isinstance(ref, Define):
++                value = ref.right
++                ref = ref.left
+                 sym = reduce_ref(scope=scope, ref=ref)
+-            items[sym.name] = sym
++                items[sym.name] = value
++            elif isinstance(ref, Ref):
++                sym = reduce_ref(scope=scope, ref=ref)
++                items[sym.name] = value
++            elif isinstance(ref, Literal):
++                slot = items.keys()[idx]
++                items[slot] = ref,
+     return IndexedDict(items)
+ 
+ 
+@@ -79,11 +93,6 @@ def update_ref(scope=None, sym=None, value=None):
+     return symbol  # should be Object type
+ 
+ 
+-def evaluate_identifier(stack, node):
+-    left = Environment.current.scope.find(node.token)
+-    stack.push(left)
+-
+-
+ def evaluate_binary_operation(node, left, right):
+     op = node.op
+     if isinstance(left, Ref):
+@@ -109,6 +118,25 @@ def evaluate_binary_operation(node, left, right):
+     return None  # fixups uses this code as well.  probably want option_strict enablement
+ 
+ 
++def evaluate_identifier(stack, node):
++    left = Environment.current.scope.find(node.token)
++    stack.push(left)
++
++
++def evaluate_invoke(node):
++    fnode = node.left
++    args = node.right
++    name = fnode.name  # should be either Ref() or Get()
++    fn = reduce_get(get=fnode)
++    args = reduce_parameters(scope=fn, args=args)  # need to have scope be a new parameters object (block?)
++    if is_intrinsic(name):
++        result = invoke_intrinsic(name, args)
++    else:
++        ident = reduce_get(get=node.left)
++        result = invoke_fn(ident, args)
++    return result
++
++
+ def evaluate_set(node, visitor=None):
+     if node is None:
+         return None
+@@ -140,13 +168,13 @@ def evaluate_unary_operation(node, left):
+         return not_literal(l_value, l_tid)
+     elif opid == TK.INCREMENT:
+         l_value = increment_literal(l_value, l_tid)
+-#        eval_assign_dispatch(left, r_value),
++    #        eval_assign_dispatch(left, r_value),
+     elif opid == TK.DECREMENT:
+         l_value = decrement_literal(l_value, l_tid)
+-#        eval_assign_dispatch(left, r_value),
++    #        eval_assign_dispatch(left, r_value),
+     elif opid == TK.NEG:
+         l_value = negate_literal(l_value, l_tid)
+-#        eval_assign_dispatch(left, r_value),
++    #        eval_assign_dispatch(left, r_value),
+     elif opid == TK.POS:
+         pass
+     else:
+@@ -154,7 +182,3 @@ def evaluate_unary_operation(node, left):
+ 
+     left = c_box(left, l_value)
+     return left
+-
+-
+-def invoke_fn(node, args):
+-    pass
+diff --git a/fixups.py b/fixups.py
+index 9bd4435..d463f54 100644
+--- a/fixups.py
++++ b/fixups.py
+@@ -212,7 +212,7 @@ def _lift(node, child):
+ 
+ # fixup helpers:
+ def _fixup_coln_plist(node, target):
+-    plist = List(Token(TK.TUPLE, tcl=TCL.TUPLE, lex='(', loc=node.token.location), [target])
++    plist = List([target], Token(TK.TUPLE, tcl=TCL.TUPLE, lex='(', loc=node.token.location))
+     target.parent = plist
+     plist.parent = node
+     return plist
+diff --git a/indexed_dict.py b/indexed_dict.py
+index be435d7..4b58fda 100755
+--- a/indexed_dict.py
++++ b/indexed_dict.py
+@@ -40,6 +40,12 @@ class IndexedDict(object):
+     def __str__(self):
+         return self.format()
+ 
++    def __len__(self):
++        return len(self.__dict__.keys()) - 1   # don't count '__dict__'
++
++    def is_empty(self):
++        return len(self.__dict__.keys()) - 1 < 1
++
+     def items(self):
+         k = list(self.__dict__.items())
+         return k[1:]
+@@ -63,6 +69,9 @@ class IndexedDict(object):
+             d = k
+         return d
+ 
++    def to_list(self):
++        return deepcopy(self.values())
++
+     def update(self, items):
+         self.__dict__.update(items)
+ 
+@@ -106,7 +115,7 @@ class IndexedDict(object):
+ 
+ 
+ if __name__ == '__main__':
+-    d = IndexedDict(items={'strict':False}, defaults={'strict':False, 'force':False})
++    d = IndexedDict(items={'strict': False}, defaults={'strict': False, 'force': False})
+     print(d.strict)
+     print(d[0])
+     print(d['force'])
+diff --git a/interpreter.py b/interpreter.py
+index 49d85a0..30bc9dd 100644
+--- a/interpreter.py
++++ b/interpreter.py
+@@ -1,10 +1,9 @@
+ from environment import Environment
+ from evaluate import reduce_value, evaluate_binary_operation, evaluate_unary_operation, evaluate_identifier, \
+-    evaluate_set, reduce_get, reduce_propref, reduce_ref, update_ref, reduce_parameters, invoke_fn
+-from intrinsics import is_intrinsic, invoke_intrinsic
++    evaluate_set, reduce_get, reduce_propref, reduce_ref, update_ref, reduce_parameters, evaluate_invoke
+ from scope import Block
+ from tree import FnCall
+-from visitor import TreeFilter, BINARY_NODE
++from visitor import TreeFilter
+ 
+ _VISIT_IDENT = 'visit_ident'
+ _VISIT_LITERAL = 'visit_literal'
+@@ -165,19 +164,12 @@ class Interpreter(TreeFilter):
+         self.dedent()
+         # UNDONE: need to handle all cases of ':' operator here as well - or split out
+         if isinstance(right, FnCall):
+-            name = right.left.name  # should be either Ref() or Get()
+-            args = right.right
+-            args = reduce_parameters(scope=None, args=args)
+-#           self._c_process_sequence(args.value)  # reduce and stack args
+-            if is_intrinsic(name):
+-                result = invoke_intrinsic(name, args)
+-            else:
+-                ident = reduce_get(get=right.left)
+-                result = invoke_fn(ident, args)
++            result = evaluate_invoke(right)
+             var = reduce_ref(ref=left, value=result)
+-            update_ref(var, result)
+         else:
++            result = right
+             var = reduce_ref(ref=left, value=right)
++        var = update_ref(sym=var, value=result)
+         self.stack.push(var)
+ 
+     # DefineFn, DefineVarFn
+diff --git a/intrinsic_dispatch.py b/intrinsic_dispatch.py
+index e69de29..a69fd51 100644
+--- a/intrinsic_dispatch.py
++++ b/intrinsic_dispatch.py
+@@ -0,0 +1,66 @@
++from enum import unique, IntEnum
++
++from dataframe import create_dataset, create_series
++from intrinsic_fn import do_now
++
++from scope import IntrinsicFunction
++from yahoo import do_yahoo, init_yahoo
++
++
++@unique
++class SLOT(IntEnum):
++    INVOKE = 0
++    INIT = 1
++
++
++def invoke_fn(node, args):
++    return node
++
++
++def is_intrinsic(name):
++    if name in _intrinsic_fundesc:
++        return name
++    return name in _instrinsic_aliases
++
++
++def invoke_intrinsic(name, args):
++    if name.lower() in _intrinsic_fundesc:
++        fn = _intrinsic_fundesc[name][SLOT.INVOKE]
++    elif name.lower() in _instrinsic_aliases:
++        fn = _instrinsic_aliases[name][SLOT.INVOKE]
++    else:
++        raise ValueError(f"Unknown function: {name}")
++    if args is None or args.is_empty():
++        return fn()
++    else:
++        return fn(args)
++
++
++def init_intrinsic(name):
++    if name.lower() in _intrinsic_fundesc:
++        fn = _intrinsic_fundesc[name][SLOT.INIT]
++        if fn is not None:
++            return fn(name)
++        else:
++            return IntrinsicFunction(name=name)
++
++
++# -----------------------------------
++# Tables
++# -----------------------------------
++
++# these are function descriptors for the intrinsic functions
++# the format is (invoke_fn, init_fn)
++_intrinsic_fundesc = {
++    'dataset': (create_dataset, None),
++    'now': (do_now, None),
++    'series': (create_series, None),
++    'today': (do_now, None),
++    'yahoo': (do_yahoo, init_yahoo),
++}
++
++
++# these are allowable aliases (which can easily be overridden)
++_instrinsic_aliases = {
++    'dataframe': (create_dataset, None),  # allowable for now
++}
+\ No newline at end of file
+diff --git a/intrinsic_helpers.py b/intrinsic_helpers.py
+index e69de29..e092295 100644
+--- a/intrinsic_helpers.py
++++ b/intrinsic_helpers.py
+@@ -0,0 +1,31 @@
++import os
++
++
++# -------------------------------------------------
++# Routines shared amongst the Intrinsic Functions
++# -------------------------------------------------
++
++
++_BASE_SEARCH_PATH = [
++    ".",
++    "./etc",
++    "./etc/config",
++]
++
++_DEFAULT_EXTENSIONS = [
++    ".f",
++    ".csv",
++]
++
++
++def _find_file(name, search_paths=None, extensions=None):
++    extensions = extensions or _DEFAULT_EXTENSIONS
++    search_paths = search_paths or _BASE_SEARCH_PATH
++    for path in search_paths:
++        fname = f'{path}/{name}'
++        if os.path.isfile(fname):
++            return fname
++        for x in extensions:
++            if os.path.isfile(f'{fname}{x}'):
++                return f'{fname}{x}'
++    raise IOError(f'invalid filename: {name}, cannot be found or is not a file')
+diff --git a/keywords.py b/keywords.py
+index 3def201..e816dab 100644
+--- a/keywords.py
++++ b/keywords.py
+@@ -1,7 +1,8 @@
+ from dataclasses import dataclass
+ 
+-from scope import Scope
++from scope import Scope, Function, IntrinsicFunction
+ from tokens import TK, TCL
++from intrinsic_dispatch import init_intrinsic, _intrinsic_fundesc
+ 
+ 
+ @dataclass
+@@ -9,6 +10,7 @@ class Keywords(Scope):
+     def __init__(self, parent_scope=None):
+         super().__init__(parent_scope)
+         self.load_keywords()
++        self.load_intrinsics()
+ 
+     # Keywords are r/o
+     def __setitem__(self, key, value):
+@@ -22,6 +24,12 @@ class Keywords(Scope):
+         for (tkid, typ, val) in keywords:
+             self._add_symbol(tkid, typ, val)
+ 
++    def load_intrinsics(self, intrinsics=None):
++        intrinsics = intrinsics or _intrinsic_fundesc
++        for fname, desc in intrinsics.items():
++            fn = init_intrinsic(fname)
++            self._add_name(fname, fn)
++
+ 
+ _KEYWORDS = [
+     (TK.ALL, TCL.KEYWORD, 'all'),
+@@ -38,7 +46,6 @@ _KEYWORDS = [
+     (TK.NAN, TCL.KEYWORD, 'NaN'),
+     (TK.NAN, TCL.KEYWORD, 'nan'),
+     (TK.NONE, TCL.KEYWORD, 'none'),
+-    (TK.NOW, TCL.KEYWORD, 'now'),
+     (TK.SELL, TCL.KEYWORD, "sell"),  # UNODNE: remove sell as a keyword
+     (TK.TRUE, TCL.KEYWORD, 'True'),
+     (TK.TRUE, TCL.KEYWORD, 'true'),
+@@ -46,7 +53,6 @@ _KEYWORDS = [
+     # special identities
+     (TK.ANON, TCL.IDENTIFIER, '_'),
+     (TK.IDNT, TCL.IDENTIFIER, 'pi'),
+-    (TK.IDNT, TCL.IDENTIFIER, 'today'),
+ 
+     # type constructors
+     (TK.DATASET, TCL.FUNCTION, 'Dataset'),
+@@ -72,8 +78,10 @@ _KEYWORDS = [
+     (TK.IDNT, TCL.FUNCTION, "sma"),
+     (TK.IDNT, TCL.FUNCTION, 'columns'),
+     (TK.IDNT, TCL.FUNCTION, 'fillempty'),
++#   (TK.NOW, TCL.FUNCTION, 'now'),
+     (TK.IDNT, TCL.FUNCTION, 'select'),
+     (TK.IDNT, TCL.FUNCTION, "signal"),
++#   (TK.TODAY, TCL.FUNCTION, 'today'),
+ 
+     # NumPy
+     (TK.IDNT, TCL.FUNCTION, 'arrange'),     # create array of evenly spaced values
+diff --git a/lexer.py b/lexer.py
+index 9840573..bc31956 100644
+--- a/lexer.py
++++ b/lexer.py
+@@ -146,8 +146,11 @@ class Lexer:
+         if tk.id == TK.IDNT:
+             tk.t_class = TCL.IDENTIFIER
+             tk = self.keywords.find_name(tk.lexeme, tk)
++            if not isinstance(tk, Token):
++                tk = tk.token
++            tk = copy.deepcopy(tk)
+         else:
+-            tk.map2tclass()
++            tk.remap2tclass()
+         self.token = tk
+         if tk.id == TK.EOF:
+             self._has_more = False
+diff --git a/literals.py b/literals.py
+index c861bed..70f5d70 100644
+--- a/literals.py
++++ b/literals.py
+@@ -24,17 +24,17 @@ class DUR(Enum):
+ 
+ @dataclass
+ class Literal(Object):
+-    def __init__(self, token=None, tid=None, value=None, loc=None, parent=None):
++    def __init__(self, value=None, token=None, tid=None, loc=None, parent=None):
+         if token is None:
+             if tid is not None:
+                 token = Token(tid=tid, tcl=TCL.LITERAL, val=value, loc=loc)
+             else:
+                 token = Token(tid=TK.OBJECT, tcl=TCL.LITERAL, val=value, loc=loc)
+         else:
+-            tid = token.map2litval().id if tid is None else tid
++            tid = token.map2litval() if tid is None else tid
+             token.t_class = TCL.LITERAL
+             token.id = tid
+-        super().__init__(token=token, value=value, parent=parent)
++        super().__init__(value=value, token=token, parent=parent)
+ 
+     @staticmethod
+     def lit(val, tid=None, other=None, loc=None):
+@@ -44,19 +44,19 @@ class Literal(Object):
+             if other.token is not None:
+                 loc = other.token.location
+         if tid is not None:
+-            return Literal(tid=tid, value=val)
++            return Literal(value=val, tid=tid)
+         elif isinstance(val, bool):
+             return Bool(value=val, loc=loc)
+         elif isinstance(val, datetime):
+-            return Literal(tid=TK.TIME, value=val)
++            return Time(value=val)
+         elif isinstance(val, float):
+-            return Literal(tid=TK.FLOT, value=val)
++            return Float(value=val)
+         elif isinstance(val, int):
+-            return Literal(tid=TK.INT, value=val)
++            return Int(value=val)
+         elif isinstance(val, str):
+-            return Literal(tid=TK.STR, value=val)
++            return Str(value=val)
+         elif isinstance(val, timedelta):
+-            return Literal(tid=TK.DUR, value=val)
++            return Duration(value=val)
+         else:
+             return Literal(value=val)
+ 
+@@ -64,189 +64,296 @@ class Literal(Object):
+ @dataclass
+ @total_ordering
+ class Bool(Literal):
+-    def __init__(self, token=None, value=None, loc=None):
+-        tid = TK.BOOL if token is None else token.map2litval().id
++    def __init__(self, value=None, token=None, loc=None):
++        tid = TK.BOOL if token is None else token.map2litval()
+         loc = loc if token is None else token.location
+-        super().__init__(token=token, value=value, tid=tid, loc=loc)
+-        if self.value is None:
+-            self.value = _parse_bool_value(self.token.lexeme)
++        super().__init__(value=value, token=token, tid=tid, loc=loc)
++        self._value = value or token.lexeme
++        if isinstance(self._value, str):
++            self._value = _parse_bool_value(self._value)
+ 
+     def __lt__(self, other):
+         if isinstance(other, bool):
+-            return True if self.value < other else False
++            return True if self._value < other else False
+         return NotImplemented
+ 
+     def __eq__(self, other):
+         if isinstance(other, bool):
+-            return True if self.value is other else False
++            return True if self._value is other else False
+         return NotImplemented
+ 
+     def format(self):
+         tk = self.token
+-        return f'True' if tk.value is not None and tk.value else f'False'
++        return f'True' if tk._value is not None and tk._value else f'False'
++
++
++@dataclass
++class Category(Literal):
++    """
++    A Category restricts values to a specified set.  The range of values may be expanded, but the current
++    value may not be Set outside the current range.  Strict=False allows new values to be set without
++    check.  This is useful for reading from datasets and later inferring the set of categorical values.
++    Values are not case sensitive
++    """
++    def __init__(self, value=None, token=None, loc=None, strict=True):
++        tid = TK.CATEGORY if token is None else token.map2litval()
++        loc = loc if token is None else token.location
++        super().__init__(value=value, token=token, tid=tid, loc=loc)
++        self._value = value or token.lexeme
++        self.strict = strict
++        self.items = []
++
++    def __len__(self):
++        return len(self.items)
++
++    @property
++    def value(self):
++        return self._value
++
++    @value.setter
++    def value(self, value):
++        value = value.lower()
++        if value not in self.items:
++            if self.strict:
++                raise ValueError('Value assigned to Category is out of range')
++            self.items.append(value.lower())
++        self._value = value
++
++    def append(self, value):
++        self.items.append(value)
++
++    def values(self):
++        return self.items
+ 
+ 
+ @dataclass
+ class DateTime(Literal):
+-    def __init__(self, token=None, value=None, loc=None):
+-        tid = TK.TIME if token is None else token.map2litval().id
++    def __init__(self, value=None, token=None, loc=None):
++        tid = TK.TIME if token is None else token.map2litval()
+         loc = loc if token is None else token.location
+-        super().__init__(token=token, value=value, tid=tid, loc=loc)
+-        if self.value is None:
+-            self.value = _parse_date_value(token.lexeme)
++        super().__init__(value=value, token=token, tid=tid, loc=loc)
++        self._value = value or token.lexeme
++        if isinstance(self._value, str):
++            self._value = _parse_date_value(self._value)
+ 
+     def format(self):
+-        return f'{self.value}'
++        return f'{self._value}'
+ 
+ 
+ @dataclass
+ class Duration(Literal):
+-    def __init__(self, token=None, value=None, loc=None):
+-        tid = TK.DUR if token is None else token.map2litval().id
++    def __init__(self, value=None, token=None, loc=None):
++        tid = TK.DUR if token is None else token.map2litval()
+         loc = loc if token is None else token.location
+-        super().__init__(token=token, value=value, tid=tid, loc=loc)
+-        if self.value is None:
+-            self.value, self.units = _parse_duration(token.lexeme)
++        super().__init__(value=value, token=token, tid=tid, loc=loc)
++        self._value = value or token.lexeme
++        if isinstance(self._value, str):
++            self._value, self.units = _parse_duration(self._value)
+ 
+     def total_seconds(self):
+-        return self.value.total_seconds()
++        return self._value.total_seconds()
+ 
+     def units(self):
+         return self.units
+ 
+     def format(self, fmt=None):
+-        return f'{self.value}'
++        return f'{self._value}'
++
++
++@dataclass
++class Enumeration(Category):
++    """
++    An Enumeration is a set of categorical values with numeric equivalents.
++    """
++    def __init__(self, value=None, token=None, loc=None, strict=True, auto_increment=False):
++        tid = TK.ENUM if token is None else token.map2litval()
++        loc = loc if token is None else token.location
++        super().__init__(value=value, token=token, loc=loc, strict=strict)
++        self._value = value or token.lexeme
++        self.auto_increment = auto_increment
++        self.seed = -1
++        self.items = {}
++
++    def __getitem__(self, index):
++        return self.items[index]
++
++    def __setitem__(self, index, value):
++        self.items[index] = int(value)
++
++    def __len__(self):
++        return len(self.items.keys())
++
++    @property
++    def value(self):
++        return self._value
++
++    @value.setter
++    def value(self, value):
++        value = value.lower()
++        if value not in self.items:
++            if self.strict:
++                raise ValueError('Value assigned to Category is out of range')
++            if self.auto_increment:
++                self.seed += 1
++                self.items[value.lower()] = self.seed
++        self._value = value
++
++    def to_int(self):
++        return self.items[self._value]
++
++    def to_range(self):
++        raise NotImplemented()
++
++    def from_category(self, other):
++        self.items = {}
++        self.seed = -1
++        if not isinstance(other, Category):
++            raise NotImplemented()
++        for item in other.items:
++            self.seed += 1
++            self.items[item] = self.seed
++        return self
++
++    def values(self):
++        return self.items.keys()  # the keys are the actual 'values' of the Enumeration. As in range of possible values
+ 
+ 
+ @dataclass
+ class Float(Literal):
+-    def __init__(self, token=None, value=None, loc=None):
+-        tid = TK.FLOT if token is None else token.map2litval().id
++    def __init__(self, value=None, token=None, loc=None):
++        tid = TK.FLOT if token is None else token.map2litval()
+         loc = loc if token is None else token.location
+-        super().__init__(token=token, value=value, tid=tid, loc=loc)
+-        if self.value is None:
+-            self.value = float(token.lexeme)
++        super().__init__(value=value, token=token, tid=tid, loc=loc)
++        self._value = value or token.lexeme
++        if isinstance(self._value, str):
++            self._value = float(self._value)
+ 
+     def format(self, fmt=None):
+-        return f'{self.value}'
++        return f'{self._value}'
+ 
+ 
+ @dataclass
+ @total_ordering
+ class Int(Literal):
+-    def __init__(self, token=None, value=None, loc=None):
+-        tid = TK.INT if token is None else token.map2litval().id
++    def __init__(self, value=None, token=None, loc=None):
++        tid = TK.INT if token is None else token.map2litval()
+         loc = loc if token is None else token.location
+-        super().__init__(token=token, value=value, tid=tid, loc=loc)
+-        if self.value is None:
+-            self.value = int(self.token.lexeme)
++        super().__init__(value=value, token=token, tid=tid, loc=loc)
++        self._value = value or token.lexeme
++        if isinstance(self._value, str):
++            self._value = int(self._value)
+ 
+     def __lt__(self, other):
+         if isinstance(other, int):
+-            return True if self.value < other else False
++            return True if self._value < other else False
+         return NotImplemented
+ 
+     def __eq__(self, other):
+         if isinstance(other, int):
+-            return True if self.value == other else False
++            return True if self._value == other else False
+         return NotImplemented
+ 
+     def format(self, fmt=None):
+-        return f'{self.qualname} = {self.value}'
++        return f'{self.qualname} = {self._value}'
+ 
+ 
+ @dataclass
+ class List(Literal):
+-    def __init__(self, token=None, items=None, loc=None):
+-        tid = TK.LIST if token is None else token.map2litval().id
++    def __init__(self, items=None, token=None, loc=None):
++        tid = TK.LIST if token is None else token.map2litval()
+         loc = loc if token is None else token.location
+-        super().__init__(token=token, value=items, tid=tid, loc=loc)
+-        self.value = items
++        super().__init__(value=items, token=token, tid=tid, loc=loc)
++        self._value = items
++        self.items = items
+ 
+     def __getitem__(self, index):
+-        return self.values()[index]
++        return self.items[index]
+ 
+     def __setitem__(self, index, value):
+-        self.value[index] = value
++        self.items[index] = value
++
++    def __len__(self):
++        return len(self.items)
+ 
+     def is_empty(self):
+-        if self.value is None:
++        if self._value is None:
+             return True
+-        return len(self.values()) == 0
++        return len(self.items) == 0
+ 
+     def append(self, o):
+-        self.value.append(o)
+-
+-    def len(self):
+-        return len(self.values)
++        self._value.append(o)
+ 
+     def values(self):
+-        return self.value
++        return self._value
+ 
+     def format(self):
+-        if self.value is None:
++        if self._value is None:
+             return '[]'
+         else:
+             fstr = ''
+-            max = (len(self.value)-1)
+-            for idx in range(0, len(self.value)):
+-                fstr += f'{self.value[idx]}'
++            max = (len(self._value)-1)
++            for idx in range(0, len(self._value)):
++                fstr += f'{self._value[idx]}'
+                 fstr += ',' if idx < max else ''
+             return '[' + f'{fstr}' + ']'
+ 
+ 
+ @dataclass
+ class Percent(Literal):
+-    def __init__(self, token=None, value=None, loc=None):
+-        tid = TK.INT if token is None else token.map2litval().id
++    def __init__(self, value=None, token=None, loc=None):
++        tid = TK.INT if token is None else token.map2litval()
+         loc = loc if token is None else token.location
+-        super().__init__(token=token, value=value, tid=tid, loc=loc)
+-        if self.value is None:
+-            self.value = float(token.lexeme.replace("%",""))/100
++        super().__init__(value=value, token=token, tid=tid, loc=loc)
++        self._value = value or token.lexeme
++        if isinstance(self._value, str):
++            self._value = float(self._value.replace("%",""))/100
+ 
+     def format(self, fmt=None):
+-        return '' if self.value is None else f'{self.value*100} %'
++        return '' if self._value is None else f'{self._value*100} %'
+ 
+ 
+ @dataclass
+ class Set(Literal):
+-    def __init__(self, token=None, items=None, loc=None):
+-        tid = TK.SET if token is None else token.map2litval().id
++    def __init__(self, items=None, token=None, loc=None):
++        tid = TK.SET if token is None else token.map2litval()
+         loc = loc if token is None else token.location
+-        super().__init__(token=token, value=items, tid=tid, loc=loc)
++        super().__init__(value=items, token=token, tid=tid, loc=loc)
+         self.items = items if items is not None else {}
+-        self.value = self.items
++        self._value = self.items
+ 
+     def __getitem__(self, item):
+         if type(item).name == 'int':
+-            return self.values()[item]
+-        return self.value[item]
++            return self._values()[item]
++        return self._value[item]
+ 
+     def __setitem__(self, key, value):
+-        self.value[key] = value
++        self._value[key] = value
++
++    def __len__(self):
++        return len(self.items.keys())
+ 
+     def is_empty(self):
+-        return self.value is not None and len(self.values()) > 0
++        return self._value is not None and len(self._values()) > 0
+ 
+     def keys(self):
+-        return list(self.value.keys())
++        return list(self._value.keys())
+ 
+     def tuples(self):
+-        return list(self.value.items())
++        return list(self._value.items())
+ 
+     def values(self):
+-        if self.value is None:
++        if self._value is None:
+             return None
+-        if type(self.value).__name__ == "list":
+-            return self.value
+-        return list(self._symbols.values())
++        if type(self._value).__name__ == "list":
++            return self._value
++        return list(self._members.values())
+ 
+     def format(self):
+-        if self.value is None:
++        if self._value is None:
+             return '{}'
+         else:
+             fstr = ''
+-            values = list(self._symbols.values())
++            values = list(self._members.values())
+             max = len(values) - 1
+             for idx in range(0, max + 1):
+                 fstr += f'{values[idx]}'
+@@ -256,34 +363,34 @@ class Set(Literal):
+ 
+ @dataclass
+ class Str(Literal):
+-    def __init__(self, token=None, value=None, loc=None):
+-        tid = TK.STR if token is None else token.map2litval().id
++    def __init__(self, value=None, token=None, loc=None):
++        tid = TK.STR if token is None else token.map2litval()
+         loc = loc if token is None else token.location
+-        super().__init__(token=token, value=value, tid=tid, loc=loc)
+-        if self.value is None:
+-            self.value = token.lexeme
++        super().__init__(value=value, token=token, tid=tid, loc=loc)
++        self._value = value or token.lexeme
+ 
+     def format(self, fmt=None):
+-        if self.value is None:
+-            if self.token.value is not None:
+-                return self.token.value
++        if self._value is None:
++            if self.token._value is not None:
++                return self.token._value
+             elif self.token.lexeme is not None:
+                 return self.token.lexeme
+-        return self.value
++        return self._value
+ 
+ 
+ @dataclass
+ class Time(Literal):
+-    def __init__(self, token=None, value=None, loc=None):
+-        tid = TK.TIME if token is None else token.map2litval().id
++    def __init__(self, value=None, token=None, loc=None):
++        tid = TK.TIME if token is None else token.map2litval()
+         loc = loc if token is None else token.location
+-        super().__init__(token=token, value=value, tid=tid, loc=loc)
+-        if self.value is None:
+-            self.value = _parse_time_value(token.lexeme)
++        super().__init__(value=value, token=token, tid=tid, loc=loc)
++        self._value = value or token.lexeme
++        if isinstance(self._value, str):
++            self._value = _parse_time_value(self._value)
+ 
+     def format(self, fmt=None):
+         fmt = "%H:%M:%S" if fmt is None else fmt
+-        return self.value.strftime(fmt) if self.value is not None else 'None'
++        return self._value.strftime(fmt) if self._value is not None else 'None'
+ 
+ 
+ def _parse_bool_value(lex):
+@@ -372,5 +479,5 @@ def _parse_duration_units(units):
+ 
+ 
+ # TODO: make these classes if we need to keep them singletons & compare on them, etc
+-LIT_EMPTY = Set(Token(tid=TK.EMPTY, tcl=TCL.LITERAL, lex="{}", val=None))
+-LIT_NONE = Literal(Token(tid=TK.NONE, tcl=TCL.LITERAL, lex="none", val=None))
++LIT_EMPTY = Set(token=Token(tid=TK.EMPTY, tcl=TCL.LITERAL, lex="{}", val=None))
++LIT_NONE = Literal(token=Token(tid=TK.NONE, tcl=TCL.LITERAL, lex="none", val=None))
+diff --git a/notation_fn.py b/notation_fn.py
+index d260574..b427390 100644
+--- a/notation_fn.py
++++ b/notation_fn.py
+@@ -81,6 +81,7 @@ _tk2pfx = {
+     TK.STR: 'str',
+     TK.SUB: 'sub',  # - (subtract)
+     TK.TIME: 'time',
++    TK.TODAY: 'today',
+     TK.TRUE: 'b',
+     TK.TUPLE: 'tup',
+     TK.VAR: 'var',
+diff --git a/parser.py b/parser.py
+index 5cefda1..275758d 100644
+--- a/parser.py
++++ b/parser.py
+@@ -214,7 +214,7 @@ class Parser(object):
+         op = copy(self.peek())
+         while op.id in _FLOW_TOKENS:
+             sep = op.id
+-            seq = Flow(op.map2binop(), [node] if node is not None else [])
++            seq = Flow(op.remap2binop(), [node] if node is not None else [])
+             while self.match1(sep):
+                 node = self.assignment()
+                 if node is not None:
+@@ -246,7 +246,7 @@ class Parser(object):
+                 op.id = tid
+                 op.lexeme = l_expr.token.lexeme + ':'
+                 self.advance()
+-                l_expr = UnaryOp(op.map2unop(), self.tuple())
++                l_expr = UnaryOp(op.remap2unop(), self.tuple())
+                 return l_expr
+             while self.match1(TK.COLN):
+                 l_expr = _rewriteGets(l_expr)
+@@ -280,7 +280,8 @@ class Parser(object):
+                 return DefineFn(left=l_expr.left, op=op, right=r_expr, args=l_expr.right)
+             elif isinstance(l_expr, Ref):
+                 if isinstance(r_expr, Define):
+-                    return DefineFn(left=l_expr, op=op, right=r_expr.right, args=List(Token(TK.TUPLE, TCL.LITERAL), [r_expr.left]))
++                    return DefineFn(left=l_expr, op=op, right=r_expr.right, args=List([r_expr.left],
++                                                                                      Token(TK.TUPLE, TCL.LITERAL)))
+             return DefineFn(left=l_expr, op=op, right=r_expr, args=None)  # parameterless function
+         return l_expr
+ 
+@@ -308,7 +309,7 @@ class Parser(object):
+                 l_expr = _rewriteFnCall2Definition(l_expr)
+             if op.id in [TK.EQLS, TK.EQGT]:
+                 if isinstance(l_expr, FnCall) or isinstance(l_expr, FnDef) or isinstance(l_expr, DefineFn):
+-                    return DefineFn(left=l_expr.left, op=op.map2binop(), right=r_expr, args=l_expr.right)
++                    return DefineFn(left=l_expr.left, op=op.remap2binop(), right=r_expr, args=l_expr.right)
+                 else:
+                     return Define(l_expr, op, r_expr)
+             elif op.id == TK.COEQ:
+@@ -325,7 +326,7 @@ class Parser(object):
+         node = self.equality()
+         op = self.peek()
+         while self.match(_LOGIC_TOKENS):
+-            node = BinOp(node, op.map2binop(), self.equality())
++            node = BinOp(node, op.remap2binop(), self.equality())
+             op = self.peek()
+         return node
+ 
+@@ -333,7 +334,7 @@ class Parser(object):
+         node = self.comparison()
+         op = self.peek()
+         while self.match(_EQUALITY_TEST_TOKENS):
+-            node = BinOp(node, op.map2binop(), self.comparison())
++            node = BinOp(node, op.remap2binop(), self.comparison())
+             op = self.peek()
+         return node
+ 
+@@ -341,7 +342,7 @@ class Parser(object):
+         node = self.term()
+         op = self.peek()
+         while self.match(_COMPARISON_TOKENS):
+-            node = BinOp(node, op.map2binop(), self.term())
++            node = BinOp(node, op.remap2binop(), self.term())
+             op = self.peek()
+         return node
+ 
+@@ -349,7 +350,7 @@ class Parser(object):
+         node = self.factor()
+         op = self.peek()
+         while self.match(_ADDITION_TOKENS):
+-            node = BinOp(node, op.map2binop(), self.factor())
++            node = BinOp(node, op.remap2binop(), self.factor())
+             op = self.peek()
+         return node
+ 
+@@ -368,18 +369,18 @@ class Parser(object):
+                     r_node.token.id = TK.FLOT
+                     r_node.token.lexeme = s_val
+                     r_node.value = float(s_val)
+-                    l_node = Float(r_node.token)
++                    l_node = Float(token=r_node.token)
+                     return l_node
+             if l_node is None:
+                 self.logger.error("Invalid assignment target", op.location)
+-            l_node = BinOp(l_node, op.map2binop(), r_node)
++            l_node = BinOp(l_node, op.remap2binop(), r_node)
+             op = self.peek()
+         return l_node
+ 
+     def unary(self):
+         op = self.peek()
+         if self.match(_UNARY_TOKENS):
+-            node = UnaryOp(op.map2unop(), self.unary())
++            node = UnaryOp(op.remap2unop(), self.unary())
+             return node
+         node = self.prime()
+         if node is not None and node.token.id in [TK.ANY, TK.ALL, TK.NONEOF]:
+@@ -392,26 +393,26 @@ class Parser(object):
+         if token.id == TK.EOL:
+             return node
+         if token.id == TK.FALSE:
+-            node = Bool(token, False)
++            node = Bool(False, token)
+         elif token.id == TK.TRUE:
+-            node = Bool(token, True)
++            node = Bool(True, token)
+         elif token.id == TK.INT:
+-            node = Int(token)
++            node = Int(token=token)
+         elif token.id == TK.FLOT:
+-            node = Float(token)
++            node = Float(token=token)
+         elif token.id == TK.PCT:
+-            node = Percent(token)
++            node = Percent(token=token)
+         elif token.id == TK.DUR:
+-            node = Duration(token)
++            node = Duration(token=token)
+         elif token.id == TK.TIME:
+-            node = Time(token)
++            node = Time(token=token)
+         elif token.id == TK.QUOT:
+-            node = Str(token)
++            node = Str(token=token)
+         elif token.id == TK.EMPTY:
+             node = LIT_EMPTY
+             node.token.location = token.location
+         elif token.id == TK.NONE:
+-            node = Literal(token)
++            node = Literal(token=token)
+             token.t_class = TCL.LITERAL
+         elif token.id == TK.LBRC:
+             self.advance()
+@@ -429,7 +430,7 @@ class Parser(object):
+             return node
+         elif token.id == TK.LBRK:
+             self.consume(TK.LBRK)
+-            node = List(token.map2litval(), self.sequence())
++            node = List(self.sequence(), token.remap2litval())
+             self.consume(TK.RBRK)
+             return node
+         elif token.t_class in _IDENTIFIER_TYPES or token.id in [TK.IDNT, TK.ANON]:
+@@ -469,9 +470,9 @@ class Parser(object):
+                             else:
+                                 is_lvalue_strict = False
+         if len(seq) == 0:
+-            return Set(TK_EMPTY, seq)
++            return Set(seq, TK_EMPTY)
+         elif is_lvalue and is_lvalue_strict:
+-            return Set(Token(TK.SET, TCL.LITERAL, '{', loc=loc), seq)
++            return Set(seq, Token(TK.SET, TCL.LITERAL, '{', loc=loc))
+         else:
+             return Block(items=seq, loc=loc)
+ 
+@@ -486,13 +487,16 @@ class Parser(object):
+             node = PropRef(tk, self.identifier())
+         elif token.id == TK.DOT2:
+             self.advance()
+-            node = BinOp(left=Ref(tk), op=token.map2binop(), right=self.expression())
++            node = BinOp(left=Ref(tk), op=token.remap2binop(), right=self.expression())
+         elif token.id == TK.LPRN:
+             plist = self.plist()
+             plist.token.id = TK.TUPLE
+             node = FnCall(tk, plist)
+         elif token.id == TK.LBRK:
+             node = Index(tk, self.idx_list())
++        else:
++            if tk.t_class == TCL.FUNCTION:
++                node = FnCall(tk, None)
+             else:
+                 is_lval = self.check(_ASSIGNMENT_TOKENS_REF)
+                 node = Ref(tk) if is_lval else Get(tk)
+@@ -509,7 +513,7 @@ class Parser(object):
+         token.t_class = TCL.TUPLE
+         token.id = TK.TUPLE
+         token.lexeme = '['  # fixup token.
+-        return List(token, seq)
++        return List(seq, token)
+ 
+     def plist(self, node=None):
+         """( EXPR ',' ... )"""
+@@ -529,7 +533,7 @@ class Parser(object):
+             token.id = TK.LPRN
+             token.t_class = TCL.LITERAL
+         token.lexeme = '('  # fixup token.
+-        return List(token, seq)
++        return List(seq, token)
+ 
+     def sequence(self, node=None):
+         """EXPR <sep> EX1PR <sep> ..."""
+diff --git a/scope.py b/scope.py
+index 76d6cf5..f3d685f 100644
+--- a/scope.py
++++ b/scope.py
+@@ -5,6 +5,7 @@ from copy import copy, deepcopy
+ from dataclasses import dataclass
+ from queue import SimpleQueue
+ 
++from indexed_dict import IndexedDict
+ from tokens import Token, TCL, TK
+ from tree import AST, Expression
+ 
+@@ -16,10 +17,10 @@ class Scope:
+         self.parent_scope = parent_scope
+         self._name = name
+         self._fqname = None
+-        self._symbols = {}
++        self._members = {}
+ 
+     def __len__(self):
+-        return len(self._symbols.keys())
++        return len(self._members.keys())
+ 
+     @property
+     def name(self):
+@@ -32,8 +33,8 @@ class Scope:
+         return self._fqname
+ 
+     def from_block(self, block):
+-        self._symbols = block._symbols
+-        for s in self._symbols.values():
++        self._members = block._members
++        for s in self._members.values():
+             s.parent_scope = self
+         return self
+ 
+@@ -45,7 +46,7 @@ class Scope:
+         return sym
+ 
+     def contains(self, token):
+-        return token.lexeme in self._symbols
++        return token.lexeme in self._members
+ 
+     def define(self, token, expr):
+         sym = self._find_add_local(token, expr)
+@@ -74,56 +75,71 @@ class Scope:
+     def find_add(self, token, value=None):
+         symbol = self.find(token)
+         if symbol is None:
+-            symbol = Object(copy(token))
+-            symbol.value = value
+-            self._symbols[token.lexeme] = symbol
++            symbol = Object(token=copy(token))
++            symbol._value = value
++            self._members[token.lexeme] = symbol
+         return symbol
+ 
+     def find_name(self, name, default=None):
+         scope = self
+         while scope is not None:
+-            if name in scope._symbols:
+-                return scope._symbols[name]
++            if name in scope._members:
++                return scope._members[name]
+             scope = scope.parent_scope
+         return default
+ 
+     def find_local_name(self, name, default=None):
+-        if name in self._symbols:
+-            return self._symbols[name]
++        if name in self._members:
++            return self._members[name]
+         return default
+ 
+     def find_add_local(self, token, value=None):
+         symbol = self.find_local(token)
+         if symbol is None:
+-            symbol = Object(deepcopy(token))
++            symbol = Object(token=deepcopy(token))
+             symbol.parent_scope = self
+             symbol._calc_fqname()
+             if getattr(value, '_symbols', False):
+-                symbol._symbols = deepcopy(value._symbols)
+-                symbol.value = symbol
++                symbol._members = deepcopy(value._members)
++                symbol._value = symbol
+             else:
+-                symbol.value = deepcopy(value)
+-            self._symbols[token.lexeme] = symbol
++                symbol._value = deepcopy(value)
++            self._members[token.lexeme] = symbol
+         return symbol
+ 
+     def update_local(self, name, value=None):
+-        if name in self._symbols:
+-            self._symbols[name] = value
+-            return self._symbols[name]
++        if name in self._members:
++            if value is not None:
++                sym = self._members[name]
++                if hasattr(value, '_name'):
++                    value._name = name
++                if hasattr(sym, 'token') and hasattr(value, 'token') and sym.token is not None:
++                    value.token.location = sym.token.location
++            self._members[name] = value
++            return self._members[name]
+         return None
+ 
+     def update_name(self, name, value=None):
+         scope = self
+         while scope is not None:
+-            if name in scope._symbols:
+-                scope._symbols[name] = value
+-                return scope._symbols[name]
++            if name in scope._members:
++                sym = scope._members[name]
++                if value is not None:
++                    if hasattr(value, '_name'):
++                        value._name = name
++                    if hasattr(sym, 'token') and sym.token is not None:
++                        value.token.location = sym.token.location
++                scope._members[name] = value
++                return scope._members[name]
+             scope = scope.parent_scope
+         return None
+ 
+     def _add_symbol(self, tkid, tcl, lex):
+         tk = Token(tid=tkid, tcl=tcl, lex=lex, loc=Token.Loc())
+-        self._symbols[lex] = tk
++        self._members[lex] = tk
++
++    def _add_name(self, name, symbol):
++        self._members[name] = symbol
+ 
+     def _calc_fqname(self):
+         if self._name is None:
+@@ -138,23 +154,37 @@ class Scope:
+ 
+     def print(self, indent=0):
+         spaces = '' if indent < 1 else ' '.ljust(indent * 4)
+-        for k in self._symbols.keys():
+-            print(f'{spaces}{k}: {self._symbols[k]}')
++        for k in self._members.keys():
++            print(f'{spaces}{k}: {self._members[k]}')
+ 
+ 
+ @dataclass
+ class Object(AST, Scope):
+-    def __init__(self, token=None, name=None, value=None, parent=None):
+-        super().__init__(token=token, value=value, parent=parent, parent_scope=None)
++    def __init__(self, name=None, value=None, token=None, parent=None):
++        if name is None:
++            if token is not None and token.lexeme is not None:
++                name = token.lexeme  # UNDONE: this is very silly on Literal subclasses (name = 'true')
++        super().__init__(value=value, token=token, parent=parent, name=name, parent_scope=None)
+         self.code = None
+         self.parameters = None
+         self.is_lvalue = True
+-        if self.token is None or self.token.lexeme is None:
+-            self._name = ''
+-        else:
+-            self._name = self.token.lexeme  # UNDONE: this is very silly on Literal subclasses (name = 'true')
+         self._calc_fqname()
+ 
++    def __str__(self):
++        if getattr(self, 'format', None) is not None:
++            return self.format()
++        return self.__repr__()
++
++    def __repr__(self):
++        return f'{type(self).__name__}({self.value})'
++
++    def from_dict(self, other):
++        if isinstance(other, dict) or isinstance(other, IndexedDict):
++            self._members.update(other)
++            return self
++        else:
++            raise ValueError("object for assignment is not a dict subclass")
++
+     def from_object(self, other):
+         return self.from_block(other)
+ 
+@@ -163,22 +193,22 @@ class Object(AST, Scope):
+         return self
+ 
+     def to_dict(self, unbox_values=True):
+-        d = deepcopy(self._symbols)
++        d = deepcopy(self._members)
+         if unbox_values:
+             for k in d.keys():
+                 v = d[k]
+                 if getattr(v, 'value', False):
+-                    v = v.value
++                    v = v._value
+                 d[k] = v
+         return d
+ 
+     def format(self):
+         tk = self.token
+         if self.code is not None:
+-            return f'{self.name}{self.parameters} = {self.code}'
++            return f'{self.name}({self.parameters}) = {self.code}'
+         else:
+             v = f'{tk.value}' if tk.value is not None else 'None'
+-            return f'{self.name} = {v}'
++            return f'{self.name}({v})'
+ 
+ 
+ # -----------------------------------
+@@ -186,11 +216,11 @@ class Object(AST, Scope):
+ # -----------------------------------
+ @dataclass
+ class Block(Expression, Object):
+-    def __init__(self, items=None, loc=None):
++    def __init__(self, name=None, items=None, loc=None, is_lvalue=False):
+         op = Token(tid=TK.BLOCK, tcl=TCL.SCOPE, loc=loc)
+-        super().__init__(token=op, is_lvalue=False)
++        super().__init__(token=op, name=name)
+         self.items = items if items is not None else []
+-        self.value = self.items
++        self._value = self.items
+         self.is_lvalue = False
+ 
+     def __len__(self):
+@@ -199,12 +229,31 @@ class Block(Expression, Object):
+ 
+ @dataclass
+ class Flow(Block):
+-    def __init__(self, token=None, llist=None):
+-        super().__init__(items=llist)
+-        token.value = llist
++    def __init__(self, token=None, items=None):
++        super().__init__(items=items)
++        token._value = items
+         self.token = token
+ 
+ 
++@dataclass
++class Function(Block):
++    def __init__(self, name=None, members=None, defaults=None, tid=None, loc=None):
++        super().__init__(name=name, items=members, loc=loc)
++        token = Token(tid=tid or TK.IDNT, tcl=TCL.FUNCTION, lex=name, loc=loc)
++        self.token = token
++        self._value = self.items
++        self.is_lvalue = False
++        self.code = None
++        self.parameters = None
++        self.defaults = defaults
++
++
++@dataclass
++class IntrinsicFunction(Function):
++    def __init__(self, name=None, members=None, defaults=None, tid=None, loc=None):
++        super().__init__(name=name, members=members, defaults=defaults, tid=tid, loc=loc)
++
++
+ def _dump_symbols(scope):
+     print("\n\nsymbols: ")
+     idx = 0
+@@ -212,14 +261,14 @@ def _dump_symbols(scope):
+     q.put(scope)
+     while not q.empty():
+         s = q.get()
+-        if s._symbols is None or len(s._symbols) == 0:
++        if s._members is None or len(s._members) == 0:
+             continue
+         if getattr(s, 'token', False):
+             print(f'\nscope: {s.token.lexeme}')
+         else:
+             print(f'\nglobal scope:')
+-        for k in s._symbols.keys():
+-            v = s._symbols[k]
++        for k in s._members.keys():
++            v = s._members[k]
+             if type(v).__name__ == 'Object':
+                 q.put(v)
+                 print(f'{idx:5d}:  `{k}`: {v.qualname} : Object({v.token})')
+diff --git a/test/cases/regression.t b/test/cases/regression.t
+index 6927d97..e86163c 100644
+--- a/test/cases/regression.t
++++ b/test/cases/regression.t
+@@ -1,2 +1,6 @@
+-pd = dataset()
+-pd = yahoo( symbols='spq500.csv', 2y )
++median = (close + open) / 2
++
++# pd = dataset()
++t = today
++n = now
++pd = yahoo( symbols='portfolio.csv', span=-5y )
+diff --git a/test/suite_runner.py b/test/suite_runner.py
+index 3688401..a6e10fe 100644
+--- a/test/suite_runner.py
++++ b/test/suite_runner.py
+@@ -171,14 +171,14 @@ def _dump_symbols(logger, scope):
+     q.put(scope)
+     while not q.empty():
+         s = q.get()
+-        if s._symbols is None or len(s._symbols) == 0:
++        if s._members is None or len(s._members) == 0:
+             continue
+         if getattr(s, 'token', False):
+             logger.print(f'\nscope: {s.token.lexeme}')
+         else:
+             logger.print(f'\nglobal scope:')
+-        for k in s._symbols.keys():
+-            v = s._symbols[k]
++        for k in s._members.keys():
++            v = s._members[k]
+             if type(v).__name__ == 'Object':
+                 q.put(v)
+                 logger.print(f'{idx:5d}:  `{k}`: {v.qualname} : Object({v.token})')
+@@ -186,12 +186,12 @@ def _dump_symbols(logger, scope):
+ 
+ 
+ def _dump_keywords(logger, scope):
+-    if scope._symbols is None or len(scope._symbols) == 0:
++    if scope._members is None or len(scope._members) == 0:
+         return
+     logger.print(f'\nkeywords:')
+     idx = 0
+-    for k in scope._symbols.keys():
+-        v = scope._symbols[k]
++    for k in scope._members.keys():
++        v = scope._members[k]
+         if type(v).__name__ == 'Token':
+             logger.print(f'{idx:5d}:  `{k}`: {v}')
+             idx += 1
+diff --git a/tokens.py b/tokens.py
+index cd17e85..a0a5df1 100644
+--- a/tokens.py
++++ b/tokens.py
+@@ -119,6 +119,7 @@ class TK(IntEnum):
+     ASSIGN = auto()  # =
+     BLOCK = auto()
+     BOOL = auto()
++    CATEGORY = auto()   # category enumeration
+     CHAIN = auto()
+     COMMAND = auto()
+     COMPARE = auto()    # ?  a ? b is to compare a to b
+@@ -127,6 +128,7 @@ class TK(IntEnum):
+     DEFINE = auto()     # :=, 'def'
+     DEFINE_FN = auto()     # =>,  'def' f(x)
+     DOTPROD = auto()  # •
++    ENUM = auto()  # Integer enumeration
+     EVENT = auto()  # from =>
+     FALL_BELOW = auto()  # <|
+     FUNCTION = auto()
+@@ -172,6 +174,7 @@ class TK(IntEnum):
+     NOW = auto()
+     RANGE = auto()
+     SELL = auto()
++    TODAY = auto()
+     TRUE = auto()
+     VAR = auto()
+ 
+@@ -225,12 +228,15 @@ _tk2unop = {
+ _tk2lit = {
+     TK.BOOL: TK.BOOL,
+     TK.DUR: TK.DUR,
++    TK.FALSE: TK.BOOL,
+     TK.FLOT: TK.FLOT,
+     TK.INT: TK.INT,
+     TK.LBRK: TK.LIST,  # ]
+     TK.QUOT: TK.STR,
+     TK.STR: TK.STR,
+     TK.TIME: TK.TIME,
++    TK.TODAY: TK.TIME,
++    TK.TRUE: TK.BOOL,
+ }
+ # token type mapping
+ _tk2type = {
+@@ -261,6 +267,7 @@ _tk2type = {
+     TK.STAR: TCL.BINOP,
+     TK.STR: TCL.LITERAL,
+     TK.TIME: TCL.LITERAL,
++    TK.TODAY: TCL.FUNCTION,
+     TK.TUPLE: TCL.TUPLE,
+     TK.VAR: TCL.UNARY,
+     TK.WHT: TCL.NONE,
+@@ -309,6 +316,7 @@ _tk2glyph = {
+     TK.NONE: 'none',
+     TK.NONEOF: 'noneof',  # none:
+     TK.NOT: 'not',
++    TK.NOW: 'now',
+     TK.OR: 'or',
+     TK.PCT: '%',
+     TK.PLEQ: '+=',
+@@ -323,6 +331,7 @@ _tk2glyph = {
+     TK.SET: 'set',
+     TK.STR: 'str',
+     TK.SUB: '-',  # - (subtract)
++    TK.TODAY: 'today',
+     TK.TRUE: 'true',
+     TK.TUPLE: '',
+     TK.VAR: 'var',
+@@ -333,7 +342,7 @@ native2tkid = {
+     'float': TK.FLOT,
+     'int':  TK.INT,
+     'NoneType': TK.NONE,
+-    'object': TK.NONE,
++    'object': TK.NONE,   # CONSIDER: TK.OBJECT ?
+     'str': TK.STR,
+     'timedelta': TK.DUR,
+     'Object': TK.OBJECT,
+@@ -399,14 +408,24 @@ class Token:
+     def map2binop(self):
+         return self._map(_tk2binop)
+ 
+-    def map2unop(self):
+-        return self._map(_tk2unop)
+-
+     def map2litval(self):
+         return self._map(_tk2lit)
+ 
+-    def map2tclass(self):
+-        return self._map_cl(_tk2type)
++    def remap2binop(self):
++        self.id = self._map(_tk2binop)
++        return self
++
++    def remap2unop(self):
++        self.id = self._map(_tk2unop)
++        return self
++
++    def remap2litval(self):
++        self.id = self._map(_tk2lit)
++        return self
++
++    def remap2tclass(self):
++        self.t_class = self._map(_tk2type)
++        return self
+ 
+     def format(self):
+         _tn = f'.{self.id.name}(' if hasattr(self.id, "name") else f'({self.id}, '
+@@ -420,13 +439,15 @@ class Token:
+ 
+     def _map(self, tk_map):
+         if self.id in tk_map:
+-            self.id = tk_map[self.id]
+-        return self
++            return tk_map[self.id]
++        else:
++            return self.id
+ 
+     def _map_cl(self, tcl_map):
+         if self.id in tcl_map:
+-            self.t_class = tcl_map[self.id]
+-        return self
++            return tcl_map[self.id]
++        else:
++            return self.t_class
+ 
+     @staticmethod
+     def format_token(tk):
+diff --git a/tree.py b/tree.py
+index a3a3600..e39177f 100644
+--- a/tree.py
++++ b/tree.py
+@@ -14,12 +14,21 @@ class AST:
+     and will pass additional args and kwargs to other superclass __init__ functions.
+     """
+ 
+-    def __init__(self, token=None, value=None, parent=None, **kwargs):
++    def __init__(self, value=None, token=None, parent=None, **kwargs):
+         super().__init__(**kwargs)
+         self.parent = parent
+         self.token = token
+-        self.value = token.value if token is not None else None
+-        self.value = value if value is not None else self.value
++        if token is not None:
++            self._value = token.value
++        self._value = value if value is not None else self._value
++
++    @property
++    def value(self):
++        return self._value
++
++    @value.setter
++    def value(self, value):
++        self._value = value
+ 
+     def __str__(self):
+         if getattr(self, 'format', None) is not None:
+@@ -31,7 +40,7 @@ class AST:
+ @dataclass
+ class ASTCompound(AST):
+     def __init__(self, token=None, value=None, parent=None, **kwargs):
+-        super().__init__(token=token, value=value, parent=parent, **kwargs)
++        super().__init__(value=value, token=token, parent=parent, **kwargs)
+         self.items = []
+ 
+     @property
+@@ -56,23 +65,26 @@ class ASTCompound(AST):
+             return '{}'
+         else:
+             fstr = ''
+-            max = (len(self.value) - 1)
++            max = (len(self.items) - 1)
++            if max > 0:
+                 for idx in range(0, len(self.value)):
+                     fstr += f'{self.items[idx]}'
+                     fstr += ',' if idx < max else ''
++            else:
++                fstr = f'{self._value}'
+             return '{' + f'{fstr}' + '}'
+ 
+ 
+ @dataclass
+ class Expression(ASTCompound):
+-    def __init__(self, token=None, value=None, parent=None, is_lvalue=True, **kwargs):
++    def __init__(self, value=None, token=None, parent=None, is_lvalue=True, **kwargs):
+         super().__init__(token=token, value=value, parent=parent, **kwargs)
+         self.is_lvalue = is_lvalue
+ 
+ 
+ @dataclass
+ class Statement(ASTCompound):
+-    def __init__(self, token=None, value=None, parent=None, is_lvalue=True, **kwargs):
++    def __init__(self, value=None, token=None, parent=None, is_lvalue=True, **kwargs):
+         super().__init__(token=token, value=value, parent=parent, **kwargs)
+         self.is_lvalue = is_lvalue
+ 
+@@ -272,7 +284,7 @@ class Get(Ref):
+         return ref
+ 
+     def get(self):
+-        return self.value
++        return self._value
+ 
+     def format(self):
+         token = 'None' if self.token is None else f'{self.token}'
+diff --git a/yahoo.py b/yahoo.py
+index 3e78eb1..67fafc4 100644
+--- a/yahoo.py
++++ b/yahoo.py
+@@ -1,12 +1,17 @@
+ # wrapper around yahoo quotes
++import io
+ import math
+ import os
+-from datetime import datetime
+-
+-from dataframe import print_dataframe
+ import pandas as pd
+-import yahoo
++import requests as requests
+ 
++from conversion import c_unbox
++from dataframe import print_dataframe, Dataset
++from indexed_dict import IndexedDict
++from intrinsic_fn import get_now
++from intrinsic_helpers import _find_file
++from literals import Duration, Literal
++from scope import IntrinsicFunction, Object
+ 
+ file_suffix = {'1d': 'daily', '1wk': 'weekly'}
+ config_root = './config/'
+@@ -21,10 +26,35 @@ yahoo_span = 'period1={}&period2={}&interval={}&events=history'
+ 
+ columns = ['Date', 'Open', 'High', 'Low', 'Close', 'Adj Close', 'Volume']
+ 
+-DEFAULT_SPAN_YRS = 5
++DEFAULT_SPAN_YRS = '5y'
+ WEEKLY = '1wk'
+ DAILY = '1d'
+ 
++_map2freq = {
++    DAILY: DAILY,
++    'd': DAILY,
++    'dy': DAILY,
++    'day': DAILY,
++    'daily': DAILY,
++    WEEKLY: WEEKLY,
++    'w': WEEKLY,
++    'wk': WEEKLY,
++    'week': WEEKLY,
++    'weekly': WEEKLY,
++}
++
++
++def init_yahoo(name):
++    return IntrinsicFunction(name=name,
++                             defaults=IndexedDict({'symbols': None,
++                                                   'first': None,
++                                                   'last': get_now(),
++                                                   'span': Duration(DEFAULT_SPAN_YRS),
++                                                   'frequency': DAILY,
++                                                   'dropna': True,
++                                                   'offline': False
++                                                   }))
++
+ 
+ def do_yahoo(args):
+     """
+@@ -32,20 +62,37 @@ def do_yahoo(args):
+     :param args:
+     :return: Block containing {Open, High, Low, Close, Mean, and Volume}
+     """
+-    ds = fetch_historic(args.symbols, args.last, args.span, args.interval, args.dropna, args.offline)
+-    return ds
++    symbols = c_unbox(args.symbols)
++    if isinstance(symbols, str):
++        symbols = read_symbol_list(symbols)
++    ds = get_yahoo(symbols=symbols,
++                   first=c_unbox(args.first),
++                   last=c_unbox(args.last),
++                   span=c_unbox(args.span),
++                   frequency=_map2freq[args.frequency],
++                   dropna=args.dropna,
++                   offline=args.offline)
++
++    for key in ds.keys():
++        val = ds[key]
++        if type(val).__name__ == 'DataFrame' or isinstance(val, dict) or isinstance(val, IndexedDict):
++            ds[key] = Dataset(name=key, value=val)
++        else:
++            ds[key] = Literal.lit(val=val)
++    o = Object()
++    o.from_dict(ds)
++    return o
+ 
+ 
+-def fetch_historic(symbols, last, span, interval, dropna=True, offline=False):
++def get_yahoo(symbols, first, last, span, frequency, dropna, offline):
+     result = dict()
+     start = dict()
+     end = dict()
+     _last = math.floor(last.timestamp())
+-    _first = math.floor(datetime(last.year - span, last.month, last.day).timestamp())
+-    print('mode: offline\n') if offline else print('mode: online\n')
++    _first = math.floor((last + span).timestamp())
+     historic = dict({str: pd.DataFrame})
+-    for sym in symbols:
+-        hist = fetch_quotes(sym, _first, _last, interval, offline)
++    for sym, row in symbols.iterrows():
++        hist = fetch_quotes(sym, _first, _last, frequency, offline)
+         if hist is not None and not hist.empty:
+             historic[sym] = hist.copy(deep=True)
+             start[sym] = hist.index[0]
+@@ -80,19 +127,32 @@ def fetch_historic(symbols, last, span, interval, dropna=True, offline=False):
+     return result
+ 
+ 
+-def fetch_quotes(symbol, start, end, interval, offline=False):
++def fetch_quotes(symbol, start, end, freq, offline=False):
+     quotes = pd.DataFrame()
+     if offline:
+-        quotes = read_quotefile(symbol, interval)
++        quotes = read_quotefile(symbol, freq)
+     else:
+-        quotes = yahoo.fetch_quotes(symbol, start, end, interval)
++        quotes = _fetch_quotes(symbol, start, end, freq)
++    return quotes
++
++
++def _fetch_quotes(symbol, start, end, interval):
++    quotes = None
++    quote_url = format_yahoo_url(symbol, start, end, interval)
++    headers = {'User-Agent': 'Mozilla/5.0'}  # yahoo is restricting to known user agents as of 06/2021
++    with requests.get(quote_url, headers=headers) as response:
++        if response.status_code == 200:
++            quotes = pd.read_csv(io.StringIO(response.text), index_col='Date')
++        else:
++            print(f'{quote_url}: response = {response.status_code}\n')
+     return quotes
+ 
+ 
+ def zip_historic(quotes, column1, column2=None):
+     h = pd.DataFrame(columns=['Date'])
+     h.set_index('Date', inplace=True)
+-    for _s in sorted(quotes.keys()):
++    keys = sorted(list(quotes.keys())[1:])
++    for _s in keys:
+         q = pd.DataFrame(quotes[_s])
+         if column2 is None:
+             q = q.loc[:, [column1]]  # q = q.loc[:, ['Date', column1]]
+@@ -116,7 +176,7 @@ def get_quotefilename(basename, folder=None, _suffix=DAILY):
+ 
+ 
+ def read_symbol_list(name):
+-    symbol_list_filename = get_config_filename(name)
++    symbol_list_filename = _find_file(name, extensions=['.csv'])
+     symbol_list = create_symbols_table()
+     if os.path.isfile(symbol_list_filename) and os.access(symbol_list_filename, os.R_OK):
+         ext = get_file_type(symbol_list_filename)
+@@ -145,13 +205,13 @@ def read_symbol_list(name):
+                                 {'symbol': symbol, 'group': group, 'description': description}, ignore_index=True)
+                 symbol_list = symbol_list.set_index('symbol')
+     symbol_list = symbol_list.loc[~symbol_list.index.duplicated(keep='first')]
+-#   write_symbol_list(name, symbol_list.sort_index())
++    #   write_symbol_list(name, symbol_list.sort_index())
+     return symbol_list
+ 
+ 
+-def read_quotefile(symbol, interval):
++def read_quotefile(symbol, freq):
+     quotes = None
+-    symbol_filename = get_quotefilename(symbol, interval)
++    symbol_filename = get_quotefilename(symbol, freq)
+     if os.path.isfile(symbol_filename) and os.access(symbol_filename, os.R_OK):
+         quotes = pd.read_csv(symbol_filename,
+                              encoding='utf-8',
+@@ -184,3 +244,13 @@ def get_config_filename(file_path, suffix=None, ext='.txt'):
+     return f'{path}{file_name}{suffix}{ext}' if suffix else f'{path}{file_name}{ext}'
+ 
+ 
++def format_yahoo_url(symbol, start, end, interval):
++    return f'{yahoo_base}/{symbol}?{yahoo_span.format(start, end, interval)}'
++
++
++def format_yahoo_5yr_url(symbol, interval):
++    return f'{yahoo_base}/{symbol}?{yahoo_5yr.format(interval)}'
++
++
++def format_yahoo_max_url(symbol, interval):
++    return f'{yahoo_base}/{symbol}?{yahoo_max.format(interval)}'

@@ -86,7 +86,7 @@ result: int(4)
     1  : Int(TK.INT, 4)
 
 tree2:(post)  4
-    1  : Literal(TK.INT, 12)
+    1  : Int(TK.INT, 12)
 
 tree3:(post)  a = 4
     1  : Define(TK.DEFINE, TK.EQLS, '=')

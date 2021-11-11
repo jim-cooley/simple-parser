@@ -4,4 +4,4 @@ test: 18:
 false
 
 tree1:  false
-    1  : Bool(TK.FALSE, False)
+    1  : Bool(TK.BOOL, False)

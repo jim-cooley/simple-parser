@@ -6,10 +6,10 @@ none >> false
 tree1:  none >> false
     1  : Flow(TK.APPLY, v=[Literal(), Bool()], '>>')
     2  :     Literal(TK.NONE, None)
-    3  :     Bool(TK.FALSE, False)
+    3  :     Bool(TK.BOOL, False)
 
 tree1:(post)  none >> false
 result: list([Literal(), Bool()])
     1  : Flow(TK.APPLY, v=[Literal(), Bool()], '>>')
     2  :     Literal(TK.NONE, None)
-    3  :     Bool(TK.FALSE, False)
+    3  :     Bool(TK.BOOL, False)

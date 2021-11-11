@@ -1,15 +1,15 @@
 
 
 test: 19:
-a.b().c = 2
+r = a.b().c
 
-tree1:  a.b().c = 2
+tree1:  r = a.b().c
     1  : Define(TK.DEFINE, TK.EQLS, '=')
-    2  :     BinOp(TK.DOT, '.')
-    3  :         PropRef(TK.REF, '.')
-    4  :             Ref(TK.IDNT, 'a')
-    5  :             FnDef(TK.FUNCTION, '(')
-    6  :                 Ref(TK.IDNT, 'b')
-    7  :                 List(TK.TUPLE, [])
-    8  :         Ref(TK.IDNT, 'c')
-    9  :     Int(TK.INT, 2)
+    2  :     Ref(TK.IDNT, 'r')
+    3  :     BinOp(TK.DOT, '.')
+    4  :         PropRef(TK.REF, '.')
+    5  :             Get(TK.IDNT, 'a')
+    6  :             FnCall('b')
+    7  :                 Get(TK.IDNT, 'b')
+    8  :                 List(TK.TUPLE, [])
+    9  :         Get(TK.IDNT, 'c')

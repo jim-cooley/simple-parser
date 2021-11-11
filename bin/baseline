@@ -2,30 +2,57 @@
 logpath="./etc/test/log"
 bslpath="./etc/test/bsl"
 
+declare -i update_all=0
+declare -i proceed=1
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -a | --all)
+          update_all=1
+          echo "update all"
+          ;;
+        *)
+            break;;
+    esac
+    shift
+done
+
 prefx=$1
 suite=$2
 
-  case "$prefx" in
-    p | parser)
-        prefx="parser"
-        ;;
-    f | fixups)
-        prefx="fixups"
-        ;;
-    s | semtex | focal)
-        prefx="semtex"
-        ;;
-    *)
-        prefx="parser"
-        ;;
-  esac
-  if [ "$prefx" == "" ]; then prefx="parser"; fi
+echo "$prefx"
+echo "$suite"
 
+case "$prefx" in
+  p | parser)
+      prefx="parser"
+      ;;
+  f | fixups)
+      prefx="fixups"
+      ;;
+  s | semtex | focal)
+      prefx="semtex"
+      ;;
+  *)
+      prefx="parser"
+      ;;
+esac
 
-printf "\n\nupdating baselines\n\n"
-printf "================================\n"
-for test in $logpath/$prefx/$suite*; do
-    baseline="$bslpath/$prefx"/"$(basename $test)"
-    printf "$test >> $baseline\n"
-    cp $test $baseline
-done
+if [ "$prefx" == "" ]; then prefx="parser"; fi
+
+if [ "$suite" == "" ]; then
+  if [ $update_all -lt 1 ]; then
+    printf "\n\nDo you really want to update all baselines?\nuse --all to update all\n\n"
+    proceed=0
+  fi
+fi
+
+if [ $proceed -gt 0 ]; then
+  printf "\n\nupdating baselines\n\n"
+  printf "================================\n"
+  for test in $logpath/$prefx/$suite*; do
+      baseline="$bslpath/$prefx"/"$(basename $test)"
+      printf "$test >> $baseline\n"
+      cp $test $baseline
+  done
+fi

@@ -5,6 +5,7 @@ from copy import copy, deepcopy
 from dataclasses import dataclass
 from queue import SimpleQueue
 
+from indexed_dict import IndexedDict
 from tokens import Token, TCL, TK
 from tree import AST, Expression
 
@@ -16,10 +17,10 @@ class Scope:
         self.parent_scope = parent_scope
         self._name = name
         self._fqname = None
-        self._symbols = {}
+        self._members = {}
 
     def __len__(self):
-        return len(self._symbols.keys())
+        return len(self._members.keys())
 
     @property
     def name(self):
@@ -32,8 +33,8 @@ class Scope:
         return self._fqname
 
     def from_block(self, block):
-        self._symbols = block._symbols
-        for s in self._symbols.values():
+        self._members = block._members
+        for s in self._members.values():
             s.parent_scope = self
         return self
 
@@ -45,7 +46,7 @@ class Scope:
         return sym
 
     def contains(self, token):
-        return token.lexeme in self._symbols
+        return token.lexeme in self._members
 
     def define(self, token, expr):
         sym = self._find_add_local(token, expr)
@@ -74,56 +75,71 @@ class Scope:
     def find_add(self, token, value=None):
         symbol = self.find(token)
         if symbol is None:
-            symbol = Object(copy(token))
-            symbol.value = value
-            self._symbols[token.lexeme] = symbol
+            symbol = Object(token=copy(token))
+            symbol._value = value
+            self._members[token.lexeme] = symbol
         return symbol
 
     def find_name(self, name, default=None):
         scope = self
         while scope is not None:
-            if name in scope._symbols:
-                return scope._symbols[name]
+            if name in scope._members:
+                return scope._members[name]
             scope = scope.parent_scope
         return default
 
     def find_local_name(self, name, default=None):
-        if name in self._symbols:
-            return self._symbols[name]
+        if name in self._members:
+            return self._members[name]
         return default
 
     def find_add_local(self, token, value=None):
         symbol = self.find_local(token)
         if symbol is None:
-            symbol = Object(deepcopy(token))
+            symbol = Object(token=deepcopy(token))
             symbol.parent_scope = self
             symbol._calc_fqname()
             if getattr(value, '_symbols', False):
-                symbol._symbols = deepcopy(value._symbols)
-                symbol.value = symbol
+                symbol._members = deepcopy(value._members)
+                symbol._value = symbol
             else:
-                symbol.value = deepcopy(value)
-            self._symbols[token.lexeme] = symbol
+                symbol._value = deepcopy(value)
+            self._members[token.lexeme] = symbol
         return symbol
 
     def update_local(self, name, value=None):
-        if name in self._symbols:
-            self._symbols[name] = value
-            return self._symbols[name]
+        if name in self._members:
+            if value is not None:
+                sym = self._members[name]
+                if hasattr(value, '_name'):
+                    value._name = name
+                if hasattr(sym, 'token') and hasattr(value, 'token') and sym.token is not None:
+                    value.token.location = sym.token.location
+            self._members[name] = value
+            return self._members[name]
         return None
 
     def update_name(self, name, value=None):
         scope = self
         while scope is not None:
-            if name in scope._symbols:
-                scope._symbols[name] = value
-                return scope._symbols[name]
+            if name in scope._members:
+                sym = scope._members[name]
+                if value is not None:
+                    if hasattr(value, '_name'):
+                        value._name = name
+                    if hasattr(sym, 'token') and sym.token is not None:
+                        value.token.location = sym.token.location
+                scope._members[name] = value
+                return scope._members[name]
             scope = scope.parent_scope
         return None
 
     def _add_symbol(self, tkid, tcl, lex):
         tk = Token(tid=tkid, tcl=tcl, lex=lex, loc=Token.Loc())
-        self._symbols[lex] = tk
+        self._members[lex] = tk
+
+    def _add_name(self, name, symbol):
+        self._members[name] = symbol
 
     def _calc_fqname(self):
         if self._name is None:
@@ -138,22 +154,36 @@ class Scope:
 
     def print(self, indent=0):
         spaces = '' if indent < 1 else ' '.ljust(indent * 4)
-        for k in self._symbols.keys():
-            print(f'{spaces}{k}: {self._symbols[k]}')
+        for k in self._members.keys():
+            print(f'{spaces}{k}: {self._members[k]}')
 
 
 @dataclass
 class Object(AST, Scope):
-    def __init__(self, token=None, name=None, value=None, parent=None):
-        super().__init__(token=token, value=value, parent=parent, parent_scope=None)
+    def __init__(self, name=None, value=None, token=None, parent=None):
+        if name is None:
+            if token is not None and token.lexeme is not None:
+                name = token.lexeme  # UNDONE: this is very silly on Literal subclasses (name = 'true')
+        super().__init__(value=value, token=token, parent=parent, name=name, parent_scope=None)
         self.code = None
         self.parameters = None
         self.is_lvalue = True
-        if self.token is None or self.token.lexeme is None:
-            self._name = ''
+        self._calc_fqname()
+
+    def __str__(self):
+        if getattr(self, 'format', None) is not None:
+            return self.format()
+        return self.__repr__()
+
+    def __repr__(self):
+        return f'{type(self).__name__}({self.value})'
+
+    def from_dict(self, other):
+        if isinstance(other, dict) or isinstance(other, IndexedDict):
+            self._members.update(other)
+            return self
         else:
-            self._name = self.token.lexeme  # UNDONE: this is very silly on Literal subclasses (name = 'true')
-            self._calc_fqname()
+            raise ValueError("object for assignment is not a dict subclass")
 
     def from_object(self, other):
         return self.from_block(other)
@@ -163,22 +193,22 @@ class Object(AST, Scope):
         return self
 
     def to_dict(self, unbox_values=True):
-        d = deepcopy(self._symbols)
+        d = deepcopy(self._members)
         if unbox_values:
             for k in d.keys():
                 v = d[k]
                 if getattr(v, 'value', False):
-                    v = v.value
+                    v = v._value
                 d[k] = v
         return d
 
     def format(self):
         tk = self.token
         if self.code is not None:
-            return f'{self.name}{self.parameters} = {self.code}'
+            return f'{self.name}({self.parameters}) = {self.code}'
         else:
             v = f'{tk.value}' if tk.value is not None else 'None'
-            return f'{self.name} = {v}'
+            return f'{self.name}({v})'
 
 
 # -----------------------------------
@@ -186,11 +216,11 @@ class Object(AST, Scope):
 # -----------------------------------
 @dataclass
 class Block(Expression, Object):
-    def __init__(self, items=None, loc=None):
+    def __init__(self, name=None, items=None, loc=None, is_lvalue=False):
         op = Token(tid=TK.BLOCK, tcl=TCL.SCOPE, loc=loc)
-        super().__init__(token=op, is_lvalue=False)
+        super().__init__(token=op, name=name)
         self.items = items if items is not None else []
-        self.value = self.items
+        self._value = self.items
         self.is_lvalue = False
 
     def __len__(self):
@@ -199,10 +229,30 @@ class Block(Expression, Object):
 
 @dataclass
 class Flow(Block):
-    def __init__(self, token=None, llist=None):
-        super().__init__(items=llist)
-        token.value = llist
+    def __init__(self, token=None, items=None):
+        super().__init__(items=items)
+        token._value = items
         self.token = token
+
+
+@dataclass
+class Function(Block):
+    def __init__(self, name=None, members=None, defaults=None, tid=None, loc=None, is_lvalue=True):
+        super().__init__(name=name, items=members, loc=loc)
+        token = Token(tid=tid or TK.IDNT, tcl=TCL.FUNCTION, lex=name, loc=loc)
+        self.token = token
+        self._value = self.items
+        self.is_lvalue = is_lvalue
+        self.code = None
+        self.parameters = None
+        self.defaults = defaults
+
+
+@dataclass
+class IntrinsicFunction(Function):
+    def __init__(self, name=None, members=None, defaults=None, tid=None, loc=None, is_lvalue=False):
+        super().__init__(name=name, members=members, defaults=defaults, tid=tid, loc=loc, is_lvalue=is_lvalue)
+        self.token.is_reserved = True
 
 
 def _dump_symbols(scope):
@@ -212,14 +262,14 @@ def _dump_symbols(scope):
     q.put(scope)
     while not q.empty():
         s = q.get()
-        if s._symbols is None or len(s._symbols) == 0:
+        if s._members is None or len(s._members) == 0:
             continue
         if getattr(s, 'token', False):
             print(f'\nscope: {s.token.lexeme}')
         else:
             print(f'\nglobal scope:')
-        for k in s._symbols.keys():
-            v = s._symbols[k]
+        for k in s._members.keys():
+            v = s._members[k]
             if type(v).__name__ == 'Object':
                 q.put(v)
                 print(f'{idx:5d}:  `{k}`: {v.qualname} : Object({v.token})')

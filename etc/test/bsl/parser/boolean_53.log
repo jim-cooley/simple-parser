@@ -5,5 +5,5 @@ true or true
 
 tree1:  true or true
     1  : BinOp(TK.OR, 'or')
-    2  :     Bool(TK.TRUE, True)
-    3  :     Bool(TK.TRUE, True)
+    2  :     Bool(TK.BOOL, True)
+    3  :     Bool(TK.BOOL, True)

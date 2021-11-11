@@ -6,7 +6,7 @@ none and true
 tree1:  none and true
     1  : BinOp(TK.AND, 'and')
     2  :     Literal(TK.NONE, None)
-    3  :     Bool(TK.TRUE, True)
+    3  :     Bool(TK.BOOL, True)
 
 tree1:(post)  none and true
     1  : Literal(TK.NONE, None)

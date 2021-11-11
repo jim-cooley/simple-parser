@@ -1,2 +1,3 @@
-#
-a = 5
+def factorial(x) := {
+    x * factorial(x - 1)
+}

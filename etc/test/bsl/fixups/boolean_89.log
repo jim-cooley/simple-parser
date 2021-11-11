@@ -5,7 +5,7 @@ false < 0
 
 tree1:  false < 0
     1  : BinOp(TK.LESS, '<')
-    2  :     Bool(TK.FALSE, False)
+    2  :     Bool(TK.BOOL, False)
     3  :     Int(TK.INT, 0)
 
 tree1:(post)  false < 0

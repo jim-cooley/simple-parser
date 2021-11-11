@@ -6,4 +6,4 @@ none ^ true
 tree1:  none ^ true
     1  : BinOp(TK.POW, '^')
     2  :     Literal(TK.NONE, None)
-    3  :     Bool(TK.TRUE, True)
+    3  :     Bool(TK.BOOL, True)

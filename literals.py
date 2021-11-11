@@ -24,17 +24,17 @@ class DUR(Enum):
 
 @dataclass
 class Literal(Object):
-    def __init__(self, token=None, tid=None, value=None, loc=None, parent=None):
+    def __init__(self, value=None, token=None, tid=None, loc=None, parent=None):
         if token is None:
             if tid is not None:
                 token = Token(tid=tid, tcl=TCL.LITERAL, val=value, loc=loc)
             else:
                 token = Token(tid=TK.OBJECT, tcl=TCL.LITERAL, val=value, loc=loc)
         else:
-            tid = token.map2litval().id if tid is None else tid
+            tid = token.map2litval() if tid is None else tid
             token.t_class = TCL.LITERAL
             token.id = tid
-        super().__init__(token=token, value=value, parent=parent)
+        super().__init__(value=value, token=token, parent=parent)
 
     @staticmethod
     def lit(val, tid=None, other=None, loc=None):
@@ -44,19 +44,19 @@ class Literal(Object):
             if other.token is not None:
                 loc = other.token.location
         if tid is not None:
-            return Literal(tid=tid, value=val)
+            return Literal(value=val, tid=tid)
         elif isinstance(val, bool):
             return Bool(value=val, loc=loc)
         elif isinstance(val, datetime):
-            return Literal(tid=TK.TIME, value=val)
+            return Time(value=val)
         elif isinstance(val, float):
-            return Literal(tid=TK.FLOT, value=val)
+            return Float(value=val)
         elif isinstance(val, int):
-            return Literal(tid=TK.INT, value=val)
+            return Int(value=val)
         elif isinstance(val, str):
-            return Literal(tid=TK.STR, value=val)
+            return Str(value=val)
         elif isinstance(val, timedelta):
-            return Literal(tid=TK.DUR, value=val)
+            return Duration(value=val)
         else:
             return Literal(value=val)
 
@@ -64,189 +64,305 @@ class Literal(Object):
 @dataclass
 @total_ordering
 class Bool(Literal):
-    def __init__(self, token=None, value=None, loc=None):
-        tid = TK.BOOL if token is None else token.map2litval().id
+    def __init__(self, value=None, token=None, loc=None):
+        tid = TK.BOOL if token is None else token.map2litval()
         loc = loc if token is None else token.location
-        super().__init__(token=token, value=value, tid=tid, loc=loc)
-        if self.value is None:
-            self.value = _parse_bool_value(self.token.lexeme)
+        super().__init__(value=value, token=token, tid=tid, loc=loc)
+        if self._value is None and token is not None:
+            self._value = token.lexeme
+        if isinstance(self._value, str):
+            self._value = _parse_bool_value(self._value)
 
     def __lt__(self, other):
         if isinstance(other, bool):
-            return True if self.value < other else False
+            return True if self._value < other else False
         return NotImplemented
 
     def __eq__(self, other):
         if isinstance(other, bool):
-            return True if self.value is other else False
+            return True if self._value is other else False
         return NotImplemented
 
     def format(self):
         tk = self.token
-        return f'True' if tk.value is not None and tk.value else f'False'
+        return f'True' if tk._value is not None and tk._value else f'False'
+
+
+@dataclass
+class Category(Literal):
+    """
+    A Category restricts values to a specified set.  The range of values may be expanded, but the current
+    value may not be Set outside the current range.  Strict=False allows new values to be set without
+    check.  This is useful for reading from datasets and later inferring the set of categorical values.
+    Values are not case sensitive
+    """
+    def __init__(self, value=None, token=None, loc=None, strict=True):
+        tid = TK.CATEGORY if token is None else token.map2litval()
+        loc = loc if token is None else token.location
+        super().__init__(value=value, token=token, tid=tid, loc=loc)
+        if self._value is None and token is not None:
+            self._value = token.lexeme
+        self.strict = strict
+        self.items = []
+
+    def __len__(self):
+        return len(self.items)
+
+    @property
+    def value(self):
+        return self._value
+
+    @value.setter
+    def value(self, value):
+        value = value.lower()
+        if value not in self.items:
+            if self.strict:
+                raise ValueError('Value assigned to Category is out of range')
+            self.items.append(value.lower())
+        self._value = value
+
+    def append(self, value):
+        self.items.append(value)
+
+    def values(self):
+        return self.items
 
 
 @dataclass
 class DateTime(Literal):
-    def __init__(self, token=None, value=None, loc=None):
-        tid = TK.TIME if token is None else token.map2litval().id
+    def __init__(self, value=None, token=None, loc=None):
+        tid = TK.TIME if token is None else token.map2litval()
         loc = loc if token is None else token.location
-        super().__init__(token=token, value=value, tid=tid, loc=loc)
-        if self.value is None:
-            self.value = _parse_date_value(token.lexeme)
+        super().__init__(value=value, token=token, tid=tid, loc=loc)
+        if self._value is None and token is not None:
+            self._value = token.lexeme
+        if isinstance(self._value, str):
+            self._value = _parse_date_value(self._value)
 
     def format(self):
-        return f'{self.value}'
+        return f'{self._value}'
 
 
 @dataclass
 class Duration(Literal):
-    def __init__(self, token=None, value=None, loc=None):
-        tid = TK.DUR if token is None else token.map2litval().id
+    def __init__(self, value=None, token=None, loc=None):
+        tid = TK.DUR if token is None else token.map2litval()
         loc = loc if token is None else token.location
-        super().__init__(token=token, value=value, tid=tid, loc=loc)
-        if self.value is None:
-            self.value, self.units = _parse_duration(token.lexeme)
+        super().__init__(value=value, token=token, tid=tid, loc=loc)
+        if self._value is None and token is not None:
+            self._value = token.lexeme
+        if isinstance(self._value, str):
+            self._value, self.units = _parse_duration(self._value)
 
     def total_seconds(self):
-        return self.value.total_seconds()
+        return self._value.total_seconds()
 
     def units(self):
         return self.units
 
     def format(self, fmt=None):
-        return f'{self.value}'
+        return f'{self._value}'
+
+
+@dataclass
+class Enumeration(Category):
+    """
+    An Enumeration is a set of categorical values with numeric equivalents.
+    """
+    def __init__(self, value=None, token=None, loc=None, strict=True, auto_increment=False):
+        tid = TK.ENUM if token is None else token.map2litval()
+        loc = loc if token is None else token.location
+        super().__init__(value=value, token=token, loc=loc, strict=strict)
+        if self._value is None and token is not None:
+            self._value = token.lexeme
+        self.auto_increment = auto_increment
+        self.seed = -1
+        self.items = {}
+
+    def __getitem__(self, index):
+        return self.items[index]
+
+    def __setitem__(self, index, value):
+        self.items[index] = int(value)
+
+    def __len__(self):
+        return len(self.items.keys())
+
+    @property
+    def value(self):
+        return self._value
+
+    @value.setter
+    def value(self, value):
+        value = value.lower()
+        if value not in self.items:
+            if self.strict:
+                raise ValueError('Value assigned to Category is out of range')
+            if self.auto_increment:
+                self.seed += 1
+                self.items[value.lower()] = self.seed
+        self._value = value
+
+    def to_int(self):
+        return self.items[self._value]
+
+    def to_range(self):
+        raise NotImplemented()
+
+    def from_category(self, other):
+        self.items = {}
+        self.seed = -1
+        if not isinstance(other, Category):
+            raise NotImplemented()
+        for item in other.items:
+            self.seed += 1
+            self.items[item] = self.seed
+        return self
+
+    def values(self):
+        return self.items.keys()  # the keys are the actual 'values' of the Enumeration. As in range of possible values
 
 
 @dataclass
 class Float(Literal):
-    def __init__(self, token=None, value=None, loc=None):
-        tid = TK.FLOT if token is None else token.map2litval().id
+    def __init__(self, value=None, token=None, loc=None):
+        tid = TK.FLOT if token is None else token.map2litval()
         loc = loc if token is None else token.location
-        super().__init__(token=token, value=value, tid=tid, loc=loc)
-        if self.value is None:
-            self.value = float(token.lexeme)
+        super().__init__(value=value, token=token, tid=tid, loc=loc)
+        if self._value is None and token is not None:
+            self._value = token.lexeme
+        if isinstance(self._value, str):
+            self._value = float(self._value)
 
     def format(self, fmt=None):
-        return f'{self.value}'
+        return f'{self._value}'
 
 
 @dataclass
 @total_ordering
 class Int(Literal):
-    def __init__(self, token=None, value=None, loc=None):
-        tid = TK.INT if token is None else token.map2litval().id
+    def __init__(self, value=None, token=None, loc=None):
+        tid = TK.INT if token is None else token.map2litval()
         loc = loc if token is None else token.location
-        super().__init__(token=token, value=value, tid=tid, loc=loc)
-        if self.value is None:
-            self.value = int(self.token.lexeme)
+        super().__init__(value=value, token=token, tid=tid, loc=loc)
+        self._value = value
+        if self._value is None and token is not None:
+            self._value = token.lexeme
+        if isinstance(self._value, str):
+            self._value = int(self._value)
 
     def __lt__(self, other):
         if isinstance(other, int):
-            return True if self.value < other else False
+            return True if self._value < other else False
         return NotImplemented
 
     def __eq__(self, other):
         if isinstance(other, int):
-            return True if self.value == other else False
+            return True if self._value == other else False
         return NotImplemented
 
     def format(self, fmt=None):
-        return f'{self.qualname} = {self.value}'
+        return f'{self.qualname} = {self._value}'
 
 
 @dataclass
 class List(Literal):
-    def __init__(self, token=None, items=None, loc=None):
-        tid = TK.LIST if token is None else token.map2litval().id
+    def __init__(self, items=None, token=None, loc=None):
+        tid = TK.LIST if token is None else token.map2litval()
         loc = loc if token is None else token.location
-        super().__init__(token=token, value=items, tid=tid, loc=loc)
-        self.value = items
+        super().__init__(value=items, token=token, tid=tid, loc=loc)
+        self._value = items
+        self.items = items
 
     def __getitem__(self, index):
-        return self.values()[index]
+        return self.items[index]
 
     def __setitem__(self, index, value):
-        self.value[index] = value
+        self.items[index] = value
+
+    def __len__(self):
+        return len(self.items)
 
     def is_empty(self):
-        if self.value is None:
+        if self._value is None:
             return True
-        return len(self.values()) == 0
+        return len(self.items) == 0
 
     def append(self, o):
-        self.value.append(o)
-
-    def len(self):
-        return len(self.values)
+        self._value.append(o)
 
     def values(self):
-        return self.value
+        return self._value
 
     def format(self):
-        if self.value is None:
+        if self._value is None:
             return '[]'
         else:
             fstr = ''
-            max = (len(self.value)-1)
-            for idx in range(0, len(self.value)):
-                fstr += f'{self.value[idx]}'
+            max = (len(self._value)-1)
+            for idx in range(0, len(self._value)):
+                fstr += f'{self._value[idx]}'
                 fstr += ',' if idx < max else ''
             return '[' + f'{fstr}' + ']'
 
 
 @dataclass
 class Percent(Literal):
-    def __init__(self, token=None, value=None, loc=None):
-        tid = TK.INT if token is None else token.map2litval().id
+    def __init__(self, value=None, token=None, loc=None):
+        tid = TK.INT if token is None else token.map2litval()
         loc = loc if token is None else token.location
-        super().__init__(token=token, value=value, tid=tid, loc=loc)
-        if self.value is None:
-            self.value = float(token.lexeme.replace("%",""))/100
+        super().__init__(value=value, token=token, tid=tid, loc=loc)
+        if self._value is None and token is not None:
+            self._value = token.lexeme
+        if isinstance(self._value, str):
+            self._value = float(self._value.replace("%",""))/100
 
     def format(self, fmt=None):
-        return '' if self.value is None else f'{self.value*100} %'
+        return '' if self._value is None else f'{self._value*100} %'
 
 
 @dataclass
 class Set(Literal):
-    def __init__(self, token=None, items=None, loc=None):
-        tid = TK.SET if token is None else token.map2litval().id
+    def __init__(self, items=None, token=None, loc=None):
+        tid = TK.SET if token is None else token.map2litval()
         loc = loc if token is None else token.location
-        super().__init__(token=token, value=items, tid=tid, loc=loc)
+        super().__init__(value=items, token=token, tid=tid, loc=loc)
         self.items = items if items is not None else {}
-        self.value = self.items
+        self._value = self.items
 
     def __getitem__(self, item):
         if type(item).name == 'int':
-            return self.values()[item]
-        return self.value[item]
+            return self._values()[item]
+        return self._value[item]
 
     def __setitem__(self, key, value):
-        self.value[key] = value
+        self._value[key] = value
+
+    def __len__(self):
+        return len(self.items.keys())
 
     def is_empty(self):
-        return self.value is not None and len(self.values()) > 0
+        return self._value is not None and len(self._values()) > 0
 
     def keys(self):
-        return list(self.value.keys())
+        return list(self._value.keys())
 
     def tuples(self):
-        return list(self.value.items())
+        return list(self._value.items())
 
     def values(self):
-        if self.value is None:
+        if self._value is None:
             return None
-        if type(self.value).__name__ == "list":
-            return self.value
-        return list(self._symbols.values())
+        if type(self._value).__name__ == "list":
+            return self._value
+        return list(self._members.values())
 
     def format(self):
-        if self.value is None:
+        if self._value is None:
             return '{}'
         else:
             fstr = ''
-            values = list(self._symbols.values())
+            values = list(self._members.values())
             max = len(values) - 1
             for idx in range(0, max + 1):
                 fstr += f'{values[idx]}'
@@ -256,34 +372,36 @@ class Set(Literal):
 
 @dataclass
 class Str(Literal):
-    def __init__(self, token=None, value=None, loc=None):
-        tid = TK.STR if token is None else token.map2litval().id
+    def __init__(self, value=None, token=None, loc=None):
+        tid = TK.STR if token is None else token.map2litval()
         loc = loc if token is None else token.location
-        super().__init__(token=token, value=value, tid=tid, loc=loc)
-        if self.value is None:
-            self.value = token.lexeme
+        super().__init__(value=value, token=token, tid=tid, loc=loc)
+        if self._value is None and token is not None:
+            self._value = token.lexeme
 
     def format(self, fmt=None):
-        if self.value is None:
-            if self.token.value is not None:
-                return self.token.value
+        if self._value is None:
+            if self.token._value is not None:
+                return self.token._value
             elif self.token.lexeme is not None:
                 return self.token.lexeme
-        return self.value
+        return self._value
 
 
 @dataclass
 class Time(Literal):
-    def __init__(self, token=None, value=None, loc=None):
-        tid = TK.TIME if token is None else token.map2litval().id
+    def __init__(self, value=None, token=None, loc=None):
+        tid = TK.TIME if token is None else token.map2litval()
         loc = loc if token is None else token.location
-        super().__init__(token=token, value=value, tid=tid, loc=loc)
-        if self.value is None:
-            self.value = _parse_time_value(token.lexeme)
+        super().__init__(value=value, token=token, tid=tid, loc=loc)
+        if self._value is None and token is not None:
+            self._value = token.lexeme
+        if isinstance(self._value, str):
+            self._value = _parse_time_value(self._value)
 
     def format(self, fmt=None):
         fmt = "%H:%M:%S" if fmt is None else fmt
-        return self.value.strftime(fmt) if self.value is not None else 'None'
+        return self._value.strftime(fmt) if self._value is not None else 'None'
 
 
 def _parse_bool_value(lex):
@@ -372,5 +490,5 @@ def _parse_duration_units(units):
 
 
 # TODO: make these classes if we need to keep them singletons & compare on them, etc
-LIT_EMPTY = Set(Token(tid=TK.EMPTY, tcl=TCL.LITERAL, lex="{}", val=None))
-LIT_NONE = Literal(Token(tid=TK.NONE, tcl=TCL.LITERAL, lex="none", val=None))
+LIT_EMPTY = Set(token=Token(tid=TK.EMPTY, tcl=TCL.LITERAL, lex="{}", val=None))
+LIT_NONE = Literal(token=Token(tid=TK.NONE, tcl=TCL.LITERAL, lex="none", val=None))

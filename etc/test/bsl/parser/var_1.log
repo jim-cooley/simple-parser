@@ -10,7 +10,7 @@ tree1:  var f(x) = { var a.b(x):x*x }
     4  :         DefineVar(TK.DEFINE, TK.COLN, ':')
     5  :             PropRef(TK.REF, '.')
     6  :                 Ref(TK.IDNT, 'a')
-    7  :                 FnDef(TK.FUNCTION, '(')
+    7  :                 FnDef(TK.FUNCTION, 'b')
     8  :                     Ref(TK.IDNT, 'b')
     9  :                     List(TK.TUPLE, [Ref()])
    10  :                         Ref(TK.IDNT, 'x')

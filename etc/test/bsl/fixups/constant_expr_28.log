@@ -9,4 +9,4 @@ tree1:  365d div 12d
     3  :     Duration(TK.DUR, 12 days, 0:00:00)
 
 tree1:(post)  365d div 12d
-    1  : Literal(TK.INT, 30)
+    1  : Int(TK.INT, 30)

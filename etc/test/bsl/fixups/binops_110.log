@@ -5,7 +5,7 @@ true - none
 
 tree1:  true - none
     1  : BinOp(TK.SUB, '-')
-    2  :     Bool(TK.TRUE, True)
+    2  :     Bool(TK.BOOL, True)
     3  :     Literal(TK.NONE, None)
 
 tree1:(post)  true - none

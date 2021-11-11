@@ -11,4 +11,4 @@ tree1:  ((2 + 4) * 3)                # expression grouping
     5  :     Int(TK.INT, 3)
 
 tree1:(post)  ((2 + 4) * 3)                # expression grouping
-    1  : Literal(TK.INT, 18)
+    1  : Int(TK.INT, 18)

@@ -20,7 +20,7 @@ tree1:(post)  a + 2 * 3 + 4 not 5
     1  : BinOp(TK.ADD, '+')
     2  :     BinOp(TK.ADD, '+')
     3  :         Get(TK.IDNT, 'a')
-    4  :         Literal(TK.INT, 6)
+    4  :         Int(TK.INT, 6)
     5  :     Int(TK.INT, 4)
 
 tree2:(post)  a + 2 * 3 + 4 not 5

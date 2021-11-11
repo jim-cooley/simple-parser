@@ -5,5 +5,5 @@ false + empty
 
 tree1:  false + empty
     1  : BinOp(TK.ADD, '+')
-    2  :     Bool(TK.FALSE, False)
+    2  :     Bool(TK.BOOL, False)
     3  :     Set(TK.EMPTY, {})

@@ -12,5 +12,5 @@ tree1:  [[-1]]
 tree1:(post)  [[-1]]
 result: list([List()])
     1  : List(TK.LIST, [List()])
-    2  :     List(TK.LIST, [Literal()])
-    3  :         Literal(TK.INT, -1)
+    2  :     List(TK.LIST, [Int()])
+    3  :         Int(TK.INT, -1)

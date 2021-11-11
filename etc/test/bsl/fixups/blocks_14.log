@@ -4,9 +4,9 @@ test: 14:
 node | { _ : _.left = _.right}
 
 tree1:  node | { _ : _.left = _.right}
-    1  : Flow(TK.CHAIN, v=[Get(), Block()], '|')
+    1  : Flow(TK.CHAIN, v=[Get(), Set()], '|')
     2  :     Get(TK.IDNT, 'node')
-    3  :     Block(TK.BLOCK, v=[Define()], '')
+    3  :     Set(TK.SET, [Define()])
     4  :         Define(TK.DEFINE, TK.COLN, ':')
     5  :             Ref(TK.ANON, '_')
     6  :             Define(TK.DEFINE, TK.EQLS, '=')
@@ -18,10 +18,10 @@ tree1:  node | { _ : _.left = _.right}
    12  :                     Ref(TK.IDNT, 'right')
 
 tree1:(post)  node | { _ : _.left = _.right}
-result: list([Get(), Block()])
-    1  : Flow(TK.CHAIN, v=[Get(), Block()], '|')
+result: list([Get(), Set()])
+    1  : Flow(TK.CHAIN, v=[Get(), Set()], '|')
     2  :     Get(TK.IDNT, 'node')
-    3  :     Block(TK.BLOCK, v=[Define()], '')
+    3  :     Set(TK.SET, [Define()])
     4  :         Define(TK.DEFINE, TK.COLN, ':')
     5  :             Ref(TK.ANON, '_')
     6  :             Define(TK.DEFINE, TK.EQLS, '=')

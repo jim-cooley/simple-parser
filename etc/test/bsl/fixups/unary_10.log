@@ -8,4 +8,4 @@ tree1:  --2
     2  :     Int(TK.INT, 2)
 
 tree1:(post)  --2
-    1  : Literal(TK.INT, 1)
+    1  : Int(TK.INT, 1)

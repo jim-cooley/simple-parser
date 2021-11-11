@@ -1,0 +1,611 @@
+symbol,group,description
+^DJI,index,DJ Industrials
+^FVX,index,5yr T-Bill
+^GSPC,index,S&P 500
+^IRX,index,13 week T-Bill
+^IXIC,index,Nasdaq Composite
+^NDX,index,Nasdaq 100
+^NYA,index,NYSE Composite
+^RUT,index,Russel 2000
+^SPX,index,S&P 500
+^TNX,index,10-yr T-Bill
+^TYX,index,30-yr T-Bill
+^VIX,index,Volatility
+^W5000,index,Wilshire 5000 Total Market Index
+^XAX,index,NYSE/AMEX Composite Index
+A,Healthcare,Agilent Technologies Inc
+AAL,Airlines-Travel,American Airlines
+AAP,Consumer_Discretionary,Advance Auto Parts
+AAPL,Information Technology,Apple Inc.
+ABBV,Healthcare,AbbVie Inc.
+ABC,Healthcare,AmerisourceBergen Corp
+ABMD,Healthcare,ABIOMED Inc
+ABT,Healthcare,Abbott Laboratories
+ACN,Information Technology,Accenture plc
+ADBE,Information Technology,Adobe Inc.
+ADI,Information Technology,Analog Devices Inc.
+ADM,Consumer_Staples,Archer-Daniels-Midland Co
+ADP,Information Technology,Automatic Data Processing
+ADS,Information Technology,Alliance Data Systems
+ADSK,Information Technology,Autodesk Inc.
+AEE,Utilities,Ameren Corp
+AEP,Utilities,American Electric Power
+AES,Utilities,AES Corp
+AFL,Financials,AFLAC Inc
+AGQ,Leveraged ETF,Silver 3x Bullish
+AIG,Financials,American International Group
+AIV,Real Estate,Apartment Investment & Management
+AIZ,Financials,Assurant
+AJG,Financials,Arthur J. Gallagher & Co.
+AKAM,Information Technology,Akamai Technologies Inc
+ALB,Materials,Albemarle Corp
+ALGN,Healthcare,Align Technology
+ALK,Airlines-Travel,Alaska AG
+ALL,Financials,Allstate Corp
+ALLE,Industrials,Allegion
+#ALXN,Healthcare,Alexion Pharmaceuticals
+AMAT,Information Technology,Applied Materials Inc.
+AMCR,Materials,Amcor plc
+AMD,Information Technology,Advanced Micro Devices Inc
+AME,Industrials,AMETEK Inc.
+AMGN,Healthcare,Amgen Inc.
+AMP,Financials,Ameriprise Financial
+AMT,Real Estate,American Tower Corp.
+AMZN,Consumer_Discretionary,Amazon.com Inc.
+ANET,Information Technology,Arista Networks
+ANSS,Information Technology,ANSYS
+ANTM,Healthcare,Anthem
+AON,Financials,Aon plc
+AOS,Industrials,A.O. Smith Corp
+APA,Energy,Apache Corporation
+APD,Materials,Air Products & Chemicals Inc
+APH,Information Technology,Amphenol Corp
+APTV,Consumer_Discretionary,Aptiv PLC
+ARE,Real Estate,Alexandria Real Estate Equities
+ASML,nasdaq_100,ASML Holding N.V. New York Registry Shares
+ATO,Utilities,Atmos Energy
+ATVI,Communication_Services,Activision Blizzard
+AVB,Real Estate,AvalonBay Communities
+AVGO,Information Technology,Broadcom Inc.
+AVY,Materials,Avery Dennison Corp
+AWK,Utilities,American Water Works Company Inc
+AXP,Financials,American Express Co
+AZN,Pharmaceuticals,Astra Zenica (pharma)
+AZO,Consumer_Discretionary,AutoZone Inc
+BA,Industrials,Boeing Company
+BABA,Consumer_Discretionary,Alibaba
+BAC,Financials,Bank of America Corp
+BAX,Healthcare,Baxter International Inc.
+BBY,Consumer_Discretionary,Best Buy Co. Inc.
+BDX,Healthcare,Becton Dickinson
+BEN,Financials,Franklin Resources
+#BF.B,Consumer_Staples,Brown-Forman Corp.
+BIDU,nasdaq_100,"Baidu, Inc. ADS"
+BIIB,Healthcare,Biogen Inc.
+BK,Financials,The Bank of New York Mellon
+BKNG,Consumer_Discretionary,Booking Holdings Inc
+BKR,Energy,Baker Hughes Co
+BLK,Financials,BlackRock
+BLL,Materials,Ball Corp
+BMRN,Pharmaceuticals,BioMarin Pharmaceutical Inc. Common Stock
+BMY,Healthcare,Bristol-Myers Squibb
+BOND,Bond ETFs,Pimco Bond ETF
+BR,Information Technology,Broadridge Financial Solutions
+#BRK.B,Financials,Berkshire Hathaway
+BSX,Healthcare,Boston Scientific
+BWA,Consumer_Discretionary,BorgWarner
+BXP,Real Estate,Boston Properties
+C,Financials,Citigroup Inc.
+CAG,Consumer_Staples,Conagra Brands
+CAH,Healthcare,Cardinal Health Inc.
+CAT,Industrials,Caterpillar Inc.
+CB,Financials,Chubb Limited
+CBOE,Financials,Cboe Global Markets
+CBRE,Real Estate,CBRE Group
+CCI,Real Estate,Crown Castle International Corp.
+CCL,Consumer_Discretionary,Carnival Corp.
+CDNS,Information Technology,Cadence Design Systems
+CDW,Information Technology,CDW
+CE,Materials,Celanese
+CERN,Healthcare,Cerner
+CF,Materials,CF Industries Holdings Inc
+CFG,Financials,Citizens Financial Group
+CHD,Consumer_Staples,Church & Dwight
+CHKP,Information Technology,Check Point Software Technologies Ltd. Ordinary Shares
+CHRW,Industrials,C. H. Robinson Worldwide
+CHTR,Communication_Services,Charter Communications
+CI,Healthcare,CIGNA Corp.
+CINF,Financials,Cincinnati Financial
+CL,Consumer_Staples,Colgate-Palmolive
+CL=F,Futures,Crude Oil (June)
+CLX,Consumer_Staples,The Clorox Company
+CMA,Financials,Comerica Inc.
+CMCSA,Communication_Services,Comcast Corp.
+CME,Financials,CME Group Inc.
+CMG,Consumer_Discretionary,Chipotle Mexican Grill
+CMI,Industrials,Cummins Inc.
+CMS,Utilities,CMS Energy
+CNC,Healthcare,Centene Corporation
+CNP,Utilities,CenterPoint Energy
+COF,Financials,Capital One Financial
+COG,Energy,Cabot Oil & Gas
+COO,Healthcare,The Cooper Companies
+COP,Energy,ConocoPhillips
+COST,Consumer_Staples,Costco Wholesale Corp.
+COTY,Consumer_Staples,Coty Inc
+CPB,Consumer_Staples,Campbell Soup
+CPRT,Industrials,Copart Inc
+CRM,Information Technology,Salesforce.com
+CSCO,Information Technology,Cisco Systems
+CSGP,nasdaq_100,"CoStar Group, Inc. Common Stock"
+CSX,Industrials,CSX Corp.
+CTAS,Industrials,Cintas Corporation
+#CTL,Communication_Services,CenturyLink Inc
+CTSH,Information Technology,Cognizant Technology Solutions
+CTXS,Information Technology,Citrix Systems
+CVS,Healthcare,CVS Health
+CVX,Energy,Chevron Corp.
+D,Utilities,Dominion Energy
+DAL,Airlines-Travel,Delta Airlines
+DD,Materials,DuPont de Nemours Inc
+DE,Industrials,Deere & Co.
+DFS,Financials,Discover Financial Services
+DG,Consumer_Discretionary,Dollar General
+DGT,Index Funds & ETFs,SPDR Global Dow Index ETF
+DGX,Healthcare,Quest Diagnostics
+DHI,Consumer_Discretionary,D. R. Horton
+DHR,Healthcare,Danaher Corp.
+DIS,Communication_Services,The Walt Disney Company
+DISCA,Communication_Services,Discovery Inc. (Class A)
+DISCK,Communication_Services,Discovery Inc. (Class C)
+DISH,Communication_Services,Dish Network
+DLR,Real Estate,Digital Realty Trust Inc
+DLTR,Consumer_Discretionary,Dollar Tree
+DOV,Industrials,Dover Corporation
+DPZ,Consumer_Discretionary,Domino's Pizza
+DRE,Real Estate,Duke Realty Corp
+DRI,Consumer_Discretionary,Darden Restaurants
+DTE,Utilities,DTE Energy Co.
+DUK,Utilities,Duke Energy
+DUST,Leveraged ETF,2x Gold Bear
+DVA,Healthcare,DaVita Inc.
+DVN,Energy,Devon Energy
+DXC,Information Technology,DXC Technology
+DXCM,Healthcare,DexCom
+DXJ,Currency Hedge ETFs,Japan Hedge
+EA,Communication_Services,Electronic Arts
+EBAY,Consumer_Discretionary,eBay Inc.
+ECL,Materials,Ecolab Inc.
+ED,Utilities,Consolidated Edison
+EFA,International Focused ETFs ,iShares MSCI EAFE Index ETF
+EFX,Industrials,Equifax Inc.
+EIX,Utilities,Edison Int'l
+EL,Consumer_Staples,Est�e Lauder Companies
+EMN,Materials,Eastman Chemical
+EMR,Industrials,Emerson Electric Company
+EOG,Energy,EOG Resources
+EQIX,Real Estate,Equinix
+EQR,Real Estate,Equity Residential
+ES,Utilities,Eversource Energy
+ES=F,Futures,SP500 Futures
+ESS,Real Estate,Essex Property Trust Inc.
+ETN,Industrials,Eaton Corporation
+ETR,Utilities,Entergy Corp.
+EUR=X,Currency,USD/EURO Exchange Rate
+EURUSD=X,Currency,Euro to USD Exchange Rate
+EVRG,Utilities,Evergy
+EW,Healthcare,Edwards Lifesciences
+EWJ,Currency Hedge ETFs,iShare Japan
+EXC,Utilities,Exelon Corp.
+EXPD,Industrials,Expeditors
+EXPE,Consumer_Discretionary,Expedia Group
+EXR,Real Estate,Extra Space Storage
+F,Consumer_Discretionary,Ford Motor Company
+FANG,Energy,Diamondback Energy
+FAST,Industrials,Fastenal Co
+FB,Communication_Services,Facebook Inc.
+FBHS,Industrials,Fortune Brands Home & Security
+FBND,Bond ETFs,Fidelity Total Bond ETF
+FCNTX,Index Funds & ETFs,Fideility Contra Fund
+FCX,Materials,Freeport-McMoRan Inc.
+FDIVX,International Focused ETFs & Funds,Fidelity Diversified International (MSCI EAFE)
+FDX,Industrials,FedEx Corporation
+FE,Utilities,FirstEnergy Corp
+FEZ,Index Funds & ETFs,SPDR Euro Stox
+FFIV,Information Technology,F5 Networks
+FIS,Information Technology,Fidelity National Information Services
+FISV,Information Technology,Fiserv Inc
+FITB,Financials,Fifth Third Bancorp
+#FLIR,Information Technology,FLIR Systems
+FLS,Industrials,Flowserve Corporation
+FLT,Information Technology,FleetCor Technologies Inc
+FMC,Materials,FMC Corporation
+FRC,Financials,First Republic Bank
+FRT,Real Estate,Federal Realty Investment Trust
+FSMAX,Index Funds & ETFs,Fidelity Extended Stock Mkt
+FSPSX,International Focused ETFs & Funds,Fidelity International Index Fund
+FTI,Energy,TechnipFMC
+FTNT,Information Technology,Fortinet
+FTV,Industrials,Fortive Corp
+FXAIX,Index Funds & ETFs,Fideility 500 Index Fundn (+20% diversification)
+FXE,Currency Hedge ETFs,Foreign Currency Trust
+GBTC,Gold & Commodities,Bitcoin Trust (ETF)
+GC=F,Futures,Gold Aug
+GD,Industrials,General Dynamics
+GDX,Gold & Commodities,Gold Miner ETF
+GE,Industrials,General Electric
+GILD,Healthcare,Gilead Sciences
+GIS,Consumer_Staples,General Mills
+GL,Financials,Globe Life Inc.
+GLD,Gold & Commodities,SPDR Gold Shares
+GLW,Information Technology,Corning Inc.
+GM,Consumer_Discretionary,General Motors
+GOOG,Communication_Services,Alphabet Inc. (Class C)
+GOOGL,Communication_Services,Alphabet Inc. (Class A)
+GPC,Consumer_Discretionary,Genuine Parts
+GPN,Information Technology,Global Payments Inc.
+GPS,Consumer_Discretionary,Gap Inc.
+GRMN,Consumer_Discretionary,Garmin Ltd.
+GS,Financials,Goldman Sachs Group
+GSK,US Stocks,GlaxoSmithKline
+GWW,Industrials,Grainger (W.W.) Inc.
+H,Airlines-Travel,Hyatt Hotels
+HAL,Energy,Halliburton Co.
+HAS,Consumer_Discretionary,Hasbro Inc.
+HBAN,Financials,Huntington Bancshares
+HBI,Consumer_Discretionary,Hanesbrands Inc
+HCA,Healthcare,HCA Healthcare
+HD,Consumer_Discretionary,Home Depot
+HEDJ,Currency Hedge ETFs,Europe Hedge
+HES,Energy,Hess Corporation
+HFC,Energy,HollyFrontier Corp
+HIG,Financials,Hartford Financial Svc.Gp.
+HII,Industrials,Huntington Ingalls Industries
+HLT,Airlines-Travel,Hilton Worldwide Holdings Inc
+HOG,Consumer_Discretionary,Harley-Davidson
+HOLX,Healthcare,Hologic
+HON,Industrials,Honeywell Int'l Inc.
+HPE,Information Technology,Hewlett Packard Enterprise
+HPQ,Information Technology,HP Inc.
+HRB,Consumer_Discretionary,H&R Block
+HRL,Consumer_Staples,Hormel Foods Corp.
+HSIC,Healthcare,Henry Schein
+HST,Real Estate,Host Hotels & Resorts
+HSY,Consumer_Staples,The Hershey Company
+HUM,Healthcare,Humana Inc.
+IAU,Gold & Commodities,iShares Gold Trust
+IBM,Information Technology,International Business Machines
+ICE,Financials,Intercontinental Exchange
+IDXX,Healthcare,IDEXX Laboratories
+IEFA,International Focused ETFs & Funds,iShares Core MSCI EAFE ETF
+IEX,Industrials,IDEX Corporation
+IFF,Materials,Intl Flavors & Fragrances
+IGV,Sector ETFs,North America S/W
+IHE,Sector ETFs,Invesco Pharma
+ILMN,Healthcare,Illumina Inc
+INCY,Healthcare,Incyte
+INFO,Industrials,IHS Markit Ltd.
+INTC,Information Technology,Intel Corp.
+INTU,Information Technology,Intuit Inc.
+IP,Materials,International Paper
+IPG,Communication_Services,Interpublic Group
+IPGP,Information Technology,IPG Photonics Corp.
+IQV,Healthcare,IQVIA Holdings Inc.
+IRM,Real Estate,Iron Mountain Incorporated
+ISRG,Healthcare,Intuitive Surgical Inc.
+IT,Information Technology,Gartner Inc
+ITW,Industrials,Illinois Tool Works
+IUSG,Index Funds & ETFs,iShares Core S&P 500
+IVV,Index Funds & ETFs,iShores Core S&P 500
+IVZ,Financials,Invesco Ltd.
+IWM,Index Funds & ETFs,iShres Russell 2000 ETF
+IWV,Index Funds & ETFs,iShares Russell 3000 ETF
+IYH,Sector ETFs,iShares Healthcare
+J,Industrials,Jacobs Engineering Group
+JBHT,Industrials,J. B. Hunt Transport Services
+JCI,Industrials,Johnson Controls International
+JD,nasdaq_100,"JD.com, Inc. American Depositary Shares"
+JKHY,Information Technology,Jack Henry & Associates
+JNJ,Healthcare,Johnson & Johnson
+JNPR,Information Technology,Juniper Networks
+JNUG,Gold & Commodities,Gold Mining Shares (Jr)
+JPM,Financials,JPMorgan Chase & Co.
+JWN,Consumer_Discretionary,Nordstrom
+K,Consumer_Staples,Kellogg Co.
+KEY,Financials,KeyCorp
+KEYS,Information Technology,Keysight Technologies
+KHC,Consumer_Staples,Kraft Heinz Co
+KIM,Real Estate,Kimco Realty
+KLAC,Information Technology,KLA Corporation
+KMB,Consumer_Staples,Kimberly-Clark
+KMI,Energy,Kinder Morgan
+KMX,Consumer_Discretionary,Carmax Inc
+KO,Consumer_Staples,Coca-Cola Company
+KR,Consumer_Staples,Kroger Co.
+KSS,Consumer_Discretionary,Kohl's Corp.
+KSU,Industrials,Kansas City Southern
+L,Financials,Loews Corp.
+LB,Consumer_Discretionary,L Brands Inc.
+LBTYA,nasdaq_100,Liberty Global plc Class A Ordinary Shares
+LBTYK,nasdaq_100,Liberty Global plc Class C Ordinary Shares
+LDOS,Information Technology,Leidos Holdings
+LEG,Consumer_Discretionary,Leggett & Platt
+LEN,Consumer_Discretionary,Lennar Corp.
+LH,Healthcare,Laboratory Corp. of America Holding
+LHX,Industrials,L3Harris Technologies
+LIN,Materials,Linde plc
+LKQ,Consumer_Discretionary,LKQ Corporation
+LLY,Healthcare,Lilly (Eli) & Co.
+LMT,Industrials,Lockheed Martin Corp.
+LNC,Financials,Lincoln National
+LNT,Utilities,Alliant Energy Corp
+LOW,Consumer_Discretionary,Lowe's Cos.
+LRCX,Information Technology,Lam Research
+LULU,nasdaq_100,lululemon athletica inc. Common Stock
+LUV,Airlines-Travel,Southwest Airlines
+LVS,Consumer_Discretionary,Las Vegas Sands
+# LW,Consumer_Staples,Lamb Weston Holdings Inc
+LYB,Materials,LyondellBasell
+LYV,Communication_Services,Live Nation Entertainment
+MA,Information Technology,Mastercard Inc.
+MAA,Real Estate,Mid-America Apartments
+MAR,Airlines-Travel,Marriott
+MAS,Industrials,Masco Corp.
+MCD,Consumer_Discretionary,McDonald's Corp.
+MCHP,Information Technology,Microchip Technology
+MCK,Healthcare,McKesson Corp.
+MCO,Financials,Moody's Corp
+MDLZ,Consumer_Staples,Mondelez International
+MDT,Healthcare,Medtronic plc
+MELI,nasdaq_100,"MercadoLibre, Inc. Common Stock"
+MET,Financials,MetLife Inc.
+MGM,Consumer_Discretionary,MGM Resorts International
+MHK,Consumer_Discretionary,Mohawk Industries
+MKC,Consumer_Staples,McCormick & Co.
+MKTX,Financials,MarketAxess
+MLM,Materials,Martin Marietta Materials
+MMC,Financials,Marsh & McLennan
+MMM,Industrials,3M Company
+MNST,Consumer_Staples,Monster Beverage
+MO,Consumer_Staples,Altria Group Inc
+MOS,Materials,The Mosaic Company
+MPC,Energy,Marathon Petroleum
+MRK,Healthcare,Merck & Co.
+MRO,Energy,Marathon Oil Corp.
+MS,Financials,Morgan Stanley
+MSCI,Financials,MSCI Inc
+MSFT,Information Technology,Microsoft Corp.
+MSI,Information Technology,Motorola Solutions Inc.
+MTB,Financials,M&T Bank Corp.
+MTD,Healthcare,Mettler Toledo
+MU,Information Technology,Micron Technology
+# MXIM,Information Technology,Maxim Integrated Products Inc
+#MYL,Healthcare,Mylan N.V.
+#NBL,Energy,Noble Energy Inc
+NCLH,Airlines-Travel,Norweigian Cruise Lines
+NDAQ,Financials,Nasdaq Inc.
+NEE,Utilities,NextEra Energy
+NEM,Materials,Newmont Corporation
+NFLX,Communication_Services,Netflix Inc.
+NI,Utilities,NiSource Inc.
+NKE,Consumer_Discretionary,Nike
+NLSN,Industrials,Nielsen Holdings
+NOC,Industrials,Northrop Grumman
+NOV,Energy,National Oilwell Varco Inc.
+NOW,Information Technology,ServiceNow
+NQ=F,Futures,Nasdaq Futures
+NRG,Utilities,NRG Energy
+NSC,Industrials,Norfolk Southern Corp.
+NTAP,Information Technology,NetApp
+NTES,nasdaq_100,"NetEase, Inc. American Depositary Shares"
+NTRS,Financials,Northern Trust Corp.
+NUE,Materials,Nucor Corp.
+NUGT,Leveraged ETF,Gold Miners 3x Bullish
+NVDA,Information Technology,Nvidia Corporation
+NVR,Consumer_Discretionary,NVR Inc
+NWL,Consumer_Discretionary,Newell Brands
+NWS,Communication_Services,News Corp. Class B
+NWSA,Communication_Services,News Corp. Class A
+NXPI,nasdaq_100,NXP Semiconductors N.V. Common Stock
+O,Real Estate,Realty Income Corporation
+ODFL,Industrials,Old Dominion Freight Line
+OKE,Energy,ONEOK
+OMC,Communication_Services,Omnicom Group
+ORCL,Information Technology,Oracle Corp.
+ORLY,Consumer_Discretionary,O'Reilly Automotive
+OXY,Energy,Occidental Petroleum
+PAYC,Information Technology,Paycom
+PAYX,Information Technology,Paychex Inc.
+PBCT,Financials,People's United Financial
+PCAR,Industrials,PACCAR Inc.
+PDRDF,US Stocks,Pernod / Ricard SA
+PEAK,Real Estate,Healthpeak Properties
+PEG,Utilities,Public Serv. Enterprise Inc.
+PEP,Consumer_Staples,PepsiCo Inc.
+PFE,Healthcare,Pfizer Inc.
+PFG,Financials,Principal Financial Group
+PG,Consumer_Staples,Procter & Gamble
+PGR,Financials,Progressive Corp.
+PH,Industrials,Parker-Hannifin
+PHM,Consumer_Discretionary,PulteGroup
+PKG,Materials,Packaging Corporation of America
+PKI,Healthcare,PerkinElmer
+PLD,Real Estate,Prologis
+PM,Consumer_Staples,Philip Morris International
+PNC,Financials,PNC Financial Services
+PNR,Industrials,Pentair plc
+PNW,Utilities,Pinnacle West Capital
+PPG,Materials,PPG Industries
+PPL,Utilities,PPL Corp.
+PRGO,Healthcare,Perrigo
+PRU,Financials,Prudential Financial
+PSA,Real Estate,Public Storage
+PSQ,Index Funds & ETFs,ProShares Short QQQ
+PSX,Energy,Phillips 66
+PVH,Consumer_Discretionary,PVH Corp.
+PWR,Industrials,Quanta Services Inc.
+PXD,Energy,Pioneer Natural Resources
+PYPL,Information Technology,PayPal
+QCOM,Information Technology,QUALCOMM Inc.
+QQQ,Benchmark,Invesco QQQ Trust (Nasdaq)
+QRVO,Information Technology,Qorvo
+RCL,Airlines-Travel,Royal Carribbean
+RE,Financials,Everest Re Group Ltd.
+REG,Real Estate,Regency Centers Corporation
+REGN,Healthcare,Regeneron Pharmaceuticals
+RF,Financials,Regions Financial Corp.
+RHI,Industrials,Robert Half International
+RING,Gold & Commodities,Global MSCI Gold Miners
+RJF,Financials,Raymond James Financial Inc.
+RL,Consumer_Discretionary,Ralph Lauren Corporation
+RMD,Healthcare,ResMed
+ROK,Industrials,Rockwell Automation Inc.
+ROL,Industrials,Rollins Inc.
+ROP,Industrials,Roper Technologies
+ROST,Consumer_Discretionary,Ross Stores
+RSG,Industrials,Republic Services Inc
+RSP,Index Funds & ETFs,Gugenheim Equal Weight S&P500
+RTX,Industrials,Raytheon Technologies
+SBAC,Real Estate,SBA Communications
+SBUX,Consumer_Discretionary,Starbucks Corp.
+SCHW,Financials,Charles Schwab Corporation
+SCO,Leveraged ETF,2x Short Crude
+SEE,Materials,Sealed Air
+SGEN,nasdaq_100,"Seattle Genetics, Inc. Common Stock"
+SH,Index Funds & ETFs,ProShares Short S&P500
+SHW,Materials,Sherwin-Williams
+SIRI,nasdaq_100,Sirius XM Holdings Inc. Common Stock
+SIVB,Financials,SVB Financial
+SJM,Consumer_Staples,JM Smucker
+SLB,Energy,Schlumberger Ltd.
+SLG,Real Estate,SL Green Realty
+SLV,Gold & Commodities,Silver ETF
+SNA,Industrials,Snap-on
+#SNE,US Stocks,Sony
+SNPS,Information Technology,Synopsys Inc.
+SNY,US Stocks,Sanofi (pharma)
+SO,Utilities,Southern Company
+SPEU,International Focused ETFs & Funds,Global DJ 50
+SPG,Airlines-Travel,Starwood Group
+SPGI,Financials,S&P Global Inc.
+SPLK,Information Technology,Splunk Inc. Common Stock
+SPLV,Index Funds & ETFs,Invesco Low Volatility S&P500
+SPXL,Leveraged ETF,Direxion Daily S&P 3x Bullish
+SPXS,Leveraged ETF,Direction S&P 3x Bearish
+SPXU,Leveraged ETF,ProShares Ultra S&P 500 Short (3x)
+SPY,Benchmark,
+SPYV,Index Funds & ETFs,SPDR Shares S&P 500 Value ETF
+SQQQ,Leveraged ETF,ProShares 3x Short Nasdaq
+SRE,Utilities,Sempra Energy
+STE,Healthcare,STERIS plc
+STT,Financials,State Street Corp.
+STX,Information Technology,Seagate Technology
+STZ,Consumer_Staples,Constellation Brands
+SWK,Industrials,Stanley Black & Decker
+SWKS,Information Technology,Skyworks Solutions
+SWPPX,Index Funds & ETFs,Schwab S&P 500 Index Fund
+SWTSX,Index Funds & ETFs,Schwab Total Stock Market- DJ Total Stock Mkt Index
+SYF,Financials,Synchrony Financial
+SYK,Healthcare,Stryker Corp.
+SYY,Consumer_Staples,Sysco Corp.
+T,Communication_Services,AT&T Inc.
+# TAIL,Currency Hedge ETFs,Cambria Tail Risk Hedge
+TAP,Consumer_Staples,Molson Coors Brewing Company
+TCOM,nasdaq_100,Trip.com Group Limited American Depositary Shares
+TDG,Industrials,TransDigm Group
+TECL,Leveraged ETF,Direction 3x Tech Bullish ETF
+TEL,Information Technology,TE Connectivity Ltd.
+TFC,Financials,Truist Financial
+TFX,Healthcare,Teleflex
+TGT,Consumer_Discretionary,Target Corp.
+TJX,Consumer_Discretionary,TJX Companies Inc.
+TLT,Bond ETFs,iShares 20+ year Treasury ETF
+TMO,Healthcare,Thermo Fisher Scientific
+TMUS,Communication_Services,T-Mobile US
+TNA,Leveraged ETF,Direxion Daily Sm Cap 3x Bullish (R2K)
+TPR,Consumer_Discretionary,Tapestry Inc.
+TQQQ,Leveraged ETF,ProShares 3x Bullish QQQ
+TROW,Financials,T. Rowe Price Group
+TRV,Financials,The Travelers Companies Inc.
+TSCO,Consumer_Discretionary,Tractor Supply Company
+TSLA,Consumer_Discretionary,Tesla
+TSN,Consumer_Staples,Tyson Foods
+TT,Industrials,Trane Technologies plc
+TTWO,Communication_Services,Take-Two Interactive
+TWTR,Communication_Services,Twitter Inc.
+TXN,Information Technology,Texas Instruments
+TXT,Industrials,Textron Inc.
+TZA,Leveraged ETF,Direxion Daily Sm Cap 3x Bearish (R2K)
+UA,Consumer_Discretionary,Under Armour (Class C)
+UAA,Consumer_Discretionary,Under Armour (Class A)
+UAL,Airlines-Travel,United
+UCO,Leveraged ETF,ProShares Ultra Bloomberg Crude (2x)
+UDN,Currency Hedge ETFs,Invesco Dollar Bearish
+UDR,Real Estate,UDR Inc.
+UGL,Gold & Commodities,ProShare Ultra Gold
+UHS,Healthcare,Universal Health Services Inc.
+ULTA,Consumer_Discretionary,Ulta Beauty
+UNG,Gold & Commodities,US Natural Gas Fund
+UNH,Healthcare,United Health Group Inc.
+UNM,Financials,Unum Group
+UNP,Industrials,Union Pacific Corp
+UPRO,Index Funds & ETFs,ProShares S&P 3x Bullish
+UPS,Industrials,United Parcel Service
+URI,Industrials,United Rentals Inc.
+USB,Financials,U.S. Bancorp
+UUP,Currency Hedge ETFs,Invesco Dollar Bullish
+V,Financials,Visa Inc.
+#VAR,Healthcare,Varian Medical Systems
+VBIRX,Bond ETFs,Vanguard Short-term Managed Bond Fund
+VBTIX,Bond ETFs,"Vanguard Short-term Managed Bond, Investor Shares"
+VEU,International Focused ETFs & Funds,"Vanguard FTSE All-world, Ex US"
+VFC,Consumer_Discretionary,V.F. Corp.
+VFINX,Index Funds & ETFs,Vanguard 500 Index Fund (0.14% fees)
+VHT,Sector ETFs,Vanguard Health
+VLO,Energy,Valero Energy
+VMC,Materials,Vulcan Materials
+VNO,Real Estate,Vornado Realty Trust
+VOO,Index Funds & ETFs,Vanguard S&P 500 ETF
+VRSK,Industrials,Verisk Analytics
+VRSN,Information Technology,Verisign Inc.
+VRTX,Healthcare,Vertex Pharmaceuticals Inc
+VTI,Index Funds & ETFs,Vanguard Total Market
+VTR,Real Estate,Ventas Inc
+VTSMX,Index Funds & ETFs,Vanguard Total Stock Market - Tracks CRSP US Total Market Index
+VTSNX,International Focused ETFs & Funds,"Vanguard Total International Stock Market, Institutional Shares"
+VTWO,Index Funds & ETFs,Vanguard Russell 2000 ETF
+VXUS,International Focused ETFs & Funds,Vanguard Ex-US All-world Stock ETF
+VZ,Communication_Services,Verizon Communications
+WAB,Industrials,Wabtec Corporation
+WAT,Healthcare,Waters Corporation
+WBA,Consumer_Staples,Walgreens Boots Alliance
+WDAY,nasdaq_100,"Workday, Inc. Class A Common Stock"
+WDC,Information Technology,Western Digital
+WEC,Utilities,WEC Energy Group
+WELL,Real Estate,Welltower Inc.
+WFC,Financials,Wells Fargo
+WFIVX,Index Funds & ETFs,Whilshire 5000 Index ETF
+WHR,Consumer_Discretionary,Whirlpool Corp.
+WLTW,Financials,Willis Towers Watson
+WM,Industrials,Waste Management Inc.
+WMB,Energy,Williams Cos.
+WMT,Consumer_Staples,Walmart
+WRB,Financials,W. R. Berkley Corporation
+WRK,Materials,WestRock
+WST,Healthcare,West Pharmaceutical Services
+WU,Information Technology,Western Union Co
+WY,Real Estate,Weyerhaeuser
+WYNN,Consumer_Discretionary,Wynn Resorts Ltd
+XEL,Utilities,Xcel Energy Inc
+XLNX,Information Technology,Xilinx
+XLV,Sector ETFs,SPDR Healthcare
+XOM,Energy,Exxon Mobil Corp.
+XOP,Index Funds & ETFs,Oil & Gas Exploration
+XPH,Sector ETFs,SPDR Pharma
+XRAY,Healthcare,Dentsply Sirona
+XRX,Information Technology,Xerox
+XYL,Industrials,Xylem Inc.
+YUM,Consumer_Discretionary,Yum! Brands Inc
+ZBH,Healthcare,Zimmer Biomet Holdings
+ZBRA,Information Technology,Zebra Technologies
+ZION,Financials,Zions Bancorp

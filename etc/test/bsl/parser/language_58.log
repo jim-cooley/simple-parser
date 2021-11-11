@@ -5,7 +5,7 @@ test: 58:
 
 tree1:  { _ => _.left = _.right}:(node)
     1  : Define(TK.DEFINE, TK.COLN, ':')
-    2  :     Set(TK.SET, [DefineFn()])
+    2  :     Block(TK.BLOCK, v=[DefineFn()], '')
     3  :         DefineFn(TK.DEFINE, TK.EQGT, '=>')
     4  :             Ref(TK.ANON, '_')
     5  :             PropRef(TK.REF, '.')

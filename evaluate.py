@@ -1,3 +1,4 @@
+from copy import deepcopy
 
 from conversion import c_unbox, c_box
 from environment import Environment, RuntimeStack
@@ -7,17 +8,18 @@ from eval_boolean import eval_boolean_dispatch, _boolean_dispatch_table
 from eval_unary import not_literal, increment_literal, decrement_literal, negate_literal
 from exceptions import getErrorFacility, runtime_error, runtime_strict_warning
 from indexed_dict import IndexedDict
-from literals import LIT_NONE
-from tokens import TK, TCL
-from tree import Ref
+from intrinsic_dispatch import invoke_fn, is_intrinsic, invoke_intrinsic
+from literals import LIT_NONE, Literal
+from tokens import TK
+from tree import Ref, Define
 
 _INTRINSIC_VALUE_TYPES = ['bool', 'float', 'int', 'str', 'timedelta']
 
 _INPLACE_OPS = [TK.PLEQ, TK.MNEQ]
 
 _unary2binop = {
-    TK.PLEQ:    TK.ADD,
-    TK.MNEQ:    TK.SUB,
+    TK.PLEQ: TK.ADD,
+    TK.MNEQ: TK.SUB,
 }
 
 
@@ -33,7 +35,7 @@ def reduce_ref(scope=None, ref=None, value=None):
     scope = Environment.current.scope if scope is None else scope
     symbol = scope.find_add_local(ref.token, value)
     # UNDONE: need to update definitions if symbol exists.  need to call assignment, not update_ref
-    return symbol   # should be Object type
+    return symbol  # should be Object type
 
 
 def reduce_get(scope=None, get=None):
@@ -66,22 +68,29 @@ def reduce_propget(left=None, right=None):
 
 def reduce_parameters(scope=None, args=None):
     items = {}
+    if scope is not None and scope.defaults is not None:
+        items = deepcopy(scope.defaults)
     if args is not None:
-        for ref in args:
-            sym = reduce_ref(scope=scope, ref=ref)
-            items[sym.name] = sym
+        for idx in range(0, len(args)):
+            ref = args[idx]
+            if isinstance(ref, Define):
+                value = ref.right
+                ref = ref.left
+                sym = reduce_ref(scope=scope, ref=ref)
+                items[sym.name] = value
+            elif isinstance(ref, Ref):
+                sym = reduce_ref(scope=scope, ref=ref)
+                items[sym.name] = value
+            elif isinstance(ref, Literal):
+                slot = items.keys()[idx]
+                items[slot] = ref,
     return IndexedDict(items)
 
 
 def update_ref(scope=None, sym=None, value=None):
     scope = Environment.current.scope if scope is None else scope
     symbol = scope.update_local(sym.name, value)
-    return symbol   # should be Object type
-
-
-def evaluate_identifier(stack, node):
-    left = Environment.current.scope.find(node.token)
-    stack.push(left)
+    return symbol  # should be Object type
 
 
 def evaluate_binary_operation(node, left, right):
@@ -107,6 +116,25 @@ def evaluate_binary_operation(node, left, right):
     else:
         get_logger().error(f'Invalid operation {op.name}', loc=node.token.location)
     return None  # fixups uses this code as well.  probably want option_strict enablement
+
+
+def evaluate_identifier(stack, node):
+    left = Environment.current.scope.find(node.token)
+    stack.push(left)
+
+
+def evaluate_invoke(node):
+    fnode = node.left
+    args = node.right
+    name = fnode.name  # should be either Ref() or Get()
+    fn = reduce_get(get=fnode)
+    args = reduce_parameters(scope=fn, args=args)  # need to have scope be a new parameters object (block?)
+    if is_intrinsic(name):
+        result = invoke_intrinsic(name, args)
+    else:
+        ident = reduce_get(get=node.left)
+        result = invoke_fn(ident, args)
+    return result
 
 
 def evaluate_set(node, visitor=None):
@@ -140,13 +168,13 @@ def evaluate_unary_operation(node, left):
         return not_literal(l_value, l_tid)
     elif opid == TK.INCREMENT:
         l_value = increment_literal(l_value, l_tid)
-#        eval_assign_dispatch(left, r_value),
+    #        eval_assign_dispatch(left, r_value),
     elif opid == TK.DECREMENT:
         l_value = decrement_literal(l_value, l_tid)
-#        eval_assign_dispatch(left, r_value),
+    #        eval_assign_dispatch(left, r_value),
     elif opid == TK.NEG:
         l_value = negate_literal(l_value, l_tid)
-#        eval_assign_dispatch(left, r_value),
+    #        eval_assign_dispatch(left, r_value),
     elif opid == TK.POS:
         pass
     else:
@@ -154,7 +182,3 @@ def evaluate_unary_operation(node, left):
 
     left = c_box(left, l_value)
     return left
-
-
-def invoke_fn(node, args):
-    pass

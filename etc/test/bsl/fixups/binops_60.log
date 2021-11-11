@@ -5,7 +5,7 @@ false <| empty
 
 tree1:  false <| empty
     1  : BinOp(TK.FALL_BELOW, '<|')
-    2  :     Bool(TK.FALSE, False)
+    2  :     Bool(TK.BOOL, False)
     3  :     Set(TK.EMPTY, {})
 
 tree1:(post)  false <| empty

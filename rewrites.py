@@ -86,9 +86,12 @@ class RewriteFnCall2DefineFn(RewriteGets2Refs, ABC):
         super().__init__(mapping=m, apply_parent_fixups=apply_parent_fixups)
 
     def rewrite_fncall(self, node, label=None):
+        assert node.left is not None, "Invalid node passed to rewrite_fncall. node.left is None"
         node.left = self.visit(node.left)
-        node.right = self.visit(node.right)
+        if node.right is not None:
+            node.right = self.visit(node.right)
         n = FnDef(ref=node.left, op=node.token, plist=node.right, loc=node.token.location)
         node.left.parent = n
-        node.right.parent = n
+        if node.right is not None:
+            node.right.parent = n
         return n
