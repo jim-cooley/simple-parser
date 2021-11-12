@@ -3,7 +3,7 @@ from enum import unique, IntEnum
 from runtime.dataframe import create_dataset, create_series
 from runtime.intrinsics import do_now, do_print, init_print
 
-from environment.scope import IntrinsicFunction
+from runtime.scope import IntrinsicFunction
 from runtime.yahoo import do_yahoo, init_yahoo
 
 

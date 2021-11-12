@@ -4,10 +4,10 @@ from datetime import datetime, time, timedelta
 from enum import Enum
 from functools import total_ordering
 
-from environment.scope import Object
-from environment.token_class import TCL
-from environment.token import Token
-from environment.token_ids import TK
+from runtime.scope import Object
+from runtime.token_class import TCL
+from runtime.token import Token
+from runtime.token_ids import TK
 
 
 class DUR(Enum):

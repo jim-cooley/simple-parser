@@ -1,6 +1,6 @@
-from environment.literals import Literal
-from environment.tree import Ref, UnaryOp, Command, PropRef, BinOp, FnCall
-from environment.visitor import NodeVisitor, BINARY_NODE, UNARY_NODE, SEQUENCE_NODE, DEFAULT_NODE, VALUE_NODE, NATIVE_VALUE, \
+from runtime.literals import Literal
+from runtime.tree import Ref, UnaryOp, Command, PropRef, BinOp, FnCall
+from runtime.visitor import NodeVisitor, BINARY_NODE, UNARY_NODE, SEQUENCE_NODE, DEFAULT_NODE, VALUE_NODE, NATIVE_VALUE, \
     ASSIGNMENT_NODE, TRINARY_NODE
 
 from interpreter.notation_fn import FunctionalNotationPrinter

@@ -1,10 +1,10 @@
 # abstract syntax trees:
 from dataclasses import dataclass
 
-from environment.token_data import _EXPRESSION_TOKENS
-from environment.token_class import TCL
-from environment.token import Token
-from environment.token_ids import TK
+from runtime.token_data import EXPRESSION_TOKENS
+from runtime.token_class import TCL
+from runtime.token import Token
+from runtime.token_ids import TK
 
 
 # base classes:
@@ -119,7 +119,7 @@ class BinOp(Expression):
         self.left = left
         self.right = right
         self.op = op.id
-        if op.id in _EXPRESSION_TOKENS:
+        if op.id in EXPRESSION_TOKENS:
             self.is_lvalue = False
         if left is not None:
             left.parent = self

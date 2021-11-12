@@ -1,6 +1,6 @@
-from environment.conversion import c_to_int, c_to_float, c_to_bool
-from environment.exceptions import runtime_error
-from environment.token_ids import TK
+from runtime.conversion import c_to_int, c_to_float, c_to_bool
+from runtime.exceptions import runtime_error
+from runtime.token_ids import TK
 
 
 def apply_chain(l_expr, tid):

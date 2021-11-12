@@ -1,13 +1,13 @@
 from copy import deepcopy
 
-from environment.conversion import c_unbox
-from environment.environment import Environment
-from environment.exceptions import runtime_error
-from environment.indexdict import IndexedDict
-from environment.literals import Literal
-from environment.scope import Block, Scope
-from environment.tree import FnCall, Define, Ref
-from environment.visitor import TreeFilter
+from runtime.conversion import c_unbox
+from runtime.environment import Environment
+from runtime.exceptions import runtime_error
+from runtime.indexdict import IndexedDict
+from runtime.literals import Literal
+from runtime.scope import Block, Scope
+from runtime.tree import FnCall, Define, Ref
+from runtime.visitor import TreeFilter
 
 from runtime.eval_unary import is_true
 from runtime.evaluate import reduce_value, evaluate_binary_operation, evaluate_unary_operation, evaluate_identifier, \

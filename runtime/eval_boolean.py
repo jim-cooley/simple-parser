@@ -1,7 +1,7 @@
-from environment.conversion import c_to_bool, c_to_float, c_to_int
-from environment.environment import Environment
-from environment.exceptions import runtime_error
-from environment.token_ids import TK
+from runtime.conversion import c_to_bool, c_to_float, c_to_int
+from runtime.environment import Environment
+from runtime.exceptions import runtime_error
+from runtime.token_ids import TK
 
 # --------------------------------------------------------------------------------------------------
 # NOTE: This is a generated file.  Please port any manual changes to tool/generate_evaluate.py

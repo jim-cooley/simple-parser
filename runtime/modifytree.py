@@ -1,7 +1,7 @@
 # a tree filter that can modify the tree structure
 from abc import ABC, abstractmethod
 
-from environment.visitor import NodeVisitor
+from runtime.visitor import NodeVisitor
 
 
 class TreeModifier(NodeVisitor, ABC):

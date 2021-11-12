@@ -5,11 +5,11 @@ from copy import deepcopy
 from dataclasses import dataclass
 from queue import SimpleQueue
 
-from environment.indexdict import IndexedDict
-from environment.token_class import TCL
-from environment.token import Token
-from environment.token_ids import TK
-from environment.tree import AST, Expression
+from runtime.indexdict import IndexedDict
+from runtime.token_class import TCL
+from runtime.token import Token
+from runtime.token_ids import TK
+from runtime.tree import AST, Expression
 
 
 @dataclass

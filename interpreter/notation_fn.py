@@ -4,10 +4,10 @@
 #
 from enum import IntEnum
 
-from environment.literals import Set
-from environment.token_class import TCL
-from environment.token_ids import TK
-from environment.visitor import TreeFilter, BINARY_NODE, UNARY_NODE, SEQUENCE_NODE, NATIVE_LIST, ASSIGNMENT_NODE, VALUE_NODE, \
+from runtime.literals import Set
+from runtime.token_class import TCL
+from runtime.token_ids import TK
+from runtime.visitor import TreeFilter, BINARY_NODE, UNARY_NODE, SEQUENCE_NODE, NATIVE_LIST, ASSIGNMENT_NODE, VALUE_NODE, \
     DEFAULT_NODE, NATIVE_VALUE, TRINARY_NODE
 
 

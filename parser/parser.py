@@ -1,20 +1,20 @@
 from copy import copy
 from dataclasses import dataclass
 
-from environment.exceptions import SemtexError
-from environment.token_data import _ADDITION_TOKENS, _COMPARISON_TOKENS, _FLOW_TOKENS, \
-    _EQUALITY_TEST_TOKENS, _LOGIC_TOKENS, _MULTIPLICATION_TOKENS, _UNARY_TOKENS, _IDENTIFIER_TYPES, _ASSIGNMENT_TOKENS, \
-    _SET_UNARY_TOKENS, _IDENTIFIER_TOKENS, _IDENTIFIER_TOKENS_EX, _ASSIGNMENT_TOKENS_REF, \
-    _VALUE_TOKENS
-from environment.token_class import TCL
-from environment.token import Token, TK_EMPTY
-from environment.token_ids import TK
-from environment.tree import UnaryOp, BinOp, Command, Assign, Get, FnCall, Index, PropRef, Define, DefineFn, DefineVar, \
+from runtime.exceptions import SemtexError
+from runtime.token_data import ADDITION_TOKENS, COMPARISON_TOKENS, FLOW_TOKENS, \
+    EQUALITY_TEST_TOKENS, LOGIC_TOKENS, MULTIPLICATION_TOKENS, UNARY_TOKENS, IDENTIFIER_TYPES, ASSIGNMENT_TOKENS, \
+    SET_UNARY_TOKENS, IDENTIFIER_TOKENS, IDENTIFIER_TOKENS_EX, ASSIGNMENT_TOKENS_REF, \
+    VALUE_TOKENS
+from runtime.token_class import TCL
+from runtime.token import Token, TK_EMPTY
+from runtime.token_ids import TK
+from runtime.tree import UnaryOp, BinOp, Command, Assign, Get, FnCall, Index, PropRef, Define, DefineFn, DefineVar, \
     DefineVarFn, ApplyChainProd, Ref, FnRef, Return, IfThenElse
-from environment.scope import Block, Flow
-from environment.literals import Duration, Float, Int, Percent, Str, Time, Bool, List, Set, LIT_EMPTY, Literal
+from runtime.scope import Block, Flow
+from runtime.literals import Duration, Float, Int, Percent, Str, Time, Bool, List, Set, LIT_EMPTY, Literal
 from interpreter.treeprint import TreePrint
-from environment.rewrites import RewriteGets2Refs, RewriteFnCall2DefineFn, RewriteFnCall2FnDef
+from runtime.rewrites import RewriteGets2Refs, RewriteFnCall2DefineFn, RewriteFnCall2FnDef
 
 from parser.lexer import Lexer
 
@@ -140,11 +140,11 @@ class Parser(object):
                 else:
                     self.logger.error("Expected '{' or '(' after ':')"
                                       f'{self.peek()}', self.peek().location)
-            if self.peek().id in _FLOW_TOKENS:
+            if self.peek().id in FLOW_TOKENS:
                 return self.parse_flow(node)
             else:
                 return node
-        elif self.check(_SET_UNARY_TOKENS):
+        elif self.check(SET_UNARY_TOKENS):
             if self.peek(1).id != TK.COLN:
                 return self.expression()
             self.consume(tk.id)
@@ -224,13 +224,13 @@ class Parser(object):
             node = self.tuple()
             if node is None:
                 return None
-            if self.peek().id in _FLOW_TOKENS:
+            if self.peek().id in FLOW_TOKENS:
                 return self.parse_flow(node)
         return node
 
     def parse_flow(self, node=None):
         op = copy(self.peek())
-        while op.id in _FLOW_TOKENS:
+        while op.id in FLOW_TOKENS:
             sep = op.id
             seq = Flow(op.remap2binop(), [node] if node is not None else [])
             while self.match1(sep):
@@ -260,7 +260,7 @@ class Parser(object):
         op = self.peek()
         if op.id == TK.COLN:
             tid = l_expr.token.id
-            if tid in _SET_UNARY_TOKENS:
+            if tid in SET_UNARY_TOKENS:
                 op.id = tid
                 op.lexeme = l_expr.token.lexeme + ':'
                 self.advance()
@@ -282,8 +282,8 @@ class Parser(object):
         op = self.peek()
         if op.id in [TK.GTR2, TK.APPLY]:
             return l_expr
-        elif self.match(_ASSIGNMENT_TOKENS):
-            if l_expr.token.id in _IDENTIFIER_TOKENS_EX:
+        elif self.match(ASSIGNMENT_TOKENS):
+            if l_expr.token.id in IDENTIFIER_TOKENS_EX:
                 if hasattr(l_expr, 'left'):
                     if l_expr.left.token.is_reserved:
                         self.logger.error(f'Invalid assignment target: {l_expr.left.token.lexeme} is reserved',
@@ -296,7 +296,7 @@ class Parser(object):
                     self.logger.error(f'Invalid assignment target: {l_expr.left.token.lexeme}', op.location)
             self.logger.error(f'Invalid assignment target: {l_expr.token}', op.location)
         elif self.match1(TK.EQGT):
-            if l_expr.token.id not in _IDENTIFIER_TOKENS_EX:
+            if l_expr.token.id not in IDENTIFIER_TOKENS_EX:
                 self.logger.error(f'Invalid assignment target: {l_expr.token}', op.location)
             r_expr = self.block_expr2()
             l_expr = _rewriteFnCall2FnDef(l_expr)
@@ -330,8 +330,8 @@ class Parser(object):
         return self.expression()
 
     def process_assignment(self, op, l_expr, r_expr):
-        if l_expr.token.id in _IDENTIFIER_TOKENS_EX or l_expr.token.t_class is TCL.IDENTIFIER:
-            if op.id in _ASSIGNMENT_TOKENS_REF:
+        if l_expr.token.id in IDENTIFIER_TOKENS_EX or l_expr.token.t_class is TCL.IDENTIFIER:
+            if op.id in ASSIGNMENT_TOKENS_REF:
                 l_expr = _rewriteFnCall2Definition(l_expr)
             if op.id in [TK.EQLS, TK.EQGT]:
                 if isinstance(l_expr, FnCall) or isinstance(l_expr, FnRef) or isinstance(l_expr, DefineFn):
@@ -351,7 +351,7 @@ class Parser(object):
     def boolean_expr(self):
         node = self.equality()
         op = self.peek()
-        while self.match(_LOGIC_TOKENS):
+        while self.match(LOGIC_TOKENS):
             node = BinOp(left=node, op=op.remap2binop(), right=self.equality())
             op = self.peek()
         return node
@@ -359,7 +359,7 @@ class Parser(object):
     def equality(self):
         node = self.comparison()
         op = self.peek()
-        while self.match(_EQUALITY_TEST_TOKENS):
+        while self.match(EQUALITY_TEST_TOKENS):
             node = BinOp(left=node, op=op.remap2binop(), right=self.comparison())
             op = self.peek()
         return node
@@ -367,7 +367,7 @@ class Parser(object):
     def comparison(self):
         node = self.term()
         op = self.peek()
-        while self.match(_COMPARISON_TOKENS):
+        while self.match(COMPARISON_TOKENS):
             node = BinOp(left=node, op=op.remap2binop(), right=self.term())
             op = self.peek()
         return node
@@ -375,7 +375,7 @@ class Parser(object):
     def term(self):
         node = self.factor()
         op = self.peek()
-        while self.match(_ADDITION_TOKENS):
+        while self.match(ADDITION_TOKENS):
             node = BinOp(left=node, op=op.remap2binop(), right=self.factor())
             op = self.peek()
         return node
@@ -383,7 +383,7 @@ class Parser(object):
     def factor(self):
         l_node = self.unary()
         op = self.peek()
-        while self.match(_MULTIPLICATION_TOKENS):
+        while self.match(MULTIPLICATION_TOKENS):
             r_node = self.unary()
             # fixup for lack of 2-state lookahead: 1..2 scans as ['1.', '.', '2'] but scanner can only backup 1 token.
             if op.id == TK.DOT:
@@ -405,7 +405,7 @@ class Parser(object):
 
     def unary(self):
         op = self.peek()
-        if self.match(_UNARY_TOKENS):
+        if self.match(UNARY_TOKENS):
             node = UnaryOp(op.remap2unop(), self.unary())
             return node
         node = self.prime()
@@ -459,7 +459,7 @@ class Parser(object):
             node = List(self.sequence(), token.remap2litval())
             self.consume(TK.RBRK)
             return node
-        elif token.t_class in _IDENTIFIER_TYPES or token.id in [TK.IDNT, TK.ANON]:
+        elif token.t_class in IDENTIFIER_TYPES or token.id in [TK.IDNT, TK.ANON]:
             return self.identifier()
         else:
             return node
@@ -487,12 +487,12 @@ class Parser(object):
                     if decl.token.id not in [TK.COLN, TK.EQLS]:
                         is_lvalue_strict = is_lvalue = False
                 if is_lvalue_strict:
-                    if decl.token.id not in _VALUE_TOKENS:
+                    if decl.token.id not in VALUE_TOKENS:
                         if decl.token.id not in [TK.COLN]:
                             is_lvalue_strict = False
                             if hasattr(decl, 'right'):
                                 if decl.right is not None:
-                                    if decl.right.token.id in _VALUE_TOKENS:
+                                    if decl.right.token.id in VALUE_TOKENS:
                                         is_lvalue_strict = True
                                 else:
                                     is_lvalue_strict = False
@@ -525,7 +525,7 @@ class Parser(object):
             if tk.t_class == TCL.FUNCTION:
                 node = FnCall(ref=Get(tk), parameters=None)
             else:
-                is_lval = self.check(_ASSIGNMENT_TOKENS_REF)
+                is_lval = self.check(ASSIGNMENT_TOKENS_REF)
                 node = Ref(tk) if is_lval else Get(tk)
         return node
 
@@ -682,7 +682,7 @@ def _rewriteFnCall2FnDef(node):
 
 
 def _is_valid_l_value(l_expr):
-    if l_expr.token.id in _IDENTIFIER_TOKENS:
+    if l_expr.token.id in IDENTIFIER_TOKENS:
         return True
     elif isinstance(l_expr, Define):
         return True

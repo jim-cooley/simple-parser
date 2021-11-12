@@ -1,8 +1,5 @@
 from enum import unique, IntEnum, auto
 
-# CL_MAX = 37  # CL.MAX
-
-
 @unique
 class TCL(IntEnum):
     NONE = 0

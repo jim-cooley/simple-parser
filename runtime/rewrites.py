@@ -3,9 +3,9 @@
 #
 from abc import ABC
 
-from environment.modifytree import TreeModifier
-from environment.tree import FnRef, Ref
-from environment.visitor import BINARY_NODE, UNARY_NODE, SEQUENCE_NODE
+from runtime.modifytree import TreeModifier
+from runtime.tree import FnRef, Ref
+from runtime.visitor import BINARY_NODE, UNARY_NODE, SEQUENCE_NODE
 
 _rewriteBaseNodeTypeMapping = {
     'ApplyChainProd': BINARY_NODE,

@@ -1,8 +1,8 @@
 from enum import IntEnum, unique, auto
 from queue import SimpleQueue
 
-from environment import exceptions
-from environment.environment import Environment
+from runtime import exceptions
+from runtime.environment import Environment
 
 from interpreter.interpreter import Interpreter, _interpreterVisitNodeMappings
 

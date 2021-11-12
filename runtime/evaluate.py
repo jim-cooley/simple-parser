@@ -1,10 +1,10 @@
-from environment.environment import Environment
-from environment.stack import RuntimeStack
-from environment.conversion import c_unbox, c_box
-from environment.exceptions import runtime_error, runtime_strict_warning, getLogFacility
-from environment.literals import LIT_NONE
-from environment.token_ids import TK
-from environment.tree import Ref
+from runtime.environment import Environment
+from runtime.stack import RuntimeStack
+from runtime.conversion import c_unbox, c_box
+from runtime.exceptions import runtime_error, runtime_strict_warning, getLogFacility
+from runtime.literals import LIT_NONE
+from runtime.token_ids import TK
+from runtime.tree import Ref
 
 from runtime.eval_assignment import eval_assign_dispatch, _SUPPORTED_ASSIGNMENT_TOKENS
 from runtime.eval_binops import eval_binops_dispatch, _binops_dispatch_table

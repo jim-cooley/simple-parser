@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
-from environment.indexdict import IndexedDict
-from environment.scope import Object
+from runtime.indexdict import IndexedDict
+from runtime.scope import Object
 import pandas as pd
 
 

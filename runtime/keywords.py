@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 
-from environment.scope import Scope, IntrinsicFunction
-from environment.token_class import TCL
-from environment.token_ids import TK
+from runtime.scope import Scope, IntrinsicFunction
+from runtime.token_class import TCL
+from runtime.token_ids import TK
 
 from runtime.dispatch import init_intrinsic, _intrinsic_fundesc, _intrinsic_not_impl
 

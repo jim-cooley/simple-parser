@@ -1,7 +1,7 @@
-from environment.conversion import c_unbox
-from environment.environment import Environment
-from environment.exceptions import runtime_error
-from environment.token_ids import TK
+from runtime.conversion import c_unbox
+from runtime.environment import Environment
+from runtime.exceptions import runtime_error
+from runtime.token_ids import TK
 
 from runtime.eval_boolean import _boolean_dispatch_table, eval_boolean_dispatch
 

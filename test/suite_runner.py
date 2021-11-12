@@ -3,7 +3,7 @@ import traceback
 from abc import abstractmethod, ABC
 from multiprocessing import SimpleQueue
 
-from environment.environment import Environment
+from runtime.environment import Environment
 from interpreter.treeprint import print_forest, print_node
 
 _LOG_DIRECTORY = "./etc/test/log"

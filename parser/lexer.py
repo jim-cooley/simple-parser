@@ -3,11 +3,11 @@ from dataclasses import dataclass
 from enum import IntEnum
 
 import parser.statedef as _
-from environment.keywords import Keywords
-from environment.token_data import u16_to_tkid
-from environment.token_class import TCL
-from environment.token import Token, TK_EOF
-from environment.token_ids import TK
+from runtime.keywords import Keywords
+from runtime.token_data import u16_to_tkid
+from runtime.token_class import TCL
+from runtime.token import Token, TK_EOF
+from runtime.token_ids import TK
 
 _MAX_TOKEN_LEN = 128
 

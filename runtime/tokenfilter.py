@@ -1,5 +1,5 @@
-from environment.token import Token
-from environment.token_ids import TK
+from runtime.token import Token
+from runtime.token_ids import TK
 
 
 # can operate as a filter on a token stream (allows filtering, fixups pre-parsing)

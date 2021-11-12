@@ -1,12 +1,12 @@
 from dataclasses import dataclass
 
-from environment import exceptions
-from environment.exceptions import getLogFacility
-from environment.indexdict import IndexedDict
-from environment.keywords import Keywords
-from environment.scope import Scope
+from runtime import exceptions
+from runtime.exceptions import getLogFacility
+from runtime.indexdict import IndexedDict
+from runtime.keywords import Keywords
+from runtime.scope import Scope
 
-from environment.stack import RuntimeStack
+from runtime.stack import RuntimeStack
 
 _option_defaults = {
     'strict': False,    # option_strict forces variables to be defined before they are used

@@ -1,6 +1,6 @@
 from enum import unique, IntEnum, auto
 
-from environment.token_ids import TK
+from runtime.token_ids import TK
 
 
 # character class definitions: these need to be coordinated with column order in the state table

@@ -5,10 +5,10 @@ import os
 import pandas as pd
 import requests as requests
 
-from environment.conversion import c_unbox
-from environment.indexdict import IndexedDict
-from environment.literals import Duration, Literal
-from environment.scope import IntrinsicFunction, Object
+from runtime.conversion import c_unbox
+from runtime.indexdict import IndexedDict
+from runtime.literals import Duration, Literal
+from runtime.scope import IntrinsicFunction, Object
 
 from runtime.dataframe import print_dataframe, Dataset
 from runtime.intrinsics import get_now

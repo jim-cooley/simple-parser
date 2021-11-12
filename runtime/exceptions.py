@@ -1,8 +1,8 @@
 # parsing and semantic analysis exception handling and helper functions
 import traceback
 
-from environment.indexdict import IndexedDict
-from environment.logwriter import IndentedLogWriter
+from runtime.indexdict import IndexedDict
+from runtime.logwriter import IndentedLogWriter
 
 
 class SemtexError(Exception):

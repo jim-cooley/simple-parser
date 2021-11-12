@@ -5,10 +5,10 @@
 from copy import copy
 from datetime import timedelta
 
-from environment.exceptions import runtime_error
-from environment.literals import Bool, Int, Float, _parse_duration
-from environment.token_data import native2tkid
-from environment.token_ids import TK
+from runtime.exceptions import runtime_error
+from runtime.literals import Bool, Int, Float, _parse_duration
+from runtime.token_data import native2tkid
+from runtime.token_ids import TK
 
 
 # --------------------------------

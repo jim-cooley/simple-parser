@@ -1,7 +1,7 @@
 from datetime import datetime
-from environment.literals import Time
-from environment.exceptions import getLogFacility
-from environment.scope import IntrinsicFunction
+from runtime.literals import Time
+from runtime.exceptions import getLogFacility
+from runtime.scope import IntrinsicFunction
 
 
 # -----------------------------------

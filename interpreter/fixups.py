@@ -2,14 +2,14 @@
 
 from abc import ABC
 
-from environment.conversion import c_unbox, c_type
-from environment.tree import AST
-from environment.literals import List, Literal, Bool
-from environment.modifytree import TreeModifier
-from environment.token_class import TCL
-from environment.token import Token
-from environment.token_ids import TK
-from environment.visitor import BINARY_NODE, NATIVE_LIST, DEFAULT_NODE, VALUE_NODE, SEQUENCE_NODE
+from runtime.conversion import c_unbox, c_type
+from runtime.tree import AST
+from runtime.literals import List, Literal, Bool
+from runtime.modifytree import TreeModifier
+from runtime.token_class import TCL
+from runtime.token import Token
+from runtime.token_ids import TK
+from runtime.visitor import BINARY_NODE, NATIVE_LIST, DEFAULT_NODE, VALUE_NODE, SEQUENCE_NODE
 
 from runtime.eval_binops import eval_binops_dispatch_fixup
 from runtime.eval_unary import decrement_literal, increment_literal, negate_literal, not_literal

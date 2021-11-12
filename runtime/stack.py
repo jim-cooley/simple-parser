@@ -1,7 +1,7 @@
 from collections import deque
 from dataclasses import dataclass
 
-from environment import exceptions
+from runtime import exceptions
 
 
 @dataclass

@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 
-from environment.token_data import _tk2binop, _tk2lit, _tk2unop, _tk2type
-from environment.token_class import TCL
-from environment.token_ids import TK
+from runtime.token_data import _tk2binop, _tk2lit, _tk2unop, _tk2type
+from runtime.token_class import TCL
+from runtime.token_ids import TK
 
 
 @dataclass
