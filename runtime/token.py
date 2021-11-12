@@ -94,10 +94,66 @@ class Token:
     def format_tt(tt):
         return f'TT.{tt.name}' if hasattr(tt, "name") else f'TT({tt})'
 
+    @staticmethod
+    def APPLY(loc=None, lex=None):
+        return Token(tid=TK.APPLY, tcl=TCL.UNARY, lex=lex or '>>', loc=loc)
 
-TK_EOF = Token(TK.EOF, TCL.LITERAL, '', None)
-TK_EMPTY = Token(TK.EMPTY, TCL.LITERAL, '{}', {})
-TK_NONE = Token(TK.NONE, TCL.LITERAL, '', None)
-TK_SET = Token(TK.SET, TCL.LITERAL, '{', None)
-TK_ASSIGN = Token(TK.ASSIGN, TCL.FUNCTION)
-TK_DEFINE = Token(TK.DEFINE, TCL.FUNCTION)
+    @staticmethod
+    def ASSIGN(loc=None):
+        return Token(tid=TK.ASSIGN, tcl=TCL.FUNCTION, val=None, loc=loc)
+
+    @staticmethod
+    def BLOCK(loc=None):
+        return Token(tid=TK.BLOCK, tcl=TCL.SCOPE, loc=loc)
+
+    @staticmethod
+    def DEFINE(loc=None):
+        return Token(tid=TK.DEFINE, tcl=TCL.FUNCTION, val=None, loc=loc)
+
+    @staticmethod
+    def EMPTY(loc=None):
+        return Token(TK.EMPTY, TCL.LITERAL, '{}', val={}, loc=loc)
+
+    @staticmethod
+    def EOF(loc=None):
+        return Token(TK.EOF, TCL.LITERAL, '', val=None, loc=loc)
+
+    @staticmethod
+    def FNCALL(name=None, loc=None):
+        return Token(tid=TK.FUNCTION, tcl=TCL.FUNCTION, lex=name, loc=loc)
+
+    @staticmethod
+    def FUNCTION(name=None, tid=None, loc=None):
+        return Token(tid=tid or TK.IDNT, tcl=TCL.FUNCTION, lex=name, loc=loc)
+
+    @staticmethod
+    def IF(loc=None):
+        return Token(tid=TK.IF, tcl=TCL.BINOP, lex='if', loc=loc)
+
+    @staticmethod
+    def INDEX(loc=None):
+        return Token(tid=TK.INDEX, tcl=TCL.BINOP, lex="[", loc=loc)
+
+    @staticmethod
+    def LIST(value=None, loc=None):
+        return Token(tid=TK.LIST, tcl=TCL.LITERAL, lex='', val=value, loc=loc)
+
+    @staticmethod
+    def NONE(loc=None):
+        return Token(tid=TK.NONE, tcl=TCL.LITERAL, lex='', val=None, loc=loc)
+
+    @staticmethod
+    def RAISE(loc=None, lex=None):
+        return Token(tid=TK.RAISE, tcl=TCL.UNARY, lex=lex, loc=loc)
+
+    @staticmethod
+    def REF(loc=None):
+        return Token(tid=TK.REF, tcl=TCL.BINOP, lex=".", loc=loc)
+
+    @staticmethod
+    def SET(value=None, loc=None):
+        return Token(tid=TK.SET, tcl=TCL.LITERAL, lex='', val=value, loc=loc)
+
+    @staticmethod
+    def TUPLE(loc=None):
+        return Token(TK.TUPLE, tcl=TCL.TUPLE, lex='', val=None, loc=loc)

@@ -115,7 +115,6 @@ class Assign(Expression):
 class BinOp(Expression):
     def __init__(self, left=None, op=None, right=None, is_lvalue=None):
         super().__init__(token=op, is_lvalue=True if is_lvalue is None else is_lvalue)
-#       op.t_class = TCL.BINOP
         self.left = left
         self.right = right
         self.op = op.id
@@ -228,8 +227,8 @@ class Apply(Define):
 
 @dataclass
 class ApplyChainProd(Apply):
-    def __init__(self, left, op, is_lvalue=False):
-        op = Token(tid=TK.APPLY, tcl=TCL.BINOP, lex=">>", loc=loc) if op is None else op
+    def __init__(self, left, op, loc=None, is_lvalue=False):
+        op = Token.APPLY(lex=">>", loc=loc) if op is None else op
         super().__init__(left=left, op=op, is_lvalue=is_lvalue)
 
     def format(self):
@@ -311,7 +310,7 @@ class Get(Ref):
 class FnRef(BinOp):
     def __init__(self, ref=None, parameters=None, op=None, is_lvalue=True):
         assert ref is not None, "Ref not passed to FnRef constructor"
-        op = Token(tid=TK.FUNCTION, tcl=TCL.FUNCTION, lex=ref.name or "", loc=ref.location) if op is None else op
+        op = Token.FUNCTION(name=ref.name or "", loc=ref.location) if op is None else op
         super().__init__(left=ref, op=op, right=parameters, is_lvalue=is_lvalue)
         self.name = ref.name
         if parameters is not None:
@@ -324,14 +323,14 @@ class FnRef(BinOp):
 class FnCall(FnRef):
     def __init__(self, ref=None, parameters=None, op=None, is_lvalue=True):
         assert ref is not None, "no Ref passed to FnCall constructor"
-        op = Token(tid=TK.FUNCTION, tcl=TCL.FUNCTION, lex=ref.name, loc=ref.location) if op is None else op
+        op = Token.FNCALL(name=ref.name, loc=ref.location) if op is None else op
         super().__init__(ref=ref, op=op, parameters=parameters, is_lvalue=is_lvalue)
 
 
 @dataclass
 class IfThenElse(TernaryOp):
     def __init__(self, test=None, then=None, els=None, is_lvalue=False):
-        op = Token(tid=TK.IF, tcl=TCL.BINOP, lex='if', loc=test.token.lexeme)
+        op = Token.IF(loc=test.token.lexeme)
         super().__init__(op=op, left=test, right=then, mid=els, is_lvalue=is_lvalue)
 
     @property
@@ -351,15 +350,14 @@ class IfThenElse(TernaryOp):
 class Index(FnCall):
     def __init__(self, ref=None, parameters=None, is_lvalue=True):
         assert ref is not None, "no Ref passed to Index constructor"
-        super().__init__(ref=ref, parameters=parameters,
-                         op=Token(tid=TK.INDEX, tcl=TCL.BINOP, lex="[", loc=ref.location), is_lvalue=is_lvalue)
+        super().__init__(ref=ref, parameters=parameters, op=Token.INDEX(loc=ref.location), is_lvalue=is_lvalue)
 
 
 @dataclass
 class PropRef(BinOp):
     def __init__(self, ref=None, member=None, op=None, is_lvalue=True):
         assert ref is not None, "no Ref passed to PropRef constructor"
-        op = Token(tid=TK.REF, tcl=TCL.BINOP, lex=".", loc=ref.location) if op is None else op
+        op = Token.REF(loc=ref.location) if op is None else op
         super().__init__(left=ref, op=op, right=member, is_lvalue=is_lvalue)
 
 

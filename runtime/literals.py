@@ -37,7 +37,7 @@ class Literal(Object):
     @staticmethod
     def lit(val, tid=None, other=None, loc=None):
         if val is None:
-            return LIT_NONE
+            return Literal.NONE(loc=loc)
         if other is not None:
             if other.token is not None:
                 loc = other.token.location
@@ -57,6 +57,14 @@ class Literal(Object):
             return Duration(value=val)
         else:
             return Literal(value=val)
+
+    @staticmethod
+    def EMPTY(loc=None):
+        return Set(token=Token.EMPTY(loc=loc))
+
+    @staticmethod
+    def NONE(loc=None):
+        return Literal(token=Token.NONE(loc=loc))
 
 
 @dataclass
@@ -485,8 +493,3 @@ def _parse_duration_units(units):
     elif units in ("s", "sec", "seconds"):
         dur = DUR.SECOND
     return dur
-
-
-# TODO: make these classes if we need to keep them singletons & compare on them, etc
-LIT_EMPTY = Set(token=Token(tid=TK.EMPTY, tcl=TCL.LITERAL, lex="{}", val=None))
-LIT_NONE = Literal(token=Token(tid=TK.NONE, tcl=TCL.LITERAL, lex="none", val=None))

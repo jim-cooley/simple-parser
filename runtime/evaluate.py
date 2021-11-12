@@ -2,7 +2,7 @@ from runtime.environment import Environment
 from runtime.stack import RuntimeStack
 from runtime.conversion import c_unbox, c_box
 from runtime.exceptions import runtime_error, runtime_strict_warning, getLogFacility
-from runtime.literals import LIT_NONE
+from runtime.literals import Literal
 from runtime.token_ids import TK
 from runtime.tree import Ref
 
@@ -84,7 +84,7 @@ def evaluate_binary_operation(node, left, right):
         scope = Environment.current.scope
         symbol = scope.define(left.token.lexeme)
         ref = symbol.define(right.token.lexeme, local=True)
-        return ref if ref is not None else LIT_NONE
+        return ref if ref is not None else Literal.NONE(right.token.location)
     elif op in [TK.ASSIGN, TK.DEFINE, TK.APPLY]:
         if op in _SUPPORTED_ASSIGNMENT_TOKENS:
             return eval_assign_dispatch(node, left, right)

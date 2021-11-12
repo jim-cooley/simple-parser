@@ -7,12 +7,13 @@ from runtime.indexdict import IndexedDict
 from runtime.literals import Literal
 from runtime.scope import Block, Scope
 from runtime.tree import FnCall, Define, Ref
-from runtime.visitor import TreeFilter
 
 from runtime.eval_unary import is_true
 from runtime.evaluate import reduce_value, evaluate_binary_operation, evaluate_unary_operation, evaluate_identifier, \
     evaluate_set, reduce_get, reduce_propref, reduce_ref, update_ref
 from runtime.dispatch import is_intrinsic, invoke_intrinsic
+
+from interpreter.visitor import TreeFilter
 
 
 _VISIT_IDENT = 'visit_ident'

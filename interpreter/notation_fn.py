@@ -4,10 +4,9 @@
 #
 from enum import IntEnum
 
-from runtime.literals import Set
-from runtime.token_class import TCL
+from runtime.literals import Set, Literal
 from runtime.token_ids import TK
-from runtime.visitor import TreeFilter, BINARY_NODE, UNARY_NODE, SEQUENCE_NODE, NATIVE_LIST, ASSIGNMENT_NODE, VALUE_NODE, \
+from interpreter.visitor import TreeFilter, BINARY_NODE, UNARY_NODE, SEQUENCE_NODE, NATIVE_LIST, ASSIGNMENT_NODE, VALUE_NODE, \
     DEFAULT_NODE, NATIVE_VALUE, TRINARY_NODE
 
 
@@ -302,7 +301,7 @@ class FunctionalNotationPrinter(TreeFilter):
         val = ''
         if token is not None:
             val = f'{_tk2pfx[token.id]}' if token.id in _tk2pfx else token.lexeme
-            if token.id not in [TK.LIST, TK.SET] and token.t_class == TCL.LITERAL:
+            if isinstance(token, Literal) and token.id not in [TK.LIST, TK.SET]:
                 v = f'{value}'
                 val = f'{val}({v.lower()})'
         self._print(f'{val}', append=append)

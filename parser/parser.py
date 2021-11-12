@@ -7,15 +7,14 @@ from runtime.token_data import ADDITION_TOKENS, COMPARISON_TOKENS, FLOW_TOKENS, 
     SET_UNARY_TOKENS, IDENTIFIER_TOKENS, IDENTIFIER_TOKENS_EX, ASSIGNMENT_TOKENS_REF, \
     VALUE_TOKENS
 from runtime.token_class import TCL
-from runtime.token import Token, TK_EMPTY
+from runtime.token import Token
 from runtime.token_ids import TK
 from runtime.tree import UnaryOp, BinOp, Command, Assign, Get, FnCall, Index, PropRef, Define, DefineFn, DefineVar, \
     DefineVarFn, ApplyChainProd, Ref, FnRef, Return, IfThenElse
 from runtime.scope import Block, Flow
-from runtime.literals import Duration, Float, Int, Percent, Str, Time, Bool, List, Set, LIT_EMPTY, Literal
-from interpreter.treeprint import TreePrint
-from runtime.rewrites import RewriteGets2Refs, RewriteFnCall2DefineFn, RewriteFnCall2FnDef
+from runtime.literals import Duration, Float, Int, Percent, Str, Time, Bool, List, Set, Literal
 
+from parser.rewrites import RewriteGets2Refs, RewriteFnCall2DefineFn, RewriteFnCall2FnDef
 from parser.lexer import Lexer
 
 
@@ -247,11 +246,9 @@ class Parser(object):
                 last = last.to_ref()
             if isinstance(last, Ref):
                 if op.id in [TK.RARR, TK.RAISE]:
-                    seq.last = ApplyChainProd(last, Token(tid=TK.RAISE, tcl=TCL.UNARY, lex=seq.token.lexeme,
-                                                          loc=last.token.location))
+                    seq.last = ApplyChainProd(last, Token.RAISE(lex=seq.token.lexeme, loc=last.token.location))
                 else:
-                    seq.last = ApplyChainProd(last, Token(tid=TK.APPLY, tcl=TCL.UNARY, lex=seq.token.lexeme,
-                                                          loc=last.token.location))
+                    seq.last = ApplyChainProd(last, Token.APPLY(lex=seq.token.lexeme, loc=last.token.location))
             op = copy(self.peek())
         return node
 
@@ -306,8 +303,8 @@ class Parser(object):
                 return DefineFn(left=l_expr.left, op=op, right=r_expr, args=l_expr.right)
             elif isinstance(l_expr, Ref):
                 if isinstance(r_expr, Define):
-                    return DefineFn(left=l_expr, op=op, right=r_expr.right, args=List([r_expr.left],
-                                                                                      Token(TK.TUPLE, TCL.LITERAL)))
+                    return DefineFn(left=l_expr, op=op, right=r_expr.right,
+                                    args=List([r_expr.left], Token.TUPLE(loc=r_expr.token.location)))
             return DefineFn(left=l_expr, op=op, right=r_expr, args=None)  # parameterless function
         return l_expr
 
@@ -435,11 +432,9 @@ class Parser(object):
         elif token.id == TK.QUOT:
             node = Str(token=token)
         elif token.id == TK.EMPTY:
-            node = LIT_EMPTY
-            node.token.location = token.location
+            node = Literal.EMPTY(loc=token.location)
         elif token.id == TK.NONE:
-            node = Literal(token=token)
-            token.t_class = TCL.LITERAL
+            node = Literal.NONE(loc=token.location)
         elif token.id == TK.LBRC:
             self.advance()
             node = self.block()
@@ -497,9 +492,9 @@ class Parser(object):
                                 else:
                                     is_lvalue_strict = False
         if len(seq) == 0:
-            return Set(seq, TK_EMPTY)
+            return Set(seq, Token.EMPTY(loc=loc))
         elif is_lvalue and is_lvalue_strict:
-            return Set(seq, Token(TK.SET, TCL.LITERAL, '{', loc=loc))
+            return Set(seq, Token.SET(loc=loc))
         else:
             return Block(items=seq, loc=loc)
 
@@ -537,9 +532,7 @@ class Parser(object):
         if token.id != TK.RBRK:
             seq = self.sequence(node)
         self.consume(TK.RBRK)
-        token.t_class = TCL.TUPLE
-        token.id = TK.TUPLE
-        token.lexeme = '['  # fixup token.
+        token = Token.TUPLE(loc=token.location)
         return List(seq, token)
 
     def plist(self, node=None):
@@ -552,13 +545,11 @@ class Parser(object):
             seq = self.sequence(node)
         self.consume(TK.RPRN)
         if is_tuple or len(seq) > 1:
-            token.t_class = TCL.TUPLE
-            token.id = TK.TUPLE
+            token = Token.TUPLE(loc=token.location)
             if seq[len(seq) - 1] is None:
                 seq.pop()
         else:
-            token.id = TK.LPRN
-            token.t_class = TCL.LITERAL
+            token = Token.LIST(loc=token.location)
         token.lexeme = '('  # fixup token.
         return List(seq, token)
 
@@ -655,13 +646,6 @@ class Parser(object):
 
     def print_symbol_table(self):
         self._symbol_table.printall()
-
-    @staticmethod
-    def print_tree(node):
-        dt = TreePrint()
-        viz = dt.apply(node)
-        for v in viz:
-            print(v)
 
 
 def _rewriteGets(node):

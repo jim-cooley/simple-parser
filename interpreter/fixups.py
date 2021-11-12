@@ -3,17 +3,18 @@
 from abc import ABC
 
 from runtime.conversion import c_unbox, c_type
-from runtime.tree import AST
+from runtime.tree import AST, BinOp
 from runtime.literals import List, Literal, Bool
-from runtime.modifytree import TreeModifier
-from runtime.token_class import TCL
 from runtime.token import Token
 from runtime.token_ids import TK
-from runtime.visitor import BINARY_NODE, NATIVE_LIST, DEFAULT_NODE, VALUE_NODE, SEQUENCE_NODE
 
 from runtime.eval_binops import eval_binops_dispatch_fixup
 from runtime.eval_unary import decrement_literal, increment_literal, negate_literal, not_literal
 from runtime.evaluate import _INTRINSIC_VALUE_TYPES
+
+from interpreter.modifytree import TreeModifier
+from interpreter.visitor import BINARY_NODE, NATIVE_LIST, DEFAULT_NODE, VALUE_NODE, SEQUENCE_NODE
+
 
 _FUNCTION_NODE = BINARY_NODE
 _IDENT_NODE = 'visit_identifier'
@@ -146,7 +147,7 @@ class Fixups(TreeModifier, ABC):
             tkid = node.token.id
             if tkid == TK.TUPLE:
                 return self.convert_coln_plist(node, label)
-            if node.left.token.t_class == TCL.LITERAL and node.right.token.t_class == TCL.LITERAL:
+            if isinstance(node.left, Literal) and isinstance(node.right, Literal):
                 rnode = _fixup_binary_operation(rnode)
                 rnode = _lift(rnode, Literal.lit(rnode.value, other=rnode))
         return rnode
@@ -154,7 +155,7 @@ class Fixups(TreeModifier, ABC):
     def process_command(self, node, label=None):
         op = node.expr
         if op is not None:
-            if op.token.t_class == TCL.BINOP:
+            if isinstance(op, BinOp):
                 command = op.left.token.lexeme
                 expr = op.right
                 print(f'command: {node.token.lexeme}{command}: {expr}')
@@ -167,7 +168,7 @@ class Fixups(TreeModifier, ABC):
         if node is not None:
             tkid = node.token.id
             # this would translate the 'if' into a statement if the test reduces to a literal
-            if node.test.token.t_class == TCL.LITERAL:
+            if isinstance(node.test, Literal):
                 # rnode = _fixup_binary_operation(rnode)
                 # rnode = _lift(rnode, Literal.lit(rnode.value, other=rnode))
                 pass
@@ -184,7 +185,7 @@ class Fixups(TreeModifier, ABC):
         l_value = c_unbox(expr)
 
         opid = node.op
-        if expr.token.t_class == TCL.LITERAL:
+        if isinstance(expr, Literal):
             if opid == TK.NOT:
                 l_value = not_literal(l_value, l_tid)
                 return _lift(node, Bool(value=l_value, loc=expr.token.location))
@@ -230,7 +231,7 @@ def _lift(node, child):
 
 # fixup helpers:
 def _fixup_coln_plist(node, target):
-    plist = List([target], Token(TK.TUPLE, tcl=TCL.TUPLE, lex='(', loc=node.token.location))
+    plist = List([target], Token.TUPLE(loc=node.token.location))
     target.parent = plist
     plist.parent = node
     return plist

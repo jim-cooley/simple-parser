@@ -194,8 +194,7 @@ class Object(AST, Scope):
 @dataclass
 class Block(Expression, Object):
     def __init__(self, name=None, items=None, loc=None, is_lvalue=False):
-        op = Token(tid=TK.BLOCK, tcl=TCL.SCOPE, loc=loc)
-        super().__init__(token=op, name=name)
+        super().__init__(name=name, token=Token.BLOCK(loc))
         self.items = items if items is not None else []
         self._value = self.items
         self.is_lvalue = False
@@ -216,7 +215,7 @@ class Flow(Block):
 class Function(Block):
     def __init__(self, name=None, members=None, defaults=None, tid=None, loc=None, is_lvalue=True):
         super().__init__(name=name, items=members, loc=loc)
-        token = Token(tid=tid or TK.IDNT, tcl=TCL.FUNCTION, lex=name, loc=loc)
+        token = Token.FUNCTION(name=name, tid=tid, loc=loc)
         self.token = token
         self._value = self.items
         self.is_lvalue = is_lvalue

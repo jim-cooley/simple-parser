@@ -1,5 +1,6 @@
 from enum import unique, IntEnum, auto
 
+
 @unique
 class TCL(IntEnum):
     NONE = 0

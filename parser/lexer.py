@@ -6,7 +6,7 @@ import parser.statedef as _
 from runtime.keywords import Keywords
 from runtime.token_data import u16_to_tkid
 from runtime.token_class import TCL
-from runtime.token import Token, TK_EOF
+from runtime.token import Token
 from runtime.token_ids import TK
 
 _MAX_TOKEN_LEN = 128
@@ -50,10 +50,10 @@ class Lexer:
 
     def peek(self, rel=0):
         pos = self.pos + rel
-        return self.tokens[pos] if pos < len(self.tokens) else _tk_copy(TK_EOF)
+        return self.tokens[pos] if pos < len(self.tokens) else Token.EOF(self._loc)
 
     def read1(self):
-        t = self.tokens[self.pos] if self.pos < len(self.tokens) else _tk_copy(TK_EOF)
+        t = self.tokens[self.pos] if self.pos < len(self.tokens) else Token.EOF(self._loc)
         self.pos += 1
         self._has_more = t.id != TK.EOF
         return t
