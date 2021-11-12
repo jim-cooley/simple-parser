@@ -1,10 +1,13 @@
 f(x) = x*x
 
 def factorial(x) := {
-    x * factorial(x - 1)
+    if x == 1 then
+        return 1
+    else
+        return x * factorial(x - 1)
 }
 
 print('hello')
 f(5)
-factorial(5)
+# factorial(5)
 

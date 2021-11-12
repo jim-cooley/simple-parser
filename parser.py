@@ -9,7 +9,7 @@ from tokens import TK, TCL, _ADDITION_TOKENS, _COMPARISON_TOKENS, _FLOW_TOKENS, 
     TK_EMPTY, TK_SET, _VALUE_TOKENS
 from lexer import Lexer
 from tree import UnaryOp, BinOp, Command, Assign, Get, FnCall, Index, PropRef, Define, DefineFn, DefineVar, \
-    DefineVarFn, ApplyChainProd, Ref, FnRef
+    DefineVarFn, ApplyChainProd, Ref, FnRef, Return, IfThenElse
 from scope import Block, Flow
 from literals import Duration, Float, Int, Percent, Str, Time, Bool, List, Set, LIT_EMPTY, Literal
 from treeprint import TreePrint
@@ -88,13 +88,23 @@ class Parser(object):
             raise e
 
     def statement(self):
-        node = self.block_expr()
-        if node is None:
-            self.logger.error(f'Unexpected token: {self.peek()}', self.peek().location)
-        if self.peek().id == TK.EOF:
-            return node
-        if self.match([TK.SEMI, TK.COMA]):
-            return node
+        op = self.peek()
+        if self.match1(TK.IF):
+            test = self.block_expr()
+            self.consume(TK.THEN)
+            thn = self.block_expr()
+            els = None
+            if self.match1(TK.ELSE):
+                els = self.block_expr()
+            node = IfThenElse(test=test, then=thn, els=els)
+        else:
+            node = self.block_expr()
+            if node is None:
+                self.logger.error(f'Unexpected token: {self.peek()}', self.peek().location)
+            if self.peek().id == TK.EOF:
+                return node
+            if self.match([TK.SEMI, TK.COMA]):
+                return node
         return node
 
     # -----------------------------------
@@ -203,11 +213,15 @@ class Parser(object):
         return self.flow()
 
     def flow(self):
-        node = self.tuple()
-        if node is None:
-            return None
-        if self.peek().id in _FLOW_TOKENS:
-            return self.parse_flow(node)
+        op = self.peek()
+        if self.match1(TK.RETURN):
+            node = Return(token=op, expr=self.block_expr())
+        else:
+            node = self.tuple()
+            if node is None:
+                return None
+            if self.peek().id in _FLOW_TOKENS:
+                return self.parse_flow(node)
         return node
 
     def parse_flow(self, node=None):

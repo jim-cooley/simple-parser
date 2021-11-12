@@ -15,7 +15,10 @@ def simple(x) := {
 }
 
 def factorial(x) := {
-    x * factorial(x - 1)
+    if x == 1 then
+        return 1
+    else
+        x * factorial(x - 1)
 }
 
 # simple inline functions
@@ -97,17 +100,23 @@ tree5:  def simple(x) := {
 tree6:  def factorial(x) := {
     1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
     2  :     Ref(TK.IDNT, 'factorial')
-    3  :     Block(TK.BLOCK, v=[BinOp()], '')
-    4  :         BinOp(TK.MUL, '*')
-    5  :             Ref(TK.IDNT, 'x')
-    6  :             FnRef(TK.FUNCTION, 'factorial')
-    7  :                 Ref(TK.IDNT, 'factorial')
-    8  :                 List(TK.TUPLE, [BinOp()])
-    9  :                     BinOp(TK.SUB, '-')
-   10  :                         Ref(TK.IDNT, 'x')
-   11  :                         Int(TK.INT, 1)
-   12  :     List(TK.TUPLE, [Ref()])
-   13  :         Ref(TK.IDNT, 'x')
+    3  :     Block(TK.BLOCK, v=[IfThenElse()], '')
+    4  :         IfThenElse(TK.IF, 'if')
+    5  :             BinOp(TK.ISEQ, '==')
+    6  :                 Get(TK.IDNT, 'x')
+    7  :                 Int(TK.INT, 1)
+    8  :             Return(TK.RETURN, TK.RETURN, 'return')
+    9  :                 Int(TK.INT, 1)
+   10  :             BinOp(TK.MUL, '*')
+   11  :                 Get(TK.IDNT, 'x')
+   12  :                 FnCall('factorial')
+   13  :                     Get(TK.IDNT, 'factorial')
+   14  :                     List(TK.TUPLE, [BinOp()])
+   15  :                         BinOp(TK.SUB, '-')
+   16  :                             Get(TK.IDNT, 'x')
+   17  :                             Int(TK.INT, 1)
+   18  :     List(TK.TUPLE, [Ref()])
+   19  :         Ref(TK.IDNT, 'x')
 
 tree7:  a := 3
     1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
@@ -354,17 +363,23 @@ tree5:(post)  def simple(x) := {
 tree6:(post)  def factorial(x) := {
     1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
     2  :     Ref(TK.IDNT, 'factorial')
-    3  :     Block(TK.BLOCK, v=[BinOp()], '')
-    4  :         BinOp(TK.MUL, '*')
-    5  :             Ref(TK.IDNT, 'x')
-    6  :             FnRef(TK.FUNCTION, 'factorial')
-    7  :                 Ref(TK.IDNT, 'factorial')
-    8  :                 List(TK.TUPLE, [BinOp()])
-    9  :                     BinOp(TK.SUB, '-')
-   10  :                         Ref(TK.IDNT, 'x')
-   11  :                         Int(TK.INT, 1)
-   12  :     List(TK.TUPLE, [Ref()])
-   13  :         Ref(TK.IDNT, 'x')
+    3  :     Block(TK.BLOCK, v=[IfThenElse()], '')
+    4  :         IfThenElse(TK.IF, 'if')
+    5  :             BinOp(TK.ISEQ, '==')
+    6  :                 Get(TK.IDNT, 'x')
+    7  :                 Int(TK.INT, 1)
+    8  :             Return(TK.RETURN, TK.RETURN, 'return')
+    9  :                 Int(TK.INT, 1)
+   10  :             BinOp(TK.MUL, '*')
+   11  :                 Get(TK.IDNT, 'x')
+   12  :                 FnCall('factorial')
+   13  :                     Get(TK.IDNT, 'factorial')
+   14  :                     List(TK.TUPLE, [BinOp()])
+   15  :                         BinOp(TK.SUB, '-')
+   16  :                             Get(TK.IDNT, 'x')
+   17  :                             Int(TK.INT, 1)
+   18  :     List(TK.TUPLE, [Ref()])
+   19  :         Ref(TK.IDNT, 'x')
 
 tree7:(post)  a := 3
     1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')

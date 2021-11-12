@@ -65,11 +65,18 @@ class TreeModifier(NodeVisitor, ABC):
                 node.left.parent = node
             if node.right is not None:
                 node.right.parent = node
-            if node.args is not None:
-                node.args.parent = node
+            if hasattr(node, 'args'):
+                if node.args is not None:
+                    node.args.parent = node
+            else:
+                if node.middle is not None:
+                    node.middle.parent = node
         node.left = self.visit(node.left)
         node.right = self.visit(node.right)
-        node.args = self.visit(node.args)
+        if hasattr(node, 'args'):
+            node.args = self.visit(node.args)
+        else:
+            node.middle = self.visit(node.middle)
         self.dedent()
         return node
 

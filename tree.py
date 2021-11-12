@@ -328,7 +328,8 @@ class FnCall(FnRef):
 @dataclass
 class IfThenElse(TernaryOp):
     def __init__(self, test=None, then=None, els=None, is_lvalue=False):
-        super().__init__(left=test, right=then, mid=els, is_lvalue=is_lvalue)
+        op = Token(tid=TK.IF, tcl=TCL.BINOP, lex='if', loc=test.token.lexeme)
+        super().__init__(op=op, left=test, right=then, mid=els, is_lvalue=is_lvalue)
 
     @property
     def test(self):
