@@ -289,6 +289,10 @@ class FnRef(BinOp):
         op = Token(tid=TK.FUNCTION, tcl=TCL.FUNCTION, lex=ref.name or "", loc=ref.location) if op is None else op
         super().__init__(left=ref, op=op, right=parameters, is_lvalue=is_lvalue)
         self.name = ref.name
+        if parameters is not None:
+            self.count = len(parameters)
+        else:
+            self.count = 0
 
 
 @dataclass

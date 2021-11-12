@@ -224,6 +224,12 @@ class Function(Block):
                 defaults = IndexedDict(items=defaults)
             self.defaults = defaults
 
+    def count(self):
+        """
+        Parameter count.  Defines the Function's signature
+        """
+        return len(self.defaults)
+
 
 @dataclass
 class IntrinsicFunction(Function):

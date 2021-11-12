@@ -1,25 +1,25 @@
 #!/Users/jim/venv/jimc/bin/python
 
-"""
-IndexedDict:
-
-A class similar to namedtuple in that members can be accessed either by index, or by named property.  Additionally,
-they can be accessed by named key similar to a dictionary, but also the keys may be accessed by index similar to a
-list.  This list is in insertion order per the underlying dict() class.  Unlike namedtuple(), the set of keys may
-be expanded upon after creation.
-
-The focus of this class is for implementing parameter list structures where there
-may be a combination of named parameters as well as sequentially ordered parameters.  In this case, the keys for
-un-named parameters are created during addition, yet the recipient is free to access the parameters by index.
-
-This is also used to implement the Options class, where the focus is on accessing the members by key or by property.
-In both cases, the ability to update the keys after construction is a critical feature.
-
-"""
 from copy import deepcopy
 
 
 class IndexedDict(object):
+    """
+    IndexedDict:
+
+    A class similar to NamedTuple in that members can be accessed either by index, or by named property.  Additionally,
+    they can be accessed by named key similar to a dictionary, but also the keys may be accessed by index similar to a
+    list.  This list is in insertion order per the underlying dict() class.  Unlike namedtuple(), the set of keys may
+    be expanded upon after creation.
+
+    The focus of this class is for implementing parameter list structures where there
+    may be a combination of named parameters as well as sequentially ordered parameters.  In this case, the keys for
+    un-named parameters are created during addition, yet the recipient is free to access the parameters by index.
+
+    This is also used to implement the Options class, where the focus is on accessing the members by key or by property.
+    In both cases, the ability to update the keys after construction is a critical feature.
+
+    """
 
     def __init__(self, items=None, defaults=None):
         super().__init__()
@@ -35,7 +35,7 @@ class IndexedDict(object):
         return self._get_item_by_key(key, self._get_default(key, None))
 
     def __setitem__(self, key, value):
-        self.set_item_by_key(key, value)
+        self._set_item_by_key(key, value)
 
     def __str__(self):
         return self.format()
@@ -100,14 +100,14 @@ class IndexedDict(object):
         keys = list(self.__dict__.keys())
         if index < 0 or index > len(keys):
             raise IndexError('Index out of range')
-        return self.set_item_by_key(keys[index], value)
+        return self._set_item_by_key(keys[index], value)
 
     def _get_item_by_key(self, key, default=None):
         if key not in self.__dict__:
             return default
         return self.__dict__[key]
 
-    def set_item_by_key(self, key, value=None):
+    def _set_item_by_key(self, key, value=None):
         self.__dict__[key] = value
 
     def _get_default(self, key, default):
