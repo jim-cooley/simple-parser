@@ -246,9 +246,9 @@ class Parser(object):
                 last = last.to_ref()
             if isinstance(last, Ref):
                 if op.id in [TK.RARR, TK.RAISE]:
-                    seq.last = ApplyChainProd(last, Token.RAISE(lex=seq.token.lexeme, loc=last.token.location))
+                    seq.last = ApplyChainProd(left=last, tid=TK.RAISE, lex=seq.token.lexeme, loc=last.token.location)
                 else:
-                    seq.last = ApplyChainProd(last, Token.APPLY(lex=seq.token.lexeme, loc=last.token.location))
+                    seq.last = ApplyChainProd(left=last, lex=seq.token.lexeme, loc=last.token.location)
             op = copy(self.peek())
         return node
 

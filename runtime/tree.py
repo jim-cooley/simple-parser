@@ -101,7 +101,7 @@ class Assign(Expression):
         super().__init__(token=op, is_lvalue=False if is_lvalue is None else is_lvalue)
         self.left = left
         self.right = right
-        self.op = TK.ASSIGN
+        self.op = TK.ASSIGN  # UNDONE: this definition of 'op' is incompatible with BinOp and others
         if right is not None:
             right.parent = self
 
@@ -227,8 +227,9 @@ class Apply(Define):
 
 @dataclass
 class ApplyChainProd(Apply):
-    def __init__(self, left, op, loc=None, is_lvalue=False):
-        op = Token.APPLY(lex=">>", loc=loc) if op is None else op
+    def __init__(self, left, tid=None, lex=None, loc=None, is_lvalue=False):
+        op = Token.APPLY(lex=lex or ">>", loc=loc)
+        op.id = tid or TK.APPLY
         super().__init__(left=left, op=op, is_lvalue=is_lvalue)
 
     def format(self):
