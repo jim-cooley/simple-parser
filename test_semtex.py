@@ -3,10 +3,10 @@
 import sys
 from abc import ABC
 
-from command_interpreter import CommandInterpreter
-from fixups import Fixups
-from interpreter import Interpreter
-from parser import Parser
+from interpreter.command_interpreter import CommandInterpreter
+from interpreter.fixups import Fixups
+from interpreter.interpreter import Interpreter
+from parser.parser import Parser
 from test.suite_runner import TestSuiteRunner, _dump_environment
 from test.test_setup import test_data
 

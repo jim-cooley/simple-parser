@@ -1,5 +1,4 @@
-from tokens import TK
-
+from environment.token_ids import TK
 
 # --------------------------------------------------
 #                    T A B L E S 

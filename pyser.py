@@ -1,6 +1,6 @@
 # Python-based Parser
 #
-from lexer import Lexer
+from parser.lexer import Lexer
 
 
 def main():

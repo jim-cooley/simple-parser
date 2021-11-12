@@ -1,9 +1,9 @@
 #!/Users/jim/venv/jimc/bin/python
 import sys
-from tokens import TK
+from environment.token_ids import TK
 
 from tool.codewriter import CodeWriter, TY
-from logwriter import LogWriter
+from environment.logwriter import LogWriter
 from tool.tables import _assign_obj_fn, _evaluate_boolops_fn, _evaluate_binops_fn
 
 

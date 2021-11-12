@@ -3,7 +3,7 @@
 import sys
 from abc import ABC
 
-from fixups import Fixups
+from interpreter.fixups import Fixups
 from parser import Parser
 from test.suite_runner import TestSuiteRunner, _dump_environment
 from test.test_setup import test_data

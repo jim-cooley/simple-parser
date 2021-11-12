@@ -1,6 +1,5 @@
-f(x) = x*x
-
 def factorial(x) := {
+    print('in factorial')
     if x == 1 then
         return 1
     else
@@ -8,6 +7,12 @@ def factorial(x) := {
 }
 
 print('hello')
-f(5)
-# factorial(5)
 
+#result = factorial(5)
+#rint(result)
+
+f(x) = x*x
+f(5)
+
+#f5 := factorial(5)
+#print(f5)
