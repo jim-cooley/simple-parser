@@ -45,6 +45,15 @@ def negate_literal(val, tid):
     runtime_error("Unsupported type for Unary minus", loc=None)
 
 
+def is_true(val, tid):
+    v = c_to_bool(val, tid)
+    return v is True
+
+
+def is_false(val, tid):
+    return not is_true(val, tid)
+
+
 def not_literal(val, tid):
     v = c_to_bool(val, tid)
     return not v

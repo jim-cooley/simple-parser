@@ -152,6 +152,7 @@ class TK(IntEnum):
     RISE_ABOVE = auto()  # >|
     SET = auto()
     SUB = auto()  # - (subtract)
+    TERNARY = auto()  # '?' operator -- <condition> ? <true> : <false>
     TUPLE = auto()
 
     LAST = 299  # last reserved token id
@@ -164,8 +165,10 @@ class TK(IntEnum):
     BUY = auto()
     DATASET = auto()
     DIV = auto()  # /
+    ELSE = auto()
     EMPTY = auto()  # ø empty set
     FALSE = auto()
+    IF = auto()
     IN = auto()
     INDEX = auto()
     MOD = auto()
@@ -174,8 +177,10 @@ class TK(IntEnum):
     NONEOF = auto()  # none:
     NOT = auto()
     NOW = auto()
+    RETURN = auto()
     RANGE = auto()
     SELL = auto()
+    THEN = auto()
     TODAY = auto()
     TRUE = auto()
     VAR = auto()
@@ -201,6 +206,7 @@ _tk2binop = {
     TK.GTR: TK.GTR,
     TK.IDIV: TK.IDIV,
     TK.IN: TK.IN,
+    TK.IF: TK.IF,
     TK.LBAR: TK.FALL_BELOW,
     TK.LBRK: TK.INDEX,
     TK.LESS: TK.LESS,
@@ -229,6 +235,7 @@ _tk2unop = {
     TK.NOT: TK.NOT,
     TK.PLUS: TK.POS,  # unary +
     TK.PLU2: TK.INCREMENT,  # unary ++
+    TK.RETURN: TK.RETURN,
 }
 _tk2lit = {
     TK.BOOL: TK.BOOL,
@@ -306,6 +313,7 @@ _tk2glyph = {
     TK.GTE: '>=',
     TK.GTR: '>',
     TK.IDIV: 'div',
+    TK.IF: 'if',
     TK.IN: 'in',
     TK.INCREMENT: '++',
     TK.INDEX: '[]',  # indexing expression
@@ -331,6 +339,7 @@ _tk2glyph = {
     TK.RANGE: 'range',
     TK.RBRC: '}',
     TK.REF: 'ref',
+    TK.RETURN: 'ret',
     TK.RISE_ABOVE: '|>',  # >|
     TK.SELL: 'sell',
     TK.SET: 'set',

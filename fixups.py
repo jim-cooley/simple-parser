@@ -20,6 +20,8 @@ _VISIT_DEFINE_FN = 'visit_define_fn'
 ASSIGNMENT_NODE = 'visit_assignment'
 
 BINARY_NODE = 'process_binops'
+TRINARY_NODE = 'process_trinops'
+UNARY_NODE = 'process_unops'
 
 _fixupNodeTypeMappings = {
     'ApplyChainProd': _VISIT_DEFINITION,
@@ -40,6 +42,7 @@ _fixupNodeTypeMappings = {
     'Flow': SEQUENCE_NODE,
     'FnCall': _FUNCTION_NODE,
     'Get': VALUE_NODE,
+    'IfThenElse': TRINARY_NODE,
     'Ident': _IDENT_NODE,
     'Index': BINARY_NODE,
     'Int': VALUE_NODE,
@@ -50,10 +53,11 @@ _fixupNodeTypeMappings = {
     'PropCall': BINARY_NODE,
     'PropRef': BINARY_NODE,
     'Ref': VALUE_NODE,
+    'Return': UNARY_NODE,
     'Set': 'convert_tuples',
     'Str': VALUE_NODE,
     'Time': VALUE_NODE,
-    'UnaryOp': 'process_unops',
+    'UnaryOp': UNARY_NODE,
     'int': _NATIVE_VALUE,
     'str': _NATIVE_VALUE,
     'list': NATIVE_LIST,
@@ -154,6 +158,17 @@ class Fixups(TreeModifier, ABC):
                 node.token.lexeme = f'%%{command}'
                 node.token.value = command
         return self.visit_unary_node(node, label)
+
+    def process_trinops(self, node, label=None):
+        rnode = self.visit_trinary_node(node, label)
+        if node is not None:
+            tkid = node.token.id
+            # this would translate the 'if' into a statement if the test reduces to a literal
+            if node.test.token.t_class == TCL.LITERAL:
+                # rnode = _fixup_binary_operation(rnode)
+                # rnode = _lift(rnode, Literal.lit(rnode.value, other=rnode))
+                pass
+        return rnode
 
     def process_unops(self, node, label=None):
         if node is None:

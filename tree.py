@@ -90,7 +90,7 @@ class Statement(ASTCompound):
 
 
 # -----------------------------------
-# Expression Nodes
+# Base Nodes
 # -----------------------------------
 @dataclass
 class Assign(Expression):
@@ -110,7 +110,7 @@ class Assign(Expression):
 
 @dataclass
 class BinOp(Expression):
-    def __init__(self, left, op, right, is_lvalue=None):
+    def __init__(self, left=None, op=None, right=None, is_lvalue=None):
         super().__init__(token=op, is_lvalue=True if is_lvalue is None else is_lvalue)
 #       op.t_class = TCL.BINOP
         self.left = left
@@ -131,7 +131,6 @@ class BinOp(Expression):
         return f'BinOp({self.token}: l={left}, r={right}'
 
 
-# allowed to set values
 @dataclass
 class Define(Assign):
     """
@@ -162,6 +161,50 @@ class Define(Assign):
         return f'Define({self.op}, {self.token}: l={left}, r={right})'
 
 
+# holds a reference
+class Ref(Expression):
+    def __init__(self, r_token, name=None, is_lvalue=True):
+        super().__init__(token=r_token, is_lvalue=is_lvalue)
+        self.token = r_token
+        self.name = name or r_token.lexeme
+        self.location = r_token.location
+        r_token.t_class = TCL.IDENTIFIER
+        if r_token.is_reserved:
+            self.is_lvalue = False
+
+    def to_get(self):
+        get = Get(self.token)
+        get.parent = self.parent
+        return get
+
+    def format(self):
+        token = 'None' if self.token is None else f'{self.token}'
+        return f'Ref({token})'
+
+
+@dataclass
+class TernaryOp(BinOp):
+    def __init__(self, op=None, left=None, mid=None, right=None, is_lvalue=True):
+        assert op is not None, "Invalid operation passed to TernaryOp constructor"
+        super().__init__(left=left, op=op, right=right, is_lvalue=is_lvalue)
+        self.middle = mid
+
+
+@dataclass
+class UnaryOp(Expression):
+    def __init__(self, token, expr, is_lvalue=True):
+        super().__init__(token=token, is_lvalue=is_lvalue)
+        token.t_class = TCL.UNARY
+        self.op = token.id
+        self.expr = expr
+        if expr is not None:
+            expr.parent = self
+
+
+# -----------------------------------
+# Subclasses
+# -----------------------------------
+# allowed to set values
 @dataclass
 class Apply(Define):
     """
@@ -243,27 +286,6 @@ class DefineVarFn(DefineVar):
         return f'DefineVarFn({self.op}, {self.token}: l={left}, a={args}, r={right})'
 
 
-# holds a reference
-class Ref(Expression):
-    def __init__(self, r_token, name=None, is_lvalue=True):
-        super().__init__(token=r_token, is_lvalue=is_lvalue)
-        self.token = r_token
-        self.name = name or r_token.lexeme
-        self.location = r_token.location
-        r_token.t_class = TCL.IDENTIFIER
-        if r_token.is_reserved:
-            self.is_lvalue = False
-
-    def to_get(self):
-        get = Get(self.token)
-        get.parent = self.parent
-        return get
-
-    def format(self):
-        token = 'None' if self.token is None else f'{self.token}'
-        return f'Ref({token})'
-
-
 # dereferences to value
 class Get(Ref):
     def __init__(self, r_token, name=None, is_lvalue=True):
@@ -304,6 +326,24 @@ class FnCall(FnRef):
 
 
 @dataclass
+class IfThenElse(TernaryOp):
+    def __init__(self, test=None, then=None, els=None, is_lvalue=False):
+        super().__init__(left=test, right=then, mid=els, is_lvalue=is_lvalue)
+
+    @property
+    def test(self):
+        return self.left
+
+    @property
+    def then(self):
+        return self.right
+
+    @property
+    def els(self):
+        return self.middle
+
+
+@dataclass
 class Index(FnCall):
     def __init__(self, ref=None, parameters=None, is_lvalue=True):
         assert ref is not None, "no Ref passed to Index constructor"
@@ -320,14 +360,12 @@ class PropRef(BinOp):
 
 
 @dataclass
-class UnaryOp(Expression):
-    def __init__(self, token, expr, is_lvalue=True):
-        super().__init__(token=token, is_lvalue=is_lvalue)
-        token.t_class = TCL.UNARY
-        self.op = token.id
-        self.expr = expr
-        if expr is not None:
-            expr.parent = self
+class Return(UnaryOp):
+    """
+    Simply a Unary holder of an expression.
+    """
+    def __init__(self, token, expr):
+        super().__init__(token, expr)
 
 
 # -----------------------------------

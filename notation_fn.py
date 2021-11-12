@@ -7,7 +7,7 @@ from enum import IntEnum
 from literals import Set
 from tokens import TK, TCL, _tk2glyph
 from visitor import TreeFilter, BINARY_NODE, UNARY_NODE, SEQUENCE_NODE, NATIVE_LIST, ASSIGNMENT_NODE, VALUE_NODE, \
-    DEFAULT_NODE, NATIVE_VALUE
+    DEFAULT_NODE, NATIVE_VALUE, TRINARY_NODE
 
 
 class GRP(IntEnum):
@@ -48,6 +48,7 @@ _tk2pfx = {
     TK.FUNCTION: 'fn',
     TK.GTE: 'is_gte',
     TK.GTR: 'is_gt',
+    TK.IF: 'if',
     TK.IN: 'in',
     TK.INCREMENT: 'incr',
     TK.INDEX: 'idx',  # indexing expression
@@ -75,6 +76,7 @@ _tk2pfx = {
     TK.RAISE: 'raise',  # ->
     TK.RANGE: 'range',
     TK.REF: 'ref',
+    TK.RETURN: 'ret',
     TK.RISE_ABOVE: 'if_above',  # >|
     TK.SELL: 'sell',
     TK.SET: 'set',
@@ -124,6 +126,7 @@ _postfixNodeTypeMappings = {
     'FnRef': _FUNCTION_NODE,
     'Get': VALUE_NODE,
     'Ident': _IDENT_NODE,
+    'IfThenElse': TRINARY_NODE,
     'Index': BINARY_NODE,
     'Int': VALUE_NODE,
     'List': SEQUENCE_NODE,
@@ -133,6 +136,7 @@ _postfixNodeTypeMappings = {
     'PropCall': BINARY_NODE,
     'PropRef': BINARY_NODE,
     'Ref': VALUE_NODE,
+    'Return': UNARY_NODE,
     'Set': SEQUENCE_NODE,
     'Str': VALUE_NODE,
     'Time': VALUE_NODE,
@@ -192,12 +196,20 @@ class FunctionalNotationPrinter(TreeFilter):
         self._print_indented(text)
         self._process_trinary_node(node)
 
+    def visit_trinary_node(self, node, label=None):
+        text = f'{_tk2pfx[node.op]}'
+        self._print_indented(text)
+        self._process_trinary_node(node)
+
     def _process_trinary_node(self, node):
         self._print_open(node.token, append=True)
         self.indent()
         self.visit(node.left)
         self._print_sep(node.token, append=True)
-        self.visit(node.args)
+        if hasattr(node, 'args'):
+            self.visit(node.args)
+        else:
+            self.visit(node.middle)
         self._print_sep(node.token, append=True)
         self.visit(node.right)
         self.dedent()

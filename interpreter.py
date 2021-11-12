@@ -1,4 +1,6 @@
+from conversion import c_unbox
 from environment import Environment
+from eval_unary import is_true
 from evaluate import reduce_value, evaluate_binary_operation, evaluate_unary_operation, evaluate_identifier, \
     evaluate_set, reduce_get, reduce_propref, reduce_ref, update_ref, reduce_parameters
 from exceptions import runtime_error
@@ -10,6 +12,7 @@ from visitor import TreeFilter
 _VISIT_IDENT = 'visit_ident'
 _VISIT_LITERAL = 'visit_literal'
 _VISiT_LEAF = 'visit_value'
+_UNBOX_NODE = 'unbox_node'
 
 _PROCESS_APPLY = 'process_apply'
 _PROCESS_ASSIGN = 'process_assignment'
@@ -22,6 +25,7 @@ _PROCESS_FLOW = 'process_flow'
 _PROCESS_FNCALL = 'process_fncall'
 _PROCESS_FNREF = 'process_fnref'
 _PROCESS_GET = 'process_get'
+_PROCESS_CONDITIONAL = 'process_conditional'
 _PROCESS_INDEX = 'process_index'
 _PROCESS_LIST = 'process_list_object'
 _PROCESS_PROPCALL = 'process_propcall'
@@ -54,6 +58,7 @@ _interpreterVisitNodeMappings = {
     'FnRef': _PROCESS_FNREF,
     'Get': _PROCESS_GET,
     'Ident': _VISIT_IDENT,
+    'IfThenElse': _PROCESS_CONDITIONAL,
     'Index': _PROCESS_INDEX,
     'Int': _VISIT_LITERAL,
     'List': _PROCESS_LIST,
@@ -63,6 +68,7 @@ _interpreterVisitNodeMappings = {
     'PropCall': _PROCESS_PROPCALL,
     'PropRef': _PROCESS_PROPREF,
     'Ref': _PROCESS_REF,
+    'Return': _UNBOX_NODE,
     'Set': _PROCESS_SET,
     'Str': _VISIT_LITERAL,
     'Time': _VISIT_LITERAL,
@@ -101,9 +107,7 @@ class Interpreter(TreeFilter):
 
     # default
     def visit_node(self, node, label=None):
-        super().visit_node(node, label)
-        self._print_node(node)
-        self.stack.push(node.value)
+        self.unbox_node(node, label)
 
     def visit_literal(self, node, label=None):
         self._print_node(node)
@@ -116,6 +120,11 @@ class Interpreter(TreeFilter):
     def visit_ident(self, node, label=None):
         self._print_node(node)
         self.stack.push(evaluate_identifier(node))
+
+    def unbox_node(self, node, label=None):
+        super().visit_node(node, label)
+        self._print_node(node)
+        self.stack.push(node.value)
 
     # -------------------
     # worker nodes
@@ -156,6 +165,19 @@ class Interpreter(TreeFilter):
     # DefineChainProd.  ApplyChainProd is handled via 'Apply'
     def process_chain_prod(self, node, label=None):
         self.process_binop(node, label)
+
+    def process_conditional(self, node, label=None):
+        self._print_node(node)
+        test = node.test
+        then = node.then
+        els = node.els
+        self.indent()
+        self.visit(test)
+        result = is_true(c_unbox(self.stack.pop()))
+        if result:
+            self.visit(then)
+        else:
+            self.visit(els)
 
     # Define, DefineVar
     def process_define(self, node, label=None):

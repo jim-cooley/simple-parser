@@ -120,9 +120,9 @@ class Parser(object):
                 op = self.peek(-1)
                 tid = self.peek().id
                 if tid == TK.LBRC:
-                    node = BinOp(node, op.set_id(TK.APPLY), self.statement())
+                    node = BinOp(left=node, op=op.set_id(TK.APPLY), right=self.statement())
                 elif tid == TK.LPRN:
-                    node = BinOp(node, op.set_id(TK.APPLY), self.tuple())
+                    node = BinOp(left=node, op=op.set_id(TK.APPLY), right=self.tuple())
                 else:
                     self.logger.error("Expected '{' or '(' after ':')"
                                       f'{self.peek()}', self.peek().location)
@@ -302,9 +302,9 @@ class Parser(object):
                 op = self.peek(-1)
                 tid = self.peek().id
                 if tid == TK.LBRC:
-                    node = BinOp(node, op.set_id(TK.APPLY), self.statement())
+                    node = BinOp(left=node, op=op.set_id(TK.APPLY), right=self.statement())
                 elif tid == TK.LPRN:
-                    node = BinOp(node, op.set_id(TK.APPLY), self.tuple())
+                    node = BinOp(left=node, op=op.set_id(TK.APPLY), right=self.tuple())
                 else:
                     self.logger.error("Expected '{' or '(' after ':')"
                                       f'{self.peek()}', self.peek().location)
@@ -334,7 +334,7 @@ class Parser(object):
         node = self.equality()
         op = self.peek()
         while self.match(_LOGIC_TOKENS):
-            node = BinOp(node, op.remap2binop(), self.equality())
+            node = BinOp(left=node, op=op.remap2binop(), right=self.equality())
             op = self.peek()
         return node
 
@@ -342,7 +342,7 @@ class Parser(object):
         node = self.comparison()
         op = self.peek()
         while self.match(_EQUALITY_TEST_TOKENS):
-            node = BinOp(node, op.remap2binop(), self.comparison())
+            node = BinOp(left=node, op=op.remap2binop(), right=self.comparison())
             op = self.peek()
         return node
 
@@ -350,7 +350,7 @@ class Parser(object):
         node = self.term()
         op = self.peek()
         while self.match(_COMPARISON_TOKENS):
-            node = BinOp(node, op.remap2binop(), self.term())
+            node = BinOp(left=node, op=op.remap2binop(), right=self.term())
             op = self.peek()
         return node
 
@@ -358,7 +358,7 @@ class Parser(object):
         node = self.factor()
         op = self.peek()
         while self.match(_ADDITION_TOKENS):
-            node = BinOp(node, op.remap2binop(), self.factor())
+            node = BinOp(left=node, op=op.remap2binop(), right=self.factor())
             op = self.peek()
         return node
 
@@ -381,7 +381,7 @@ class Parser(object):
                     return l_node
             if l_node is None:
                 self.logger.error("Invalid assignment target", op.location)
-            l_node = BinOp(l_node, op.remap2binop(), r_node)
+            l_node = BinOp(left=l_node, op=op.remap2binop(), right=r_node)
             op = self.peek()
         return l_node
 

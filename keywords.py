@@ -45,10 +45,12 @@ _KEYWORDS = [
     (TK.ALL, TCL.KEYWORD, 'all'),
     (TK.ANY, TCL.KEYWORD, 'any'),
     (TK.BUY, TCL.KEYWORD, "buy"),   # UNDONE: remove 'buy' as keyword.
+    (TK.ELSE, TCL.KEYWORD, 'else'),
     (TK.EMPTY, TCL.KEYWORD, "Empty"),
     (TK.EMPTY, TCL.KEYWORD, "empty"),   # UNDONE: NumPy uses this to create an empty array of size
     (TK.FALSE, TCL.KEYWORD, 'False'),
     (TK.FALSE, TCL.KEYWORD, 'false'),
+    (TK.THEN, TCL.KEYWORD, 'then'),
     (TK.IDNT, TCL.KEYWORD, 'apply'),
     (TK.IDNT, TCL.KEYWORD, 'expr'),
     (TK.IN, TCL.BINOP, 'in'),
@@ -56,6 +58,7 @@ _KEYWORDS = [
     (TK.NAN, TCL.KEYWORD, 'NaN'),
     (TK.NAN, TCL.KEYWORD, 'nan'),
     (TK.NONE, TCL.KEYWORD, 'none'),
+    (TK.RETURN, TCL.KEYWORD, "return"),
     (TK.SELL, TCL.KEYWORD, "sell"),  # UNODNE: remove sell as a keyword
     (TK.TRUE, TCL.KEYWORD, 'True'),
     (TK.TRUE, TCL.KEYWORD, 'true'),
@@ -72,7 +75,8 @@ _KEYWORDS = [
     # binops
     (TK.AND, TCL.BINOP, 'and'),
     (TK.IDIV, TCL.BINOP, 'div'),
-    (TK.IDNT, TCL.BINOP, 'index'),
+    (TK.IDNT, TCL.BINOP, 'index'),  # UNDONE: 'index' appears twice.  only one survives...
+    (TK.IF, TCL.BINOP, 'if'),       # NOTE: not a keyword, this will also be the tid for the operation
     (TK.OR, TCL.BINOP, 'or'),
     (TK.MOD, TCL.BINOP, 'mod'),
     (TK.IDNT, TCL.BINOP, 'rand'),

@@ -27,6 +27,7 @@ _nodeTypeMappings = {
     'FnRef': BINARY_NODE,
     'Get': VALUE_NODE,
     'Ident': VALUE_NODE,
+    'IfThenElse': TRINARY_NODE,
     'Index': BINARY_NODE,
     'Int': VALUE_NODE,
     'List': SEQUENCE_NODE,
@@ -36,6 +37,7 @@ _nodeTypeMappings = {
     'PropCall': BINARY_NODE,
     'PropRef': BINARY_NODE,
     'Ref': VALUE_NODE,
+    'Return': UNARY_NODE,
     'Set': SEQUENCE_NODE,
     'Str': VALUE_NODE,
     'Time': VALUE_NODE,
@@ -118,7 +120,10 @@ class TreePrint(NodeVisitor):
         self.indent()
         self.visit(node.left)
         self.visit(node.right)
-        self.visit(node.args)
+        if hasattr(node, 'args'):
+            self.visit(node.args)
+        else:
+            self.visit(node.middle)
         self.dedent()
 
     def visit_unary_node(self, node, label=None):
