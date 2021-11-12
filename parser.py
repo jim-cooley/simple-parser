@@ -8,8 +8,8 @@ from tokens import TK, TCL, _ADDITION_TOKENS, _COMPARISON_TOKENS, _FLOW_TOKENS, 
     _SET_UNARY_TOKENS, Token, _IDENTIFIER_TOKENS, _ASSIGNMENT_TOKENS_EX, _IDENTIFIER_TOKENS_EX, _ASSIGNMENT_TOKENS_REF, \
     TK_EMPTY, TK_SET, _VALUE_TOKENS
 from lexer import Lexer
-from tree import UnaryOp, BinOp, Command, Assign, Get, FnCall, Index, PropCall, PropRef, Define, DefineFn, DefineVar, \
-    DefineVarFn, ApplyChainProd, Ref, FnDef
+from tree import UnaryOp, BinOp, Command, Assign, Get, FnCall, Index, PropRef, Define, DefineFn, DefineVar, \
+    DefineVarFn, ApplyChainProd, Ref, FnRef
 from scope import Block, Flow
 from literals import Duration, Float, Int, Percent, Str, Time, Bool, List, Set, LIT_EMPTY, Literal
 from treeprint import TreePrint
@@ -284,7 +284,7 @@ class Parser(object):
             l_expr = _rewriteFnCall2FnDef(l_expr)
             if isinstance(l_expr, FnCall):
                 return DefineFn(left=l_expr.left, op=op, right=r_expr, args=l_expr.right)
-            elif isinstance(l_expr, FnDef):
+            elif isinstance(l_expr, FnRef):
                 return DefineFn(left=l_expr.left, op=op, right=r_expr, args=l_expr.right)
             elif isinstance(l_expr, Ref):
                 if isinstance(r_expr, Define):
@@ -316,12 +316,12 @@ class Parser(object):
             if op.id in _ASSIGNMENT_TOKENS_REF:
                 l_expr = _rewriteFnCall2Definition(l_expr)
             if op.id in [TK.EQLS, TK.EQGT]:
-                if isinstance(l_expr, FnCall) or isinstance(l_expr, FnDef) or isinstance(l_expr, DefineFn):
+                if isinstance(l_expr, FnCall) or isinstance(l_expr, FnRef) or isinstance(l_expr, DefineFn):
                     return DefineFn(left=l_expr.left, op=op.remap2binop(), right=r_expr, args=l_expr.right)
                 else:
                     return Define(l_expr, op, r_expr)
             elif op.id == TK.COEQ:
-                if isinstance(l_expr, FnCall) or isinstance(l_expr, FnDef):
+                if isinstance(l_expr, FnCall) or isinstance(l_expr, FnRef):
                     return DefineVarFn(left=l_expr.left, op=op, right=r_expr, args=l_expr.right)
                 else:
                     return DefineVar(left=l_expr, op=op, right=r_expr)
@@ -493,19 +493,19 @@ class Parser(object):
         token = self.peek()
         if token.id == TK.DOT:
             token = self.consume_next(TK.IDNT)
-            node = PropRef(tk, self.identifier())
+            node = PropRef(ref=Get(tk), member=self.identifier())
         elif token.id == TK.DOT2:
             self.advance()
             node = BinOp(left=Ref(tk), op=token.remap2binop(), right=self.expression())
         elif token.id == TK.LPRN:
             plist = self.plist()
             plist.token.id = TK.TUPLE
-            node = FnCall(tk, plist)
+            node = FnCall(ref=Get(tk), parameters=plist)
         elif token.id == TK.LBRK:
-            node = Index(tk, self.idx_list())
+            node = Index(ref=Get(tk), parameters=self.idx_list())
         else:
             if tk.t_class == TCL.FUNCTION:
-                node = FnCall(tk, None)
+                node = FnCall(ref=Get(tk), parameters=None)
             else:
                 is_lval = self.check(_ASSIGNMENT_TOKENS_REF)
                 node = Ref(tk) if is_lval else Get(tk)

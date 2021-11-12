@@ -243,29 +243,13 @@ class DefineVarFn(DefineVar):
         return f'DefineVarFn({self.op}, {self.token}: l={left}, a={args}, r={right})'
 
 
-@dataclass
-class FnCall(BinOp):
-    def __init__(self, token, plist=None, op=None, name=None):
-        assert token is not None, "Null Token passed to FnCall constructor"
-        op = Token(tid=TK.FUNCTION, tcl=TCL.FUNCTION, lex=name or token.lexeme, loc=token.location) if op is None else op
-        super().__init__(left=Get(token), op=op, right=plist, is_lvalue=True)
-        if token.is_reserved:
-            self.is_lvalue = False
-
-
-@dataclass
-class FnDef(BinOp):
-    def __init__(self, ref, plist=None, op=None, loc=None, name=None):
-        op = Token(tid=TK.FUNCTION, tcl=TCL.FUNCTION, lex=name or "", loc=loc) if op is None else op
-        super().__init__(left=ref, op=op, right=plist, is_lvalue=True)
-
-
 # holds a reference
 class Ref(Expression):
     def __init__(self, r_token, name=None, is_lvalue=True):
         super().__init__(token=r_token, is_lvalue=is_lvalue)
         self.token = r_token
         self.name = name or r_token.lexeme
+        self.location = r_token.location
         r_token.t_class = TCL.IDENTIFIER
         if r_token.is_reserved:
             self.is_lvalue = False
@@ -299,24 +283,36 @@ class Get(Ref):
 
 
 @dataclass
-class Index(FnCall):
-    def __init__(self, token, plist):
-        super().__init__(token, plist, op=Token(tid=TK.INDEX, tcl=TCL.BINOP, lex="[", loc=token.location))
+class FnRef(BinOp):
+    def __init__(self, ref=None, parameters=None, op=None, is_lvalue=True):
+        assert ref is not None, "Ref not passed to FnRef constructor"
+        op = Token(tid=TK.FUNCTION, tcl=TCL.FUNCTION, lex=ref.name or "", loc=ref.location) if op is None else op
+        super().__init__(left=ref, op=op, right=parameters, is_lvalue=is_lvalue)
+        self.name = ref.name
 
 
 @dataclass
-class PropCall(FnCall):
-    def __init__(self, token, member, plist):
-        super().__init__(token, plist,
-                         op=Token(tid=TK.REF, tcl=TCL.FUNCTION, lex=".(", loc=token.location))
+class FnCall(FnRef):
+    def __init__(self, ref=None, parameters=None, op=None, is_lvalue=True):
+        assert ref is not None, "no Ref passed to FnCall constructor"
+        op = Token(tid=TK.FUNCTION, tcl=TCL.FUNCTION, lex=ref.name, loc=ref.location) if op is None else op
+        super().__init__(ref=ref, op=op, parameters=parameters, is_lvalue=is_lvalue)
+
+
+@dataclass
+class Index(FnCall):
+    def __init__(self, ref=None, parameters=None, is_lvalue=True):
+        assert ref is not None, "no Ref passed to Index constructor"
+        super().__init__(ref=ref, parameters=parameters,
+                         op=Token(tid=TK.INDEX, tcl=TCL.BINOP, lex="[", loc=ref.location), is_lvalue=is_lvalue)
 
 
 @dataclass
 class PropRef(BinOp):
-    def __init__(self, token, member, op=None):
-        op = Token(tid=TK.REF, tcl=TCL.BINOP, lex=".",
-                   loc=token.location) if op is None else op
-        super().__init__(left=Get(token), op=op, right=member)
+    def __init__(self, ref=None, member=None, op=None, is_lvalue=True):
+        assert ref is not None, "no Ref passed to PropRef constructor"
+        op = Token(tid=TK.REF, tcl=TCL.BINOP, lex=".", loc=ref.location) if op is None else op
+        super().__init__(left=ref, op=op, right=member, is_lvalue=is_lvalue)
 
 
 @dataclass

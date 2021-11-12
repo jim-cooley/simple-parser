@@ -22,6 +22,7 @@ _defaultNodeTypeMappings = {
     'DefineVar': BINARY_NODE,
     'DefineVarFn': TRINARY_NODE,
     'FnCall': BINARY_NODE,
+    'FnRef': BINARY_NODE,
     'Flow': SEQUENCE_NODE,
     'Index': BINARY_NODE,
     'List': SEQUENCE_NODE,

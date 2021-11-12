@@ -133,3 +133,18 @@ element | production
 | | `\| '(' expression ')'`
 `grouping :=` | `'(' expression ')'`
 `| |` `\| '(' expression ')'`
+
+#### Snippet of Python function definition spec:
+```
+funcdef        ::=  [decorators] "def" funcname "(" [parameter_list] ")" ["->" expression] ":" suite
+decorators     ::=  decorator+
+decorator      ::=  "@" dotted_name ["(" [parameter_list [","]] ")"] NEWLINE
+dotted_name    ::=  identifier ("." identifier)*
+parameter_list ::=  (defparameter ",")*
+                    | "*" [parameter] ("," defparameter)* ["," "**" parameter]
+                    | "**" parameter
+                    | defparameter [","] )
+parameter      ::=  identifier [":" expression]
+defparameter   ::=  parameter ["=" expression]
+funcname       ::=  identifier
+```

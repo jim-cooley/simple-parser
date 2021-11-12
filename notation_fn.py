@@ -121,6 +121,7 @@ _postfixNodeTypeMappings = {
     'Float': VALUE_NODE,
     'Flow': SEQUENCE_NODE,
     'FnCall': _FUNCTION_NODE,
+    'FnRef': _FUNCTION_NODE,
     'Get': VALUE_NODE,
     'Ident': _IDENT_NODE,
     'Index': BINARY_NODE,
@@ -212,7 +213,7 @@ class FunctionalNotationPrinter(TreeFilter):
         self._print_close(node.token)
 
     def visit_function_call(self, node, label=None):
-        self._print_indented(f'fn')
+        self._print_indented(label.lower())
         self._print_open(node.token, append=True)
         self.indent()
         self.visit(node.left)

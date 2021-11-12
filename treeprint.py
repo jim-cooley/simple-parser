@@ -24,7 +24,7 @@ _nodeTypeMappings = {
     'Float': VALUE_NODE,
     'Flow': SEQUENCE_NODE,
     'FnCall': BINARY_NODE,
-    'FnDef': BINARY_NODE,
+    'FnRef': BINARY_NODE,
     'Get': VALUE_NODE,
     'Ident': VALUE_NODE,
     'Index': BINARY_NODE,

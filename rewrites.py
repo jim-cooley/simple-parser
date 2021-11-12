@@ -5,7 +5,7 @@ import copy
 from abc import ABC
 
 from modifytree import TreeModifier
-from tree import DefineFn, FnDef
+from tree import DefineFn, FnRef, Ref
 from visitor import BINARY_NODE, UNARY_NODE, SEQUENCE_NODE
 
 _rewriteBaseNodeTypeMapping = {
@@ -72,7 +72,8 @@ class RewriteFnCall2FnDef(RewriteGets2Refs, ABC):
     def rewrite_fncall(self, node, label=None):
         node.left = self.visit(node.left)
         node.right = self.visit(node.right)
-        n = FnDef(ref=node.left, op=node.token, plist=node.right, loc=node.token.location)
+        assert isinstance(node.left, Ref), "node.left is not a Reference"
+        n = FnRef(ref=node.left, op=node.token, parameters=node.right)
         node.left.parent = n
         node.right.parent = n
         return n
@@ -90,7 +91,8 @@ class RewriteFnCall2DefineFn(RewriteGets2Refs, ABC):
         node.left = self.visit(node.left)
         if node.right is not None:
             node.right = self.visit(node.right)
-        n = FnDef(ref=node.left, op=node.token, plist=node.right, loc=node.token.location)
+        assert isinstance(node.left, Ref), "node.left is not a Reference"
+        n = FnRef(ref=node.left, op=node.token, parameters=node.right)
         node.left.parent = n
         if node.right is not None:
             node.right.parent = n

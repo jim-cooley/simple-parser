@@ -20,7 +20,7 @@ _PROCESS_CHAIN_PROD = 'process_chain_prod'
 _PROCESS_DEFINE_FN = 'process_define_fn'
 _PROCESS_FLOW = 'process_flow'
 _PROCESS_FNCALL = 'process_fncall'
-_PROCESS_FNDEF = 'process_fndef'
+_PROCESS_FNREF = 'process_fnref'
 _PROCESS_GET = 'process_get'
 _PROCESS_INDEX = 'process_index'
 _PROCESS_LIST = 'process_list_object'
@@ -51,7 +51,7 @@ _interpreterVisitNodeMappings = {
     'Float': _VISIT_LITERAL,
     'Flow': _PROCESS_FLOW,
     'FnCall': _PROCESS_FNCALL,
-    'FnDef': _PROCESS_FNDEF,
+    'FnRef': _PROCESS_FNREF,
     'Get': _PROCESS_GET,
     'Ident': _VISIT_IDENT,
     'Index': _PROCESS_INDEX,
@@ -221,7 +221,7 @@ class Interpreter(TreeFilter):
         self.evaluate_invoke(node)
 
     # FnDef
-    def process_fndef(self, node, label=None):
+    def process_fnref(self, node, label=None):
         self.process_fncall(node, label)
 
     # Get
@@ -290,6 +290,26 @@ class Interpreter(TreeFilter):
         left = self.stack.pop()
         self.stack.push(evaluate_unary_operation(node, left))
 
+    def evaluate_invoke(self, node):
+        fnode = node.left
+        args = node.right
+        name = fnode.name  # should be either Ref() or Get()
+        fn = reduce_get(get=fnode)
+        if fn is None:
+            runtime_error(f'Function {name} is undefined')
+        args = reduce_parameters(scope=fn, args=args)  # need to have scope be a new parameters object (block?)
+        if is_intrinsic(name):
+            result = invoke_intrinsic(name, args)
+            self.stack.push(result)
+        else:
+            self.invoke_fn(fn, args)
+
+    def invoke_fn(self, fnode, args):
+        fnode.update_members(args)
+        Environment.enter(fnode)
+        self.visit(fnode.code)
+        Environment.leave()
+
     def _c_process_sequence(self, seq):
         """
         processes a sequence (list) of items in reverse order (c-style). used by invoke_fn to process arguments.
@@ -349,23 +369,3 @@ class Interpreter(TreeFilter):
                 if getattr(parent, '_num', False):
                     id = f'{parent._num + 1}' if parent._num is not None else ' '
             self._print_indented(f'{node}: {node.token.format()}, parent:{id}')
-
-    def evaluate_invoke(self, node):
-        fnode = node.left
-        args = node.right
-        name = fnode.name  # should be either Ref() or Get()
-        fn = reduce_get(get=fnode)
-        if fn is None:
-            runtime_error(f'Function {name} is undefined')
-        args = reduce_parameters(scope=fn, args=args)  # need to have scope be a new parameters object (block?)
-        if is_intrinsic(name):
-            result = invoke_intrinsic(name, args)
-            self.stack.push(result)
-        else:
-            self.invoke_fn(fn, args)
-
-    def invoke_fn(self, fnode, args):
-        fnode.update_members(args)
-        Environment.enter(fnode)
-        self.visit(fnode.code)
-        Environment.leave()
