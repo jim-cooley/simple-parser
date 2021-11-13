@@ -4,7 +4,7 @@ test: 18:
 var (a, b, c) = (4, 5, 6)
 
 tree1:  var (a, b, c) = (4, 5, 6)
-    1  : DefineVar(TK.DEFINE, TK.EQLS, '=')
+    1  : DefineVar(TK.DEFINE, TK.DEFINE, '=')
     2  :     List(TK.TUPLE, [Ref(), Ref(), Ref()])
     3  :         Ref(TK.IDNT, 'a')
     4  :         Ref(TK.IDNT, 'b')

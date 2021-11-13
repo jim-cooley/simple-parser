@@ -6,5 +6,5 @@ test: 19:
 tree1:  ( b ) | buy
     1  : Flow(TK.CHAIN, v=[Get(), ApplyChainProd()], '|')
     2  :     Get(TK.IDNT, 'b')
-    3  :     ApplyChainProd(TK.DEFINE, TK.APPLY, '|')
-    4  :         Ref(TK.BUY, 'buy')
+    3  :     ApplyChainProd(TK.DEFINE, TK.DEFINE, '|')
+    4  :         Ref(TK.IDNT, 'buy')

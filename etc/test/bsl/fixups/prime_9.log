@@ -4,8 +4,8 @@ test: 9:
 .1
 
 tree1:  .1
-    1  : Float(TK.FLOT, 0.1)
+    1  : Float(TK.INT, 1.0)
 
 tree1:(post)  .1
-result: float(0.1)
-    1  : Float(TK.FLOT, 0.1)
+result: float(1.0)
+    1  : Float(TK.INT, 1.0)

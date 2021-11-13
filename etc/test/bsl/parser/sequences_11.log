@@ -7,6 +7,6 @@ tree1:  a() | b
     1  : Flow(TK.CHAIN, v=[FnCall(), ApplyChainProd()], '|')
     2  :     FnCall('a')
     3  :         Get(TK.IDNT, 'a')
-    4  :         List(TK.TUPLE, [])
-    5  :     ApplyChainProd(TK.DEFINE, TK.APPLY, '|')
+    4  :         List(TK.LIST, [])
+    5  :     ApplyChainProd(TK.DEFINE, TK.DEFINE, '|')
     6  :         Ref(TK.IDNT, 'b')

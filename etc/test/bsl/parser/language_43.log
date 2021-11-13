@@ -4,23 +4,23 @@ test: 43:
 f := { a(x):x*x }; { b: b.left = b.right}:(node);
 
 tree1:  f := { a(x):x*x }; { b: b.left = b.right}:(node);
-    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
+    1  : DefineVar(TK.DEFINE, TK.DEFINE, ':=')
     2  :     Ref(TK.IDNT, 'f')
     3  :     Block(TK.BLOCK, v=[DefineFn()], '')
-    4  :         DefineFn(TK.DEFINE, TK.COLN, ':')
+    4  :         DefineFn(TK.DEFINE, TK.DEFINE, ':')
     5  :             Ref(TK.IDNT, 'a')
     6  :             BinOp(TK.MUL, '*')
     7  :                 Get(TK.IDNT, 'x')
     8  :                 Get(TK.IDNT, 'x')
-    9  :             List(TK.TUPLE, [Ref()])
+    9  :             List(TK.LIST, [Ref()])
    10  :                 Ref(TK.IDNT, 'x')
 
 tree2:  f := { a(x):x*x }; { b: b.left = b.right}:(node);
-    1  : Define(TK.DEFINE, TK.COLN, ':')
-    2  :     Set(TK.SET, [Define()])
-    3  :         Define(TK.DEFINE, TK.COLN, ':')
+    1  : Define(TK.DEFINE, TK.DEFINE, ':')
+    2  :     Block(TK.BLOCK, v=[Define()], '')
+    3  :         Define(TK.DEFINE, TK.DEFINE, ':')
     4  :             Ref(TK.IDNT, 'b')
-    5  :             Define(TK.DEFINE, TK.EQLS, '=')
+    5  :             Define(TK.DEFINE, TK.DEFINE, '=')
     6  :                 PropRef(TK.REF, '.')
     7  :                     Ref(TK.IDNT, 'b')
     8  :                     Ref(TK.IDNT, 'left')

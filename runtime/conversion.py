@@ -12,7 +12,7 @@ from runtime.token_ids import TK
 
 
 # --------------------------------
-# General Value conversion helpers
+# "Box" / "Unbox" Helpers
 # --------------------------------
 def c_box(u, val):
     if hasattr(u, 'value'):
@@ -41,41 +41,8 @@ def c_type(u):
 
 
 # --------------------------------
-# General Node conversion helpers
+# General type conversion helpers
 # --------------------------------
-def c_node2bool(node):
-    tid = node.token.id
-    tk = copy(node.token)
-    tk.id = TK.BOOL
-    tk.value = c_to_bool(tk.value, tid)
-    if tk.value is not None:
-        tk.lexeme = None
-        return Bool(token=tk)
-    runtime_error("Unsupported type for conversion", loc=tk.location)
-
-
-def c_node2int(node):
-    tid = node.token.id
-    tk = copy(node.token)
-    tk.id = TK.INT
-    tk.value = c_to_int(tk.value, tid)
-    if tk.value is not None:
-        tk.lexeme = None
-        return Int(token=tk)
-    runtime_error("Unsupported type for conversion", loc=tk.location)
-
-
-def c_node2float(node):
-    tid = node.token.id
-    tk = copy(node.token)
-    tk.id = TK.FLOT
-    tk.value = c_to_float(tk.value, tid)
-    if tk.value is not None:
-        tk.lexeme = None
-        return Float(token=tk)
-    runtime_error("Unsupported type for conversion", loc=tk.location)
-
-
 def c_to_bool(val, tid):
     """
     Convert a value to a bool.  Value may be an intrinsic (platform) or runtime Object

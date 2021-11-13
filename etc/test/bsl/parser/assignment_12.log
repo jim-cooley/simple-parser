@@ -4,7 +4,7 @@ test: 12:
 trade_size := position * 10%
 
 tree1:  trade_size := position * 10%
-    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
+    1  : DefineVar(TK.DEFINE, TK.DEFINE, ':=')
     2  :     Ref(TK.IDNT, 'trade_size')
     3  :     BinOp(TK.MUL, '*')
     4  :         Get(TK.IDNT, 'position')

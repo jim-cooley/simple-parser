@@ -4,7 +4,7 @@ test: 12:
 var f := { 5 }
 
 tree1:  var f := { 5 }
-    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
+    1  : DefineVar(TK.DEFINE, TK.DEFINE, ':=')
     2  :     Ref(TK.IDNT, 'f')
     3  :     Set(TK.SET, [Int()])
     4  :         Int(TK.INT, 5)

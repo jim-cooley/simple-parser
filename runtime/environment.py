@@ -26,7 +26,7 @@ class Environment(object):
 
     def __init__(self, source=None, commands=None, keywords=None, options=None, file=None):
         self.keywords = keywords if keywords is not None else Keywords()
-        self.globals = Scope(self.keywords)
+        self.globals = Scope(parent_scope=self.keywords)
         self.scope = self.globals
         self.commands = commands if commands is not None else []
         self.trees = []

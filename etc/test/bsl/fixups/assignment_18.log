@@ -4,23 +4,23 @@ test: 18:
 r = a().b.c
 
 tree1:  r = a().b.c
-    1  : Define(TK.DEFINE, TK.EQLS, '=')
+    1  : Define(TK.DEFINE, TK.DEFINE, '=')
     2  :     Ref(TK.IDNT, 'r')
     3  :     BinOp(TK.DOT, '.')
     4  :         FnCall('a')
     5  :             Get(TK.IDNT, 'a')
-    6  :             List(TK.TUPLE, [])
+    6  :             List(TK.LIST, [])
     7  :         PropRef(TK.REF, '.')
     8  :             Get(TK.IDNT, 'b')
     9  :             Get(TK.IDNT, 'c')
 
 tree1:(post)  r = a().b.c
-    1  : Define(TK.DEFINE, TK.EQLS, '=')
+    1  : Define(TK.DEFINE, TK.DEFINE, '=')
     2  :     Ref(TK.IDNT, 'r')
     3  :     BinOp(TK.DOT, '.')
     4  :         FnCall('a')
     5  :             Get(TK.IDNT, 'a')
-    6  :             List(TK.TUPLE, [])
+    6  :             List(TK.LIST, [])
     7  :         PropRef(TK.REF, '.')
     8  :             Get(TK.IDNT, 'b')
     9  :             Get(TK.IDNT, 'c')

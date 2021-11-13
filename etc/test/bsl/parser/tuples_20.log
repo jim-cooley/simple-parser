@@ -4,7 +4,7 @@ test: 20:
 (a, b, c) := (4, 5, 6)       # tuple assignment (var)
 
 tree1:  (a, b, c) := (4, 5, 6)       # tuple assignment (var)
-    1  : DefineVar(TK.DEFINE, TK.COEQ, ':=')
+    1  : DefineVar(TK.DEFINE, TK.DEFINE, ':=')
     2  :     List(TK.TUPLE, [Ref(), Ref(), Ref()])
     3  :         Ref(TK.IDNT, 'a')
     4  :         Ref(TK.IDNT, 'b')

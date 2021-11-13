@@ -1,7 +1,7 @@
 from runtime.literals import Literal
 from runtime.tree import Ref, UnaryOp, Command, PropRef, BinOp, FnCall
 
-from interpreter.notation_fn import FunctionalNotationPrinter
+from interpreter.notation import FunctionalNotationPrinter
 from interpreter.visitor import NodeVisitor, BINARY_NODE, UNARY_NODE, SEQUENCE_NODE, DEFAULT_NODE, VALUE_NODE, NATIVE_VALUE, \
     ASSIGNMENT_NODE, TRINARY_NODE
 

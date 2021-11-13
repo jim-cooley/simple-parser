@@ -9,7 +9,7 @@ tree1:  a.b().c
     3  :         Get(TK.IDNT, 'a')
     4  :         FnCall('b')
     5  :             Get(TK.IDNT, 'b')
-    6  :             List(TK.TUPLE, [])
+    6  :             List(TK.LIST, [])
     7  :     Get(TK.IDNT, 'c')
 
 tree1:(post)  a.b().c
@@ -18,5 +18,5 @@ tree1:(post)  a.b().c
     3  :         Get(TK.IDNT, 'a')
     4  :         FnCall('b')
     5  :             Get(TK.IDNT, 'b')
-    6  :             List(TK.TUPLE, [])
+    6  :             List(TK.LIST, [])
     7  :     Get(TK.IDNT, 'c')

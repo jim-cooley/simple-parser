@@ -4,12 +4,12 @@ test: 19:
 r = a.b().c
 
 tree1:  r = a.b().c
-    1  : Define(TK.DEFINE, TK.EQLS, '=')
+    1  : Define(TK.DEFINE, TK.DEFINE, '=')
     2  :     Ref(TK.IDNT, 'r')
     3  :     BinOp(TK.DOT, '.')
     4  :         PropRef(TK.REF, '.')
     5  :             Get(TK.IDNT, 'a')
     6  :             FnCall('b')
     7  :                 Get(TK.IDNT, 'b')
-    8  :                 List(TK.TUPLE, [])
+    8  :                 List(TK.LIST, [])
     9  :         Get(TK.IDNT, 'c')

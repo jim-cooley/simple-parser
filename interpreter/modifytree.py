@@ -45,7 +45,7 @@ class TreeModifier(NodeVisitor, ABC):
             return None
         self.visit_node(node, label)
         self.indent()
-        values = node.values()
+        values = node.items()
         if values is None:
             return node
         for idx in range(0, len(values)):

@@ -8,5 +8,5 @@ tree1:  %%report { report >> rules }
     2  :     Block(TK.BLOCK, v=[Flow()], '')
     3  :         Flow(TK.APPLY, v=[Get(), ApplyChainProd()], '>>')
     4  :             Get(TK.IDNT, 'report')
-    5  :             ApplyChainProd(TK.DEFINE, TK.APPLY, '>>')
+    5  :             ApplyChainProd(TK.DEFINE, TK.DEFINE, '>>')
     6  :                 Ref(TK.IDNT, 'rules')

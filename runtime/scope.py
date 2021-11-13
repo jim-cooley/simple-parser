@@ -14,7 +14,7 @@ from runtime.tree import AST, Expression
 
 @dataclass
 class Scope:
-    def __init__(self, parent_scope=None, name=None, **kwargs):
+    def __init__(self, name=None, parent_scope=None, **kwargs):
         super().__init__(**kwargs)
         self.parent_scope = parent_scope
         self.code = None
@@ -137,11 +137,11 @@ class Scope:
 
 @dataclass
 class Object(AST, Scope):
-    def __init__(self, name=None, value=None, token=None, parent=None):
+    def __init__(self, name=None, value=None, parent=None, token=None, **kwargs):
         if name is None:
             if token is not None and token.lexeme is not None:
                 name = token.lexeme  # UNDONE: this is very silly on Literal subclasses (name = 'true')
-        super().__init__(value=value, token=token, parent=parent, name=name, parent_scope=None)
+        super().__init__(name=name, parent_scope=None, value=value, parent=parent, token=token, **kwargs)
         self.code = None
         self.parameters = None
         self.is_lvalue = True
@@ -193,31 +193,30 @@ class Object(AST, Scope):
 # -----------------------------------
 @dataclass
 class Block(Expression, Object):
-    def __init__(self, name=None, items=None, loc=None, is_lvalue=False):
-        super().__init__(name=name, token=Token.BLOCK(loc))
-        self.items = items if items is not None else []
-        self._value = self.items
+    def __init__(self, name=None, items=None, loc=None, **kwargs):
+        super().__init__(name=name, token=Token.BLOCK(loc), **kwargs)
+        self._items = items if items is not None else []
+        self._value = self._items
         self.is_lvalue = False
 
     def __len__(self):
-        return len(self.items)
+        return len(self._items)
 
 
 @dataclass
 class Flow(Block):
     def __init__(self, token=None, items=None):
         super().__init__(items=items)
-        token._value = items
-        self.token = token
+        token.value = items
+        self.from_token(token)
 
 
 @dataclass
 class Function(Block):
     def __init__(self, name=None, members=None, defaults=None, tid=None, loc=None, is_lvalue=True):
         super().__init__(name=name, items=members, loc=loc)
-        token = Token.FUNCTION(name=name, tid=tid, loc=loc)
-        self.token = token
-        self._value = self.items
+        self.set_token(tid=tid or TK.IDNT, tcl=TCL.FUNCTION, loc=loc, lex=name)
+        self._value = self._items
         self.is_lvalue = is_lvalue
         self.code = None
         self.parameters = None

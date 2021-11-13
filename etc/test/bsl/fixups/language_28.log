@@ -4,11 +4,11 @@ test: 28:
 f = x
 
 tree1:  f = x
-    1  : Define(TK.DEFINE, TK.EQLS, '=')
+    1  : Define(TK.DEFINE, TK.DEFINE, '=')
     2  :     Ref(TK.IDNT, 'f')
     3  :     Get(TK.IDNT, 'x')
 
 tree1:(post)  f = x
-    1  : Define(TK.DEFINE, TK.EQLS, '=')
+    1  : Define(TK.DEFINE, TK.DEFINE, '=')
     2  :     Ref(TK.IDNT, 'f')
     3  :     Get(TK.IDNT, 'x')

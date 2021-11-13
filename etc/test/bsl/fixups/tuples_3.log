@@ -4,11 +4,11 @@ test: 3:
 (a) = 5                      # grouping
 
 tree1:  (a) = 5                      # grouping
-    1  : Define(TK.DEFINE, TK.EQLS, '=')
+    1  : Define(TK.DEFINE, TK.DEFINE, '=')
     2  :     Ref(TK.IDNT, 'a')
     3  :     Int(TK.INT, 5)
 
 tree1:(post)  (a) = 5                      # grouping
-    1  : Define(TK.DEFINE, TK.EQLS, '=')
+    1  : Define(TK.DEFINE, TK.DEFINE, '=')
     2  :     Ref(TK.IDNT, 'a')
     3  :     Int(TK.INT, 5)

@@ -1,0 +1,57 @@
+
+
+test:
+f(x) = x*x
+
+def factorial(x) := {
+    x * factorial(x - 1)
+}
+
+
+tree1:  f(x) = x*x
+    1  : DefineFn(TK.DEFINE, TK.ASSIGN, '=')
+    2  :     Ref(TK.IDNT, 'f')
+    3  :     BinOp(TK.MUL, '*')
+    4  :         Get(TK.IDNT, 'x')
+    5  :         Get(TK.IDNT, 'x')
+    6  :     List(TK.TUPLE, [Ref()])
+    7  :         Ref(TK.IDNT, 'x')
+
+tree2:  def factorial(x) := {
+    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    2  :     Ref(TK.IDNT, 'factorial')
+    3  :     Block(TK.BLOCK, v=[BinOp()], '')
+    4  :         BinOp(TK.MUL, '*')
+    5  :             Ref(TK.IDNT, 'x')
+    6  :             FnDef(TK.FUNCTION, 'factorial')
+    7  :                 Ref(TK.IDNT, 'factorial')
+    8  :                 List(TK.TUPLE, [BinOp()])
+    9  :                     BinOp(TK.SUB, '-')
+   10  :                         Ref(TK.IDNT, 'x')
+   11  :                         Int(TK.INT, 1)
+   12  :     List(TK.TUPLE, [Ref()])
+   13  :         Ref(TK.IDNT, 'x')
+
+tree1:(post)  f(x) = x*x
+    1  : DefineFn(TK.DEFINE, TK.ASSIGN, '=')
+    2  :     Ref(TK.IDNT, 'f')
+    3  :     BinOp(TK.MUL, '*')
+    4  :         Get(TK.IDNT, 'x')
+    5  :         Get(TK.IDNT, 'x')
+    6  :     List(TK.TUPLE, [Ref()])
+    7  :         Ref(TK.IDNT, 'x')
+
+tree2:(post)  def factorial(x) := {
+    1  : DefineVarFn(TK.DEFINE, TK.COEQ, ':=')
+    2  :     Ref(TK.IDNT, 'factorial')
+    3  :     Block(TK.BLOCK, v=[BinOp()], '')
+    4  :         BinOp(TK.MUL, '*')
+    5  :             Ref(TK.IDNT, 'x')
+    6  :             FnDef(TK.FUNCTION, 'factorial')
+    7  :                 Ref(TK.IDNT, 'factorial')
+    8  :                 List(TK.TUPLE, [BinOp()])
+    9  :                     BinOp(TK.SUB, '-')
+   10  :                         Ref(TK.IDNT, 'x')
+   11  :                         Int(TK.INT, 1)
+   12  :     List(TK.TUPLE, [Ref()])
+   13  :         Ref(TK.IDNT, 'x')

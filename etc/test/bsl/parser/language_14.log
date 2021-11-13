@@ -4,6 +4,6 @@ test: 14:
 var f = x
 
 tree1:  var f = x
-    1  : DefineVar(TK.DEFINE, TK.EQLS, '=')
+    1  : DefineVar(TK.DEFINE, TK.DEFINE, '=')
     2  :     Ref(TK.IDNT, 'f')
     3  :     Ref(TK.IDNT, 'x')

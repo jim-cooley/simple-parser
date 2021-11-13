@@ -8,5 +8,5 @@ tree1:  a | b | c | d
     2  :     Get(TK.IDNT, 'a')
     3  :     Ref(TK.IDNT, 'b')
     4  :     Ref(TK.IDNT, 'c')
-    5  :     ApplyChainProd(TK.DEFINE, TK.APPLY, '|')
+    5  :     ApplyChainProd(TK.DEFINE, TK.DEFINE, '|')
     6  :         Ref(TK.IDNT, 'd')

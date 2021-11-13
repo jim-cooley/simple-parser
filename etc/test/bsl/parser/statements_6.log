@@ -6,7 +6,7 @@ a >> b ; c
 tree1:  a >> b ; c
     1  : Flow(TK.APPLY, v=[Get(), ApplyChainProd()], '>>')
     2  :     Get(TK.IDNT, 'a')
-    3  :     ApplyChainProd(TK.DEFINE, TK.APPLY, '>>')
+    3  :     ApplyChainProd(TK.DEFINE, TK.DEFINE, '>>')
     4  :         Ref(TK.IDNT, 'b')
 
 tree2:  a >> b ; c

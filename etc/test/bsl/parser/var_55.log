@@ -4,7 +4,7 @@ test: 55:
 f = { 5 }
 
 tree1:  f = { 5 }
-    1  : Define(TK.DEFINE, TK.EQLS, '=')
+    1  : Define(TK.DEFINE, TK.DEFINE, '=')
     2  :     Ref(TK.IDNT, 'f')
     3  :     Set(TK.SET, [Int()])
     4  :         Int(TK.INT, 5)

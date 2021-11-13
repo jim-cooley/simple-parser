@@ -1,3 +1,20 @@
+
+def factorial(x) := {
+    print('in factorial')
+    if x == 1 then
+        return 1
+    else
+        return x * factorial(x - 1)
+}
+
+
+print('hello', 'world')
+pd = yahoo( symbols='portfolio.csv', span=-5y )
+
+#d = dataset()
+print(pd)
+
+
 def factorial(x) := {
     print('in factorial')
     if x == 1 then

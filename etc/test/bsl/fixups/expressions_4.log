@@ -4,7 +4,7 @@ test: 4:
 a = b.c(x,y,z)
 
 tree1:  a = b.c(x,y,z)
-    1  : Define(TK.DEFINE, TK.EQLS, '=')
+    1  : Define(TK.DEFINE, TK.DEFINE, '=')
     2  :     Ref(TK.IDNT, 'a')
     3  :     PropRef(TK.REF, '.')
     4  :         Get(TK.IDNT, 'b')
@@ -16,7 +16,7 @@ tree1:  a = b.c(x,y,z)
    10  :                 Get(TK.IDNT, 'z')
 
 tree1:(post)  a = b.c(x,y,z)
-    1  : Define(TK.DEFINE, TK.EQLS, '=')
+    1  : Define(TK.DEFINE, TK.DEFINE, '=')
     2  :     Ref(TK.IDNT, 'a')
     3  :     PropRef(TK.REF, '.')
     4  :         Get(TK.IDNT, 'b')

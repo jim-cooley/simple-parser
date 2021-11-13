@@ -1,7 +1,7 @@
 # abstract syntax trees:
 from dataclasses import dataclass
 
-from runtime.token_data import EXPRESSION_TOKENS
+from runtime.token_data import EXPRESSION_TOKENS, _tk2type
 from runtime.token_class import TCL
 from runtime.token import Token
 from runtime.token_ids import TK
@@ -17,13 +17,29 @@ class AST:
     and will pass additional args and kwargs to other superclass __init__ functions.
     """
 
-    def __init__(self, value=None, token=None, parent=None, **kwargs):
+    def __init__(self, token=None, tid=None, value=None, parent=None, loc=None, **kwargs):
         super().__init__(**kwargs)
         self.parent = parent
-        self.token = token
+        if token is not None:
+            self.tid = token.id
+            self.location = token.location
+            self.lexeme = token.lexeme
+        else:
+            self.tid = tid
+            self.lexeme = None
+            self.location = loc
         self._value = value
         if value is None and token is not None:
             self._value = token.value
+
+    def __str__(self):
+        if getattr(self, 'format', None) is not None:
+            return self.format()
+        return self.__repr__()
+
+    @property
+    def token(self):
+        return Token(tid=self.tid, tcl=_tk2type[self.tid], lex=self.lexeme, loc=self.location)
 
     @property
     def value(self):
@@ -33,45 +49,67 @@ class AST:
     def value(self, value):
         self._value = value
 
-    def __str__(self):
-        if getattr(self, 'format', None) is not None:
-            return self.format()
-        return self.__repr__()
+    # token fields are split out for the AST.  tcl is the first dropped,
+    # as well as is_reserved which is replaced with is_lvalue.  This is to ease the transition.
+    def set_token(self, tid=None, tcl=None, loc=None, lex=None, val=None):
+        self.tid = tid or self.tid
+        self.location = loc or self.location
+        self.lexeme = lex or self.lexeme
+        self._value = val or self.value
+
+    def from_token(self, token):
+        if token is not None:
+            self.tid = token.id
+            self.location = token.location
+            self.lexeme = token.lexeme
+            self._value = token.value
 
 
 # a compound node containing a sequence of 'items'
 @dataclass
 class ASTCompound(AST):
-    def __init__(self, token=None, value=None, parent=None, **kwargs):
-        super().__init__(value=value, token=token, parent=parent, **kwargs)
-        self.items = []
+    def __init__(self, token=None, tid=None, value=None, parent=None, **kwargs):
+        super().__init__(token=token, tid=tid, value=value, parent=parent, **kwargs)
+        self._items = []
+
+    def __getitem__(self, index):
+        return self._items[index]
+
+    def __setitem__(self, index, value):
+        self._items[index] = int(value)
+
+    def __len__(self):
+        return len(self._items)
 
     @property
     def last(self):
-        return self.items[len(self.items) - 1]
+        return self._items[len(self._items) - 1]
 
     @last.setter
     def last(self, value):
-        self.items[len(self.items) - 1] = value
+        self._items[len(self._items) - 1] = value
 
     def append(self, item):
-        self.items.append(item)
+        self._items.append(item)
+
+    def items(self):    # UNDONE: should be iterator
+        return self._items
 
     def len(self):
-        return len(self.items)
+        return len(self._items)
 
     def values(self):
-        return self.items
+        return self._items
 
     def format(self):
         if self.value is None:
             return '{}'
         else:
             fstr = ''
-            max = (len(self.items) - 1)
+            max = (len(self._items) - 1)
             if max > 0:
                 for idx in range(0, len(self.value)):
-                    fstr += f'{self.items[idx]}'
+                    fstr += f'{self._items[idx]}'
                     fstr += ',' if idx < max else ''
             else:
                 fstr = f'{self._value}'
@@ -80,14 +118,14 @@ class ASTCompound(AST):
 
 @dataclass
 class Expression(ASTCompound):
-    def __init__(self, value=None, token=None, parent=None, is_lvalue=True, **kwargs):
-        super().__init__(token=token, value=value, parent=parent, **kwargs)
+    def __init__(self, token=None, tid=None, value=None, parent=None, is_lvalue=True, **kwargs):
+        super().__init__(token=token, tid=tid, value=value, parent=parent, **kwargs)
         self.is_lvalue = is_lvalue
 
 
 @dataclass
 class Statement(ASTCompound):
-    def __init__(self, value=None, token=None, parent=None, is_lvalue=True, **kwargs):
+    def __init__(self, token=None, value=None, parent=None, is_lvalue=True, **kwargs):
         super().__init__(token=token, value=value, parent=parent, **kwargs)
         self.is_lvalue = is_lvalue
 
@@ -97,11 +135,11 @@ class Statement(ASTCompound):
 # -----------------------------------
 @dataclass
 class Assign(Expression):
-    def __init__(self, left, op, right, is_lvalue=None):
-        super().__init__(token=op, is_lvalue=False if is_lvalue is None else is_lvalue)
+    def __init__(self, left=None, op=None, right=None, is_lvalue=None):
+        super().__init__(token=op, tid=TK.ASSIGN, is_lvalue=False if is_lvalue is None else is_lvalue)
         self.left = left
         self.right = right
-        self.op = TK.ASSIGN  # UNDONE: this definition of 'op' is incompatible with BinOp and others
+        self.tid = self.op = TK.ASSIGN  # UNDONE: this definition of 'op' is incompatible with BinOp and others
         if right is not None:
             right.parent = self
 
@@ -140,7 +178,7 @@ class Define(Assign):
     The symbol need not be defined when called.
     """
 
-    def __init__(self, left, op, right, is_lvalue=None):
+    def __init__(self, left=None, op=None, right=None, is_lvalue=None):
         """
         :param left: name or name Ref
         :type left: Ref
@@ -151,11 +189,14 @@ class Define(Assign):
         :param is_lvalue: Indicates whether or not this node can appear as the left-hand
         side of an assignment expression.  The default value is 'None', or unknown.
         """
-        is_lvalue = False if op.id != TK.COLN else is_lvalue
-        super().__init__(left=left, op=op, right=right, is_lvalue=True if is_lvalue is None else is_lvalue)
-        self.op = TK.DEFINE
+        is_lvalue = False
+        if op is not None:
+            if op.id == TK.COLN:
+                is_lvalue = is_lvalue
+        super().__init__(left=left, op=op, right=right, is_lvalue=is_lvalue)
         if right is not None:
             self.is_lvalue = right.is_lvalue
+        self.tid = self.op = TK.DEFINE
 
     def format(self):
         left = "None" if self.left is None else f'{self.left}'
@@ -165,13 +206,11 @@ class Define(Assign):
 
 # holds a reference
 class Ref(Expression):
-    def __init__(self, r_token, name=None, is_lvalue=True):
-        super().__init__(token=r_token, is_lvalue=is_lvalue)
-        self.token = r_token
-        self.name = name or r_token.lexeme
-        self.location = r_token.location
-        r_token.t_class = TCL.IDENTIFIER
-        if r_token.is_reserved:
+    def __init__(self, token, name=None, is_lvalue=True):
+        super().__init__(token=token, is_lvalue=is_lvalue)
+        self.from_token(token)
+        self.name = name or token.lexeme
+        if token.is_reserved:
             self.is_lvalue = False
 
     def to_get(self):
@@ -241,7 +280,7 @@ class ApplyChainProd(Apply):
 # evaluated each access
 @dataclass
 class DefineFn(Define):  # left = FnRef, op=TK, plist, right = Block
-    def __init__(self, left, op, right, args):
+    def __init__(self, left=None, op=None, right=None, args=None):
         """
         Creates a Function Definition tree node.
         :param left: FnRef for the function (name)
@@ -266,7 +305,7 @@ class DefineFn(Define):  # left = FnRef, op=TK, plist, right = Block
 # value takes on defined range during iteration
 @dataclass
 class DefineVar(Define):
-    def __init__(self, left, op, right, is_lvalue=None):
+    def __init__(self, left=None, op=None, right=None, is_lvalue=None):
         super().__init__(left=left, op=op, right=right, is_lvalue=False if is_lvalue is None else is_lvalue)
 
     def format(self):
@@ -278,7 +317,7 @@ class DefineVar(Define):
 # value takes on defined range during iteration, and is evaluated each time
 @dataclass
 class DefineVarFn(DefineVar):
-    def __init__(self, left, op, right, args=None):
+    def __init__(self, left=None, op=None, right=None, args=None):
         super().__init__(left=left, op=op, right=right, is_lvalue=False)
         self.args = args
 
@@ -291,8 +330,8 @@ class DefineVarFn(DefineVar):
 
 # dereferences to value
 class Get(Ref):
-    def __init__(self, r_token, name=None, is_lvalue=True):
-        super().__init__(r_token=r_token, name=name, is_lvalue=is_lvalue)
+    def __init__(self, token, name=None, is_lvalue=True):
+        super().__init__(token=token, name=name, is_lvalue=is_lvalue)
 
     def to_ref(self):
         ref = Ref(self.token)

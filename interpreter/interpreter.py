@@ -225,7 +225,6 @@ class Interpreter(TreeFilter):
         fn = self.stack.pop()
         if isinstance(right, Scope):
             fn.from_block(right)
-            fn.code = right.items
         else:
             fn.code = right
         fn.defaults = fn.parameters = self.reduce_parameters(scope=fn, args=args)
@@ -364,8 +363,12 @@ class Interpreter(TreeFilter):
                     sym = reduce_ref(scope=scope, ref=ref)
                     items[sym.name] = sym
                 elif isinstance(ref, Literal):
-                    slot = items.keys()[idx]
-                    items[slot] = c_unbox(ref)
+                    if idx >= len(items):
+                        v = c_unbox(ref)
+                        items[v] = v
+                    else:
+                        slot = items.keys()[idx]
+                        items[slot] = c_unbox(ref)
                 else:
                     self.visit(ref)
                     val = self.stack.pop()

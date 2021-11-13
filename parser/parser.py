@@ -186,7 +186,7 @@ class Parser(object):
             elif isinstance(l_expr, FnCall):  # keyword overrides other syntax
                 return DefineFn(left=l_expr.left, op=op, right=self.block_expr2(), args=l_expr.right)
             else:
-                return Define(l_expr.left, op, l_expr.right)
+                return Define(left=l_expr.left, op=op, right=l_expr.right)
         self.logger.error(f"Invalid assignment target {l_expr}", op.location)
         return l_expr
 
@@ -266,9 +266,9 @@ class Parser(object):
             while self.match1(TK.COLN):
                 l_expr = _rewriteGets(l_expr)
                 if l_expr.token.id == TK.FUNCTION:
-                    l_expr = DefineFn(l_expr.left, op=op, args=l_expr.right, right=self.tuple())
+                    l_expr = DefineFn(left=l_expr.left, op=op, args=l_expr.right, right=self.tuple())
                 else:
-                    l_expr = Define(l_expr, op, self.tuple())
+                    l_expr = Define(left=l_expr, op=op, right=self.tuple())
                 op = self.peek()
         return l_expr
 
@@ -332,9 +332,9 @@ class Parser(object):
                 l_expr = _rewriteFnCall2Definition(l_expr)
             if op.id in [TK.EQLS, TK.EQGT]:
                 if isinstance(l_expr, FnCall) or isinstance(l_expr, FnRef) or isinstance(l_expr, DefineFn):
-                    return DefineFn(left=l_expr.left, op=op.remap2binop(), right=r_expr, args=l_expr.right)
+                    return DefineFn(left=l_expr.left, op=op, right=r_expr, args=l_expr.right)
                 else:
-                    return Define(l_expr, op, r_expr)
+                    return Define(left=l_expr, op=op, right=r_expr)
             elif op.id == TK.COEQ:
                 if isinstance(l_expr, FnCall) or isinstance(l_expr, FnRef):
                     return DefineVarFn(left=l_expr.left, op=op, right=r_expr, args=l_expr.right)
@@ -416,9 +416,9 @@ class Parser(object):
         if token.id == TK.EOL:
             return node
         if token.id == TK.FALSE:
-            node = Bool(False, token)
+            node = Literal.FALSE(loc=token.location)
         elif token.id == TK.TRUE:
-            node = Bool(True, token)
+            node = Literal.TRUE(loc=token.location)
         elif token.id == TK.INT:
             node = Int(token=token)
         elif token.id == TK.FLOT:
@@ -551,7 +551,7 @@ class Parser(object):
         else:
             token = Token.LIST(loc=token.location)
         token.lexeme = '('  # fixup token.
-        return List(seq, token)
+        return List(items=seq, token=token)
 
     def sequence(self, node=None):
         """EXPR <sep> EX1PR <sep> ..."""

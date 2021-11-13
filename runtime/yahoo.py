@@ -10,8 +10,9 @@ from runtime.indexdict import IndexedDict
 from runtime.literals import Duration, Literal
 from runtime.scope import IntrinsicFunction, Object
 
-from runtime.dataframe import print_dataframe, Dataset
+from runtime.dataframe import Dataset
 from runtime.intrinsics import get_now
+from runtime.print import print_dataframe
 from runtime.runtime import _find_file
 
 file_suffix = {'1d': 'daily', '1wk': 'weekly'}
@@ -68,9 +69,9 @@ def do_yahoo(env, args):
     if isinstance(symbols, str):
         symbols = read_symbol_list(symbols)
     ds = get_yahoo(symbols=symbols,
-                   first=args.first,
-                   last=args.last,
-                   span=args.span,
+                   first=c_unbox(args.first),
+                   last=c_unbox(args.last),
+                   span=c_unbox(args.span),
                    frequency=_map2freq[args.frequency],
                    dropna=args.dropna,
                    offline=args.offline)

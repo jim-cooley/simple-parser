@@ -4,12 +4,12 @@ test: 10:
 node => { _ : _.left = _.right}
 
 tree1:  node => { _ : _.left = _.right}
-    1  : DefineFn(TK.DEFINE, TK.EQGT, '=>')
+    1  : DefineFn(TK.DEFINE, TK.DEFINE, '=>')
     2  :     Ref(TK.IDNT, 'node')
     3  :     Block(TK.BLOCK, v=[Define()], '')
-    4  :         Define(TK.DEFINE, TK.COLN, ':')
+    4  :         Define(TK.DEFINE, TK.DEFINE, ':')
     5  :             Ref(TK.ANON, '_')
-    6  :             Define(TK.DEFINE, TK.EQLS, '=')
+    6  :             Define(TK.DEFINE, TK.DEFINE, '=')
     7  :                 PropRef(TK.REF, '.')
     8  :                     Ref(TK.ANON, '_')
     9  :                     Ref(TK.IDNT, 'left')

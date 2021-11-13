@@ -5,10 +5,10 @@ test: 10:
 
 tree1:  {a:5, b:{c}, d}
     1  : Set(TK.SET, [Define(), Define(), Get()])
-    2  :     Define(TK.DEFINE, TK.COLN, ':')
+    2  :     Define(TK.DEFINE, TK.DEFINE, ':')
     3  :         Ref(TK.IDNT, 'a')
     4  :         Int(TK.INT, 5)
-    5  :     Define(TK.DEFINE, TK.COLN, ':')
+    5  :     Define(TK.DEFINE, TK.DEFINE, ':')
     6  :         Ref(TK.IDNT, 'b')
     7  :         Set(TK.SET, [Get()])
     8  :             Get(TK.IDNT, 'c')

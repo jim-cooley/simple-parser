@@ -6,5 +6,5 @@ a | n
 tree1:  a | n
     1  : Flow(TK.CHAIN, v=[Get(), ApplyChainProd()], '|')
     2  :     Get(TK.IDNT, 'a')
-    3  :     ApplyChainProd(TK.DEFINE, TK.APPLY, '|')
+    3  :     ApplyChainProd(TK.DEFINE, TK.DEFINE, '|')
     4  :         Ref(TK.IDNT, 'n')

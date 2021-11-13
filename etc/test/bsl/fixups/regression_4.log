@@ -1,0 +1,16 @@
+
+
+test: 4:
+t = today
+
+tree1:  t = today
+    1  : Define(TK.DEFINE, TK.EQLS, '=')
+    2  :     Ref(TK.IDNT, 't')
+    3  :     FnCall('today')
+    4  :         Get(TK.IDNT, 'today')
+
+tree1:(post)  t = today
+    1  : Define(TK.DEFINE, TK.EQLS, '=')
+    2  :     Ref(TK.IDNT, 't')
+    3  :     FnCall('today')
+    4  :         Get(TK.IDNT, 'today')

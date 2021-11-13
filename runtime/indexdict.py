@@ -46,15 +46,15 @@ class IndexedDict(object):
     def is_empty(self):
         return len(self.__dict__.keys()) - 1 < 1
 
-    def items(self):
+    def items(self):                        # UNDONE: should be generator/iterator
         k = list(self.__dict__.items())
         return k[1:]
 
-    def keys(self, keys=None):
+    def keys(self, keys=None):              # UNDONE: iterator?
         k = list(self.__dict__.keys())[1:]
         return k
 
-    def values(self):
+    def values(self):                       # UNDONE: iterator?
         k = list(self.__dict__.values())
         return k[1:]
 
@@ -114,6 +114,7 @@ class IndexedDict(object):
         return default if key not in self._defaults else self._defaults[key]
 
 
+# Test Harness
 if __name__ == '__main__':
     d = IndexedDict(items={'strict': False}, defaults={'strict': False, 'force': False})
     print(d.strict)

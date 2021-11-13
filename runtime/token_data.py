@@ -2,105 +2,78 @@ from runtime.token_class import TCL
 from runtime.token_ids import TK
 
 
-# token conversion tables, could be array lookups rather than hashtable, but this is easier to maintain and not large.
-_tk2binop = {
-    TK.AMPS: TK.AND,
-    TK.AND: TK.AND,
-    TK.BAR: TK.CHAIN,
-    TK.CLN2: TK.DEF,
-    TK.COEQ: TK.DEFINE,
-    TK.COLN: TK.KVPAIR,
-    TK.DOT2: TK.RANGE,
-    TK.DOT: TK.DOT,
-    TK.EQEQ: TK.ISEQ,  # ==
-    TK.EQGT: TK.PRODUCE,
-    TK.EQLS: TK.ASSIGN,
-    TK.EXCL: TK.NOT,
-    TK.EXPN: TK.POW,
-    TK.GTE: TK.GTE,
-    TK.GTR2: TK.APPLY,
-    TK.GTR: TK.GTR,
-    TK.IDIV: TK.IDIV,
-    TK.IN: TK.IN,
-    TK.IF: TK.IF,
-    TK.LBAR: TK.FALL_BELOW,
-    TK.LBRK: TK.INDEX,
-    TK.LESS: TK.LESS,
-    TK.LSS2: TK.LSS2,
-    TK.LTE: TK.LTE,
-    TK.MNUS: TK.SUB,
-    TK.MOD: TK.MOD,
-    TK.NEQ: TK.NEQ,
-    TK.OR: TK.OR,
-    TK.PCT2: TK.COMMAND,
-    TK.PCT: TK.PCT,
-    TK.PLUS: TK.ADD,
-    TK.QSTN: TK.COMPARE,
-    TK.RARR: TK.RAISE,
-    TK.RBAR: TK.RISE_ABOVE,
-    TK.SLSH: TK.DIV,
-    TK.STAR: TK.MUL,
-}
-_tk2unop = {
-    TK.ALL: TK.ALL,
-    TK.ANY: TK.ANY,
-    TK.EXCL: TK.NOT,  # !
-    TK.MNUS: TK.NEG,  # unary -
-    TK.MNU2: TK.DECREMENT,  # unary --
-    TK.NONE: TK.NONEOF,
-    TK.NOT: TK.NOT,
-    TK.PLUS: TK.POS,  # unary +
-    TK.PLU2: TK.INCREMENT,  # unary ++
-    TK.RETURN: TK.RETURN,
-}
-_tk2lit = {
-    TK.BOOL: TK.BOOL,
-    TK.DUR: TK.DUR,
-    TK.FALSE: TK.BOOL,
-    TK.FLOT: TK.FLOT,
-    TK.INT: TK.INT,
-    TK.LBRK: TK.LIST,  # ]
-    TK.QUOT: TK.STR,
-    TK.STR: TK.STR,
-    TK.TIME: TK.TIME,
-    TK.TODAY: TK.TIME,
-    TK.TRUE: TK.BOOL,
-}
-# token type mapping
+# token type mapping: NOTE: this is generated data from Token, see instructions below.
 _tk2type = {
+    TK.ADD: TCL.BINOP,
+    TK.ALL: TCL.UNARY,
+    TK.AND: TCL.BINOP,
+    TK.ANON: TCL.IDENTIFIER,
+    TK.ANY: TCL.UNARY,
+    TK.APPLY: TCL.UNARY,
+    TK.ASSIGN: TCL.FUNCTION,
+    TK.BLOCK: TCL.SCOPE,
+    TK.BOOL: TCL.LITERAL,
+    TK.CHAIN: TCL.BINOP,
+    TK.COLN: TCL.BINOP,
+    TK.COMMAND: TCL.UNARY,
+    TK.DECREMENT: TCL.UNARY,
     TK.DEF: TCL.IDENTIFIER,
+    TK.DEFINE: TCL.FUNCTION,
+    TK.DIV: TCL.BINOP,
     TK.DLRS: TCL.UNARY,
+    TK.DOT: TCL.BINOP,
     TK.DUR: TCL.LITERAL,
-    TK.EQLS: TCL.BINOP,
-    TK.EXCL: TCL.BINOP,
-    TK.EXPN: TCL.BINOP,
+    TK.ELSE: TCL.BINOP,
+    TK.EMPTY: TCL.LITERAL,
+    TK.EOF: TCL.LITERAL,
+    TK.FALL_BELOW: TCL.BINOP,
     TK.FLOT: TCL.LITERAL,
+    TK.FUNCTION: TCL.FUNCTION,
+    TK.IDNT: TCL.FUNCTION,
     TK.GTE: TCL.BINOP,
     TK.GTR: TCL.BINOP,
+    TK.IDIV: TCL.BINOP,
+    TK.IF: TCL.BINOP,
+    TK.IN: TCL.BINOP,
+    TK.INCREMENT: TCL.UNARY,
+    TK.INDEX: TCL.BINOP,
     TK.INT: TCL.LITERAL,
-    TK.LBAR: TCL.BINOP,
+    TK.ISEQ: TCL.BINOP,
     TK.LESS: TCL.BINOP,
-    TK.LIST: TCL.TUPLE,
+    TK.LIST: TCL.LITERAL,
     TK.LTE: TCL.BINOP,
-    TK.MNU2: TCL.UNARY,
-    TK.MNUS: TCL.UNARY,
+    TK.MNEQ: TCL.BINOP,
+    TK.MOD: TCL.BINOP,
+    TK.MUL: TCL.BINOP,
+    TK.NEG: TCL.UNARY,
     TK.NEQ: TCL.BINOP,
+    TK.NONE: TCL.LITERAL,
+    TK.NONEOF: TCL.UNARY,
+    TK.NOT: TCL.UNARY,
     TK.NOW: TCL.FUNCTION,
     TK.OBJECT: TCL.LITERAL,
+    TK.OR: TCL.BINOP,
     TK.PCT: TCL.UNARY,
-    TK.PLUS: TCL.UNARY,
-    TK.RBAR: TCL.BINOP,
-    TK.REF: TCL.IDENTIFIER,
-    TK.SLSH: TCL.BINOP,
-    TK.STAR: TCL.BINOP,
+    TK.PLEQ: TCL.BINOP,
+    TK.POS: TCL.UNARY,
+    TK.POW: TCL.BINOP,
+    TK.PRODUCE: TCL.BINOP,
+    TK.RAISE: TCL.UNARY,
+    TK.RANGE: TCL.BINOP,
+    TK.REF: TCL.BINOP,
+    TK.RETURN: TCL.UNARY,
+    TK.RISE_ABOVE: TCL.BINOP,
+    TK.SET: TCL.LITERAL,
     TK.STR: TCL.LITERAL,
+    TK.SUB: TCL.BINOP,
+    TK.THEN: TCL.BINOP,
     TK.TIME: TCL.LITERAL,
     TK.TODAY: TCL.FUNCTION,
     TK.TUPLE: TCL.TUPLE,
     TK.VAR: TCL.UNARY,
     TK.WHT: TCL.NONE,
 }
-# token to glyph
+# token to glyph.  NOTE: soon to be generated data
 _tk2glyph = {
     TK.ADD: '+',  # +
     TK.ALL: 'all',  # all:
@@ -165,6 +138,75 @@ _tk2glyph = {
     TK.TRUE: 'true',
     TK.TUPLE: '',
     TK.VAR: 'var',
+}
+
+# UNDONE: remove the need for _tk2binop and _tk2unop by just using the mapped token.  There may be places this is not
+# possible, ie: TK.MNUS maps to TK.NEG (unary), or TK.SUB (binary) depending on context. But these are the things that
+# should be left after just using the correct tokens in the lexer for all others.
+_tk2binop = {
+    TK.AMPS: TK.AND,
+    TK.AND: TK.AND,
+    TK.BAR: TK.CHAIN,
+    TK.CLN2: TK.DEF,
+    TK.COEQ: TK.DEFINE,
+    TK.COLN: TK.KVPAIR,
+    TK.DOT2: TK.RANGE,
+    TK.DOT: TK.DOT,
+    TK.EQEQ: TK.ISEQ,  # ==
+    TK.EQGT: TK.PRODUCE,
+    TK.EQLS: TK.ASSIGN,
+    TK.EXCL: TK.NOT,
+    TK.EXPN: TK.POW,
+    TK.GTE: TK.GTE,
+    TK.GTR2: TK.APPLY,
+    TK.GTR: TK.GTR,
+    TK.IDIV: TK.IDIV,
+    TK.IN: TK.IN,
+    TK.IF: TK.IF,
+    TK.LBAR: TK.FALL_BELOW,
+    TK.LBRK: TK.INDEX,
+    TK.LESS: TK.LESS,
+    TK.LSS2: TK.LSS2,
+    TK.LTE: TK.LTE,
+    TK.MNUS: TK.SUB,
+    TK.MOD: TK.MOD,
+    TK.NEQ: TK.NEQ,
+    TK.OR: TK.OR,
+    TK.PCT2: TK.COMMAND,
+    TK.PCT: TK.PCT,
+    TK.PLUS: TK.ADD,
+    TK.QSTN: TK.COMPARE,
+    TK.RARR: TK.RAISE,
+    TK.RBAR: TK.RISE_ABOVE,
+    TK.SLSH: TK.DIV,
+    TK.STAR: TK.MUL,
+}
+_tk2unop = {
+    TK.ALL: TK.ALL,
+    TK.ANY: TK.ANY,
+    TK.EXCL: TK.NOT,  # !
+    TK.MNUS: TK.NEG,  # unary -
+    TK.MNU2: TK.DECREMENT,  # unary --
+    TK.NONE: TK.NONEOF,
+    TK.NOT: TK.NOT,
+    TK.PLUS: TK.POS,  # unary +
+    TK.PLU2: TK.INCREMENT,  # unary ++
+    TK.RETURN: TK.RETURN,
+}
+# UNDONE: remove the need for this. by removing TK.FALSE, TK.TRUE, TK.TODAY, TK.NOW as unique tokens and just use
+# the type token with a constant value (see Token.FALSE, for instance)
+_tk2lit = {
+    TK.BOOL: TK.BOOL,
+    TK.DUR: TK.DUR,
+    TK.FALSE: TK.BOOL,
+    TK.FLOT: TK.FLOT,
+    TK.INT: TK.INT,
+    TK.LBRK: TK.LIST,  # ]
+    TK.QUOT: TK.STR,
+    TK.STR: TK.STR,
+    TK.TIME: TK.TIME,
+    TK.TODAY: TK.TIME,
+    TK.TRUE: TK.BOOL,
 }
 
 native2tkid = {

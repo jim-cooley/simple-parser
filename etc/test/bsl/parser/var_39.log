@@ -4,7 +4,7 @@ test: 39:
 var f.a = 5
 
 tree1:  var f.a = 5
-    1  : DefineVar(TK.DEFINE, TK.EQLS, '=')
+    1  : DefineVar(TK.DEFINE, TK.DEFINE, '=')
     2  :     PropRef(TK.REF, '.')
     3  :         Ref(TK.IDNT, 'f')
     4  :         Ref(TK.IDNT, 'a')

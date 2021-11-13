@@ -38,7 +38,9 @@ _rewriteFnCallNodeTypeMapping = {
 
 
 class BaseRewriter(TreeModifier, ABC):
-    def __init__(self, mapping=_rewriteBaseNodeTypeMapping, apply_parent_fixups=True):
+    def __init__(self, mapping=None, apply_parent_fixups=True):
+        if mapping is None:
+            mapping = _rewriteBaseNodeTypeMapping
         super().__init__(mapping=mapping, apply_parent_fixups=apply_parent_fixups)
 
     def apply(self, root):

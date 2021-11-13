@@ -11,12 +11,13 @@ class Dataset(Object):
     This class represents a Pandas DataFrame object.
     """
     def __init__(self, name=None, value=None, parent=None):
-        super().__init__(name=name, value=value, token=None, parent=parent)
+        super().__init__(name=name, value=value, parent=parent, token=None)
         self._dataframe = value if value is not None else pd.DataFrame()
         if isinstance(value, dict) or isinstance(value, IndexedDict):
             self._dataframe = pd.DataFrame(value, columns=list(value.keys()), index=[''])
-        elif type(self.value).__name__ != 'DataFrame':
+        elif type(self._dataframe).__name__ != 'DataFrame':
             raise ValueError("object is not DataFrame")
+        self.value = self._dataframe
 
     # UNDONE: required elements for NumPy
     # .shape = array dimensions
@@ -72,7 +73,7 @@ class Series(Object):
     Pandas Series object
     """
     def __init__(self, name=None, value=None, parent=None):
-        super().__init__(name=name, value=value, token=None, parent=parent)
+        super().__init__(name=name, value=value, parent=parent, token=None)
         self._seroes = value or pd.Series()
 
     def from_series(self, df):
@@ -88,19 +89,4 @@ def create_series(args):
     r = Series()
     return r
 
-
-def set_print_options():
-#   np.set_printoptions(threshold=sys.maxsize)
-    return pd.option_context(
-        'display.max_rows', None,
-        'display.max_columns', None,
-        'display.width', 16384,
-    )
-
-
-def print_dataframe(_df, label=None):
-    with set_print_options():
-        if label:
-            print(label)
-        print(_df)
 

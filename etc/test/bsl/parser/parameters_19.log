@@ -5,6 +5,6 @@ test: 19:
 
 tree1:  (a = 5,)
     1  : List(TK.TUPLE, [Define()])
-    2  :     Define(TK.DEFINE, TK.EQLS, '=')
+    2  :     Define(TK.DEFINE, TK.DEFINE, '=')
     3  :         Ref(TK.IDNT, 'a')
     4  :         Int(TK.INT, 5)

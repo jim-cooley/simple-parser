@@ -10,5 +10,5 @@ tree1:  a(x,y) | b
     4  :         List(TK.TUPLE, [Get(), Get()])
     5  :             Get(TK.IDNT, 'x')
     6  :             Get(TK.IDNT, 'y')
-    7  :     ApplyChainProd(TK.DEFINE, TK.APPLY, '|')
+    7  :     ApplyChainProd(TK.DEFINE, TK.DEFINE, '|')
     8  :         Ref(TK.IDNT, 'b')

@@ -32,8 +32,9 @@ class Literal(Object):
             tid = token.map2litval() if tid is None else tid
             token.t_class = TCL.LITERAL
             token.id = tid
-        super().__init__(value=value, token=token, parent=parent)
+        super().__init__(value=value, parent=parent, token=token)
 
+    # virtual constructor
     @staticmethod
     def lit(val, tid=None, other=None, loc=None):
         if val is None:
@@ -58,13 +59,22 @@ class Literal(Object):
         else:
             return Literal(value=val)
 
+    # special values
     @staticmethod
     def EMPTY(loc=None):
         return Set(token=Token.EMPTY(loc=loc))
 
     @staticmethod
+    def FALSE(loc=None):
+        return Bool(value=False, token=Token.FALSE(loc=loc))
+
+    @staticmethod
     def NONE(loc=None):
         return Literal(token=Token.NONE(loc=loc))
+
+    @staticmethod
+    def TRUE(loc=None):
+        return Bool(value=True, token=Token.TRUE(loc=loc))
 
 
 @dataclass
@@ -109,10 +119,10 @@ class Category(Literal):
         if self._value is None and token is not None:
             self._value = token.lexeme
         self.strict = strict
-        self.items = []
+        self._items = []
 
     def __len__(self):
-        return len(self.items)
+        return len(self._items)
 
     @property
     def value(self):
@@ -121,17 +131,20 @@ class Category(Literal):
     @value.setter
     def value(self, value):
         value = value.lower()
-        if value not in self.items:
+        if value not in self._items:
             if self.strict:
                 raise ValueError('Value assigned to Category is out of range')
-            self.items.append(value.lower())
+            self._items.append(value.lower())
         self._value = value
 
     def append(self, value):
-        self.items.append(value)
+        self._items.append(value)
+
+    def items(self):
+        return self._items  # UNDONE: turn this into iterator
 
     def values(self):
-        return self.items
+        return self._items
 
 
 @dataclass
@@ -183,16 +196,16 @@ class Enumeration(Category):
             self._value = token.lexeme
         self.auto_increment = auto_increment
         self.seed = -1
-        self.items = {}
+        self._items = {}
 
     def __getitem__(self, index):
-        return self.items[index]
+        return self._items[index]
 
     def __setitem__(self, index, value):
-        self.items[index] = int(value)
+        self._items[index] = int(value)
 
     def __len__(self):
-        return len(self.items.keys())
+        return len(self._items.keys())
 
     @property
     def value(self):
@@ -201,32 +214,32 @@ class Enumeration(Category):
     @value.setter
     def value(self, value):
         value = value.lower()
-        if value not in self.items:
+        if value not in self._items:
             if self.strict:
                 raise ValueError('Value assigned to Category is out of range')
             if self.auto_increment:
                 self.seed += 1
-                self.items[value.lower()] = self.seed
+                self._items[value.lower()] = self.seed
         self._value = value
 
     def to_int(self):
-        return self.items[self._value]
+        return self._items[self._value]
 
     def to_range(self):
         raise NotImplemented()
 
     def from_category(self, other):
-        self.items = {}
+        self._items = {}
         self.seed = -1
         if not isinstance(other, Category):
             raise NotImplemented()
-        for item in other.items:
+        for item in other._items:
             self.seed += 1
-            self.items[item] = self.seed
+            self._items[item] = self.seed
         return self
 
     def values(self):
-        return self.items.keys()  # the keys are the actual 'values' of the Enumeration. As in range of possible values
+        return self._items.keys()  # the keys are the actual 'values' of the Enumeration. As in range of possible values
 
 
 @dataclass
@@ -278,24 +291,27 @@ class List(Literal):
         loc = loc if token is None else token.location
         super().__init__(value=items, token=token, tid=tid, loc=loc)
         self._value = items
-        self.items = items
+        self._items = items
 
     def __getitem__(self, index):
-        return self.items[index]
+        return self._items[index]
 
     def __setitem__(self, index, value):
-        self.items[index] = value
+        self._items[index] = value
 
     def __len__(self):
-        return len(self.items)
+        return len(self._items)
 
     def is_empty(self):
         if self._value is None:
             return True
-        return len(self.items) == 0
+        return len(self._items) == 0
 
     def append(self, o):
         self._value.append(o)
+
+    def items(self):    # UNDONE: should be iterator
+        return self._items
 
     def values(self):
         return self._value
@@ -333,8 +349,8 @@ class Set(Literal):
         tid = TK.SET if token is None else token.map2litval()
         loc = loc if token is None else token.location
         super().__init__(value=items, token=token, tid=tid, loc=loc)
-        self.items = items if items is not None else {}
-        self._value = self.items
+        self._items = items if items is not None else {}
+        self._value = self._items
 
     def __getitem__(self, item):
         if type(item).name == 'int':
@@ -345,10 +361,13 @@ class Set(Literal):
         self._value[key] = value
 
     def __len__(self):
-        return len(self.items.keys())
+        return len(self._items.keys())
 
     def is_empty(self):
         return self._value is not None and len(self._values()) > 0
+
+    def items(self):    # UNDONE: should be iterator
+        return self._items
 
     def keys(self):
         return list(self._value.keys())

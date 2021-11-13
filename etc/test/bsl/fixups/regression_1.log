@@ -1,0 +1,6 @@
+
+
+test: 1:
+%%report { report >> rules }
+FAIL: 'regression' failed with Exception 'Flow' object has no attribute 'right'
+

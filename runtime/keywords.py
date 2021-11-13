@@ -10,7 +10,7 @@ from runtime.dispatch import init_intrinsic, _intrinsic_fundesc, _intrinsic_not_
 @dataclass
 class Keywords(Scope):
     def __init__(self, parent_scope=None):
-        super().__init__(parent_scope)
+        super().__init__(name='_keywords', parent_scope=parent_scope)
         self.load_keywords()
         self.load_intrinsics()
         self.load_intrinsics_not_impl()
@@ -46,7 +46,7 @@ class Keywords(Scope):
 _KEYWORDS = [
     (TK.ALL, TCL.KEYWORD, 'all'),
     (TK.ANY, TCL.KEYWORD, 'any'),
-    (TK.BUY, TCL.KEYWORD, "buy"),   # UNDONE: remove 'buy' as keyword.
+#   (TK.BUY, TCL.KEYWORD, "buy"),   # UNDONE: remove 'buy' as keyword.
     (TK.ELSE, TCL.KEYWORD, 'else'),
     (TK.EMPTY, TCL.KEYWORD, "Empty"),
     (TK.EMPTY, TCL.KEYWORD, "empty"),   # UNDONE: NumPy uses this to create an empty array of size
@@ -61,7 +61,7 @@ _KEYWORDS = [
     (TK.NAN, TCL.KEYWORD, 'nan'),
     (TK.NONE, TCL.KEYWORD, 'none'),
     (TK.RETURN, TCL.KEYWORD, "return"),
-    (TK.SELL, TCL.KEYWORD, "sell"),  # UNODNE: remove sell as a keyword
+#   (TK.SELL, TCL.KEYWORD, "sell"),  # UNODNE: remove sell as a keyword
     (TK.TRUE, TCL.KEYWORD, 'True'),
     (TK.TRUE, TCL.KEYWORD, 'true'),
 

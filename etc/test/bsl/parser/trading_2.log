@@ -4,7 +4,7 @@ test: 2:
 def trade_size = postition * 10%
 
 tree1:  def trade_size = postition * 10%
-    1  : Define(TK.DEFINE, TK.EQLS, '=')
+    1  : Define(TK.DEFINE, TK.DEFINE, '=')
     2  :     Ref(TK.IDNT, 'trade_size')
     3  :     BinOp(TK.MUL, '*')
     4  :         Ref(TK.IDNT, 'postition')

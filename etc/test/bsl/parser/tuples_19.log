@@ -4,7 +4,7 @@ test: 19:
 (a, b, c) = (4, 5, 6)        # tuple assignment
 
 tree1:  (a, b, c) = (4, 5, 6)        # tuple assignment
-    1  : Define(TK.DEFINE, TK.EQLS, '=')
+    1  : Define(TK.DEFINE, TK.DEFINE, '=')
     2  :     List(TK.TUPLE, [Ref(), Ref(), Ref()])
     3  :         Ref(TK.IDNT, 'a')
     4  :         Ref(TK.IDNT, 'b')

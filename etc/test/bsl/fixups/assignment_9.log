@@ -4,21 +4,21 @@ test: 9:
 a = 0; a += 1
 
 tree1:  a = 0; a += 1
-    1  : Define(TK.DEFINE, TK.EQLS, '=')
+    1  : Define(TK.DEFINE, TK.DEFINE, '=')
     2  :     Ref(TK.IDNT, 'a')
     3  :     Int(TK.INT, 0)
 
 tree2:  a = 0; a += 1
-    1  : Assign(TK.ASSIGN, TK.PLEQ, '+=')
+    1  : Assign(TK.ASSIGN, TK.ASSIGN, '+=')
     2  :     Get(TK.IDNT, 'a')
     3  :     Int(TK.INT, 1)
 
 tree1:(post)  a = 0; a += 1
-    1  : Define(TK.DEFINE, TK.EQLS, '=')
+    1  : Define(TK.DEFINE, TK.DEFINE, '=')
     2  :     Ref(TK.IDNT, 'a')
     3  :     Int(TK.INT, 0)
 
 tree2:(post)  a = 0; a += 1
-    1  : Assign(TK.ASSIGN, TK.PLEQ, '+=')
+    1  : Assign(TK.ASSIGN, TK.ASSIGN, '+=')
     2  :     Get(TK.IDNT, 'a')
     3  :     Int(TK.INT, 1)

@@ -1,7 +1,6 @@
 from datetime import datetime
+
 from runtime.literals import Time
-from runtime.exceptions import getLogFacility
-from runtime.scope import IntrinsicFunction
 
 
 # -----------------------------------
@@ -23,28 +22,3 @@ def get_now():
     return Time(datetime.now())
 
 
-# Print
-# -----------------------------------
-def init_print(name):
-    return IntrinsicFunction(name=name,
-                             defaults={
-                                 'message': '',
-                                 'format': None,
-                             })
-
-
-def do_print(env, args):
-    form = args.format
-    logger = getLogFacility('semtex')
-    if form is not None:
-        _t_print(logger, form.format(args.message))
-    else:
-        _t_print(logger, args.message)
-    return args.message
-
-
-def _t_print(logger, message, end='\n'):
-    if logger is None:
-        logger = getLogFacility('semtex')
-    logger.write(f'{message}', end=end)
-    logger.flush()

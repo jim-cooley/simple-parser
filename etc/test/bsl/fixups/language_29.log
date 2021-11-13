@@ -4,19 +4,19 @@ test: 29:
 f(x) = x * 4
 
 tree1:  f(x) = x * 4
-    1  : DefineFn(TK.DEFINE, TK.ASSIGN, '=')
+    1  : DefineFn(TK.DEFINE, TK.DEFINE, '=')
     2  :     Ref(TK.IDNT, 'f')
     3  :     BinOp(TK.MUL, '*')
     4  :         Get(TK.IDNT, 'x')
     5  :         Int(TK.INT, 4)
-    6  :     List(TK.TUPLE, [Ref()])
+    6  :     List(TK.LIST, [Ref()])
     7  :         Ref(TK.IDNT, 'x')
 
 tree1:(post)  f(x) = x * 4
-    1  : DefineFn(TK.DEFINE, TK.ASSIGN, '=')
+    1  : DefineFn(TK.DEFINE, TK.DEFINE, '=')
     2  :     Ref(TK.IDNT, 'f')
     3  :     BinOp(TK.MUL, '*')
     4  :         Get(TK.IDNT, 'x')
     5  :         Int(TK.INT, 4)
-    6  :     List(TK.TUPLE, [Ref()])
+    6  :     List(TK.LIST, [Ref()])
     7  :         Ref(TK.IDNT, 'x')

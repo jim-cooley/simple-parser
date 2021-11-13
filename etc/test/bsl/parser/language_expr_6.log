@@ -11,7 +11,7 @@ tree1:  pcross(close, sma(13)) | smacd(close, 20, 50) | smacd.close(20,50) | clo
     5  :             Get(TK.IDNT, 'close')
     6  :             FnCall('sma')
     7  :                 Get(TK.IDNT, 'sma')
-    8  :                 List(TK.TUPLE, [Int()])
+    8  :                 List(TK.LIST, [Int()])
     9  :                     Int(TK.INT, 13)
    10  :     FnCall('smacd')
    11  :         Ref(TK.IDNT, 'smacd')

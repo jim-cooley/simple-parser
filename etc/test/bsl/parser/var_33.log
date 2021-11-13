@@ -4,7 +4,7 @@ test: 33:
 var f.a.b.c(x) = x*x # vars in parameter list need to be Ref, not Get's
 
 tree1:  var f.a.b.c(x) = x*x # vars in parameter list need to be Ref, not Get's
-    1  : DefineVar(TK.DEFINE, TK.EQLS, '=')
+    1  : DefineVar(TK.DEFINE, TK.DEFINE, '=')
     2  :     PropRef(TK.REF, '.')
     3  :         Ref(TK.IDNT, 'f')
     4  :         PropRef(TK.REF, '.')
@@ -13,7 +13,7 @@ tree1:  var f.a.b.c(x) = x*x # vars in parameter list need to be Ref, not Get's
     7  :                 Ref(TK.IDNT, 'b')
     8  :                 FnRef(TK.FUNCTION, 'c')
     9  :                     Ref(TK.IDNT, 'c')
-   10  :                     List(TK.TUPLE, [Ref()])
+   10  :                     List(TK.LIST, [Ref()])
    11  :                         Ref(TK.IDNT, 'x')
    12  :     BinOp(TK.MUL, '*')
    13  :         Ref(TK.IDNT, 'x')
