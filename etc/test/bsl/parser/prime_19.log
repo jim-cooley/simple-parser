@@ -4,4 +4,4 @@ test: 19:
 None
 
 tree1:  None
-    1  : Get(TK.IDNT, 'None')
+    1  : Get(TK.IDENT, 'None')

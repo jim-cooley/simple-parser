@@ -4,7 +4,7 @@ test: 2:
 abcdefghijklmnopqrstuvwxyz
 
 tree1:  abcdefghijklmnopqrstuvwxyz
-    1  : Get(TK.IDNT, 'abcdefghijklmnopqrstuvwxyz')
+    1  : Get(TK.IDENT, 'abcdefghijklmnopqrstuvwxyz')
 
 tree1:(post)  abcdefghijklmnopqrstuvwxyz
-    1  : Get(TK.IDNT, 'abcdefghijklmnopqrstuvwxyz')
+    1  : Get(TK.IDENT, 'abcdefghijklmnopqrstuvwxyz')

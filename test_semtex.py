@@ -3,7 +3,7 @@
 import sys
 from abc import ABC
 
-from interpreter.command_interpreter import CommandInterpreter
+from interpreter.shell import CommandShell
 from interpreter.fixups import Fixups
 from interpreter.interpreter import Interpreter
 from parser.parser import Parser
@@ -76,7 +76,7 @@ class SemanticAnalysisTestRunner(TestSuiteRunner, ABC):
         parser = Parser(environment, verbose=False)
         fixups = Fixups(environment)
         interp = Interpreter(environment)
-        command = CommandInterpreter(environment)
+        command = CommandShell(environment)
         environment.trees = fixups.apply(parser.parse(text=test))
         if self.verbose:
             _dump_environment(environment, label='post', print_tokens=False, print_results=False)

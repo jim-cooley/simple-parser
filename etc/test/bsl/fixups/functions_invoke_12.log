@@ -4,28 +4,28 @@ test: 12:
 f{a:5, b:'c', d}
 
 tree1:  f{a:5, b:'c', d}
-    1  : Get(TK.IDNT, 'f')
+    1  : Get(TK.IDENT, 'f')
 
 tree2:  f{a:5, b:'c', d}
     1  : Set(TK.SET, [Define(), Define(), Get()])
     2  :     Define(TK.DEFINE, TK.DEFINE, ':')
-    3  :         Ref(TK.IDNT, 'a')
+    3  :         Ref(TK.IDENT, 'a')
     4  :         Int(TK.INT, 5)
     5  :     Define(TK.DEFINE, TK.DEFINE, ':')
-    6  :         Ref(TK.IDNT, 'b')
+    6  :         Ref(TK.IDENT, 'b')
     7  :         Str(TK.STR, c)
-    8  :     Get(TK.IDNT, 'd')
+    8  :     Get(TK.IDENT, 'd')
 
 tree1:(post)  f{a:5, b:'c', d}
-    1  : Get(TK.IDNT, 'f')
+    1  : Get(TK.IDENT, 'f')
 
 tree2:(post)  f{a:5, b:'c', d}
 result: list([Define(), Define(), Get()])
     1  : Set(TK.SET, [Define(), Define(), Get()])
     2  :     Define(TK.DEFINE, TK.DEFINE, ':')
-    3  :         Ref(TK.IDNT, 'a')
+    3  :         Ref(TK.IDENT, 'a')
     4  :         Int(TK.INT, 5)
     5  :     Define(TK.DEFINE, TK.DEFINE, ':')
-    6  :         Ref(TK.IDNT, 'b')
+    6  :         Ref(TK.IDENT, 'b')
     7  :         Str(TK.STR, c)
-    8  :     Get(TK.IDNT, 'd')
+    8  :     Get(TK.IDENT, 'd')

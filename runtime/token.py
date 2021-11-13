@@ -226,7 +226,7 @@ class Token:
 
     @staticmethod
     def FUNCTION(name=None, tid=None, loc=None):
-        return Token(tid=tid or TK.IDNT, tcl=TCL.FUNCTION, lex=name, loc=loc)
+        return Token(tid=tid or TK.IDENT, tcl=TCL.FUNCTION, lex=name, loc=loc)
 
     @staticmethod
     def GTE(name=None, tid=None, loc=None):
@@ -239,6 +239,10 @@ class Token:
     @staticmethod
     def IDEV(loc=None):
         return Token(tid=TK.IDIV, tcl=TCL.BINOP, lex='div', loc=loc)
+
+    @staticmethod
+    def IDENT(name=None, loc=None):
+        return Token(tid=TK.IDENT, tcl=TCL.IDENTIFIER, lex=name, loc=loc)
 
     @staticmethod
     def IF(loc=None):

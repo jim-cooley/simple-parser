@@ -6,17 +6,17 @@ a ().b.c
 tree1:  a ().b.c
     1  : BinOp(TK.DOT, '.')
     2  :     FnCall('a')
-    3  :         Get(TK.IDNT, 'a')
+    3  :         Get(TK.IDENT, 'a')
     4  :         List(TK.LIST, [])
     5  :     PropRef(TK.REF, '.')
-    6  :         Get(TK.IDNT, 'b')
-    7  :         Get(TK.IDNT, 'c')
+    6  :         Get(TK.IDENT, 'b')
+    7  :         Get(TK.IDENT, 'c')
 
 tree1:(post)  a ().b.c
     1  : BinOp(TK.DOT, '.')
     2  :     FnCall('a')
-    3  :         Get(TK.IDNT, 'a')
+    3  :         Get(TK.IDENT, 'a')
     4  :         List(TK.LIST, [])
     5  :     PropRef(TK.REF, '.')
-    6  :         Get(TK.IDNT, 'b')
-    7  :         Get(TK.IDNT, 'c')
+    6  :         Get(TK.IDENT, 'b')
+    7  :         Get(TK.IDENT, 'c')

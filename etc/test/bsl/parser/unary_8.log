@@ -5,4 +5,4 @@ test: 8:
 
 tree1:  ! b
     1  : UnaryOp(TK.NOT, TK.NOT, '!')
-    2  :     Get(TK.IDNT, 'b')
+    2  :     Get(TK.IDENT, 'b')

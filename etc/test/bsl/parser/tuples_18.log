@@ -5,6 +5,6 @@ test: 18:
 
 tree1:  (a, b, c,)                   # tuple
     1  : List(TK.TUPLE, [Get(), Get(), Get()])
-    2  :     Get(TK.IDNT, 'a')
-    3  :     Get(TK.IDNT, 'b')
-    4  :     Get(TK.IDNT, 'c')
+    2  :     Get(TK.IDENT, 'a')
+    3  :     Get(TK.IDENT, 'b')
+    4  :     Get(TK.IDENT, 'c')

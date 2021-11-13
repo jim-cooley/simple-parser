@@ -5,13 +5,13 @@ test: 19:
 
 tree1:  ( b ) | buy
     1  : Flow(TK.CHAIN, v=[Get(), ApplyChainProd()], '|')
-    2  :     Get(TK.IDNT, 'b')
+    2  :     Get(TK.IDENT, 'b')
     3  :     ApplyChainProd(TK.DEFINE, TK.DEFINE, '|')
-    4  :         Ref(TK.IDNT, 'buy')
+    4  :         Ref(TK.IDENT, 'buy')
 
 tree1:(post)  ( b ) | buy
 result: list([Get(), ApplyChainProd()])
     1  : Flow(TK.CHAIN, v=[Get(), ApplyChainProd()], '|')
-    2  :     Get(TK.IDNT, 'b')
+    2  :     Get(TK.IDENT, 'b')
     3  :     ApplyChainProd(TK.DEFINE, TK.DEFINE, '|')
-    4  :         Ref(TK.IDNT, 'buy')
+    4  :         Ref(TK.IDENT, 'buy')

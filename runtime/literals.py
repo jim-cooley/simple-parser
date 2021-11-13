@@ -337,7 +337,7 @@ class Percent(Literal):
         if self._value is None and token is not None:
             self._value = token.lexeme
         if isinstance(self._value, str):
-            self._value = float(self._value.replace("%",""))/100
+            self._value = float(self._value.replace("%", ""))/100
 
     def format(self, fmt=None):
         return '' if self._value is None else f'{self._value*100} %'

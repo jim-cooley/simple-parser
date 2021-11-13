@@ -5,4 +5,4 @@ test: 9:
 
 tree1:  ++a
     1  : UnaryOp(TK.INCREMENT, TK.INCREMENT, '++')
-    2  :     Get(TK.IDNT, 'a')
+    2  :     Get(TK.IDENT, 'a')

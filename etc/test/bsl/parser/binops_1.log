@@ -5,15 +5,15 @@ a=1; b=0; a |> b
 
 tree1:  a=1; b=0; a |> b
     1  : Define(TK.DEFINE, TK.DEFINE, '=')
-    2  :     Ref(TK.IDNT, 'a')
+    2  :     Ref(TK.IDENT, 'a')
     3  :     Int(TK.INT, 1)
 
 tree2:  a=1; b=0; a |> b
     1  : Define(TK.DEFINE, TK.DEFINE, '=')
-    2  :     Ref(TK.IDNT, 'b')
+    2  :     Ref(TK.IDENT, 'b')
     3  :     Int(TK.INT, 0)
 
 tree3:  a=1; b=0; a |> b
     1  : BinOp(TK.RISE_ABOVE, '|>')
-    2  :     Get(TK.IDNT, 'a')
-    3  :     Get(TK.IDNT, 'b')
+    2  :     Get(TK.IDENT, 'a')
+    3  :     Get(TK.IDENT, 'b')

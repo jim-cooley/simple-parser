@@ -26,60 +26,60 @@ tree2:  4 * 3
 
 tree3:  a = 4
     1  : Define(TK.DEFINE, TK.DEFINE, '=')
-    2  :     Ref(TK.IDNT, 'a')
+    2  :     Ref(TK.IDENT, 'a')
     3  :     Int(TK.INT, 4)
 
 tree4:  s = { a=5 }
     1  : Define(TK.DEFINE, TK.DEFINE, '=')
-    2  :     Ref(TK.IDNT, 's')
+    2  :     Ref(TK.IDENT, 's')
     3  :     Set(TK.SET, [Define()])
     4  :         Define(TK.DEFINE, TK.DEFINE, '=')
-    5  :             Ref(TK.IDNT, 'a')
+    5  :             Ref(TK.IDENT, 'a')
     6  :             Int(TK.INT, 5)
 
 tree5:  s.a
     1  : PropRef(TK.REF, '.')
-    2  :     Get(TK.IDNT, 's')
-    3  :     Get(TK.IDNT, 'a')
+    2  :     Get(TK.IDENT, 's')
+    3  :     Get(TK.IDENT, 'a')
 
 tree6:  s.b = s.a * a
     1  : Define(TK.DEFINE, TK.DEFINE, '=')
     2  :     PropRef(TK.REF, '.')
-    3  :         Ref(TK.IDNT, 's')
-    4  :         Ref(TK.IDNT, 'b')
+    3  :         Ref(TK.IDENT, 's')
+    4  :         Ref(TK.IDENT, 'b')
     5  :     BinOp(TK.MUL, '*')
     6  :         PropRef(TK.REF, '.')
-    7  :             Get(TK.IDNT, 's')
-    8  :             Get(TK.IDNT, 'a')
-    9  :         Get(TK.IDNT, 'a')
+    7  :             Get(TK.IDENT, 's')
+    8  :             Get(TK.IDENT, 'a')
+    9  :         Get(TK.IDENT, 'a')
 
 tree7:  s.b
     1  : PropRef(TK.REF, '.')
-    2  :     Get(TK.IDNT, 's')
-    3  :     Get(TK.IDNT, 'b')
+    2  :     Get(TK.IDENT, 's')
+    3  :     Get(TK.IDENT, 'b')
 
 tree8:  b = a * 3
     1  : Define(TK.DEFINE, TK.DEFINE, '=')
-    2  :     Ref(TK.IDNT, 'b')
+    2  :     Ref(TK.IDENT, 'b')
     3  :     BinOp(TK.MUL, '*')
-    4  :         Get(TK.IDNT, 'a')
+    4  :         Get(TK.IDENT, 'a')
     5  :         Int(TK.INT, 3)
 
 tree9:  c = b
     1  : Define(TK.DEFINE, TK.DEFINE, '=')
-    2  :     Ref(TK.IDNT, 'c')
-    3  :     Get(TK.IDNT, 'b')
+    2  :     Ref(TK.IDENT, 'c')
+    3  :     Get(TK.IDENT, 'b')
 
 tree10:  s.b
     1  : PropRef(TK.REF, '.')
-    2  :     Get(TK.IDNT, 's')
-    3  :     Get(TK.IDNT, 'b')
+    2  :     Get(TK.IDENT, 's')
+    3  :     Get(TK.IDENT, 'b')
 
 tree11:  ++s.b
     1  : UnaryOp(TK.INCREMENT, TK.INCREMENT, '++')
     2  :     PropRef(TK.REF, '.')
-    3  :         Get(TK.IDNT, 's')
-    4  :         Get(TK.IDNT, 'b')
+    3  :         Get(TK.IDENT, 's')
+    4  :         Get(TK.IDENT, 'b')
 
 tree1:(post)  4
 result: int(4)
@@ -90,57 +90,57 @@ tree2:(post)  4
 
 tree3:(post)  a = 4
     1  : Define(TK.DEFINE, TK.DEFINE, '=')
-    2  :     Ref(TK.IDNT, 'a')
+    2  :     Ref(TK.IDENT, 'a')
     3  :     Int(TK.INT, 4)
 
 tree4:(post)  s = { a=5 }
     1  : Define(TK.DEFINE, TK.DEFINE, '=')
-    2  :     Ref(TK.IDNT, 's')
+    2  :     Ref(TK.IDENT, 's')
     3  :     Set(TK.SET, [Define()])
     4  :         Define(TK.DEFINE, TK.DEFINE, '=')
-    5  :             Ref(TK.IDNT, 'a')
+    5  :             Ref(TK.IDENT, 'a')
     6  :             Int(TK.INT, 5)
 
 tree5:(post)  s.a
     1  : PropRef(TK.REF, '.')
-    2  :     Get(TK.IDNT, 's')
-    3  :     Get(TK.IDNT, 'a')
+    2  :     Get(TK.IDENT, 's')
+    3  :     Get(TK.IDENT, 'a')
 
 tree6:(post)  s.b = s.a * a
     1  : Define(TK.DEFINE, TK.DEFINE, '=')
     2  :     PropRef(TK.REF, '.')
-    3  :         Ref(TK.IDNT, 's')
-    4  :         Ref(TK.IDNT, 'b')
+    3  :         Ref(TK.IDENT, 's')
+    4  :         Ref(TK.IDENT, 'b')
     5  :     BinOp(TK.MUL, '*')
     6  :         PropRef(TK.REF, '.')
-    7  :             Get(TK.IDNT, 's')
-    8  :             Get(TK.IDNT, 'a')
-    9  :         Get(TK.IDNT, 'a')
+    7  :             Get(TK.IDENT, 's')
+    8  :             Get(TK.IDENT, 'a')
+    9  :         Get(TK.IDENT, 'a')
 
 tree7:(post)  s.b
     1  : PropRef(TK.REF, '.')
-    2  :     Get(TK.IDNT, 's')
-    3  :     Get(TK.IDNT, 'b')
+    2  :     Get(TK.IDENT, 's')
+    3  :     Get(TK.IDENT, 'b')
 
 tree8:(post)  b = a * 3
     1  : Define(TK.DEFINE, TK.DEFINE, '=')
-    2  :     Ref(TK.IDNT, 'b')
+    2  :     Ref(TK.IDENT, 'b')
     3  :     BinOp(TK.MUL, '*')
-    4  :         Get(TK.IDNT, 'a')
+    4  :         Get(TK.IDENT, 'a')
     5  :         Int(TK.INT, 3)
 
 tree9:(post)  c = b
     1  : Define(TK.DEFINE, TK.DEFINE, '=')
-    2  :     Ref(TK.IDNT, 'c')
-    3  :     Get(TK.IDNT, 'b')
+    2  :     Ref(TK.IDENT, 'c')
+    3  :     Get(TK.IDENT, 'b')
 
 tree10:(post)  s.b
     1  : PropRef(TK.REF, '.')
-    2  :     Get(TK.IDNT, 's')
-    3  :     Get(TK.IDNT, 'b')
+    2  :     Get(TK.IDENT, 's')
+    3  :     Get(TK.IDENT, 'b')
 
 tree11:(post)  ++s.b
     1  : UnaryOp(TK.INCREMENT, TK.INCREMENT, '++')
     2  :     PropRef(TK.REF, '.')
-    3  :         Get(TK.IDNT, 's')
-    4  :         Get(TK.IDNT, 'b')
+    3  :         Get(TK.IDENT, 's')
+    4  :         Get(TK.IDENT, 'b')

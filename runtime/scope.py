@@ -215,7 +215,7 @@ class Flow(Block):
 class Function(Block):
     def __init__(self, name=None, members=None, defaults=None, tid=None, loc=None, is_lvalue=True):
         super().__init__(name=name, items=members, loc=loc)
-        self.set_token(tid=tid or TK.IDNT, tcl=TCL.FUNCTION, loc=loc, lex=name)
+        self.set_token(tid=tid or TK.IDENT, tcl=TCL.FUNCTION, loc=loc, lex=name)
         self._value = self._items
         self.is_lvalue = is_lvalue
         self.code = None

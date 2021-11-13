@@ -5,12 +5,12 @@ a[b]
 
 tree1:  a[b]
     1  : Index('a')
-    2  :     Get(TK.IDNT, 'a')
+    2  :     Get(TK.IDENT, 'a')
     3  :     List(TK.TUPLE, [Get()])
-    4  :         Get(TK.IDNT, 'b')
+    4  :         Get(TK.IDENT, 'b')
 
 tree1:(post)  a[b]
     1  : Index('a')
-    2  :     Get(TK.IDNT, 'a')
+    2  :     Get(TK.IDENT, 'a')
     3  :     List(TK.TUPLE, [Get()])
-    4  :         Get(TK.IDNT, 'b')
+    4  :         Get(TK.IDENT, 'b')

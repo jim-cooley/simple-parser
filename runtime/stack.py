@@ -19,8 +19,9 @@ class RuntimeStack(object):
     def depth(self):
         return len(self._stack)
 
-    def peek(self):
-        return self._stack[-1]
+    def peek(self, depth=None):
+        depth = -1 if depth is None else depth
+        return self._stack[depth]
 
     def push(self, x):
         self._stack.append(x)

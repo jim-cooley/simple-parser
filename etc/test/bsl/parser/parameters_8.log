@@ -4,13 +4,13 @@ test: 8:
 close{weekly}.sma(20)
 
 tree1:  close{weekly}.sma(20)
-    1  : Get(TK.IDNT, 'close')
+    1  : Get(TK.IDENT, 'close')
 
 tree2:  close{weekly}.sma(20)
     1  : BinOp(TK.DOT, '.')
     2  :     Set(TK.SET, [Get()])
-    3  :         Get(TK.IDNT, 'weekly')
+    3  :         Get(TK.IDENT, 'weekly')
     4  :     FnCall('sma')
-    5  :         Get(TK.IDNT, 'sma')
+    5  :         Get(TK.IDENT, 'sma')
     6  :         List(TK.LIST, [Int()])
     7  :             Int(TK.INT, 20)

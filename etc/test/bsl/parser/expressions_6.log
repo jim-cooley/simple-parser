@@ -7,7 +7,7 @@ tree1:  a + 2 * 3 + 4 or not 5
     1  : BinOp(TK.OR, 'or')
     2  :     BinOp(TK.ADD, '+')
     3  :         BinOp(TK.ADD, '+')
-    4  :             Get(TK.IDNT, 'a')
+    4  :             Get(TK.IDENT, 'a')
     5  :             BinOp(TK.MUL, '*')
     6  :                 Int(TK.INT, 2)
     7  :                 Int(TK.INT, 3)

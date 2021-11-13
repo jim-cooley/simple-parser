@@ -6,6 +6,6 @@ test: 9:
 tree1:  {a} . {b}
     1  : BinOp(TK.DOT, '.')
     2  :     Set(TK.SET, [Get()])
-    3  :         Get(TK.IDNT, 'a')
+    3  :         Get(TK.IDENT, 'a')
     4  :     Set(TK.SET, [Get()])
-    5  :         Get(TK.IDNT, 'b')
+    5  :         Get(TK.IDENT, 'b')

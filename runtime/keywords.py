@@ -38,7 +38,7 @@ class Keywords(Scope):
     def load_intrinsics_not_impl(self, not_impl=None):
         not_impl = not_impl or _intrinsic_not_impl
         for fname in not_impl:
-            fn = IntrinsicFunction(name=fname, tid=TK.IDNT)
+            fn = IntrinsicFunction(name=fname, tid=TK.IDENT)
             self._add_name(fname, fn)
 
 
@@ -53,10 +53,10 @@ _KEYWORDS = [
     (TK.FALSE, TCL.KEYWORD, 'False'),
     (TK.FALSE, TCL.KEYWORD, 'false'),
     (TK.THEN, TCL.KEYWORD, 'then'),
-    (TK.IDNT, TCL.KEYWORD, 'apply'),
-    (TK.IDNT, TCL.KEYWORD, 'expr'),
+    (TK.IDENT, TCL.KEYWORD, 'apply'),
+    (TK.IDENT, TCL.KEYWORD, 'expr'),
     (TK.IN, TCL.BINOP, 'in'),
-    (TK.IDNT, TCL.FUNCTION, 'index'),
+    (TK.IDENT, TCL.FUNCTION, 'index'),
     (TK.NAN, TCL.KEYWORD, 'NaN'),
     (TK.NAN, TCL.KEYWORD, 'nan'),
     (TK.NONE, TCL.KEYWORD, 'none'),
@@ -67,7 +67,7 @@ _KEYWORDS = [
 
     # special identities
     (TK.ANON, TCL.IDENTIFIER, '_'),
-    (TK.IDNT, TCL.IDENTIFIER, 'pi'),
+    (TK.IDENT, TCL.IDENTIFIER, 'pi'),
 
     # unary
     (TK.NOT, TCL.UNARY, 'not'),
@@ -77,10 +77,10 @@ _KEYWORDS = [
     # binops
     (TK.AND, TCL.BINOP, 'and'),
     (TK.IDIV, TCL.BINOP, 'div'),
-    (TK.IDNT, TCL.BINOP, 'index'),  # UNDONE: 'index' appears twice.  only one survives...
+    (TK.IDENT, TCL.BINOP, 'index'),  # UNDONE: 'index' appears twice.  only one survives...
     (TK.IF, TCL.BINOP, 'if'),       # NOTE: not a keyword, this will also be the tid for the operation
     (TK.OR, TCL.BINOP, 'or'),
     (TK.MOD, TCL.BINOP, 'mod'),
-    (TK.IDNT, TCL.BINOP, 'rand'),
+    (TK.IDENT, TCL.BINOP, 'rand'),
 ]
 

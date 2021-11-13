@@ -6,10 +6,10 @@ test: 12:
 tree1:  ((a,),)                      # tuple in a tuple
     1  : List(TK.TUPLE, [List()])
     2  :     List(TK.TUPLE, [Get()])
-    3  :         Get(TK.IDNT, 'a')
+    3  :         Get(TK.IDENT, 'a')
 
 tree1:(post)  ((a,),)                      # tuple in a tuple
 result: list([List()])
     1  : List(TK.TUPLE, [List()])
     2  :     List(TK.TUPLE, [Get()])
-    3  :         Get(TK.IDNT, 'a')
+    3  :         Get(TK.IDENT, 'a')

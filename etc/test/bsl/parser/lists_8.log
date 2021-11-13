@@ -11,4 +11,4 @@ tree1:  ['a':5, 'b':'c', d]
     5  :     Define(TK.DEFINE, TK.DEFINE, ':')
     6  :         Str(TK.STR, b)
     7  :         Str(TK.STR, c)
-    8  :     Get(TK.IDNT, 'd')
+    8  :     Get(TK.IDENT, 'd')

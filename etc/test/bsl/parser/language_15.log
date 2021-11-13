@@ -5,9 +5,9 @@ var f(x) = x * 4
 
 tree1:  var f(x) = x * 4
     1  : DefineVarFn(TK.DEFINE, TK.DEFINE, '=')
-    2  :     Ref(TK.IDNT, 'f')
+    2  :     Ref(TK.IDENT, 'f')
     3  :     BinOp(TK.MUL, '*')
-    4  :         Ref(TK.IDNT, 'x')
+    4  :         Ref(TK.IDENT, 'x')
     5  :         Int(TK.INT, 4)
     6  :     List(TK.LIST, [Ref()])
-    7  :         Ref(TK.IDNT, 'x')
+    7  :         Ref(TK.IDENT, 'x')

@@ -6,14 +6,14 @@ test: 17:
 tree1:  (((a), (b)), (c))            # tuple in a tuple with more grouping
     1  : List(TK.TUPLE, [List(), Get()])
     2  :     List(TK.TUPLE, [Get(), Get()])
-    3  :         Get(TK.IDNT, 'a')
-    4  :         Get(TK.IDNT, 'b')
-    5  :     Get(TK.IDNT, 'c')
+    3  :         Get(TK.IDENT, 'a')
+    4  :         Get(TK.IDENT, 'b')
+    5  :     Get(TK.IDENT, 'c')
 
 tree1:(post)  (((a), (b)), (c))            # tuple in a tuple with more grouping
 result: list([List(), Get()])
     1  : List(TK.TUPLE, [List(), Get()])
     2  :     List(TK.TUPLE, [Get(), Get()])
-    3  :         Get(TK.IDNT, 'a')
-    4  :         Get(TK.IDNT, 'b')
-    5  :     Get(TK.IDNT, 'c')
+    3  :         Get(TK.IDENT, 'a')
+    4  :         Get(TK.IDENT, 'b')
+    5  :     Get(TK.IDENT, 'c')

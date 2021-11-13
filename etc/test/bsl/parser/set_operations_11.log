@@ -5,5 +5,5 @@ test: 11:
 
 tree1:  {a, b}
     1  : Set(TK.SET, [Get(), Get()])
-    2  :     Get(TK.IDNT, 'a')
-    3  :     Get(TK.IDNT, 'b')
+    2  :     Get(TK.IDENT, 'a')
+    3  :     Get(TK.IDENT, 'b')

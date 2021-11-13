@@ -7,10 +7,13 @@ from runtime.keywords import Keywords
 from runtime.scope import Scope
 
 from runtime.stack import RuntimeStack
+from runtime.version import VERSION
 
 _option_defaults = {
     'strict': False,    # option_strict forces variables to be defined before they are used
     'force_errors': False,  # option_force_errors forces warnings into errors
+    'throw_errors': True,
+    'verbose': False,
 }
 
 
@@ -30,12 +33,15 @@ class Environment(object):
         self.scope = self.globals
         self.commands = commands if commands is not None else []
         self.trees = []
+        self.interpreter = None
+        self.parser = None
         self.lines = None
         self.source = self.set_source(source) if source is not None else None
         self.tokens = None
         self.options = IndexedDict(items=options, defaults=_option_defaults)
         self.logger = getLogFacility('semtex', env=self, file=file)
         self.stack = RuntimeStack()
+        self.version = VERSION
         Environment.current = self
 
     def get_logger(self):

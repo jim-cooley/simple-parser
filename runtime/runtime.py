@@ -8,9 +8,15 @@ _BASE_SEARCH_PATH = [
     ".",
     "./etc",
     "./etc/config",
+    "./test",
+    "./test/cases",
+    "./scripts",
+    "./etc/scripts",
 ]
 _DEFAULT_EXTENSIONS = [
     ".f",
+    ".p",
+    ".t",
     ".csv",
 ]
 
@@ -26,3 +32,14 @@ def _find_file(name, search_paths=None, extensions=None):
             if os.path.isfile(f'{fname}{x}'):
                 return f'{fname}{x}'
     raise IOError(f'invalid filename: {name}, cannot be found or is not a file')
+
+
+def load_script(fname):
+    fname = _find_file(fname)
+    name = os.path.splitext(os.path.basename(fname))[0]
+    ext = os.path.splitext(fname)[1]
+    idx = 0
+    with open(fname, 'r') as file:
+        print(f'{fname}')
+        text = file.read()
+    return text

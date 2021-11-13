@@ -4,7 +4,7 @@ test: 3:
 a1234567890
 
 tree1:  a1234567890
-    1  : Get(TK.IDNT, 'a1234567890')
+    1  : Get(TK.IDENT, 'a1234567890')
 
 tree1:(post)  a1234567890
-    1  : Get(TK.IDNT, 'a1234567890')
+    1  : Get(TK.IDENT, 'a1234567890')

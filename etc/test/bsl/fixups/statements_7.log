@@ -6,24 +6,24 @@ a | b >> c ; d
 tree1:  a | b >> c ; d
     1  : Flow(TK.APPLY, v=[Flow(), ApplyChainProd()], '>>')
     2  :     Flow(TK.CHAIN, v=[Get(), ApplyChainProd()], '|')
-    3  :         Get(TK.IDNT, 'a')
+    3  :         Get(TK.IDENT, 'a')
     4  :         ApplyChainProd(TK.DEFINE, TK.DEFINE, '|')
-    5  :             Ref(TK.IDNT, 'b')
+    5  :             Ref(TK.IDENT, 'b')
     6  :     ApplyChainProd(TK.DEFINE, TK.DEFINE, '>>')
-    7  :         Ref(TK.IDNT, 'c')
+    7  :         Ref(TK.IDENT, 'c')
 
 tree2:  a | b >> c ; d
-    1  : Get(TK.IDNT, 'd')
+    1  : Get(TK.IDENT, 'd')
 
 tree1:(post)  a | b >> c ; d
 result: list([Flow(), ApplyChainProd()])
     1  : Flow(TK.APPLY, v=[Flow(), ApplyChainProd()], '>>')
     2  :     Flow(TK.CHAIN, v=[Get(), ApplyChainProd()], '|')
-    3  :         Get(TK.IDNT, 'a')
+    3  :         Get(TK.IDENT, 'a')
     4  :         ApplyChainProd(TK.DEFINE, TK.DEFINE, '|')
-    5  :             Ref(TK.IDNT, 'b')
+    5  :             Ref(TK.IDENT, 'b')
     6  :     ApplyChainProd(TK.DEFINE, TK.DEFINE, '>>')
-    7  :         Ref(TK.IDNT, 'c')
+    7  :         Ref(TK.IDENT, 'c')
 
 tree2:(post)  a | b >> c ; d
-    1  : Get(TK.IDNT, 'd')
+    1  : Get(TK.IDENT, 'd')

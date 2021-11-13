@@ -8,7 +8,7 @@ tree1:  [[[[a]]]]
     2  :     List(TK.LIST, [List()])
     3  :         List(TK.LIST, [List()])
     4  :             List(TK.LIST, [Get()])
-    5  :                 Get(TK.IDNT, 'a')
+    5  :                 Get(TK.IDENT, 'a')
 
 tree1:(post)  [[[[a]]]]
 result: list([List()])
@@ -16,4 +16,4 @@ result: list([List()])
     2  :     List(TK.LIST, [List()])
     3  :         List(TK.LIST, [List()])
     4  :             List(TK.LIST, [Get()])
-    5  :                 Get(TK.IDNT, 'a')
+    5  :                 Get(TK.IDENT, 'a')

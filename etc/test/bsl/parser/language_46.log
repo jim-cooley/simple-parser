@@ -5,12 +5,12 @@ f := { a(x):x*x }
 
 tree1:  f := { a(x):x*x }
     1  : DefineVar(TK.DEFINE, TK.DEFINE, ':=')
-    2  :     Ref(TK.IDNT, 'f')
+    2  :     Ref(TK.IDENT, 'f')
     3  :     Block(TK.BLOCK, v=[DefineFn()], '')
     4  :         DefineFn(TK.DEFINE, TK.DEFINE, ':')
-    5  :             Ref(TK.IDNT, 'a')
+    5  :             Ref(TK.IDENT, 'a')
     6  :             BinOp(TK.MUL, '*')
-    7  :                 Get(TK.IDNT, 'x')
-    8  :                 Get(TK.IDNT, 'x')
+    7  :                 Get(TK.IDENT, 'x')
+    8  :                 Get(TK.IDENT, 'x')
     9  :             List(TK.LIST, [Ref()])
-   10  :                 Ref(TK.IDNT, 'x')
+   10  :                 Ref(TK.IDENT, 'x')

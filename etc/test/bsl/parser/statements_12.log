@@ -4,10 +4,10 @@ test: 12:
 a, b, c
 
 tree1:  a, b, c
-    1  : Get(TK.IDNT, 'a')
+    1  : Get(TK.IDENT, 'a')
 
 tree2:  a, b, c
-    1  : Get(TK.IDNT, 'b')
+    1  : Get(TK.IDENT, 'b')
 
 tree3:  a, b, c
-    1  : Get(TK.IDNT, 'c')
+    1  : Get(TK.IDENT, 'c')

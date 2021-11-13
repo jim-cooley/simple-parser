@@ -5,20 +5,20 @@ def f(x) := { x * 4 }
 
 tree1:  def f(x) := { x * 4 }
     1  : DefineVarFn(TK.DEFINE, TK.DEFINE, ':=')
-    2  :     Ref(TK.IDNT, 'f')
+    2  :     Ref(TK.IDENT, 'f')
     3  :     Block(TK.BLOCK, v=[BinOp()], '')
     4  :         BinOp(TK.MUL, '*')
-    5  :             Ref(TK.IDNT, 'x')
+    5  :             Ref(TK.IDENT, 'x')
     6  :             Int(TK.INT, 4)
     7  :     List(TK.LIST, [Ref()])
-    8  :         Ref(TK.IDNT, 'x')
+    8  :         Ref(TK.IDENT, 'x')
 
 tree1:(post)  def f(x) := { x * 4 }
     1  : DefineVarFn(TK.DEFINE, TK.DEFINE, ':=')
-    2  :     Ref(TK.IDNT, 'f')
+    2  :     Ref(TK.IDENT, 'f')
     3  :     Block(TK.BLOCK, v=[BinOp()], '')
     4  :         BinOp(TK.MUL, '*')
-    5  :             Ref(TK.IDNT, 'x')
+    5  :             Ref(TK.IDENT, 'x')
     6  :             Int(TK.INT, 4)
     7  :     List(TK.LIST, [Ref()])
-    8  :         Ref(TK.IDNT, 'x')
+    8  :         Ref(TK.IDENT, 'x')

@@ -5,11 +5,11 @@ test: 14:
 
 tree1:  ((a, b))                     # grouping of tuple
     1  : List(TK.TUPLE, [Get(), Get()])
-    2  :     Get(TK.IDNT, 'a')
-    3  :     Get(TK.IDNT, 'b')
+    2  :     Get(TK.IDENT, 'a')
+    3  :     Get(TK.IDENT, 'b')
 
 tree1:(post)  ((a, b))                     # grouping of tuple
 result: list([Get(), Get()])
     1  : List(TK.TUPLE, [Get(), Get()])
-    2  :     Get(TK.IDNT, 'a')
-    3  :     Get(TK.IDNT, 'b')
+    2  :     Get(TK.IDENT, 'a')
+    3  :     Get(TK.IDENT, 'b')

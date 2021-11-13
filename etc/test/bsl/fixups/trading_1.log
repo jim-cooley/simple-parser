@@ -5,36 +5,36 @@ def atr = (high + low) / 2; med = (close + open) /2
 
 tree1:  def atr = (high + low) / 2; med = (close + open) /2
     1  : Define(TK.DEFINE, TK.DEFINE, '=')
-    2  :     Ref(TK.IDNT, 'atr')
+    2  :     Ref(TK.IDENT, 'atr')
     3  :     BinOp(TK.DIV, '/')
     4  :         BinOp(TK.ADD, '+')
-    5  :             Ref(TK.IDNT, 'high')
-    6  :             Ref(TK.IDNT, 'low')
+    5  :             Ref(TK.IDENT, 'high')
+    6  :             Ref(TK.IDENT, 'low')
     7  :         Int(TK.INT, 2)
 
 tree2:  def atr = (high + low) / 2; med = (close + open) /2
     1  : Define(TK.DEFINE, TK.DEFINE, '=')
-    2  :     Ref(TK.IDNT, 'med')
+    2  :     Ref(TK.IDENT, 'med')
     3  :     BinOp(TK.DIV, '/')
     4  :         BinOp(TK.ADD, '+')
-    5  :             Get(TK.IDNT, 'close')
-    6  :             Get(TK.IDNT, 'open')
+    5  :             Get(TK.IDENT, 'close')
+    6  :             Get(TK.IDENT, 'open')
     7  :         Int(TK.INT, 2)
 
 tree1:(post)  def atr = (high + low) / 2; med = (close + open) /2
     1  : Define(TK.DEFINE, TK.DEFINE, '=')
-    2  :     Ref(TK.IDNT, 'atr')
+    2  :     Ref(TK.IDENT, 'atr')
     3  :     BinOp(TK.DIV, '/')
     4  :         BinOp(TK.ADD, '+')
-    5  :             Ref(TK.IDNT, 'high')
-    6  :             Ref(TK.IDNT, 'low')
+    5  :             Ref(TK.IDENT, 'high')
+    6  :             Ref(TK.IDENT, 'low')
     7  :         Int(TK.INT, 2)
 
 tree2:(post)  def atr = (high + low) / 2; med = (close + open) /2
     1  : Define(TK.DEFINE, TK.DEFINE, '=')
-    2  :     Ref(TK.IDNT, 'med')
+    2  :     Ref(TK.IDENT, 'med')
     3  :     BinOp(TK.DIV, '/')
     4  :         BinOp(TK.ADD, '+')
-    5  :             Get(TK.IDNT, 'close')
-    6  :             Get(TK.IDNT, 'open')
+    5  :             Get(TK.IDENT, 'close')
+    6  :             Get(TK.IDENT, 'open')
     7  :         Int(TK.INT, 2)

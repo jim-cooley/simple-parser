@@ -6,8 +6,8 @@ a | b >> c
 tree1:  a | b >> c
     1  : Flow(TK.APPLY, v=[Flow(), ApplyChainProd()], '>>')
     2  :     Flow(TK.CHAIN, v=[Get(), ApplyChainProd()], '|')
-    3  :         Get(TK.IDNT, 'a')
+    3  :         Get(TK.IDENT, 'a')
     4  :         ApplyChainProd(TK.DEFINE, TK.DEFINE, '|')
-    5  :             Ref(TK.IDNT, 'b')
+    5  :             Ref(TK.IDENT, 'b')
     6  :     ApplyChainProd(TK.DEFINE, TK.DEFINE, '>>')
-    7  :         Ref(TK.IDNT, 'c')
+    7  :         Ref(TK.IDENT, 'c')

@@ -5,21 +5,21 @@ a[x][y]
 
 tree1:  a[x][y]
     1  : Index('a')
-    2  :     Get(TK.IDNT, 'a')
+    2  :     Get(TK.IDENT, 'a')
     3  :     List(TK.TUPLE, [Get()])
-    4  :         Get(TK.IDNT, 'x')
+    4  :         Get(TK.IDENT, 'x')
 
 tree2:  a[x][y]
     1  : List(TK.LIST, [Get()])
-    2  :     Get(TK.IDNT, 'y')
+    2  :     Get(TK.IDENT, 'y')
 
 tree1:(post)  a[x][y]
     1  : Index('a')
-    2  :     Get(TK.IDNT, 'a')
+    2  :     Get(TK.IDENT, 'a')
     3  :     List(TK.TUPLE, [Get()])
-    4  :         Get(TK.IDNT, 'x')
+    4  :         Get(TK.IDENT, 'x')
 
 tree2:(post)  a[x][y]
 result: list([Get()])
     1  : List(TK.LIST, [Get()])
-    2  :     Get(TK.IDNT, 'y')
+    2  :     Get(TK.IDENT, 'y')

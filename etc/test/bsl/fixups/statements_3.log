@@ -4,19 +4,19 @@ test: 3:
 a; b; c
 
 tree1:  a; b; c
-    1  : Get(TK.IDNT, 'a')
+    1  : Get(TK.IDENT, 'a')
 
 tree2:  a; b; c
-    1  : Get(TK.IDNT, 'b')
+    1  : Get(TK.IDENT, 'b')
 
 tree3:  a; b; c
-    1  : Get(TK.IDNT, 'c')
+    1  : Get(TK.IDENT, 'c')
 
 tree1:(post)  a; b; c
-    1  : Get(TK.IDNT, 'a')
+    1  : Get(TK.IDENT, 'a')
 
 tree2:(post)  a; b; c
-    1  : Get(TK.IDNT, 'b')
+    1  : Get(TK.IDENT, 'b')
 
 tree3:(post)  a; b; c
-    1  : Get(TK.IDNT, 'c')
+    1  : Get(TK.IDENT, 'c')

@@ -5,10 +5,10 @@ a ()
 
 tree1:  a ()
     1  : FnCall('a')
-    2  :     Get(TK.IDNT, 'a')
+    2  :     Get(TK.IDENT, 'a')
     3  :     List(TK.LIST, [])
 
 tree1:(post)  a ()
     1  : FnCall('a')
-    2  :     Get(TK.IDNT, 'a')
+    2  :     Get(TK.IDENT, 'a')
     3  :     List(TK.LIST, [])

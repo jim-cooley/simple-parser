@@ -5,10 +5,10 @@ var f = { a(_):_*_ }
 
 tree1:  var f = { a(_):_*_ }
     1  : DefineVar(TK.DEFINE, TK.DEFINE, '=')
-    2  :     Ref(TK.IDNT, 'f')
+    2  :     Ref(TK.IDENT, 'f')
     3  :     Block(TK.BLOCK, v=[DefineFn()], '')
     4  :         DefineFn(TK.DEFINE, TK.DEFINE, ':')
-    5  :             Ref(TK.IDNT, 'a')
+    5  :             Ref(TK.IDENT, 'a')
     6  :             BinOp(TK.MUL, '*')
     7  :                 Ref(TK.ANON, '_')
     8  :                 Ref(TK.ANON, '_')
@@ -17,10 +17,10 @@ tree1:  var f = { a(_):_*_ }
 
 tree1:(post)  var f = { a(_):_*_ }
     1  : DefineVar(TK.DEFINE, TK.DEFINE, '=')
-    2  :     Ref(TK.IDNT, 'f')
+    2  :     Ref(TK.IDENT, 'f')
     3  :     Block(TK.BLOCK, v=[DefineFn()], '')
     4  :         DefineFn(TK.DEFINE, TK.DEFINE, ':')
-    5  :             Ref(TK.IDNT, 'a')
+    5  :             Ref(TK.IDENT, 'a')
     6  :             BinOp(TK.MUL, '*')
     7  :                 Ref(TK.ANON, '_')
     8  :                 Ref(TK.ANON, '_')

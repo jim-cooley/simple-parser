@@ -146,7 +146,7 @@ class Lexer:
             elif tk.id == TK.EOF:
                 self._has_more = False
             break
-        if tk.id == TK.IDNT:
+        if tk.id == TK.IDENT:
             tk.t_class = TCL.IDENTIFIER
             tk = self.keywords.find(name=tk.lexeme, default=tk)
             if not isinstance(tk, Token):

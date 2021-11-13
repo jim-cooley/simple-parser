@@ -1,5 +1,6 @@
 from copy import deepcopy
 
+from interpreter.version import VERSION
 from runtime.conversion import c_unbox
 from runtime.environment import Environment
 from runtime.exceptions import runtime_error
@@ -94,8 +95,10 @@ class Interpreter(TreeFilter):
         m = dict(_interpreterVisitNodeMappings if mapping is None else mapping)
         super().__init__(mapping=m, apply_parent_fixups=True)
         self.environment = environment
+        self.environment.interpreter = self
         self.stack = environment.stack
-        self._verbose = True
+        self.option = environment.options
+        self.version = VERSION
 
     def apply(self, trees):
         self._init(trees)
@@ -108,9 +111,10 @@ class Interpreter(TreeFilter):
             if getattr(v, 'value', False):
                 v = v.value
             t.values = v
-            if self._verbose:
+            if self.option.verbose:
                 print(f'\nresult: {ty.lower()}({v})\n')
-        print(f'stack depth: {self.stack.depth()}')
+        if self.option.verbose:
+            print(f'stack depth: {self.stack.depth()}')
         return self.trees
 
     # default
@@ -276,7 +280,7 @@ class Interpreter(TreeFilter):
         values = []
         for n in list:
             count += 1
-            if self._verbose:
+            if self.option.verbose:
                 print(f'\ntree:{count}')
             values.append(self.visit(n))
         self.stack.push(values)
@@ -413,7 +417,7 @@ class Interpreter(TreeFilter):
         self.stack = self.environment.stack
 
     def _print_indented(self, message):
-        if self._verbose:
+        if self.option.verbose:
             indent = '' if self._depth < 1 else ' '.ljust(self._depth * 4)
             print(f'{self._count:5d} : {indent}{message}')
 
@@ -430,7 +434,7 @@ class Interpreter(TreeFilter):
     # undone: preserving
     def _print_node2(self, node):
         self._count += 1
-        if self._verbose:
+        if self.option.verbose:
             id = ' '
             if getattr(node, 'parent', None) is not None:
                 parent = node.parent

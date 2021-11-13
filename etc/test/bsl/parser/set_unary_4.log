@@ -6,6 +6,6 @@ none:{a, b, c}
 tree1:  none:{a, b, c}
     1  : UnaryOp(TK.NONE, TK.NONE, 'none')
     2  :     Set(TK.SET, [Get(), Get(), Get()])
-    3  :         Get(TK.IDNT, 'a')
-    4  :         Get(TK.IDNT, 'b')
-    5  :         Get(TK.IDNT, 'c')
+    3  :         Get(TK.IDENT, 'a')
+    4  :         Get(TK.IDENT, 'b')
+    5  :         Get(TK.IDENT, 'c')

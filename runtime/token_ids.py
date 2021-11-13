@@ -34,7 +34,7 @@ class TK(IntEnum):
     GTE = auto()  # >=
     GTR = auto()  # >
     GTR2 = auto()  # >>
-    IDNT = auto()  #
+    IDENT = auto()  #
     INT = auto()  #
     LARR = auto()  # <-
     LBAR = auto()  # <|

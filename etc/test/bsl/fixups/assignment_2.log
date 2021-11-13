@@ -5,12 +5,12 @@ a = 2 * 3
 
 tree1:  a = 2 * 3
     1  : Define(TK.DEFINE, TK.DEFINE, '=')
-    2  :     Ref(TK.IDNT, 'a')
+    2  :     Ref(TK.IDENT, 'a')
     3  :     BinOp(TK.MUL, '*')
     4  :         Int(TK.INT, 2)
     5  :         Int(TK.INT, 3)
 
 tree1:(post)  a = 2 * 3
     1  : Define(TK.DEFINE, TK.DEFINE, '=')
-    2  :     Ref(TK.IDNT, 'a')
+    2  :     Ref(TK.IDENT, 'a')
     3  :     Int(TK.INT, 6)

@@ -6,6 +6,6 @@ test: 5:
 tree1:  {a} | {b}
     1  : Flow(TK.CHAIN, v=[Set(), Set()], '|')
     2  :     Set(TK.SET, [Get()])
-    3  :         Get(TK.IDNT, 'a')
+    3  :         Get(TK.IDENT, 'a')
     4  :     Set(TK.SET, [Ref()])
-    5  :         Ref(TK.IDNT, 'b')
+    5  :         Ref(TK.IDENT, 'b')

@@ -5,13 +5,13 @@ test: 3:
 
 tree1:  [a, b, c]
     1  : List(TK.LIST, [Get(), Get(), Get()])
-    2  :     Get(TK.IDNT, 'a')
-    3  :     Get(TK.IDNT, 'b')
-    4  :     Get(TK.IDNT, 'c')
+    2  :     Get(TK.IDENT, 'a')
+    3  :     Get(TK.IDENT, 'b')
+    4  :     Get(TK.IDENT, 'c')
 
 tree1:(post)  [a, b, c]
 result: list([Get(), Get(), Get()])
     1  : List(TK.LIST, [Get(), Get(), Get()])
-    2  :     Get(TK.IDNT, 'a')
-    3  :     Get(TK.IDNT, 'b')
-    4  :     Get(TK.IDNT, 'c')
+    2  :     Get(TK.IDENT, 'a')
+    3  :     Get(TK.IDENT, 'b')
+    4  :     Get(TK.IDENT, 'c')

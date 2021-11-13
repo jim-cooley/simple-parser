@@ -6,13 +6,13 @@ test: 2:
 tree1:  (a*2).b
     1  : BinOp(TK.DOT, '.')
     2  :     BinOp(TK.MUL, '*')
-    3  :         Get(TK.IDNT, 'a')
+    3  :         Get(TK.IDENT, 'a')
     4  :         Int(TK.INT, 2)
-    5  :     Get(TK.IDNT, 'b')
+    5  :     Get(TK.IDENT, 'b')
 
 tree1:(post)  (a*2).b
     1  : BinOp(TK.DOT, '.')
     2  :     BinOp(TK.MUL, '*')
-    3  :         Get(TK.IDNT, 'a')
+    3  :         Get(TK.IDENT, 'a')
     4  :         Int(TK.INT, 2)
-    5  :     Get(TK.IDNT, 'b')
+    5  :     Get(TK.IDENT, 'b')

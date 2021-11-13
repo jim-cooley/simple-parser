@@ -6,14 +6,14 @@ test: 8:
 tree1:  {a} >> {b}
     1  : Flow(TK.APPLY, v=[Set(), Set()], '>>')
     2  :     Set(TK.SET, [Get()])
-    3  :         Get(TK.IDNT, 'a')
+    3  :         Get(TK.IDENT, 'a')
     4  :     Set(TK.SET, [Ref()])
-    5  :         Ref(TK.IDNT, 'b')
+    5  :         Ref(TK.IDENT, 'b')
 
 tree1:(post)  {a} >> {b}
 result: list([Set(), Set()])
     1  : Flow(TK.APPLY, v=[Set(), Set()], '>>')
     2  :     Set(TK.SET, [Get()])
-    3  :         Get(TK.IDNT, 'a')
+    3  :         Get(TK.IDENT, 'a')
     4  :     Set(TK.SET, [Ref()])
-    5  :         Ref(TK.IDNT, 'b')
+    5  :         Ref(TK.IDENT, 'b')

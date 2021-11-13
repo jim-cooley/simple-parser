@@ -5,16 +5,16 @@ f = { a:5 }      # should be block, not set
 
 tree1:  f = { a:5 }      # should be block, not set
     1  : Define(TK.DEFINE, TK.DEFINE, '=')
-    2  :     Ref(TK.IDNT, 'f')
+    2  :     Ref(TK.IDENT, 'f')
     3  :     Set(TK.SET, [Define()])
     4  :         Define(TK.DEFINE, TK.DEFINE, ':')
-    5  :             Ref(TK.IDNT, 'a')
+    5  :             Ref(TK.IDENT, 'a')
     6  :             Int(TK.INT, 5)
 
 tree1:(post)  f = { a:5 }      # should be block, not set
     1  : Define(TK.DEFINE, TK.DEFINE, '=')
-    2  :     Ref(TK.IDNT, 'f')
+    2  :     Ref(TK.IDENT, 'f')
     3  :     Set(TK.SET, [Define()])
     4  :         Define(TK.DEFINE, TK.DEFINE, ':')
-    5  :             Ref(TK.IDNT, 'a')
+    5  :             Ref(TK.IDENT, 'a')
     6  :             Int(TK.INT, 5)

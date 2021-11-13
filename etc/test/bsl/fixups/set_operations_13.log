@@ -6,8 +6,8 @@ not {a, b}
 tree1:  not {a, b}
     1  : UnaryOp(TK.NOT, TK.NOT, 'not')
     2  :     Set(TK.SET, [Get(), Get()])
-    3  :         Get(TK.IDNT, 'a')
-    4  :         Get(TK.IDNT, 'b')
+    3  :         Get(TK.IDENT, 'a')
+    4  :         Get(TK.IDENT, 'b')
 
 tree1:(post)  not {a, b}
     1  : Bool(TK.BOOL, False)

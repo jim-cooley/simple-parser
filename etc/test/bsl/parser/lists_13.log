@@ -7,4 +7,4 @@ tree1:  [[[a]]]
     1  : List(TK.LIST, [List()])
     2  :     List(TK.LIST, [List()])
     3  :         List(TK.LIST, [Get()])
-    4  :             Get(TK.IDNT, 'a')
+    4  :             Get(TK.IDENT, 'a')

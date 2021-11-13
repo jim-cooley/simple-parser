@@ -47,8 +47,8 @@ class Parser(object):
     # -----------------------------------
     # Parser entry point
     # -----------------------------------
-    def parse(self, text):
-        self._init(text)
+    def parse(self, text, command=False):
+        self._init(text, command)
         while True:
             if not self._lexer.seek(0, Lexer.SEEK.NEXT):
                 break
@@ -63,11 +63,15 @@ class Parser(object):
                 break
         return self.environment.trees
 
-    def _init(self, text):
+    def _init(self, text, command):
         self._lexer = Lexer(source=text)
-        self.environment.source = text
-        self.environment.lines = text.splitlines()
-        self.environment.tokens = self._lexer
+        self.environment.commands = []
+        self.environment.parser = self
+        if not command:
+            self.environment.source = text
+            self.environment.lines = text.splitlines()
+            self.environment.tokens = self._lexer
+            self.environment.trees = []
         self._skip_end_of_line = True
 
     # -----------------------------------
@@ -88,7 +92,8 @@ class Parser(object):
             raise se
         except Exception as e:
             self.logger.report(e, loc=self.peek().location)
-            raise e
+            if self.environment.options.throw_errors:
+                raise e
 
     def statement(self):
         op = self.peek()
@@ -103,7 +108,9 @@ class Parser(object):
         else:
             node = self.block_expr()
             if node is None:
-                self.logger.error(f'Unexpected token: {self.peek()}', self.peek().location)
+                self.logger.warning(f'Unexpected token: {self.peek()}', self.peek().location)
+                self.advance()  # attempt to recover
+                node = self.block_expr()
             if self.peek().id == TK.EOF:
                 return node
             if self.match([TK.SEMI, TK.COMA]):
@@ -454,7 +461,7 @@ class Parser(object):
             node = List(self.sequence(), token.remap2litval())
             self.consume(TK.RBRK)
             return node
-        elif token.t_class in IDENTIFIER_TYPES or token.id in [TK.IDNT, TK.ANON]:
+        elif token.t_class in IDENTIFIER_TYPES or token.id in [TK.IDENT, TK.ANON]:
             return self.identifier()
         else:
             return node
@@ -505,7 +512,7 @@ class Parser(object):
         tk = self.advance()
         token = self.peek()
         if token.id == TK.DOT:
-            token = self.consume_next(TK.IDNT)
+            token = self.consume_next(TK.IDENT)
             node = PropRef(ref=Get(tk), member=self.identifier())
         elif token.id == TK.DOT2:
             self.advance()

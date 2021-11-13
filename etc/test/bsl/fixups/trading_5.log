@@ -5,14 +5,14 @@ buy: position += trade_size
 
 tree1:  buy: position += trade_size
     1  : Define(TK.DEFINE, TK.DEFINE, ':')
-    2  :     Ref(TK.IDNT, 'buy')
+    2  :     Ref(TK.IDENT, 'buy')
     3  :     Assign(TK.ASSIGN, TK.ASSIGN, '+=')
-    4  :         Get(TK.IDNT, 'position')
-    5  :         Get(TK.IDNT, 'trade_size')
+    4  :         Get(TK.IDENT, 'position')
+    5  :         Get(TK.IDENT, 'trade_size')
 
 tree1:(post)  buy: position += trade_size
     1  : Define(TK.DEFINE, TK.DEFINE, ':')
-    2  :     Ref(TK.IDNT, 'buy')
+    2  :     Ref(TK.IDENT, 'buy')
     3  :     Assign(TK.ASSIGN, TK.ASSIGN, '+=')
-    4  :         Get(TK.IDNT, 'position')
-    5  :         Get(TK.IDNT, 'trade_size')
+    4  :         Get(TK.IDENT, 'position')
+    5  :         Get(TK.IDENT, 'trade_size')

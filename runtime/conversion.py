@@ -56,7 +56,7 @@ def c_to_bool(val, tid):
     if val is None:
         return False
     tid = tid if tid is not None else c_type(val)
-    if tid in [TK.NATIVE, TK.IDNT]:
+    if tid in [TK.NATIVE, TK.IDENT]:
         return val is True
     elif tid in [TK.BOOL, TK.TRUE, TK.FALSE]:
         return val
@@ -84,7 +84,7 @@ def c_to_dur(val, tid):
     if val is None:
         return timedelta(seconds=0)
     tid = tid if tid is not None else c_type(val)
-    if tid in [TK.NATIVE, TK.IDNT]:
+    if tid in [TK.NATIVE, TK.IDENT]:
         ty = type(val).__name__
         if ty == 'timedelta':
             return val
@@ -120,7 +120,7 @@ def c_to_float(val, tid):
     if val is None:
         return float(0)
     tid = tid if tid is not None else c_type(val)
-    if tid in [TK.NATIVE, TK.IDNT]:
+    if tid in [TK.NATIVE, TK.IDENT]:
         ty = type(val).__name__
         if ty == 'float':
             return val
@@ -162,7 +162,7 @@ def c_to_int(val, tid):
     tid = tid if tid is not None else c_type(val)
     if tid == TK.INT:
         return val
-    elif tid in [TK.NATIVE, TK.IDNT]:
+    elif tid in [TK.NATIVE, TK.IDENT]:
         ty = type(val).__name__
         if ty == 'int':
             return val

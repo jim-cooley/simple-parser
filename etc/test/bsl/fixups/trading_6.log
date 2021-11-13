@@ -4,7 +4,7 @@ test: 6:
 trades
 
 tree1:  trades
-    1  : Get(TK.IDNT, 'trades')
+    1  : Get(TK.IDENT, 'trades')
 
 tree1:(post)  trades
-    1  : Get(TK.IDNT, 'trades')
+    1  : Get(TK.IDENT, 'trades')

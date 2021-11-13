@@ -5,9 +5,9 @@ test: 41:
 
 tree1:  { b };
     1  : Set(TK.SET, [Get()])
-    2  :     Get(TK.IDNT, 'b')
+    2  :     Get(TK.IDENT, 'b')
 
 tree1:(post)  { b };
 result: list([Get()])
     1  : Set(TK.SET, [Get()])
-    2  :     Get(TK.IDNT, 'b')
+    2  :     Get(TK.IDENT, 'b')

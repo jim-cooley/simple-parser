@@ -6,6 +6,6 @@ a * b + c
 tree1:  a * b + c
     1  : BinOp(TK.ADD, '+')
     2  :     BinOp(TK.MUL, '*')
-    3  :         Get(TK.IDNT, 'a')
-    4  :         Get(TK.IDNT, 'b')
-    5  :     Get(TK.IDNT, 'c')
+    3  :         Get(TK.IDENT, 'a')
+    4  :         Get(TK.IDENT, 'b')
+    5  :     Get(TK.IDENT, 'c')

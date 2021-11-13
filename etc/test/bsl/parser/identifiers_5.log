@@ -5,5 +5,5 @@ a.b
 
 tree1:  a.b
     1  : PropRef(TK.REF, '.')
-    2  :     Get(TK.IDNT, 'a')
-    3  :     Get(TK.IDNT, 'b')
+    2  :     Get(TK.IDENT, 'a')
+    3  :     Get(TK.IDENT, 'b')

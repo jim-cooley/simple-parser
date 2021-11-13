@@ -5,5 +5,5 @@ var f := 5
 
 tree1:  var f := 5
     1  : DefineVar(TK.DEFINE, TK.DEFINE, ':=')
-    2  :     Ref(TK.IDNT, 'f')
+    2  :     Ref(TK.IDENT, 'f')
     3  :     Int(TK.INT, 5)

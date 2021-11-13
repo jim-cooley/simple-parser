@@ -6,10 +6,10 @@ open.b(1d) | c
 tree1:  open.b(1d) | c
     1  : Flow(TK.CHAIN, v=[PropRef(), ApplyChainProd()], '|')
     2  :     PropRef(TK.REF, '.')
-    3  :         Get(TK.IDNT, 'open')
+    3  :         Get(TK.IDENT, 'open')
     4  :         FnCall('b')
-    5  :             Get(TK.IDNT, 'b')
+    5  :             Get(TK.IDENT, 'b')
     6  :             List(TK.LIST, [Duration()])
     7  :                 Duration(TK.DUR, 1 day, 0:00:00)
     8  :     ApplyChainProd(TK.DEFINE, TK.DEFINE, '|')
-    9  :         Ref(TK.IDNT, 'c')
+    9  :         Ref(TK.IDENT, 'c')

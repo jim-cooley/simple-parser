@@ -5,17 +5,17 @@ close.delay[+1d]
 
 tree1:  close.delay[+1d]
     1  : PropRef(TK.REF, '.')
-    2  :     Get(TK.IDNT, 'close')
+    2  :     Get(TK.IDENT, 'close')
     3  :     Index('delay')
-    4  :         Get(TK.IDNT, 'delay')
+    4  :         Get(TK.IDENT, 'delay')
     5  :         List(TK.TUPLE, [UnaryOp()])
     6  :             UnaryOp(TK.POS, TK.POS, '+')
     7  :                 Duration(TK.DUR, 1 day, 0:00:00)
 
 tree1:(post)  close.delay[+1d]
     1  : PropRef(TK.REF, '.')
-    2  :     Get(TK.IDNT, 'close')
+    2  :     Get(TK.IDENT, 'close')
     3  :     Index('delay')
-    4  :         Get(TK.IDNT, 'delay')
+    4  :         Get(TK.IDENT, 'delay')
     5  :         List(TK.TUPLE, [Duration()])
     6  :             Duration(TK.DUR, 1 day, 0:00:00)

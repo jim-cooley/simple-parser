@@ -6,9 +6,9 @@ test: 18:
 tree1:  ++++b
     1  : UnaryOp(TK.INCREMENT, TK.INCREMENT, '++')
     2  :     UnaryOp(TK.INCREMENT, TK.INCREMENT, '++')
-    3  :         Get(TK.IDNT, 'b')
+    3  :         Get(TK.IDENT, 'b')
 
 tree1:(post)  ++++b
     1  : UnaryOp(TK.INCREMENT, TK.INCREMENT, '++')
     2  :     UnaryOp(TK.INCREMENT, TK.INCREMENT, '++')
-    3  :         Get(TK.IDNT, 'b')
+    3  :         Get(TK.IDENT, 'b')

@@ -6,4 +6,4 @@ test: 2:
 tree1:  {{a}}
     1  : Set(TK.SET, [Set()])
     2  :     Set(TK.SET, [Get()])
-    3  :         Get(TK.IDNT, 'a')
+    3  :         Get(TK.IDENT, 'a')
