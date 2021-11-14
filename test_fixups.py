@@ -22,11 +22,11 @@ class SemanticAnalysisTestRunner(TestSuiteRunner, ABC):
         super().__init__(test_data, skip_tests, log_dir='./etc/test/log/fixups')
 
     def run_unprotected_test(self, environment, name, test):
-        parser = Parser(environment)
-        fixups = Fixups(environment)
-        tree = parser.parse(text=test)
+        parser = Parser()
+        fixups = Fixups()
+        environment = parser.parse(source=test)
         _dump_environment(environment, print_commands=False, print_results=False, print_symbols=False, print_tokens=False)
-        tree = fixups.apply(tree)
+        environment = fixups.apply(environment)
         _dump_environment(environment, label='post',
                           print_tokens=False, print_trees=True, print_results=True, print_symbols=False,
                           print_commands=True)

@@ -14,7 +14,7 @@ class TreeModifier(NodeVisitor, ABC):
     @abstractmethod
     def apply(self, tree=None):
         self._count = 0
-        return None
+        return tree
 
     @abstractmethod
     def visit_node(self, node, label=None):

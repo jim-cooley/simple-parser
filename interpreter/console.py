@@ -6,38 +6,46 @@ from interpreter.fixups import Fixups
 from interpreter.interpreter import Interpreter
 from parser.parser import Parser
 from runtime.environment import Environment
-from test.suite_runner import _dump_environment
+from runtime.exceptions import getLogFacility
+from runtime.options import getOptions
 
-LOG_FILE = './focal.log'
+
+_option_defaults = {
+    'strict': False,    # option_strict forces variables to be defined before they are used
+    'force_errors': False,  # option_force_errors forces warnings into errors
+    'throw_errors': True,
+    'print_tokens': False,
+    'no_run': False,
+    'verbose': False,
+    'log_filename': './focal.log'
+}
+
+CONSOLE_LOG = './focal_console.log'
 
 
 class FocalConsole:
-    def __init__(self, options, file):
-        self.environment = Environment(file=file)
-        self.logger = self.environment.logger
-        self.parser = Parser(self.environment, verbose=False)
-        self.fixups = Fixups(self.environment)
-        self.interp = Interpreter(self.environment)
-        self.command = CommandShell(self.environment)
-        self.options = options
-        if options is not None:
-            self.environment.update_options(vars(options))
+    def __init__(self, options=None, file=None):
+        self.logger = getLogFacility('focal', env=self, file=file)
+        self.options = getOptions('focal', options=vars(options), defaults=_option_defaults)
+        self.fixups = Fixups()
+        self.parser = Parser()
+        self.focal = Interpreter()
+        self.shell = CommandShell(self.focal)
+        self.target = None   # target environment
 
-    def parse(self, line):
-        command = False
-        source = self.environment.source
-        if line.startswith('%%'):
-            command = True
-        parse_trees = self.fixups.apply(self.parser.parse(text=line, command=command))
-        self.environment.trees = parse_trees
-        if command:
-            self.environment.source = source
-        return parse_trees
+    def parse(self, lines):
+        if lines.startswith('%%'):
+            # this causes the parser to create a new environment for each command and throw them away
+            environment = self.fixups.apply(self.parser.parse(environment=None, source=lines))
+        else:
+            # this causes the parser to re-use the same environment each time for focal-related work
+            environment = self.target
+            environment = self.fixups.apply(self.parser.parse(environment, source=lines))
+            self.target = environment
+        return environment
 
-    def run(self, trees=None):
-        if trees is not None:
-            self.environment.trees = trees
-        self.command.execute(self.interp)
+    def run(self, environment):
+        self.shell.execute(environment, self.focal)
 
     def go(self):
         _stop = False
@@ -70,5 +78,6 @@ class FocalConsole:
             if _stop:
                 break
             lines = '\n'.join(lines).rstrip()
-            tree = self.parse(lines)
-            self.run(tree)
+            env = self.parse(lines)
+            self.run(env)
+

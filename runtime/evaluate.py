@@ -22,7 +22,7 @@ _unary2binop = {
 
 
 def get_logger():
-    return getLogFacility('semtex')
+    return getLogFacility('focal')
 
 
 def reduce_value(stack: RuntimeStack, node):

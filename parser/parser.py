@@ -1,7 +1,9 @@
 from copy import copy
 from dataclasses import dataclass
 
-from runtime.exceptions import SemtexError
+from runtime.environment import Environment
+from runtime.exceptions import SemtexError, getLogFacility
+from runtime.options import getOptions
 from runtime.token_data import ADDITION_TOKENS, COMPARISON_TOKENS, FLOW_TOKENS, \
     EQUALITY_TEST_TOKENS, LOGIC_TOKENS, MULTIPLICATION_TOKENS, UNARY_TOKENS, IDENTIFIER_TYPES, ASSIGNMENT_TOKENS, \
     SET_UNARY_TOKENS, IDENTIFIER_TOKENS, IDENTIFIER_TOKENS_EX, ASSIGNMENT_TOKENS_REF, \
@@ -23,15 +25,14 @@ class ParseTree(object):
     def __init__(self, root, values=None, start=None, length=None):
         self.root = root
         self.values = values if values is not None else [root.value]
-        self.tk_start = start
-        self.tk_len = length
+        # UNODNE: place source, tokens, lines here?  Except original source is shared amongst trees in a forest
 
 
 class Parser(object):
-    def __init__(self, environment, verbose=True):
-        self.environment = environment
-        self.logger = environment.logger
-        self.verbose = verbose
+    def __init__(self):
+        self.environment = None
+        self.logger = getLogFacility('focal')
+        self.options = getOptions('focal')
         self._skip_end_of_line = True
 
     @property
@@ -47,8 +48,9 @@ class Parser(object):
     # -----------------------------------
     # Parser entry point
     # -----------------------------------
-    def parse(self, text, command=False):
-        self._init(text, command)
+    def parse(self, environment=None, source=None):
+        environment = self._init(environment, source)
+        self.environment = environment
         while True:
             if not self._lexer.seek(0, Lexer.SEEK.NEXT):
                 break
@@ -56,23 +58,44 @@ class Parser(object):
             tkid = self.peek().id
             if decl is not None:
                 decls = [decl] if type(decl).__name__ != "list" else decl
-                self.environment.trees += [ParseTree(_) for _ in decls]
+                environment.trees += [ParseTree(_) for _ in decls]
             elif tkid != TK.EOF:  # decl is None
                 continue
             elif tkid == TK.EOF or decl.token.id == TK.EOF:
                 break
-        return self.environment.trees
+        return environment
 
-    def _init(self, text, command):
-        self._lexer = Lexer(source=text)
-        self.environment.commands = []
-        self.environment.parser = self
-        if not command:
-            self.environment.source = text
-            self.environment.lines = text.splitlines()
-            self.environment.tokens = self._lexer
-            self.environment.trees = []
+    def _init(self, environment=None, source=None):
+        if environment is None:
+            environment = Environment()
+        self._lexer = Lexer(source=source)
+        environment.commands = []
+        environment.trees = []
+        environment.source = source
+        environment.lines = source.splitlines()
+        environment.tokens = self._lexer
         self._skip_end_of_line = True
+        return environment
+
+    # UNDONE: removing commands from this parse will simplify MANY things
+    def command(self):
+        tk = self.peek()
+        commands = []
+        self._skip_end_of_line = False
+        self.advance()
+        while tk.id != TK.EOL:
+            command = Command(tk, self.expression())
+            if command is None:
+                self.logger.error(self.peek(), "Invalid token")
+                break
+            commands.append(command)
+            tk = self.peek()
+            if tk.id in [TK.EOF, TK.EOL]:
+                break
+            tk = self.consume(TK.SEMI, expect=False)  # optional semi-colon
+        self._skip_end_of_line = True
+        self.environment.commands += commands
+        return
 
     # -----------------------------------
     # Recursive Descent Parser Entry
@@ -92,7 +115,7 @@ class Parser(object):
             raise se
         except Exception as e:
             self.logger.report(e, loc=self.peek().location)
-            if self.environment.options.throw_errors:
+            if self.options.throw_errors:
                 raise e
 
     def statement(self):
@@ -160,25 +183,6 @@ class Parser(object):
             return UnaryOp(tk, self.block_expr())
         else:
             return self.expression()
-
-    def command(self):
-        tk = self.peek()
-        commands = []
-        self._skip_end_of_line = False
-        self.advance()
-        while tk.id != TK.EOL:
-            command = Command(tk, self.expression())
-            if command is None:
-                self.logger.error(self.peek(), "Invalid token")
-                break
-            commands.append(command)
-            tk = self.peek()
-            if tk.id in [TK.EOF, TK.EOL]:
-                break
-            tk = self.consume(TK.SEMI, expect=False)  # optional semi-colon
-        self._skip_end_of_line = True
-        self.environment.commands += commands
-        return
 
     def definition(self):
         l_expr = self.statement()  # l-value cannot include flows
@@ -573,8 +577,6 @@ class Parser(object):
     # after the first token, self.token works fine for peek.
     def peek(self, rel=0):
         tk = self._lexer.peek(rel=rel)
-#        if tk.id == TK.EOL:
-#            self.environment.print_line(tk.location.line)
         if not self._skip_end_of_line or tk.id != TK.EOL:
             return tk
         self._lexer.seek(1, Lexer.SEEK.NEXT)
@@ -585,7 +587,6 @@ class Parser(object):
         while True:
             tk = self._lexer.read1()
             if tk.id == TK.EOL:
-                self.environment.print_line(tk.location.line)
                 if self._skip_end_of_line:
                     continue
             break

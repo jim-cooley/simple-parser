@@ -20,8 +20,8 @@ class ParserTestRunner(TestSuiteRunner, ABC):
         super().__init__(td, skip_tests, log_dir='./etc/test/log/parser')
 
     def run_unprotected_test(self, environment, name, test):
-        parser = Parser(environment)
-        parser.parse(text=test)
+        parser = Parser()
+        environment = parser.parse(environment=environment, source=test)
         _dump_environment(environment, print_results=False)
 
 

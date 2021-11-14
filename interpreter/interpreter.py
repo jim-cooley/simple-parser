@@ -6,6 +6,7 @@ from runtime.environment import Environment
 from runtime.exceptions import runtime_error
 from runtime.indexdict import IndexedDict
 from runtime.literals import Literal
+from runtime.options import getOptions
 from runtime.scope import Block, Scope
 from runtime.tree import FnCall, Define, Ref
 
@@ -91,20 +92,20 @@ _interpreterVisitNodeMappings = {
 
 class Interpreter(TreeFilter):
 
-    def __init__(self, environment, mapping=None):
+    def __init__(self, mapping=None):
         m = dict(_interpreterVisitNodeMappings if mapping is None else mapping)
         super().__init__(mapping=m, apply_parent_fixups=True)
-        self.environment = environment
-        self.environment.interpreter = self
-        self.stack = environment.stack
-        self.option = environment.options
+        self.stack = None
+        self.option = getOptions('focal')
         self.version = VERSION
 
-    def apply(self, trees):
-        self._init(trees)
-        if trees is None:
+    def apply(self, environment=None):
+        self._init(environment)
+        if environment is None:
             return None
-        for t in trees:
+
+        assert environment.trees is not None, "empty trees passed via Environment to apply"
+        for t in environment.trees:
             self.visit(t.root)
             v = self.stack.pop()
             ty = type(v).__name__
@@ -115,7 +116,7 @@ class Interpreter(TreeFilter):
                 print(f'\nresult: {ty.lower()}({v})\n')
         if self.option.verbose:
             print(f'stack depth: {self.stack.depth()}')
-        return self.trees
+        return environment
 
     # default
     def visit_node(self, node, label=None):
@@ -409,11 +410,10 @@ class Interpreter(TreeFilter):
             self.visit(n)
         self.dedent()
 
-    def _init(self, tree):
-        self.trees = tree
+    def _init(self, environment):
+        self.environment = environment
         self.keywords = self.environment.keywords
         self.globals = self.environment.globals
-        self.environment.stack.clear()
         self.stack = self.environment.stack
 
     def _print_indented(self, message):

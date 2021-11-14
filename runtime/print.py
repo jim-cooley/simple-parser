@@ -15,7 +15,7 @@ def init_print(name):
 
 
 def do_print(env, vargs):
-    logger = getLogFacility('semtex')
+    logger = getLogFacility('focal')
     line = []
     for i in range(0, len(vargs)):
         o = vargs[i]
@@ -34,7 +34,7 @@ def do_print(env, vargs):
 
 def _t_print(logger, message, end='\n'):
     if logger is None:
-        logger = getLogFacility('semtex')
+        logger = getLogFacility('focal')
     logger.write(f'{message}', end=end)
     logger.flush()
 

@@ -4,21 +4,15 @@ from runtime import exceptions
 from runtime.exceptions import getLogFacility
 from runtime.indexdict import IndexedDict
 from runtime.keywords import Keywords
+from runtime.options import getOptions
 from runtime.scope import Scope
 
 from runtime.stack import RuntimeStack
 from runtime.version import VERSION
 
-_option_defaults = {
-    'strict': False,    # option_strict forces variables to be defined before they are used
-    'force_errors': False,  # option_force_errors forces warnings into errors
-    'throw_errors': True,
-    'verbose': False,
-}
-
 
 @dataclass
-class Environment(object):
+class Environment:
     """
     Environment maintains the parse tree and execution environment state
     Centralized exception handling also flows through as it is aware of options.
@@ -27,19 +21,17 @@ class Environment(object):
     """
     current = None
 
-    def __init__(self, source=None, commands=None, keywords=None, options=None, file=None):
+    def __init__(self, keywords=None):
         self.keywords = keywords if keywords is not None else Keywords()
         self.globals = Scope(parent_scope=self.keywords)
         self.scope = self.globals
-        self.commands = commands if commands is not None else []
+        self.commands = []
         self.trees = []
-        self.interpreter = None
-        self.parser = None
         self.lines = None
-        self.source = self.set_source(source) if source is not None else None
+        self.source = None
         self.tokens = None
-        self.options = IndexedDict(items=options, defaults=_option_defaults)
-        self.logger = getLogFacility('semtex', env=self, file=file)
+        self.options = getOptions('focal')
+        self.logger = getLogFacility('focal')
         self.stack = RuntimeStack()
         self.version = VERSION
         Environment.current = self
@@ -56,8 +48,9 @@ class Environment(object):
     @staticmethod
     def enter(scope=None):
         if scope is None:
-            scope = Scope()
-        scope.link(Environment.current.scope)
+            scope = Scope(Environment.current.scope)
+        if scope.parent_scope is None:
+            scope.parent_scope = Environment.current.scope
         Environment.current.scope = scope
         return scope
 
@@ -67,8 +60,8 @@ class Environment(object):
         return ''
 
     @staticmethod
-    def leave(scope=None):
-        scope = Environment.current.scope if scope is None else scope
+    def leave():
+        scope = Environment.current.scope
         parent = scope.parent_scope
         Environment.current.scope = parent
         return scope

@@ -77,21 +77,20 @@ _fixupNodeTypeMappings = {
 #
 
 class Fixups(TreeModifier, ABC):
-    def __init__(self, environment):
+    def __init__(self):
         super().__init__(mapping=_fixupNodeTypeMappings, apply_parent_fixups=True)
-        self.environment = environment
         self._print_nodes = False
 
-    def apply(self, trees):
-        self._init(trees)
-        if trees is None:
+    def apply(self, environment=None):
+        self._init(environment)
+        if environment is None:
             return None
-        for t in trees:
+        for t in environment.trees:
             val = self.visit(t.root)
             if not isinstance(val, AST):
                 val = Literal.lit(val)
             t.root = val
-        return self.trees
+        return environment
 
     # overridden:
     def visit_node(self, node, label=None):
@@ -202,15 +201,10 @@ class Fixups(TreeModifier, ABC):
                 return _lift(node, expr)
         return node
 
-    def print_symbols(self):
-        if self.global_symbols is not None:
-            print(f'\n\nsymbol table:')
-            self.global_symbols.printall(indent=1)
-
-    def _init(self, tree):
-        self.trees = tree
-        self.keywords = self.environment.keywords
-        self.globals = self.environment.globals
+    def _init(self, environment):
+        self.trees = environment.trees
+        self.keywords = environment.keywords
+        self.globals = environment.globals
 
     # just for test: use DumpTree for proper printing
     def _print_node(self, node):

@@ -149,10 +149,10 @@ _postfixNodeTypeMappings = {
 
 class FunctionalNotationPrinter(TreeFilter):
 
-    def __init__(self):
+    def __init__(self, indent=None):
         super().__init__(mapping=_postfixNodeTypeMappings, apply_parent_fixups=True)
         self._depth = 0
-        self._indent = False
+        self._indent = False if indent is None else indent
         self._notes = []
         self._print_end = '' if self._indent is False else '\n'
         self._append = False

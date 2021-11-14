@@ -1,3 +1,5 @@
+focal.log
+*.log
 .DS_Store
 .idea
 *.iml

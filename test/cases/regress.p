@@ -31,5 +31,5 @@ print('hello')
 f(x) = x*x
 f(5)
 
-#f5 := factorial(5)
-#print(f5)
+f5 := factorial(5)
+print(f5)

@@ -46,18 +46,18 @@ def setLogConfiguration(name, options, env=None):
 
 
 def runtime_error(message, loc=None):
-    f = getLogFacility('semtex')
+    f = getLogFacility('focal')
     f.runtime_error(message, loc)
 
 
 # strict warning becomes error if option.strict is true (variable used before being declared)
 def runtime_strict_warning(message, loc=None):
-    f = getLogFacility('semtex')
+    f = getLogFacility('focal')
     f.runtime_strict_warning(message, loc)
 
 
 def runtime_warning(message, loc=None):
-    f = getLogFacility('semtex')
+    f = getLogFacility('focal')
     f.runtime_warning(message, loc)
 
 

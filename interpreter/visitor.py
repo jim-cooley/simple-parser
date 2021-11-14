@@ -70,7 +70,7 @@ class TreeFilter(NodeVisitor, ABC):
     @abstractmethod
     def apply(self, tree=None):
         self._count = 0
-        pass  # must return tree
+        return tree
 
     @abstractmethod
     def visit_node(self, node, label=None):

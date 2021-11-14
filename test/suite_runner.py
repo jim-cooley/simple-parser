@@ -5,6 +5,8 @@ from multiprocessing import SimpleQueue
 
 from runtime.environment import Environment
 from interpreter.treeprint import print_forest, print_node
+from runtime.exceptions import getLogFacility
+from runtime.options import getOptions
 
 _LOG_DIRECTORY = "./etc/test/log"
 _SCRIPT_SEARCH_PATH = [
@@ -13,6 +15,16 @@ _SCRIPT_SEARCH_PATH = [
     "./etc/test",
     "../etc/test",
 ]
+
+_option_defaults = {
+    'strict': False,    # option_strict forces variables to be defined before they are used
+    'force_errors': False,  # option_force_errors forces warnings into errors
+    'throw_errors': True,
+    'print_tokens': False,
+    'no_run': False,
+    'verbose': False,
+    'log_filename': './focal.log'
+}
 
 
 class TestSuiteRunner(ABC):
@@ -23,6 +35,8 @@ class TestSuiteRunner(ABC):
         self.prefix = prefix
         self.interactive = False
         self.environment = env
+        self.logger = None
+        self.options = None
         self.logs_dir = log_dir if log_dir is not None else _LOG_DIRECTORY
 
     @abstractmethod
@@ -31,7 +45,9 @@ class TestSuiteRunner(ABC):
 
     def run_protected_test(self, log, name, test):
         try:
-            self.environment = Environment(file=log)
+            self.logger = getLogFacility('focal', file=log)
+            self.options = getOptions('focal', defaults=_option_defaults)
+            self.environment = Environment()
             self.run_unprotected_test(self.environment, name, test)
             self.environment.close()
             self.environment = None

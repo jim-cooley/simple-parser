@@ -7,6 +7,7 @@ from interpreter.shell import CommandShell
 from interpreter.fixups import Fixups
 from interpreter.interpreter import Interpreter
 from parser.parser import Parser
+from runtime.exceptions import getLogFacility
 from test.suite_runner import TestSuiteRunner, _dump_environment
 from test.test_setup import test_data
 
@@ -72,17 +73,16 @@ class SemanticAnalysisTestRunner(TestSuiteRunner, ABC):
         self.test = True
 
     def run_unprotected_test(self, environment, name, test):
-        logger = environment.logger
-        parser = Parser(environment, verbose=False)
-        fixups = Fixups(environment)
-        interp = Interpreter(environment)
-        command = CommandShell(environment)
-        environment.trees = fixups.apply(parser.parse(text=test))
+        logger = getLogFacility('focal')
+        parser = Parser()
+        fixups = Fixups()
+        interp = Interpreter()
+        command = CommandShell(interp)
+        environment = fixups.apply(parser.parse(source=test))
         if self.verbose:
             _dump_environment(environment, label='post', print_tokens=False, print_results=False)
         logger.banner("RUN")
-        command.execute(interp)
-#       interp.apply(trees)
+        environment = command.execute(environment, interpreter=interp)
         if self.test:
             _dump_environment(environment, label='post',
                               print_tokens=False, print_trees=False, print_results=True, print_symbols=True,

@@ -3,6 +3,7 @@ from argparse import ArgumentParser
 
 from interpreter.console import FocalConsole
 from interpreter.shell import do_help
+from runtime.environment import Environment
 
 LOG_FILE = './focal.log'
 
@@ -16,10 +17,10 @@ if __name__ == '__main__':
     parser.add_argument('-q', '--quiet', dest='verbose', action='store_false', help="less verbose output")
     parser.add_argument('-t', '--tokens', dest='print_tokens', action='store_true', help="print tokens")
     parser.add_argument('-v', '--verbose', dest='verbose', action='store_true', help="more verbose output")
-    parser.set_defaults(print_tokens=False, no_run=False, verbose=False)
+    parser.set_defaults(print_tokens=False, no_run=True, verbose=False)
     args = parser.parse_args()
 
     with open(LOG_FILE, 'w') as log:
         focal = FocalConsole(args, log)
-        do_help(focal.environment, 'commands')
+        do_help(Environment(), 'commands')
         focal.go()

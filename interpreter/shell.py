@@ -3,16 +3,16 @@ from queue import SimpleQueue
 
 from interpreter.notation import FunctionalNotationPrinter
 from interpreter.treeprint import print_forest
-from runtime import exceptions, scope
+from runtime import exceptions
 from runtime.dataframe import Dataset
 from runtime.environment import Environment
+from runtime.options import getOptions
 from runtime.print import print_dataframe, _t_print
 from interpreter.interpreter import Interpreter, _interpreterVisitNodeMappings
 from runtime.exceptions import getLogFacility
-from runtime.runtime import _find_file, load_script
+from runtime.runtime import load_script
 from runtime.scope import Scope
-from runtime.token import Token
-from runtime.tree import Ref, AST
+from runtime.tree import AST
 
 _VISIT_ASSIGNMENT = 'visit_assignment'
 _VISIT_DEFINITION = 'visit_definition'
@@ -54,35 +54,35 @@ class SLOT(IntEnum):
 
 class CommandShell(Interpreter):
 
-    def __init__(self, environment, mapping=None):
+    def __init__(self, interpreter=None, mapping=None):
         m = dict(_interpreterVisitNodeMappings if mapping is None else mapping)
         m.update(_commandVisitNodeMappings)
-        super().__init__(environment=environment, mapping=m)
-        self.environment = environment
-        self.interpreter = self.environment.interpreter
-        self.environment.interpreter = self
-        self.keywords = environment.keywords
-        self.globals = environment.globals
-        self.stack = environment.stack
+        super().__init__(mapping=m)
+        self.options = getOptions('focal')
+        self.stack = None  # environment.stack
+        self.environment = None
+        self.interpreter = interpreter
         self._verbose = True
 
-    def execute(self, interp):
-        self.interpreter = interp
+    def execute(self, environment, interpreter):
         try:
-            self.apply(self.environment.commands)
-            self.interpreter.apply(self.environment.trees)
+            self.environment = environment
+            self.stack = environment.stack
+            self.apply(environment)  # execute commands
+            if not self.options.no_run:
+                interpreter.apply(environment)  # execute script
         except Exception as e:
-            if self.environment.options.throw_errors:
+            if self.options.throw_errors:
                 exceptions.runtime_error(f'{e}')
             else:
                 exceptions.runtime_warning(f'{e}')
 
-    def apply(self, commands):
-        if commands is None:
+    def apply(self, environment=None):
+        if environment.commands is None:
             return None
-        for c in commands:
+        for c in environment.commands:
             self.visit(c)
-        return self.trees
+        return environment
 
     # default
     def visit_node(self, node, label=None):
@@ -200,7 +200,7 @@ def do_load_script(env, args):
 
 def do_parse(env):
     source = env.source
-    env.parser.parse(source)
+    env.parser.parse(source=source)
     show_tokens(env)
 
 
@@ -224,7 +224,7 @@ def show_options(env):
 # print
 # ---------------------
 def do_print(env, vargs):
-    logger = getLogFacility('semtex')
+    logger = getLogFacility('focal')
     line = []
     for i in range(0, len(vargs)):
         o = vargs[i]
@@ -260,11 +260,19 @@ def show_commands(env):
 
 
 def show_notation(env):
-    printer = FunctionalNotationPrinter()
-    tree = env.trees
-    if tree is None or tree.root is None:
+    printer = FunctionalNotationPrinter(indent=True)
+    trees = env.trees
+    if trees is None or len(trees) < 1:
         return
-    print(f'notation: {printer.apply(tree.root)}')
+    idx = 0
+    for i in range(0, len(trees)):
+        idx += 1
+        t = trees[i]
+        print(f'\ntree{idx}:')
+        if t.root is None:
+            print("<empty>")
+            continue
+        print(f'{printer.apply(t.root)}')
 
 
 def show_stack(env):
@@ -286,7 +294,7 @@ def show_tokens(env):
 
 def show_tree(env):
     _print_banner("parse tree")
-    print_forest(env, env.logger, label=None, print_results=env.options.verbose, print_notation=True)
+    print_forest(env, env.logger, label=None, print_results=env.options.verbose, print_notation=False)
 
 
 def show_sourcelines(env):
