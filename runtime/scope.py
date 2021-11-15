@@ -79,7 +79,7 @@ class Scope:
         if token is not None:
             name = token.lexeme
         symbol = self.find(name, local=local)
-        if symbol is None and not update:
+        if symbol is None or update:
             if symbol is None:
                 symbol = Object(name=name, token=token)
             if value is not None:
@@ -153,7 +153,7 @@ class Object(AST, Scope):
         return self.__repr__()
 
     def __repr__(self):
-        return f'{type(self).__name__}({self.value})'
+        return f'{type(self).__name__}({self._value})'
 
     def from_dict(self, other):
         if isinstance(other, dict) or isinstance(other, IndexedDict):
