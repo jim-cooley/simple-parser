@@ -11,13 +11,16 @@ from runtime.options import getOptions
 
 
 _option_defaults = {
-    'strict': False,    # option_strict forces variables to be defined before they are used
+    'auto_listback': True,    # automatically show source after load
+    'auto_parse': True,     # automatically parse upon load
+    'auto_run': False,      # automatically run after parsing
     'force_errors': False,  # option_force_errors forces warnings into errors
-    'throw_errors': True,
-    'print_tokens': False,
+    'log_filename': './focal.log',
     'no_run': False,
+    'print_tokens': False,
+    'strict': False,        # option_strict forces variables to be defined before they are used
+    'throw_errors': True,
     'verbose': False,
-    'log_filename': './focal.log'
 }
 
 CONSOLE_LOG = './focal_console.log'
@@ -30,13 +33,16 @@ class FocalConsole:
         self.fixups = Fixups()
         self.parser = Parser()
         self.focal = Interpreter()
-        self.shell = CommandShell(self.focal)
-        self.target = None   # target environment
+        self.shell = CommandShell(parser=self.parser, interpreter=self.focal)
+        self.environment = Environment()    # target environment
+        self.target = Environment()         # target environment
 
     def parse(self, lines):
         if lines.startswith('%%'):
             # this causes the parser to create a new environment for each command and throw them away
-            environment = self.fixups.apply(self.parser.parse(environment=None, source=lines))
+            environment = self.environment
+            environment = self.fixups.apply(self.parser.parse(environment=environment, source=lines))
+            self.environment = environment
         else:
             # this causes the parser to re-use the same environment each time for focal-related work
             environment = self.target
@@ -45,7 +51,7 @@ class FocalConsole:
         return environment
 
     def run(self, environment):
-        self.shell.execute(environment, self.focal)
+        self.shell.execute(environment=environment, target=self.target)
 
     def go(self):
         _stop = False

@@ -74,6 +74,7 @@ class Parser(object):
         environment.source = source
         environment.lines = source.splitlines()
         environment.tokens = self._lexer
+        Environment.current = environment
         self._skip_end_of_line = True
         return environment
 

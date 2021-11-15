@@ -3,6 +3,7 @@
 from abc import ABC
 
 from runtime.conversion import c_unbox, c_type
+from runtime.environment import Environment
 from runtime.tree import AST, BinOp
 from runtime.literals import List, Literal, Bool
 from runtime.token import Token
@@ -202,6 +203,7 @@ class Fixups(TreeModifier, ABC):
         return node
 
     def _init(self, environment):
+        Environment.current = environment
         self.trees = environment.trees
         self.keywords = environment.keywords
         self.globals = environment.globals

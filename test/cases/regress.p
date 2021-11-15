@@ -9,7 +9,7 @@ def factorial(x) := {
 
 
 print('hello', 'world')
-pd = yahoo( symbols='portfolio.csv', span=-5y )
+#pd = yahoo( symbols='portfolio.csv', span=-5y )
 
 #d = dataset()
 print(pd)

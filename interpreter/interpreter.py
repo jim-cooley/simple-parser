@@ -7,7 +7,7 @@ from runtime.exceptions import runtime_error
 from runtime.indexdict import IndexedDict
 from runtime.literals import Literal
 from runtime.options import getOptions
-from runtime.scope import Block, Scope
+from runtime.scope import Block, Scope, Object
 from runtime.tree import FnCall, Define, Ref
 
 from runtime.eval_unary import is_true
@@ -363,10 +363,18 @@ class Interpreter(TreeFilter):
                     value = ref.right
                     ref = ref.left
                     sym = reduce_ref(scope=scope, ref=ref)
-                    items[sym.name] = value
+                    if isinstance(sym, Object):
+                        items[sym.name] = value
+                    else:
+                        slot = items.keys()[idx]
+                        items[slot] = c_unbox(sym)
                 elif isinstance(ref, Ref):
                     sym = reduce_ref(scope=scope, ref=ref)
-                    items[sym.name] = sym
+                    if isinstance(sym, Object):
+                        items[sym.name] = sym
+                    else:
+                        slot = items.keys()[idx]
+                        items[slot] = c_unbox(sym)
                 elif isinstance(ref, Literal):
                     if idx >= len(items):
                         v = c_unbox(ref)
@@ -411,6 +419,7 @@ class Interpreter(TreeFilter):
         self.dedent()
 
     def _init(self, environment):
+        Environment.current = environment
         self.environment = environment
         self.keywords = self.environment.keywords
         self.globals = self.environment.globals

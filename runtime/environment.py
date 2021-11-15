@@ -30,7 +30,6 @@ class Environment:
         self.lines = None
         self.source = None
         self.tokens = None
-        self.options = getOptions('focal')
         self.logger = getLogFacility('focal')
         self.stack = RuntimeStack()
         self.version = VERSION
@@ -70,17 +69,6 @@ class Environment:
         self.source = source
         self.lines = source.splitlines(True)
         return source
-
-    def to_efoptions(self):
-        return self.options.to_dict(keys=['strict', 'force_errors'])
-
-    def update_options(self, options):
-        self.options.update(options)
-        self._update_options_actions()
-
-    def _update_options_actions(self):
-        efo = self.to_efoptions()
-        self.logger.set_options(efo)
 
     def print_line(self, line):
         print(self.get_line(line))
