@@ -245,7 +245,10 @@ def do_print(focal, vargs):
 def set_options(focal, args):
     option = args[0]
     if isinstance(option, Object):
-        d = {option.name: option.value}
+        name = option.name
+        if name in _set_aliases:
+            name = _set_aliases[name]
+        d = {name: option.value}
         _update_options(d)
     else:
         print(f"Unrecognized option: {option}")
@@ -278,6 +281,7 @@ def do_show(focal, args):
 
 def show_aliases(focal):
     _print_dictionary(_command_aliases, 'commands:')
+    _print_dictionary(_set_aliases, 'set:')
     _print_dictionary(_show_aliases, 'show:')
 
 
@@ -494,6 +498,23 @@ _show_funcdesc = {
     'symbols': (show_symbols, None, '', 'display the symbol table for the current context'),
     'tokens': (show_tokens, None, '', 'display the tokens for the current source'),
     'tree': (show_tree, None, '', 'display the current parse tree(s)'),
+}
+
+_set_aliases = {
+    'al': 'auto_listback',
+    'ap': 'auto_parse',
+    'ar': 'auto_run',
+    'e': 'throw_errors',
+    'f': 'force_errors',
+    'log': 'log_filename',
+    'no.run': 'no_run',
+    'nr': 'no_run',
+    'print.tokens': 'print_tokens',
+    'strict': 'strict',
+    'throw': 'throw_errors',
+    'tk': 'print_tokens',
+    'tokens': 'print_tokens',
+    'v': 'verbose',
 }
 
 _show_aliases = {
