@@ -1,5 +1,5 @@
-from runtime.literals import Literal
-from runtime.tree import Ref, UnaryOp, Command, PropRef, BinOp, FnCall
+from runtime.literals import Literal, Str
+from runtime.tree import Ref, UnaryOp, Command, PropRef, BinOp, FnCall, Generate
 
 from interpreter.notation import FunctionalNotationPrinter
 from interpreter.visitor import NodeVisitor, BINARY_NODE, UNARY_NODE, SEQUENCE_NODE, DEFAULT_NODE, VALUE_NODE, NATIVE_VALUE, \
@@ -26,6 +26,7 @@ _nodeTypeMappings = {
     'Flow': SEQUENCE_NODE,
     'FnCall': BINARY_NODE,
     'FnRef': BINARY_NODE,
+    'Generate': SEQUENCE_NODE,
     'Get': VALUE_NODE,
     'Ident': VALUE_NODE,
     'IfThenElse': TRINARY_NODE,
@@ -235,12 +236,16 @@ def _format_node(node, print_location=False):
         return f'{ty}(TK.{op.name}, TK.{tk.name}, \'%%{lex}\'){loc}'
     elif isinstance(node, FnCall):
         return f'{ty}(\'{node.left.token.lexeme}\'){loc}'
+    elif isinstance(node, Generate):
+        return f'{ty}(TK.{node.target.name}, len={len(node.items())}){loc}'
     elif isinstance(node, BinOp):
         op = node.op
         return f'{ty}(TK.{op.name}, \'{lex}\'){loc}'
     elif getattr(node, 'op', False):
         op = node.op
         return f'{ty}(TK.{op.name}, TK.{tk.name}, \'{lex}\'){loc}'
+    elif isinstance(node, Str):
+        return f'{ty}(TK.{tk.name}, \'{node.value}\'){loc}'
     elif isinstance(node, Literal):
         return f'{ty}(TK.{tk.name}, {node.value}){loc}'
     else:

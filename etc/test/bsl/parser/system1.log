@@ -99,11 +99,11 @@ tree7:  report := { trades | select('symbol', 'buy_date', 'buy_price', 'sell_dat
     6  :             FnCall('select')
     7  :                 Ref(TK.IDENT, 'select')
     8  :                 List(TK.TUPLE, [Str(), Str(), Str(), Str(), Str()])
-    9  :                     Str(TK.STR, symbol)
-   10  :                     Str(TK.STR, buy_date)
-   11  :                     Str(TK.STR, buy_price)
-   12  :                     Str(TK.STR, sell_date)
-   13  :                     Str(TK.STR, sell_price)
+    9  :                     Str(TK.STR, 'symbol')
+   10  :                     Str(TK.STR, 'buy_date')
+   11  :                     Str(TK.STR, 'buy_price')
+   12  :                     Str(TK.STR, 'sell_date')
+   13  :                     Str(TK.STR, 'sell_price')
 
 tree8:  rules: {
     1  : Define(TK.DEFINE, TK.DEFINE, ':')
@@ -221,7 +221,7 @@ tree1:  # sample rules file for pyser / qtradr
     2  :     List(TK.TUPLE, [Define(), Duration()])
     3  :         Define(TK.DEFINE, TK.DEFINE, '=')
     4  :             Ref(TK.IDENT, 'file')
-    5  :             Str(TK.STR, spq500.csv)
+    5  :             Str(TK.STR, 'spq500.csv')
     6  :         Duration(TK.DUR, 730 days, 0:00:00)
 
 tree2:  %%backtest (rules, period='train')
@@ -230,7 +230,7 @@ tree2:  %%backtest (rules, period='train')
     3  :         Get(TK.IDENT, 'rules')
     4  :         Define(TK.DEFINE, TK.DEFINE, '=')
     5  :             Ref(TK.IDENT, 'period')
-    6  :             Str(TK.STR, train)
+    6  :             Str(TK.STR, 'train')
 
 tree3:  %%report { report >> rules }
     1  : Command(TK.IDENT, TK.IDENT, '%%report')

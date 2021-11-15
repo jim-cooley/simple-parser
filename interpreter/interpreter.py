@@ -34,6 +34,7 @@ _PROCESS_DEFINE_FN = 'process_define_fn'
 _PROCESS_FLOW = 'process_flow'
 _PROCESS_FNCALL = 'process_fncall'
 _PROCESS_FNREF = 'process_fnref'
+_PROCESS_GENERATOR = 'process_generator'
 _PROCESS_GET = 'process_get'
 _PROCESS_CONDITIONAL = 'process_conditional'
 _PROCESS_INDEX = 'process_index'
@@ -66,6 +67,7 @@ _interpreterVisitNodeMappings = {
     'Flow': _PROCESS_FLOW,
     'FnCall': _PROCESS_FNCALL,
     'FnRef': _PROCESS_FNREF,
+    'Generate': _PROCESS_GENERATOR,
     'Get': _PROCESS_GET,
     'Ident': _VISIT_IDENT,
     'IfThenElse': _PROCESS_CONDITIONAL,
@@ -265,6 +267,11 @@ class Interpreter(TreeFilter):
     # FnDef
     def process_fnref(self, node, label=None):
         self.process_fncall(node, label)
+
+    # Generator
+    def process_generator(self, node, label=None):
+        self._print_node(node)
+        self._process_sequence(node)
 
     # Get
     def process_get(self, node, label=None):

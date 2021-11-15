@@ -6,7 +6,7 @@ test: 8:
 tree1:  { 'train': (today-2y)..today }
     1  : Block(TK.BLOCK, v=[Define()], '')
     2  :     Define(TK.DEFINE, TK.DEFINE, ':')
-    3  :         Str(TK.STR, train)
+    3  :         Str(TK.STR, 'train')
     4  :         BinOp(TK.RANGE, '..')
     5  :             BinOp(TK.SUB, '-')
     6  :                 FnCall('today')
@@ -19,7 +19,7 @@ tree1:(post)  { 'train': (today-2y)..today }
 result: list([Define()])
     1  : Block(TK.BLOCK, v=[Define()], '')
     2  :     Define(TK.DEFINE, TK.DEFINE, ':')
-    3  :         Str(TK.STR, train)
+    3  :         Str(TK.STR, 'train')
     4  :         BinOp(TK.RANGE, '..')
     5  :             BinOp(TK.SUB, '-')
     6  :                 FnCall('today')

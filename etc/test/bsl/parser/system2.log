@@ -47,7 +47,7 @@ tree1:  periods = {
     2  :     Ref(TK.IDENT, 'periods')
     3  :     Block(TK.BLOCK, v=[Define()], '')
     4  :         Define(TK.DEFINE, TK.DEFINE, ':')
-    5  :             Str(TK.STR, train)
+    5  :             Str(TK.STR, 'train')
     6  :             BinOp(TK.RANGE, '..')
     7  :                 BinOp(TK.SUB, '-')
     8  :                     FnCall('today')
@@ -92,11 +92,11 @@ tree4:  (open, high, low, close, adj_close) = yahoo( file='spq500.csv', periods[
    10  :         List(TK.TUPLE, [Define(), Index()])
    11  :             Define(TK.DEFINE, TK.DEFINE, '=')
    12  :                 Ref(TK.IDENT, 'file')
-   13  :                 Str(TK.STR, spq500.csv)
+   13  :                 Str(TK.STR, 'spq500.csv')
    14  :             Index('periods')
    15  :                 Get(TK.IDENT, 'periods')
    16  :                 List(TK.TUPLE, [Str()])
-   17  :                     Str(TK.STR, train5)
+   17  :                     Str(TK.STR, 'train5')
 
 tree5:  atr = mean(high, low)
     1  : Define(TK.DEFINE, TK.DEFINE, '=')
@@ -143,11 +143,11 @@ tree9:  report := { trades(buy, sell) | select('symbol', 'buy_date', 'buy_price'
    10  :             FnCall('select')
    11  :                 Ref(TK.IDENT, 'select')
    12  :                 List(TK.TUPLE, [Str(), Str(), Str(), Str(), Str()])
-   13  :                     Str(TK.STR, symbol)
-   14  :                     Str(TK.STR, buy_date)
-   15  :                     Str(TK.STR, buy_price)
-   16  :                     Str(TK.STR, sell_date)
-   17  :                     Str(TK.STR, sell_price)
+   13  :                     Str(TK.STR, 'symbol')
+   14  :                     Str(TK.STR, 'buy_date')
+   15  :                     Str(TK.STR, 'buy_price')
+   16  :                     Str(TK.STR, 'sell_date')
+   17  :                     Str(TK.STR, 'sell_price')
 
 tree10:  rules := {
     1  : DefineVar(TK.DEFINE, TK.DEFINE, ':=')
@@ -388,7 +388,7 @@ tree11:  backtest( rules:{r1=sma_periods1, r2=sma_periods2}, period=period['trai
    15  :             Index('period')
    16  :                 Get(TK.IDENT, 'period')
    17  :                 List(TK.TUPLE, [Str()])
-   18  :                     Str(TK.STR, train)
+   18  :                     Str(TK.STR, 'train')
 
 tree12:  rules => report | print
     1  : DefineFn(TK.DEFINE, TK.DEFINE, '=>')

@@ -6,4 +6,4 @@ test: 68:
 tree1:  1 or "hello"
     1  : BinOp(TK.OR, 'or')
     2  :     Int(TK.INT, 1)
-    3  :     Str(TK.STR, hello)
+    3  :     Str(TK.STR, 'hello')

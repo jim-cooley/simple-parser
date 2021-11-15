@@ -112,6 +112,7 @@ class TK(IntEnum):
     EVENT = auto()  # from =>
     FALL_BELOW = auto()  # <|
     FUNCTION = auto()
+    GEN = auto()  # generator
     IDIV = auto()  # integer division
     INCREMENT = auto()
     ISEQ = auto()  # ==

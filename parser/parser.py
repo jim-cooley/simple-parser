@@ -14,7 +14,7 @@ from runtime.token_class import TCL
 from runtime.token import Token
 from runtime.token_ids import TK
 from runtime.tree import UnaryOp, BinOp, Command, Assign, Get, FnCall, Index, PropRef, Define, DefineFn, DefineVar, \
-    DefineVarFn, ApplyChainProd, Ref, FnRef, Return, IfThenElse
+    DefineVarFn, ApplyChainProd, Ref, FnRef, Return, IfThenElse, Generate
 from runtime.scope import Block, Flow
 from runtime.literals import Duration, Float, Int, Percent, Str, Time, Bool, List, Set, Literal
 
@@ -579,37 +579,20 @@ class Parser(object):
         :return: Series() or List() object
         """
         seq = []
-        index = None
-        name = None
         is_series = False
         loc = self._lexer.get_location()
         if self.peek().id == TK.RBRK:
             return Literal.EMPTY_LIST(loc=loc)
         while True:
-            skip = False
             expr = self.expression()
-            if expr.token.id in [TK.COLN, TK.DEFINE, TK.EQLS]:
-                left = expr.left
-                if left.token.id in [TK.IDENT, TK.STR]:
+            if not is_series:
+                if expr.token.id in [TK.COLN, TK.DEFINE, TK.EQLS]:
                     is_series = True
-                    if left.token.lexeme.lower() == Keywords.NAME():
-                        is_series = True
-                        skip = True
-                        name = expr.right
-            if not skip:
-                seq.append(expr)
-
+            seq.append(expr)
             if not self.match1(TK.COMA):
                 break
-            tk = self.peek()
-            if tk.id == TK.IDENT and tk.lexeme == Keywords.INDEX():
-                self.consume(TK.EQLS)
-                self.consume(TK.LBRK)
-                index = self.sequence()
-                self.consume(TK.RBRK)
-
         if is_series:
-            node = Series(name=name, items=seq, index=index, loc=loc)
+            node = Generate(target=TK.SERIES, items=seq, loc=loc)
         else:
             node = List(items=seq, loc=loc)
         return node

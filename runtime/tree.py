@@ -1,7 +1,7 @@
 # abstract syntax trees:
 from dataclasses import dataclass
 
-from runtime.token_data import EXPRESSION_TOKENS, _tk2type
+from runtime.token_data import EXPRESSION_TOKENS, _tk2type, _tk2glyph
 from runtime.token_class import TCL
 from runtime.token import Token
 from runtime.token_ids import TK
@@ -202,6 +202,40 @@ class Define(Assign):
         left = "None" if self.left is None else f'{self.left}'
         right = 'None' if self.right is None else f'{self.right}'
         return f'Define({self.op}, {self.token}: l={left}, r={right})'
+
+
+@dataclass
+class Generate(Expression):
+    """
+    A Generator is a node in the AST that generates a runtime object.  Productions currently supported are:
+    1) Blocks
+    2) Lists
+    3) Sets
+    4) Series
+    5) DataFrames
+    """
+    def __init__(self, target=None, items=None, loc=None, is_lvalue=True):
+        """
+        :param name: Expression that evaluates to 'name'
+        :param target: Target token-id
+        :param items: List of items for the generator to operate on
+        :param loc: Token location
+        :param is_lvalue: Whether or not this can appear on the Left-Hand-Side of an expression
+        """
+        super().__init__(token=Token.GEN(loc=loc), is_lvalue=is_lvalue)
+        self._items = items or []
+        self.target = target    # target type (tid)
+
+    def format(self):
+        if self._items is None:
+            return f'[]:{_tk2glyph[self.target]}'
+        else:
+            fstr = ''
+            max = (len(self._items)-1)
+            for idx in range(0, len(self._items)):
+                fstr += f'{self._items[idx]}'
+                fstr += ',' if idx < max else ''
+            return '[' + f'{fstr}' + f']:{_tk2glyph[self.target]}'
 
 
 # holds a reference

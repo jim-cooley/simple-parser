@@ -5,5 +5,5 @@ test: 116:
 
 tree1:  "a" <= "b"
     1  : BinOp(TK.LTE, '<=')
-    2  :     Str(TK.STR, a)
-    3  :     Str(TK.STR, b)
+    2  :     Str(TK.STR, 'a')
+    3  :     Str(TK.STR, 'b')

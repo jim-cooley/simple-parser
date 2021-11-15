@@ -47,6 +47,7 @@ _fixupNodeTypeMappings = {
     'Float': VALUE_NODE,
     'Flow': SEQUENCE_NODE,
     'FnCall': _FUNCTION_NODE,
+    'Generate': SEQUENCE_NODE,
     'Get': VALUE_NODE,
     'IfThenElse': TRINARY_NODE,
     'Ident': _IDENT_NODE,

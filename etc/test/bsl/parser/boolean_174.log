@@ -5,5 +5,5 @@ test: 174:
 
 tree1:  "0" == 0
     1  : BinOp(TK.ISEQ, '==')
-    2  :     Str(TK.STR, 0)
+    2  :     Str(TK.STR, '0')
     3  :     Int(TK.INT, 0)

@@ -4,4 +4,4 @@ test: 5:
 'defgh'
 
 tree1:  'defgh'
-    1  : Str(TK.STR, defgh)
+    1  : Str(TK.STR, 'defgh')

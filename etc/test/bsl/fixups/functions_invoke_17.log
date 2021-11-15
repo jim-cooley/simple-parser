@@ -12,7 +12,7 @@ tree1:  f:{a=5, b='c', d}
     6  :             Int(TK.INT, 5)
     7  :         Define(TK.DEFINE, TK.DEFINE, '=')
     8  :             Ref(TK.IDENT, 'b')
-    9  :             Str(TK.STR, c)
+    9  :             Str(TK.STR, 'c')
    10  :         Get(TK.IDENT, 'd')
 
 tree1:(post)  f:{a=5, b='c', d}
@@ -24,5 +24,5 @@ tree1:(post)  f:{a=5, b='c', d}
     6  :             Int(TK.INT, 5)
     7  :         Define(TK.DEFINE, TK.DEFINE, '=')
     8  :             Ref(TK.IDENT, 'b')
-    9  :             Str(TK.STR, c)
+    9  :             Str(TK.STR, 'c')
    10  :         Get(TK.IDENT, 'd')

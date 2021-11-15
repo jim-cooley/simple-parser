@@ -5,5 +5,5 @@ test: 130:
 
 tree1:  "1" >= 0
     1  : BinOp(TK.GTE, '>=')
-    2  :     Str(TK.STR, 1)
+    2  :     Str(TK.STR, '1')
     3  :     Int(TK.INT, 0)

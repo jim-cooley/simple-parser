@@ -47,6 +47,7 @@ _tk2pfx = {
     TK.FALSE: 'b',
     TK.FLOT: 'f',
     TK.FUNCTION: 'fn',
+    TK.GEN: 'gen',
     TK.GTE: 'is_gte',
     TK.GTR: 'is_gt',
     TK.IF: 'if',
@@ -94,6 +95,7 @@ _tk2grp = {
     TK.CHAIN: ['{', ' | ', '}', '{}'],
     TK.DATAFRAME: ['{', ', ',  '}', '{}'],
     TK.EMPTY: ['{', ', ',  '}', 'Ø'],
+    TK.GEN: ['[', ', ', ']', '[]'],
     TK.SUBSCRIPT: ['[', ', ', ']', '[]'],
     TK.LIST: ['[', ', ', ']', '[]'],
     TK.SERIES: ['[', ', ',  ']', '[]'],
@@ -107,6 +109,7 @@ _DEFINITION_NODE = 'visit_define_node'
 _DEFINE_FN_NODE = 'visit_define_fn_node'
 _FUNCTION_NODE = 'visit_function_call'
 _IDENT_NODE = 'visit_identifier'
+_GENERATOR_NODE = 'visit_generator_node'
 
 _postfixNodeTypeMappings = {
     'ApplyChainProd': _DEFINITION_NODE,
@@ -128,6 +131,7 @@ _postfixNodeTypeMappings = {
     'Flow': SEQUENCE_NODE,
     'FnCall': _FUNCTION_NODE,
     'FnRef': _FUNCTION_NODE,
+    'Generate': _GENERATOR_NODE,
     'Get': VALUE_NODE,
     'Ident': _IDENT_NODE,
     'IfThenElse': TRINARY_NODE,
@@ -201,6 +205,10 @@ class FunctionalNotationPrinter(TreeFilter):
         self._print_indented(text)
         self._process_trinary_node(node)
 
+    def visit_generator_node(self, node, lable=None):
+        self._print_indented(f'{_tk2pfx[node.token.id]}:{_tk2pfx[node.target]}')
+        self._visit_sequence_internal(node)
+
     def visit_trinary_node(self, node, label=None):
         text = f'{_tk2pfx[node.op]}'
         self._print_indented(text)
@@ -250,6 +258,9 @@ class FunctionalNotationPrinter(TreeFilter):
 
     def visit_sequence(self, node, label=None):
         self._print_indented(f'{_tk2pfx[node.token.id]}')
+        self._visit_sequence_internal(node)
+
+    def _visit_sequence_internal(self, node):
         values = node.items()
         if values is None:
             return node

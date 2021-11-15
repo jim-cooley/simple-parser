@@ -5,7 +5,7 @@ not "true"
 
 tree1:  not "true"
     1  : UnaryOp(TK.NOT, TK.NOT, 'not')
-    2  :     Str(TK.STR, true)
+    2  :     Str(TK.STR, 'true')
 
 tree1:(post)  not "true"
     1  : Bool(TK.BOOL, False)

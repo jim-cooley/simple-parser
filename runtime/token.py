@@ -233,6 +233,10 @@ class Token:
         return Token(tid=tid or TK.IDENT, tcl=TCL.FUNCTION, lex=name, loc=loc)
 
     @staticmethod
+    def GEN(loc=None):
+        return Token(tid=TK.GEN, tcl=TCL.FUNCTION, lex='', loc=loc)
+
+    @staticmethod
     def GTE(loc=None):
         return Token(tid=TK.GTE, tcl=TCL.BINOP, lex='>=', loc=loc)
 

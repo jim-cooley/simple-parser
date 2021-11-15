@@ -31,6 +31,7 @@ _tk2type = {
     TK.FLOT: TCL.LITERAL,
     TK.FUNCTION: TCL.FUNCTION,
     TK.IDENT: TCL.FUNCTION,
+    TK.GEN: TCL.FUNCTION,
     TK.GTE: TCL.BINOP,
     TK.GTR: TCL.BINOP,
     TK.IDIV: TCL.BINOP,
@@ -88,6 +89,7 @@ _tk2glyph = {
     TK.COLN: ':',
     TK.COMMAND: 'command',
     TK.COMPARE: '?',
+    TK.DATAFRAME: 'dataframe',
     TK.DECREMENT: '--',
     TK.DEFINE: ':=',
     TK.DEFINE_FN: '=>',
@@ -100,6 +102,7 @@ _tk2glyph = {
     TK.FALL_BELOW: '<|',
     TK.FALSE: 'false',
     #   TK.FUNCTION: 'fn',
+    TK.GEN: 'gen',
     TK.GTE: '>=',
     TK.GTR: '>',
     TK.IDIV: 'div',
@@ -110,6 +113,7 @@ _tk2glyph = {
     TK.INT: 'i',
     TK.ISEQ: '==',
     TK.KVPAIR: ':',
+    TK.LIST: 'list',
     TK.LESS: '<',
     TK.LTE: '<=',
     TK.MNEQ: '-=',
@@ -131,6 +135,7 @@ _tk2glyph = {
     TK.REF: 'ref',
     TK.RETURN: 'ret',
     TK.RISE_ABOVE: '|>',  # >|
+    TK.SERIES: 'series',
     TK.SET: 'set',
     TK.STR: 'str',
     TK.SUB: '-',  # - (subtract)
@@ -236,7 +241,7 @@ FLOW_TOKENS = [TK.BAR, TK.GTR2, TK.APPLY, TK.RARR]
 IDENTIFIER_TYPES = [TCL.KEYWORD, TCL.DATASET, TCL.IDENTIFIER, TCL.TUPLE, TCL.FUNCTION]
 IDENTIFIER_TOKENS = [TK.IDENT, TK.ANON, TK.REF, TK.DOT, TK.TUPLE, TK.FUNCTION]
 IDENTIFIER_TOKENS_EX = [TK.IDENT, TK.ANON, TK.REF, TK.DOT, TK.TUPLE, TK.FUNCTION, TK.COLN, TK.BLOCK, TK.CHAIN]
-VALUE_TOKENS = [TK.BOOL, TK.FLOT, TK.EMPTY, TK.INT, TK.NONE, TK.STR, TK.DUR, TK.OBJECT, TK.SET, TK.LIST, TK.IDENT]
+VALUE_TOKENS = [TK.BOOL, TK.EMPTY, TK.FLOT, TK.INT, TK.NONE, TK.STR, TK.DUR, TK.OBJECT, TK.SET, TK.LIST, TK.IDENT]
 
 ADDITION_TOKENS = [TK.PLUS, TK.MNUS, TK.SUB, TK.ADD]
 COMPARISON_TOKENS = [TK.LESS, TK.LTE, TK.GTR, TK.GTE, TK.IN, TK.LBAR, TK.RBAR, TK.FALL_BELOW, TK.RISE_ABOVE]

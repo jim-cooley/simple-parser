@@ -5,4 +5,4 @@ test: 25:
 
 tree1:  ! "2"
     1  : UnaryOp(TK.NOT, TK.NOT, '!')
-    2  :     Str(TK.STR, 2)
+    2  :     Str(TK.STR, '2')

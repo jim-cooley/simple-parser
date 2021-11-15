@@ -5,4 +5,4 @@ not "0"
 
 tree1:  not "0"
     1  : UnaryOp(TK.NOT, TK.NOT, 'not')
-    2  :     Str(TK.STR, 0)
+    2  :     Str(TK.STR, '0')

@@ -5,7 +5,7 @@ test: 27:
 
 tree1:  ! "false"
     1  : UnaryOp(TK.NOT, TK.NOT, '!')
-    2  :     Str(TK.STR, false)
+    2  :     Str(TK.STR, 'false')
 
 tree1:(post)  ! "false"
     1  : Bool(TK.BOOL, True)

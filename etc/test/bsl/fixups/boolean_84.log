@@ -5,8 +5,8 @@ test: 84:
 
 tree1:  "a" > "b"
     1  : BinOp(TK.GTR, '>')
-    2  :     Str(TK.STR, a)
-    3  :     Str(TK.STR, b)
+    2  :     Str(TK.STR, 'a')
+    3  :     Str(TK.STR, 'b')
 
 tree1:(post)  "a" > "b"
     1  : Bool(TK.BOOL, False)
