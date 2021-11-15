@@ -5,6 +5,7 @@
 from enum import IntEnum
 
 from runtime.literals import Set, Literal
+from runtime.token_class import TCL
 from runtime.token_ids import TK
 from interpreter.visitor import TreeFilter, BINARY_NODE, UNARY_NODE, SEQUENCE_NODE, NATIVE_LIST, ASSIGNMENT_NODE, VALUE_NODE, \
     DEFAULT_NODE, NATIVE_VALUE, TRINARY_NODE
@@ -292,18 +293,22 @@ class FunctionalNotationPrinter(TreeFilter):
         self._notes.append(note)
 
     def _print_notation(self, node, append=None):
-        if getattr(node, 'token', False):
+        if hasattr(node, 'token'):
             self._print_notation_token(node.token, value=node.value, append=append)
         else:
             self._print(f'{type(node).__name__.lower()}({node})')
 
     def _print_notation_token(self, token, value=None, append=None):
         val = ''
+        q = "'"
         if token is not None:
             val = f'{_tk2pfx[token.id]}' if token.id in _tk2pfx else token.lexeme
-            if isinstance(token, Literal) and token.id not in [TK.LIST, TK.SET]:
+            if token.t_class == TCL.LITERAL and token.id not in [TK.LIST, TK.SET]:
                 v = f'{value}'
-                val = f'{val}({v.lower()})'
+                if token.id == TK.STR:
+                    val = f'{val}({q}{v.lower()}{q})'
+                else:
+                    val = f'{val}({v.lower()})'
         self._print(f'{val}', append=append)
 
     def _print_open(self, tk, append=None):

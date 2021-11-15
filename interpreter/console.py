@@ -20,7 +20,7 @@ _option_defaults = {
     'print_tokens': False,
     'strict': False,        # option_strict forces variables to be defined before they are used
     'throw_errors': True,
-    'verbose': False,
+    'verbose': True,
 }
 
 CONSOLE_LOG = './focal_console.log'
