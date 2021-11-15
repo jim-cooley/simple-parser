@@ -390,7 +390,7 @@ class IfThenElse(TernaryOp):
 class Index(FnCall):
     def __init__(self, ref=None, parameters=None, is_lvalue=True):
         assert ref is not None, "no Ref passed to Index constructor"
-        super().__init__(ref=ref, parameters=parameters, op=Token.INDEX(loc=ref.location), is_lvalue=is_lvalue)
+        super().__init__(ref=ref, parameters=parameters, op=Token.SUBSCRIPT(loc=ref.location), is_lvalue=is_lvalue)
 
 
 @dataclass

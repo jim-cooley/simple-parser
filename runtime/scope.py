@@ -202,6 +202,12 @@ class Block(Expression, Object):
     def __len__(self):
         return len(self._items)
 
+    def items(self):
+        """
+        items is a list of AST 'items' used to construct this block instance.
+        """
+        return self._items
+
 
 @dataclass
 class Flow(Block):

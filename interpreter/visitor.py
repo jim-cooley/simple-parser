@@ -16,6 +16,7 @@ _defaultNodeTypeMappings = {
     'BinOp': BINARY_NODE,
     'Block': SEQUENCE_NODE,
     'Command': UNARY_NODE,
+    'Dataset': SEQUENCE_NODE,
     'Define': BINARY_NODE,
     'DefineChainProd': BINARY_NODE,
     'DefineFn': TRINARY_NODE,
@@ -28,6 +29,7 @@ _defaultNodeTypeMappings = {
     'List': SEQUENCE_NODE,
     'PropCall': BINARY_NODE,
     'PropRef': BINARY_NODE,
+    'Series': SEQUENCE_NODE,
     'Set': SEQUENCE_NODE,
     'UnaryOp': UNARY_NODE,
 }

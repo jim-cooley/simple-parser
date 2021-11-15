@@ -1,5 +1,6 @@
 # parsing and semantic analysis exception handling and helper functions
 import traceback
+from copy import deepcopy
 
 from runtime.indexdict import IndexedDict
 from runtime.logwriter import IndentedLogWriter
@@ -25,9 +26,9 @@ class SemtexRuntimeWarning(RuntimeWarning):
         super().__init__(*args, **kwargs)
 
 
-def getLogFacility(name, options=None, env=None, file=None):
+def getLogFacility(name, options=None, lines=None, file=None):
     if name not in _facilities:
-        f = ExceptionReporter(name, env=env, options=options, file=file)
+        f = ExceptionReporter(name, lines=lines, options=options, file=file)
         _facilities[name] = f
     return _facilities[name]
 
@@ -39,10 +40,10 @@ def removeLogFacility(fac):
     return fac
 
 
-def setLogConfiguration(name, options, env=None):
-    f = getLogFacility(name, options, env)
+def setLogConfiguration(name, options, lines=None):
+    f = getLogFacility(name, options, lines)
     f.set_options(options)
-    f.environment = f.environment if env is None else env
+    f.lines = lines
 
 
 def runtime_error(message, loc=None):
@@ -63,13 +64,17 @@ def runtime_warning(message, loc=None):
 
 class ExceptionReporter(IndentedLogWriter):
 
-    def __init__(self, name, env=None, options=None, file=None):
+    def __init__(self, name, lines=None, options=None, file=None):
         super().__init__(file=file)
         self.name = name
-        self.environment = env
+        self.lines = lines
         self.option = IndexedDict(items=options, defaults=_defaultOptions)
         if not file:
             raise ValueError("File not specified")
+
+    def set_lines(self, lines):
+        """sets the source lines used for reporting errors & warnings"""
+        self.lines = deepcopy(lines)
 
     def set_options(self, options):
         self.option.update(options)
@@ -126,8 +131,8 @@ class ExceptionReporter(IndentedLogWriter):
         if loc is not None:
             loc.offset -= 1
             carrot = ''
-            if self.environment is not None:
-                carrot = f'\n\n{self.environment.lines[loc.line]}\n{"^".rjust(loc.offset)}\n' if loc.line < len(self.environment.lines) else ''
+            if self.lines is not None:
+                carrot = f'\n\n{self.lines[loc.line]}\n{"^".rjust(loc.offset)}\n' if loc.line < len(self.lines) else ''
             text = f"\n{carrot}\nFOCAL: {message} at position: {loc.line + 1}:{loc.offset}\n\n{trace}"
         else:
             text = f"FOCAL: {message}.\n\n{trace}"

@@ -28,23 +28,22 @@ CONSOLE_LOG = './focal_console.log'
 
 class FocalConsole:
     def __init__(self, options=None, file=None):
-        self.logger = getLogFacility('focal', env=self, file=file)
+        self.logger = getLogFacility('focal', lines=None, file=file)
         self.options = getOptions('focal', options=vars(options), defaults=_option_defaults)
         self.fixups = Fixups()
         self.parser = Parser()
         self.focal = Interpreter()
         self.shell = CommandShell(parser=self.parser, interpreter=self.focal)
-        self.environment = Environment()    # target environment
+        self.environment = Environment()
         self.target = Environment()         # target environment
+        self.logger.set_lines = self.target.lines
 
     def parse(self, lines):
         if lines.startswith('%%'):
-            # this causes the parser to create a new environment for each command and throw them away
             environment = self.environment
             environment = self.fixups.apply(self.parser.parse(environment=environment, source=lines))
             self.environment = environment
         else:
-            # this causes the parser to re-use the same environment each time for focal-related work
             environment = self.target
             environment = self.fixups.apply(self.parser.parse(environment, source=lines))
             self.target = environment

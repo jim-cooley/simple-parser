@@ -4,7 +4,7 @@ test: 5:
 [a:5, b:'c', d]
 
 tree1:  [a:5, b:'c', d]
-    1  : List(TK.LIST, [Define(), Define(), Get()])
+    1  : Series(TK.SERIES, v=None, 'None')
     2  :     Define(TK.DEFINE, TK.DEFINE, ':')
     3  :         Ref(TK.IDENT, 'a')
     4  :         Int(TK.INT, 5)

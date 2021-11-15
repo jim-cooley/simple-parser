@@ -13,6 +13,7 @@ _nodeTypeMappings = {
     'Block': SEQUENCE_NODE,
     'Bool': VALUE_NODE,
     'Command': UNARY_NODE,
+    'Dataset': SEQUENCE_NODE,
     'DateDiff': VALUE_NODE,
     'DateTime': VALUE_NODE,
     'Define': ASSIGNMENT_NODE,
@@ -38,6 +39,7 @@ _nodeTypeMappings = {
     'PropRef': BINARY_NODE,
     'Ref': VALUE_NODE,
     'Return': UNARY_NODE,
+    'Series': SEQUENCE_NODE,
     'Set': SEQUENCE_NODE,
     'Str': VALUE_NODE,
     'Time': VALUE_NODE,
@@ -102,8 +104,8 @@ class TreePrint(NodeVisitor):
         self._print_node(node, label)
         node._num = self._ncount
         self._ncount += 1
-        if node.value is not None:
-            self._visit_sequence(node.values())
+        if node.items() is not None:
+            self._visit_sequence(node.items())
 
     def _visit_sequence(self, li, label=None):
         self.indent()

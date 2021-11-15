@@ -102,6 +102,7 @@ class TK(IntEnum):
     CHAIN = auto()
     COMMAND = auto()
     COMPARE = auto()  # ?  a ? b is to compare a to b
+    DATAFRAME = auto()
     DECREMENT = auto()  # --
     DEF = auto()  # set version of REF
     DEFINE = auto()  # :=, 'def'
@@ -127,6 +128,7 @@ class TK(IntEnum):
     RAISE = auto()  # ->
     REF = auto()
     RISE_ABOVE = auto()  # >|
+    SERIES = auto()
     SET = auto()
     SUB = auto()  # - (subtract)
     TERNARY = auto()  # '?' operator -- <condition> ? <true> : <false>
@@ -139,15 +141,13 @@ class TK(IntEnum):
     AND = auto()
     ANON = auto()  # anonymous parameter '_'
     ANY = auto()  # any:
-    BUY = auto()
-    DATASET = auto()
     DIV = auto()  # /
     ELSE = auto()
     EMPTY = auto()  # ø empty set
     FALSE = auto()
     IF = auto()
     IN = auto()
-    INDEX = auto()
+    INDEX = auto()  # 'index' keyword
     MOD = auto()
     NAN = auto()
     NONE = auto()
@@ -156,7 +156,7 @@ class TK(IntEnum):
     NOW = auto()
     RETURN = auto()
     RANGE = auto()
-    SELL = auto()
+    SUBSCRIPT = auto()
     THEN = auto()
     TODAY = auto()
     TRUE = auto()

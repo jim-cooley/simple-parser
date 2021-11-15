@@ -65,6 +65,14 @@ class Literal(Object):
         return Set(token=Token.EMPTY(loc=loc))
 
     @staticmethod
+    def EMPTY_SET(loc=None):
+        return Literal.EMPTY(loc=loc)
+
+    @staticmethod
+    def EMPTY_LIST(loc=None):
+        return List(items=None, token=Token.LIST(loc=loc))
+
+    @staticmethod
     def FALSE(loc=None):
         return Bool(value=False, token=Token.FALSE(loc=loc))
 
@@ -311,9 +319,15 @@ class List(Literal):
         self._value.append(o)
 
     def items(self):    # UNDONE: should be iterator
+        """
+        items is a list of AST 'items' used to construct this list instance.
+        """
         return self._items
 
     def values(self):
+        """
+        Values is the list values themselves.
+        """
         return self._value
 
     def format(self):

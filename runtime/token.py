@@ -160,6 +160,10 @@ class Token:
         return Token(tid=TK.COMMAND, tcl=TCL.UNARY, lex='%%', loc=loc)
 
     @staticmethod
+    def DATAFRAME(name=None, value=None, loc=None):
+        return Token(tid=TK.DATAFRAME, tcl=TCL.LITERAL, lex=name, val=value, loc=loc)
+
+    @staticmethod
     def DECREMENT(loc=None):
         return Token(tid=TK.DECREMENT, tcl=TCL.UNARY, lex='--', val=None, loc=loc)
 
@@ -229,11 +233,11 @@ class Token:
         return Token(tid=tid or TK.IDENT, tcl=TCL.FUNCTION, lex=name, loc=loc)
 
     @staticmethod
-    def GTE(name=None, tid=None, loc=None):
+    def GTE(loc=None):
         return Token(tid=TK.GTE, tcl=TCL.BINOP, lex='>=', loc=loc)
 
     @staticmethod
-    def GTR(name=None, tid=None, loc=None):
+    def GTR(loc=None):
         return Token(tid=TK.GTR, tcl=TCL.BINOP, lex='>', loc=loc)
 
     @staticmethod
@@ -258,7 +262,7 @@ class Token:
 
     @staticmethod
     def INDEX(loc=None):
-        return Token(tid=TK.INDEX, tcl=TCL.BINOP, lex="[", loc=loc)
+        return Token(tid=TK.INDEX, tcl=TCL.KEYWORD, lex='index', val=None, loc=loc)
 
     @staticmethod
     def INT(loc=None):
@@ -369,6 +373,10 @@ class Token:
         return Token(tid=TK.RISE_ABOVE, tcl=TCL.BINOP, lex='|>', loc=loc)
 
     @staticmethod
+    def SERIES(name=None, value=None, loc=None):
+        return Token(tid=TK.SERIES, tcl=TCL.LITERAL, lex=name, val=value, loc=loc)
+
+    @staticmethod
     def SET(value=None, loc=None):
         return Token(tid=TK.SET, tcl=TCL.LITERAL, lex='', val=value, loc=loc)
 
@@ -379,6 +387,10 @@ class Token:
     @staticmethod
     def SUB(value=None, loc=None):
         return Token(tid=TK.SUB, tcl=TCL.BINOP, lex='', val=value, loc=loc)
+
+    @staticmethod
+    def SUBSCRIPT(loc=None):
+        return Token(tid=TK.SUBSCRIPT, tcl=TCL.BINOP, lex="[", loc=loc)
 
     @staticmethod
     def THEN(loc=None):

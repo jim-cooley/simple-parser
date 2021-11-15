@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 
 from runtime.scope import Scope, IntrinsicFunction
+from runtime.token import Token
 from runtime.token_class import TCL
 from runtime.token_ids import TK
 
@@ -22,12 +23,11 @@ class Keywords(Scope):
     # cannot add to the keywords dynamically
     def define(self, name=None, value=None, token=None, local=False, update=False):
         assert False, "Attempt to add to keyword scope."
-        return None
 
     def load_keywords(self, keywords=None):
         keywords = keywords if keywords is not None else _KEYWORDS
         for (tkid, typ, val) in keywords:
-            self._add_symbol(tkid, typ, val)
+            self._add_symbol(tkid=tkid, tcl=typ, lex=val)
 
     def load_intrinsics(self, intrinsics=None):
         intrinsics = intrinsics or _intrinsic_fundesc
@@ -41,12 +41,19 @@ class Keywords(Scope):
             fn = IntrinsicFunction(name=fname, tid=TK.IDENT)
             self._add_name(fname, fn)
 
+    @staticmethod
+    def INDEX():
+        return 'index'
+
+    @staticmethod
+    def NAME():
+        return 'name'
+
 
 # UNDONE: True, False, None, NaN, Empty could all be identifiers/Literals and not Keywords
 _KEYWORDS = [
     (TK.ALL, TCL.KEYWORD, 'all'),
     (TK.ANY, TCL.KEYWORD, 'any'),
-#   (TK.BUY, TCL.KEYWORD, "buy"),   # UNDONE: remove 'buy' as keyword.
     (TK.ELSE, TCL.KEYWORD, 'else'),
     (TK.EMPTY, TCL.KEYWORD, "Empty"),
     (TK.EMPTY, TCL.KEYWORD, "empty"),   # UNDONE: NumPy uses this to create an empty array of size
@@ -56,18 +63,18 @@ _KEYWORDS = [
     (TK.IDENT, TCL.KEYWORD, 'apply'),
     (TK.IDENT, TCL.KEYWORD, 'expr'),
     (TK.IN, TCL.BINOP, 'in'),
-    (TK.IDENT, TCL.FUNCTION, 'index'),
     (TK.NAN, TCL.KEYWORD, 'NaN'),
     (TK.NAN, TCL.KEYWORD, 'nan'),
     (TK.NONE, TCL.KEYWORD, 'none'),
     (TK.RETURN, TCL.KEYWORD, "return"),
-#   (TK.SELL, TCL.KEYWORD, "sell"),  # UNODNE: remove sell as a keyword
     (TK.TRUE, TCL.KEYWORD, 'True'),
     (TK.TRUE, TCL.KEYWORD, 'true'),
 
     # special identities
     (TK.ANON, TCL.IDENTIFIER, '_'),
     (TK.IDENT, TCL.IDENTIFIER, 'pi'),
+    (TK.IDENT, TCL.IDENTIFIER, 'index'),
+    (TK.IDENT, TCL.IDENTIFIER, 'name'),
 
     # unary
     (TK.NOT, TCL.UNARY, 'not'),
@@ -77,8 +84,7 @@ _KEYWORDS = [
     # binops
     (TK.AND, TCL.BINOP, 'and'),
     (TK.IDIV, TCL.BINOP, 'div'),
-    (TK.IDENT, TCL.BINOP, 'index'),  # UNDONE: 'index' appears twice.  only one survives...
-    (TK.IF, TCL.BINOP, 'if'),       # NOTE: not a keyword, this will also be the tid for the operation
+    (TK.IF, TCL.BINOP, 'if'),           # NOTE: not a keyword, this will also be the tid for the operation
     (TK.OR, TCL.BINOP, 'or'),
     (TK.MOD, TCL.BINOP, 'mod'),
     (TK.IDENT, TCL.BINOP, 'rand'),

@@ -43,7 +43,13 @@ class Lexer:
         return t
 
     def get_location(self):
-        return self._loc
+        """
+        Returns a location from the token stream after it has been parsed.  The property 'pos' maintains the position
+        in the token stream, however to relate this back to line & offset, you will want to call 'get_location'
+        :return: Loc(): The current line & offset
+        """
+        tk = self.peek()
+        return tk.location
 
     def get_tokens(self):
         return self.tokens

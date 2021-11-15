@@ -5,4 +5,4 @@ test: 11:
 
 tree1:  [[]]
     1  : List(TK.LIST, [List()])
-    2  :     List(TK.LIST, [None])
+    2  :     List(TK.LIST, None)

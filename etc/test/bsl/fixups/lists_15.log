@@ -5,13 +5,13 @@ test: 15:
 
 tree1:  [[],[],[]]
     1  : List(TK.LIST, [List(), List(), List()])
-    2  :     List(TK.LIST, [None])
-    3  :     List(TK.LIST, [None])
-    4  :     List(TK.LIST, [None])
+    2  :     List(TK.LIST, None)
+    3  :     List(TK.LIST, None)
+    4  :     List(TK.LIST, None)
 
 tree1:(post)  [[],[],[]]
 result: list([List(), List(), List()])
     1  : List(TK.LIST, [List(), List(), List()])
-    2  :     List(TK.LIST, [None])
-    3  :     List(TK.LIST, [None])
-    4  :     List(TK.LIST, [None])
+    2  :     List(TK.LIST, None)
+    3  :     List(TK.LIST, None)
+    4  :     List(TK.LIST, None)

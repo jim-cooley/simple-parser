@@ -1,8 +1,10 @@
 from copy import copy
 from dataclasses import dataclass
 
+from runtime.dataframe import Series
 from runtime.environment import Environment
 from runtime.exceptions import SemtexError, getLogFacility
+from runtime.keywords import Keywords
 from runtime.options import getOptions
 from runtime.token_data import ADDITION_TOKENS, COMPARISON_TOKENS, FLOW_TOKENS, \
     EQUALITY_TEST_TOKENS, LOGIC_TOKENS, MULTIPLICATION_TOKENS, UNARY_TOKENS, IDENTIFIER_TYPES, ASSIGNMENT_TOKENS, \
@@ -66,15 +68,17 @@ class Parser(object):
         return environment
 
     def _init(self, environment=None, source=None):
+        self._lexer = Lexer(source=source)
+        logger = getLogFacility('focal')
         if environment is None:
             environment = Environment()
-        self._lexer = Lexer(source=source)
         environment.commands = []
         environment.trees = []
         environment.source = source
         environment.lines = source.splitlines()
         environment.tokens = self._lexer
         Environment.current = environment
+        logger.lines = environment.lines
         self._skip_end_of_line = True
         return environment
 
@@ -463,7 +467,8 @@ class Parser(object):
             return node
         elif token.id == TK.LBRK:
             self.consume(TK.LBRK)
-            node = List(self.sequence(), token.remap2litval())
+            node = self.series()
+            # node = List(self.sequence(), token.remap2litval())
             self.consume(TK.RBRK)
             return node
         elif token.t_class in IDENTIFIER_TYPES or token.id in [TK.IDENT, TK.ANON]:
@@ -544,8 +549,7 @@ class Parser(object):
         if token.id != TK.RBRK:
             seq = self.sequence(node)
         self.consume(TK.RBRK)
-        token = Token.TUPLE(loc=token.location)
-        return List(seq, token)
+        return List(seq, Token.TUPLE(loc=token.location))
 
     def plist(self, node=None):
         """( EXPR ',' ... )"""
@@ -564,6 +568,51 @@ class Parser(object):
             token = Token.LIST(loc=token.location)
         token.lexeme = '('  # fixup token.
         return List(items=seq, token=token)
+
+    def series(self):
+        """
+        Parse a potential Series() object.  If not determined to be a Series, it is returned as a List.
+        The key determinate is that Series() objects are allowed to have labels, which are expressed as k:v pairs.
+        Series also parses out optional 'index=' and 'name=' clauses.
+        Lists are simple values or identifiers, or possibly identifer / literal expressions but do not have labels.
+        :param token: Optional.  Taken as the originating token & mapped to an appropriate Literal for Lists
+        :return: Series() or List() object
+        """
+        seq = []
+        index = None
+        name = None
+        is_series = False
+        loc = self._lexer.get_location()
+        if self.peek().id == TK.RBRK:
+            return Literal.EMPTY_LIST(loc=loc)
+        while True:
+            skip = False
+            expr = self.expression()
+            if expr.token.id in [TK.COLN, TK.DEFINE, TK.EQLS]:
+                left = expr.left
+                if left.token.id in [TK.IDENT, TK.STR]:
+                    is_series = True
+                    if left.token.lexeme.lower() == Keywords.NAME():
+                        is_series = True
+                        skip = True
+                        name = expr.right
+            if not skip:
+                seq.append(expr)
+
+            if not self.match1(TK.COMA):
+                break
+            tk = self.peek()
+            if tk.id == TK.IDENT and tk.lexeme == Keywords.INDEX():
+                self.consume(TK.EQLS)
+                self.consume(TK.LBRK)
+                index = self.sequence()
+                self.consume(TK.RBRK)
+
+        if is_series:
+            node = Series(name=name, items=seq, index=index, loc=loc)
+        else:
+            node = List(items=seq, loc=loc)
+        return node
 
     def sequence(self, node=None):
         """EXPR <sep> EX1PR <sep> ..."""

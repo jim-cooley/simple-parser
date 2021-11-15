@@ -77,12 +77,12 @@ class SemanticAnalysisTestRunner(TestSuiteRunner, ABC):
         parser = Parser()
         fixups = Fixups()
         interp = Interpreter()
-        command = CommandShell(interp)
+        command = CommandShell(parser=parser, interpreter=interp)
         environment = fixups.apply(parser.parse(source=test))
         if self.verbose:
             _dump_environment(environment, label='post', print_tokens=False, print_results=False)
         logger.banner("RUN")
-        environment = command.execute(environment, interpreter=interp)
+        environment = command.execute(environment, target=environment)
         if self.test:
             _dump_environment(environment, label='post',
                               print_tokens=False, print_trees=False, print_results=True, print_symbols=True,

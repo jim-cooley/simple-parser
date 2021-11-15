@@ -27,12 +27,12 @@ _tk2pfx = {
     TK.ASSIGN: 'assign',  # =
     TK.BLOCK: 'block',
     TK.BOOL: 'b',
-    TK.BUY: 'buy',
     TK.CHAIN: 'chain',
     TK.COEQ: 'def_fn',
     TK.COLN: 'coln:',
     TK.COMMAND: 'command',
     TK.COMPARE: 'cmp',
+    TK.DATAFRAME: 'dataframe',
     TK.DECREMENT: 'decr',  # --
     TK.DEF: '_def',
     TK.DEFINE: 'def',
@@ -52,7 +52,7 @@ _tk2pfx = {
     TK.IF: 'if',
     TK.IN: 'in',
     TK.INCREMENT: 'incr',
-    TK.INDEX: 'idx',  # indexing expression
+    TK.SUBSCRIPT: 'idx',  # indexing expression
     TK.INT: 'i',
     TK.ISEQ: 'is_eq',  # ==
     TK.KVPAIR: 'kv',  # key:value
@@ -79,7 +79,7 @@ _tk2pfx = {
     TK.REF: 'ref',
     TK.RETURN: 'ret',
     TK.RISE_ABOVE: 'if_above',  # >|
-    TK.SELL: 'sell',
+    TK.SERIES: 'series',
     TK.SET: 'set',
     TK.STR: 'str',
     TK.SUB: 'sub',  # - (subtract)
@@ -92,9 +92,11 @@ _tk2pfx = {
 
 _tk2grp = {
     TK.CHAIN: ['{', ' | ', '}', '{}'],
+    TK.DATAFRAME: ['{', ', ',  '}', '{}'],
     TK.EMPTY: ['{', ', ',  '}', 'Ø'],
-    TK.INDEX:['[', ', ', ']', '[]'],
+    TK.SUBSCRIPT: ['[', ', ', ']', '[]'],
     TK.LIST: ['[', ', ', ']', '[]'],
+    TK.SERIES: ['[', ', ',  ']', '[]'],
     TK.SET: ['{', ', ',  '}', '{}'],
     TK.TUPLE: ['(', ', ', ')', '()']
 }
@@ -114,6 +116,7 @@ _postfixNodeTypeMappings = {
     'Bool': VALUE_NODE,
     'Command': UNARY_NODE,
     'DateDiff': VALUE_NODE,
+    'Dataset': SEQUENCE_NODE,
     'DateTime': VALUE_NODE,
     'Define': _DEFINITION_NODE,
     'DefineChainProd': _DEFINITION_NODE,
@@ -138,6 +141,7 @@ _postfixNodeTypeMappings = {
     'PropRef': BINARY_NODE,
     'Ref': VALUE_NODE,
     'Return': UNARY_NODE,
+    'Series': SEQUENCE_NODE,
     'Set': SEQUENCE_NODE,
     'Str': VALUE_NODE,
     'Time': VALUE_NODE,
@@ -246,7 +250,7 @@ class FunctionalNotationPrinter(TreeFilter):
 
     def visit_sequence(self, node, label=None):
         self._print_indented(f'{_tk2pfx[node.token.id]}')
-        values = node.values()
+        values = node.items()
         if values is None:
             return node
         _len = len(values)
