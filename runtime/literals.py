@@ -107,7 +107,7 @@ class Bool(Literal):
             return True if self._value is other else False
         return NotImplemented
 
-    def format(self):
+    def format(self, brief=True):
         tk = self.token
         return f'True' if tk._value is not None and tk._value else f'False'
 
@@ -166,7 +166,7 @@ class DateTime(Literal):
         if isinstance(self._value, str):
             self._value = _parse_date_value(self._value)
 
-    def format(self):
+    def format(self, brief=True):
         return f'{self._value}'
 
 
@@ -187,7 +187,7 @@ class Duration(Literal):
     def units(self):
         return self.units
 
-    def format(self, fmt=None):
+    def format(self, brief=True, fmt=None):
         return f'{self._value}'
 
 
@@ -261,7 +261,7 @@ class Float(Literal):
         if isinstance(self._value, str):
             self._value = float(self._value)
 
-    def format(self, fmt=None):
+    def format(self, brief=True, fmt=None):
         return f'{self._value}'
 
 
@@ -288,7 +288,7 @@ class Int(Literal):
             return True if self._value == other else False
         return NotImplemented
 
-    def format(self, fmt=None):
+    def format(self, brief=True, fmt=None):
         return f'{self.qualname} = {self._value}'
 
 
@@ -330,16 +330,19 @@ class List(Literal):
         """
         return self._value
 
-    def format(self):
+    def format(self, brief=True):
         if self._value is None:
             return '[]'
         else:
-            fstr = ''
-            max = (len(self._value)-1)
-            for idx in range(0, len(self._value)):
-                fstr += f'{self._value[idx]}'
-                fstr += ',' if idx < max else ''
-            return '[' + f'{fstr}' + ']'
+            if not brief:
+                fstr = ''
+                max = (len(self._value)-1)
+                for idx in range(0, len(self._value)):
+                    fstr += f'{self._value[idx]}'
+                    fstr += ',' if idx < max else ''
+            else:
+                fstr = f'count={len(self._value)}'
+            return 'List[' + f'{fstr}' + ']'
 
 
 @dataclass
@@ -353,7 +356,7 @@ class Percent(Literal):
         if isinstance(self._value, str):
             self._value = float(self._value.replace("%", ""))/100
 
-    def format(self, fmt=None):
+    def format(self, brief=True, fmt=None):
         return '' if self._value is None else f'{self._value*100} %'
 
 
@@ -396,17 +399,20 @@ class Set(Literal):
             return self._value
         return list(self._members.values())
 
-    def format(self):
+    def format(self, brief=True):
         if self._value is None:
             return '{}'
         else:
-            fstr = ''
             values = list(self._members.values())
-            max = len(values) - 1
-            for idx in range(0, max + 1):
-                fstr += f'{values[idx]}'
-                fstr += ',' if idx < max else ''
-            return '{' + f'{fstr}' + '}'
+            if not brief:
+                fstr = ''
+                max = len(values) - 1
+                for idx in range(0, max + 1):
+                    fstr += f'{values[idx]}'
+                    fstr += ',' if idx < max else ''
+            else:
+                fstr = f'count={len(values) - 1}'
+            return 'Set{' + f'{fstr}' + '}'
 
 
 @dataclass
@@ -418,7 +424,7 @@ class Str(Literal):
         if self._value is None and token is not None:
             self._value = token.lexeme
 
-    def format(self, fmt=None):
+    def format(self, brief=True, fmt=None):
         if self._value is None:
             if self.token._value is not None:
                 return self.token._value
@@ -438,7 +444,7 @@ class Time(Literal):
         if isinstance(self._value, str):
             self._value = _parse_time_value(self._value)
 
-    def format(self, fmt=None):
+    def format(self, fmt=None, brief=True):
         fmt = "%H:%M:%S" if fmt is None else fmt
         return self._value.strftime(fmt) if self._value is not None else 'None'
 

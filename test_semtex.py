@@ -82,7 +82,7 @@ class SemanticAnalysisTestRunner(TestSuiteRunner, ABC):
         if self.verbose:
             _dump_environment(environment, label='post', print_tokens=False, print_results=False)
         logger.banner("RUN")
-        environment = command.execute(environment, target=environment)
+        environment = command.run(target=environment)
         if self.test:
             _dump_environment(environment, label='post',
                               print_tokens=False, print_trees=False, print_results=True, print_symbols=True,

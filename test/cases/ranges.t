@@ -7,3 +7,4 @@ today-2y..today
 { 'train': today-2y..today }
 { 'train': (today-2y)..today }
 [3,5,10..20,28] # UNDONE: 10..20 parses to None
+[0..10:5]

@@ -216,7 +216,7 @@ class Fixups(TreeModifier, ABC):
         if self._print_nodes:
             indent = '' if self._depth < 1 else ' '.ljust(self._depth * 4)
             id = ' '
-            if getattr(node, 'parent', None) is not None:
+            if hasattr(node, 'parent', None):
                 parent = node.parent
                 id = f'{parent._num + 1}' if parent._num is not None else ' '
             print(f'{self._count:5d} : {indent}{node}: {node.token.format()}, parent:{id}')

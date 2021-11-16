@@ -4,10 +4,10 @@ from queue import SimpleQueue
 from interpreter.notation import FunctionalNotationPrinter
 from interpreter.treeprint import print_forest
 from runtime import exceptions
-from runtime.dataframe import Dataset
+from runtime.dataframe import Dataset, print_dataframe
 from runtime.environment import Environment
 from runtime.options import getOptions
-from runtime.print import print_dataframe, _t_print
+from runtime.print import _t_print
 from interpreter.interpreter import Interpreter, _interpreterVisitNodeMappings
 from runtime.exceptions import getLogFacility
 from runtime.runtime import load_script
@@ -66,21 +66,22 @@ class CommandShell(Interpreter):
         self.interpreter = interpreter
         self._verbose = True
 
-    def execute(self, environment=None, target=None):
+    # executes the target source tree
+    def run(self, target=None):
         try:
-            self.environment = environment
             self.target = target
-            self.stack = environment.stack
-            self.apply(environment)  # execute commands
-            if not self.options.no_run:
-                self.interpreter.apply(environment)  # execute script
+            self.stack = target.stack
+            return self.interpreter.apply(target)  # execute script
         except Exception as e:
             if self.options.throw_errors:
                 exceptions.runtime_error(f'{e}')
             else:
                 exceptions.runtime_warning(f'{e}')
 
+    # executes shell commands
     def apply(self, environment=None):
+        assert environment is not None, "no environment to operate on"
+        self.environment = environment
         if environment.commands is None:
             return None
         for c in environment.commands:
@@ -197,20 +198,24 @@ def do_help(focal, cmd):
 
 def do_load_script(focal, args):
     fname = args[0]
+    load_script_file(focal, fname)
+
+
+def load_script_file(focal, fname):
     source = load_script(fname)
     focal.target.set_source(source)
-    if focal.options.auto_listback:
+    if focal.option.auto_listback:
         show_sourcelines(focal)
-    if focal.options.auto_parse:
+    if focal.option.auto_parse:
         do_parse(focal)
 
 
 def do_parse(focal):
     source = focal.target.source
     focal.target = focal.parser.parse(environment=focal.target, source=source)
-    if focal.options.verbose:
+    if focal.option.verbose:
         show_tree(focal)
-    if focal.options.auto_run:
+    if focal.option.auto_run:
         do_run(focal)
 
 
@@ -239,6 +244,12 @@ def do_print(focal, vargs):
     return vargs.message
 
 
+def enter_token(focal, vargs):
+    for i in range(0,100):
+        print(i)
+    return vargs
+
+
 # ---------------------
 # options
 # ---------------------
@@ -256,7 +267,7 @@ def set_options(focal, args):
 
 
 def _to_efoptions(options):
-    return options.to_dict(keys=['strict', 'force_errors'])
+    return options.dict(keys=['strict', 'force_errors'])
 
 
 def _update_options(options):
@@ -311,7 +322,7 @@ def show_notation(focal):
 
 
 def show_options(focal):
-    d = focal.options.to_dict()
+    d = focal.option.dict()
     _print_dictionary(d, label="options", skip=['_defaults'])
 
 
@@ -339,7 +350,9 @@ def show_tokens(focal):
 def show_tree(focal):
     env = focal.target
     # _print_banner("parse tree")
-    print_forest(env, env.logger, label=None, print_results=focal.options.verbose, print_notation=False)
+    print_forest(env, env.logger, label=None, print_results=focal.option.verbose, print_notation=False)
+    if focal.option.verbose:
+        _print_symbols(env.scope)
 
 
 def show_sourcelines(focal):
@@ -441,7 +454,7 @@ def _print_symbols(scope):
             s = q.get()
             if s._members is None or len(s._members) == 0:
                 continue
-            if getattr(s, 'token', False):
+            if hasattr(s, 'token'):
                 print(f'\nscope: {s.token.lexeme}')
             else:
                 print(f'\nglobal scope:')
@@ -478,6 +491,7 @@ _command_funcdesc = {
     'set': (set_options, None, ':', 'set options'),
     'show': (do_show, None, ':', 'show various things, see `help show`'),
     'show.stack': (do_show, None, ':', 'display the stack'),
+    'token': (enter_token, None, ':', 'manually enter a token')
 }
 
 _command_aliases = {

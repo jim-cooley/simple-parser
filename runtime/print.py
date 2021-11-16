@@ -1,6 +1,4 @@
-import pandas as pd
-
-from runtime.dataframe import Dataset
+from runtime.dataframe import Dataset, print_dataframe
 from runtime.exceptions import getLogFacility
 from runtime.scope import IntrinsicFunction
 
@@ -22,11 +20,14 @@ def do_print(env, vargs):
         if isinstance(o, Dataset):
             print_dataframe(o)
         else:
-            if hasattr(o, 'format'):
-                text = o.format()
+            if hasattr(o, 'print'):
+                o.print()
             else:
-                text = f'{o}'
-            line.append(text)
+                if hasattr(o, 'format'):
+                    text = o.format()
+                else:
+                    text = f'{o}'
+                line.append(text)
     text = ' '.join(line)
     _t_print(logger, text)
     return vargs.message
@@ -37,19 +38,3 @@ def _t_print(logger, message, end='\n'):
         logger = getLogFacility('focal')
     logger.write(f'{message}', end=end)
     logger.flush()
-
-
-def print_dataframe(_df, label=None):
-    with set_print_options():
-        if label:
-            print(label)
-        print(_df)
-
-
-def set_print_options():
-#   np.set_printoptions(threshold=sys.maxsize)
-    return pd.option_context(
-        'display.max_rows', None,
-        'display.max_columns', None,
-        'display.width', 16384,
-    )

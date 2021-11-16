@@ -10,9 +10,8 @@ from runtime.indexdict import IndexedDict
 from runtime.literals import Duration, Literal
 from runtime.scope import IntrinsicFunction, Object
 
-from runtime.dataframe import Dataset
+from runtime.dataframe import Dataset, print_dataframe
 from runtime.intrinsics import get_now
-from runtime.print import print_dataframe
 from runtime.runtime import _find_file
 
 file_suffix = {'1d': 'daily', '1wk': 'weekly'}

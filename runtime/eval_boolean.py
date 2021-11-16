@@ -58,12 +58,12 @@ _type2native = {
 def eval_boolean_dispatch(node, left, right):
     l_value = left
     l_ty = type(l_value).__name__
-    if getattr(left, 'value', False) or l_ty in ['Int', 'Bool', 'Str', 'Float']:
+    if hasattr(left, 'value') or l_ty in ['Int', 'Bool', 'Str', 'Float']:
         l_value = left.value
         l_ty = type(l_value).__name__
     r_value = right
     r_ty = type(r_value).__name__
-    if getattr(right, 'value', False) or r_ty in ['Int', 'Bool', 'Str', 'Float']:
+    if hasattr(right, 'value') or r_ty in ['Int', 'Bool', 'Str', 'Float']:
         r_value = right.value
         r_ty = type(r_value).__name__
     if l_ty == 'Ident':

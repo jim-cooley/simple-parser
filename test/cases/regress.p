@@ -1,39 +1,6 @@
-# series test:
-s = [name:'series', 'a':1, 'b':2, 'c':3, index=['a']]
-exit()
+a = [[1,2,3],[4,5,6],[7,8,9]]
+print(a)
 
-
-def factorial(x) := {
-    print('in factorial')
-    if x == 1 then
-        return 1
-    else
-        return x * factorial(x - 1)
-}
-
-
-print('hello', 'world')
-pd = yahoo( symbols='portfolio.csv', span=-5y )
-
-#d = dataset()
-print(pd)
-
-
-def factorial(x) := {
-    print('in factorial')
-    if x == 1 then
-        return 1
-    else
-        return x * factorial(x - 1)
-}
-
-print('hello')
-
-#result = factorial(5)
-#rint(result)
-
-f(x) = x*x
-f(5)
-
-f5 := factorial(5)
-print(f5)
+s = [name:'series', 5, 6, 7, 8, 9, 10]
+s = [name:'series', 5, 6, 7, 8, 9, 10, index=['series']]
+print(s)

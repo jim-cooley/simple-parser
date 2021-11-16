@@ -91,17 +91,12 @@ class Series(Object):
     """
     Pandas Series object
     """
-    def __init__(self, name=None, values=None, items=None, index=None, parent=None, loc=None):
+    def __init__(self, name=None, values=None, index=None, parent=None, loc=None):
         super().__init__(name=name, value=values, parent=parent, token=Token.SERIES(loc=loc))
         if values is not None:
             self._value = pd.Series(name=name, data=values, index=index)  # UNDONE: defer construction
-        self._items = [] if items is None else items
-
-    def items(self):
-        """
-        items is a list of AST 'items' used to construct this Series instance.
-        """
-        return self._items
+        else:
+            self._value = pd.Series()
 
     def values(self):
         """
@@ -115,20 +110,29 @@ class Series(Object):
     def from_series(self, series):
         self._value = deepcopy(series)
 
-    def to_series(self):
+    def series(self):
         return self._series
 
+    def dict(self):
+        pass
+
     # UNDONE: copies List() for now
-    def format(self):
+    def format(self, brief=True):
         if self._value is None:
             return '[]'
         else:
-            fstr = ''
-            max = (len(self._value)-1)
-            for idx in range(0, len(self._value)):
-                fstr += f'{self._value[idx]}'
-                fstr += ',' if idx < max else ''
+            if not brief:
+                fstr = ''
+                max = (len(self._value)-1)
+                for idx in range(0, len(self._value)):
+                    fstr += f'{self._value[idx]}'
+                    fstr += ',' if idx < max else ''
+            else:
+                fstr = f'count={len(self._value)-1}'
             return '[' + f'{fstr}' + ']'
+
+    def print(self):
+        print_series(self._value)
 
 
 def create_dataset(args):
@@ -141,3 +145,24 @@ def create_series(args):
     return r
 
 
+def print_dataframe(_df, label=None):
+    with set_print_options():
+        if label:
+            print(label)
+        print(_df)
+
+
+def print_series(_s, label=None):
+    with set_print_options():
+        if label:
+            print(label)
+        print(_s)
+
+
+def set_print_options():
+#   np.set_printoptions(threshold=sys.maxsize)
+    return pd.option_context(
+        'display.max_rows', None,
+        'display.max_columns', None,
+        'display.width', 16384,
+    )

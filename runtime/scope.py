@@ -148,7 +148,7 @@ class Object(AST, Scope):
         self._calc_fqname()
 
     def __str__(self):
-        if getattr(self, 'format', None) is not None:
+        if hasattr(self, 'format') is not None:
             return self.format()
         return self.__repr__()
 
@@ -174,18 +174,21 @@ class Object(AST, Scope):
         if unbox_values:
             for k in d.keys():
                 v = d[k]
-                if getattr(v, 'value', False):
+                if hasattr(v, 'value'):
                     v = v._value
                 d[k] = v
         return d
 
-    def format(self):
+    def format(self, brief=True):
         tk = self.token
-        if self.code is not None:
-            return f'{self.name}({self.parameters}) = {self.code}'
+        if brief:
+            v = f'{self._value}' if self._value is not None else 'None'
         else:
-            v = f'{tk.value}' if tk.value is not None else 'None'
-            return f'{self.name}({v})'
+            if self.code is not None:
+                return f'{self.name}({self.parameters}) = {self.code}'
+            else:
+                v = f'{self._value}' if self._value is not None else 'None'
+        return f'{self.name}({v})'
 
 
 # -----------------------------------
@@ -255,7 +258,7 @@ def _dump_symbols(scope):
         s = q.get()
         if s._members is None or len(s._members) == 0:
             continue
-        if getattr(s, 'token', False):
+        if hasattr(s, 'token'):
             print(f'\nscope: {s.token.lexeme}')
         else:
             print(f'\nglobal scope:')

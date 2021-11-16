@@ -1,19 +1,21 @@
 #!/Volumes/HD2/Lab/Repository/jimc/python3.9/bin/python3
 from argparse import ArgumentParser
 
-from interpreter.shell import CommandShell
+from interpreter.shell import CommandShell, load_script_file, show_tree, _print_symbols
 from interpreter.fixups import Fixups
 from interpreter.interpreter import Interpreter
+from interpreter.treeprint import print_forest
 from parser.parser import Parser
 from runtime.environment import Environment
 from runtime.exceptions import getLogFacility
 from runtime.options import getOptions
-
+from runtime.runtime import load_script
 
 _option_defaults = {
-    'auto_listback': True,    # automatically show source after load
+    'auto_listback': True,  # automatically show source after load
     'auto_parse': True,     # automatically parse upon load
-    'auto_run': False,      # automatically run after parsing
+    'auto_run': True,       # automatically run after parsing
+    'file': None,           # auto run a script file
     'force_errors': False,  # option_force_errors forces warnings into errors
     'log_filename': './focal.log',
     'no_run': False,
@@ -23,13 +25,11 @@ _option_defaults = {
     'verbose': True,
 }
 
-CONSOLE_LOG = './focal_console.log'
-
 
 class FocalConsole:
     def __init__(self, options=None, file=None):
         self.logger = getLogFacility('focal', lines=None, file=file)
-        self.options = getOptions('focal', options=vars(options), defaults=_option_defaults)
+        self.option = getOptions('focal', options=vars(options), defaults=_option_defaults)
         self.fixups = Fixups()
         self.parser = Parser()
         self.focal = Interpreter()
@@ -38,21 +38,41 @@ class FocalConsole:
         self.target = Environment()         # target environment
         self.logger.set_lines = self.target.lines
 
-    def parse(self, lines):
-        if lines.startswith('%%'):
+    def load(self, fname):
+        verbose = self.option.verbose
+        if verbose:
+            print(f'\n\nloading {fname}...')
+        source = load_script(fname)
+        if verbose:
+            print(f'parsing {fname}')
+        environment = self.parse(source)
+        if verbose:
+            print_forest(environment, self.logger, label=None, print_results=verbose, print_notation=False)
+        if self.option.auto_run:
+            if verbose:
+                print(f'\nrunning {fname}:\n')
+                self.run(environment)
+                _print_symbols(environment.scope)
+            else:
+                self.run(environment)
+
+    def parse(self, source):
+        if source.startswith('%%'):
             environment = self.environment
-            environment = self.fixups.apply(self.parser.parse(environment=environment, source=lines))
+            environment = self.fixups.apply(self.parser.parse(environment=environment, source=source))
             self.environment = environment
         else:
             environment = self.target
-            environment = self.fixups.apply(self.parser.parse(environment, source=lines))
+            environment = self.fixups.apply(self.parser.parse(environment, source=source))
             self.target = environment
         return environment
 
     def run(self, environment):
-        self.shell.execute(environment=environment, target=self.target)
+        self.shell.run(target=self.target)
 
     def go(self):
+        if self.option.file is not None:
+            self.load(self.option.file)
         _stop = False
         while not _stop:
             lines = []

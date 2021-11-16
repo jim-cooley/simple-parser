@@ -120,7 +120,7 @@ def evaluate_set(node, visitor=None):
 def evaluate_unary_operation(node, left):
     opid = node.op
     l_tid = TK.NATIVE
-    if getattr(left, 'token', False):
+    if hasattr(left, 'token'):
         l_tid = left.token.id
     l_value = c_unbox(left)
 

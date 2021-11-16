@@ -54,11 +54,20 @@ class IndexedDict(object):
         k = list(self.__dict__.keys())[1:]
         return k
 
+    def remove(self, key):
+        if isinstance(key, list):
+            for k in key:
+                self.__dict__.pop(k, None)
+        else:
+            self.__dict__.pop(key, None)
+
     def values(self):                       # UNDONE: iterator?
         k = list(self.__dict__.values())
         return k[1:]
 
-    def to_dict(self, keys=None):
+    def dict(self, keys=None, filter=None):
+        if filter is None:
+            filter = ['_defaults']
         d = deepcopy(self._defaults)
         d.update(self.__dict__)
         if keys is not None:
@@ -67,6 +76,10 @@ class IndexedDict(object):
                 if ky in d:
                     k[ky] = d[ky]
             d = k
+        if filter is not None:
+            for ky in filter:
+                if ky in d:
+                    d.pop(ky, None)
         return d
 
     def to_list(self):
@@ -75,18 +88,21 @@ class IndexedDict(object):
     def update(self, items):
         self.__dict__.update(items)
 
-    def format(self):
+    def format(self, brief=True):
         if self.__dict__ is None:
             return '{}'
         else:
-            fstr = ''
-            _max = (len(self.__dict__.keys())-1)
-            if _max == 1:
-                fstr += f'{self._get_item_by_index(0)}'  # skips '__dict__'
+            if not brief:
+                fstr = ''
+                _max = (len(self.__dict__.keys())-1)
+                if _max == 1:
+                    fstr += f'{self._get_item_by_index(0)}'  # skips '__dict__'
+                else:
+                    for idx in range(0, _max-1):
+                        fstr += f'{self._get_item_by_index(idx)}'  # skips '__dict__'
+                        fstr += ',' if idx < _max else ''
             else:
-                for idx in range(0, _max-1):
-                    fstr += f'{self._get_item_by_index(idx)}'  # skips '__dict__'
-                    fstr += ',' if idx < _max else ''
+                fstr = f'count={len(self.__dict__.keys())-1}'
             return '{' + f'{fstr}' + '}'
 
     def _get_item_by_index(self, index, default=None):

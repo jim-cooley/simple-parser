@@ -358,7 +358,7 @@ class Parser(object):
                     return DefineVar(left=l_expr, op=op, right=r_expr)
             else:
                 return Assign(l_expr, op, r_expr)
-        token = l_expr.token if not getattr(l_expr, 'left', False) else l_expr.left.token
+        token = l_expr.token if not hasattr(l_expr, 'left') else l_expr.left.token
         self.logger.error(f'Invalid assignment target: {token}', op.location)
 
     def boolean_expr(self):
@@ -592,7 +592,7 @@ class Parser(object):
             if not self.match1(TK.COMA):
                 break
         if is_series:
-            node = Generate(target=TK.SERIES, items=seq, loc=loc)
+            node = Generate(target=TK.SERIES, parameters=seq, loc=loc)
         else:
             node = List(items=seq, loc=loc)
         return node

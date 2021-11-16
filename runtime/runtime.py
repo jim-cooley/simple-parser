@@ -3,6 +3,7 @@ import os
 # -------------------------------------------------
 # Routines environment amongst the Intrinsic Functions
 # -------------------------------------------------
+from runtime.options import getOptions
 
 _BASE_SEARCH_PATH = [
     ".",
@@ -40,6 +41,5 @@ def load_script(fname):
     ext = os.path.splitext(fname)[1]
     idx = 0
     with open(fname, 'r') as file:
-        print(f'{fname}')
         text = file.read()
     return text

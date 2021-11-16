@@ -8,12 +8,13 @@ from runtime.indexdict import IndexedDict
 from runtime.literals import Literal
 from runtime.options import getOptions
 from runtime.scope import Block, Scope, Object
-from runtime.tree import FnCall, Define, Ref
+from runtime.token import Token
+from runtime.tree import FnCall, Define, Ref, Generate
 
 from runtime.eval_unary import is_true
 from runtime.evaluate import reduce_value, evaluate_binary_operation, evaluate_unary_operation, evaluate_identifier, \
     evaluate_set, reduce_get, reduce_propref, reduce_ref, update_ref
-from runtime.dispatch import is_intrinsic, invoke_intrinsic
+from runtime.dispatch import is_intrinsic, invoke_intrinsic, invoke_generator, tk2generator
 
 from interpreter.visitor import TreeFilter
 
@@ -105,13 +106,13 @@ class Interpreter(TreeFilter):
         self._init(environment)
         if environment is None:
             return None
-
         assert environment.trees is not None, "empty trees passed via Environment to apply"
+
         for t in environment.trees:
             self.visit(t.root)
             v = self.stack.pop()
             ty = type(v).__name__
-            if getattr(v, 'value', False):
+            if hasattr(v, 'value'):
                 v = v.value
             t.values = v
             if self.option.verbose:
@@ -205,16 +206,16 @@ class Interpreter(TreeFilter):
         right = node.right
         self.indent()
         self.visit(left)
-        self._print_node(right)
-        self.dedent()
         # UNDONE: need to handle all cases of ':' operator here as well - or split out
-        if isinstance(right, FnCall):
+        if isinstance(right, FnCall) or isinstance(right, Generate):
             self.visit(right)
             result = self.stack.pop()
             var = reduce_ref(ref=left, value=result)
         else:
+            self._print_node(right)
             result = right
             var = reduce_ref(ref=left, value=right)
+        self.dedent()
         var = update_ref(sym=var, value=result)
         self.stack.push(var)
 
@@ -271,7 +272,13 @@ class Interpreter(TreeFilter):
     # Generator
     def process_generator(self, node, label=None):
         self._print_node(node)
-        self._process_sequence(node)
+        self.indent()
+        # self._process_sequence(node)  # this will process and push the parameters to the stack.
+        args = self.reduce_parameters(scope=None, args=node.items())  # process & return them as an IndexedDict
+        fname = tk2generator[node.target]
+        result = invoke_generator(env=self.environment, name=fname, args=args)
+        self.dedent()
+        self.stack.push(result)
 
     # Get
     def process_get(self, node, label=None):
@@ -356,6 +363,8 @@ class Interpreter(TreeFilter):
         self.visit(fnode.code)
         Environment.leave()
 
+    # VERIFY: this may not handle embedded expressions correctly
+    # the reason that this is not simply _process_sequence is that it must handle k:v pairs without evaluating them
     def reduce_parameters(self, scope=None, args=None):
         items = {}
         if scope is not None:
@@ -372,46 +381,33 @@ class Interpreter(TreeFilter):
                     sym = reduce_ref(scope=scope, ref=ref)
                     if isinstance(sym, Object):
                         items[sym.name] = value
+                    elif isinstance(sym, Token):    # tokens are keywords / reserved words
+                        items[sym.lexeme] = value
                     else:
-                        slot = items.keys()[idx]
+                        slot = list(items.keys())[idx]
                         items[slot] = c_unbox(sym)
                 elif isinstance(ref, Ref):
                     sym = reduce_ref(scope=scope, ref=ref)
                     if isinstance(sym, Object):
                         items[sym.name] = sym
                     else:
-                        slot = items.keys()[idx]
+                        slot = list(items.keys())[idx]
                         items[slot] = c_unbox(sym)
                 elif isinstance(ref, Literal):
                     if idx >= len(items):
                         v = c_unbox(ref)
                         items[v] = v
                     else:
-                        slot = items.keys()[idx]
+                        slot = list(items.keys())[idx]
                         items[slot] = c_unbox(ref)
                 else:
                     self.visit(ref)
                     val = self.stack.pop()
-                    slot = items.keys()[idx]
+                    slot = list(items.keys())[idx]
                     items[slot] = c_unbox(val)  # UNDONE: is this legit on named parameters?
         if scope is not None:
             Environment.leave()
         return IndexedDict(items)
-
-    def _c_process_sequence(self, seq):
-        """
-        processes a sequence (list) of items in reverse order (c-style). used by invoke_fn to process arguments.
-        """
-        self.indent()
-        values = seq.values()
-        if values is None:
-            return seq
-        for idx in range(len(values), 0, -1):
-            n = values[idx]
-            if n is None:
-                continue
-            self.visit(n)
-        self.dedent()
 
     def _process_sequence(self, seq):
         self.indent()
@@ -452,8 +448,8 @@ class Interpreter(TreeFilter):
         self._count += 1
         if self.option.verbose:
             id = ' '
-            if getattr(node, 'parent', None) is not None:
+            if hasattr(node, 'parent'):
                 parent = node.parent
-                if getattr(parent, '_num', False):
+                if hasattr(parent, '_num'):
                     id = f'{parent._num + 1}' if parent._num is not None else ' '
             self._print_indented(f'{node}: {node.token.format()}, parent:{id}')

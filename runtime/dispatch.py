@@ -1,9 +1,11 @@
 from enum import unique, IntEnum
 
 from runtime.dataframe import create_dataset, create_series
+from runtime.generators import generate_dataframe, generate_list, generate_series
 from runtime.intrinsics import do_now
 from runtime.print import do_print, init_print
 from runtime.scope import IntrinsicFunction
+from runtime.token_ids import TK
 from runtime.yahoo import do_yahoo, init_yahoo
 
 
@@ -19,11 +21,16 @@ def is_intrinsic(name):
     return name in _instrinsic_aliases
 
 
-def invoke_intrinsic(env, name, args):
-    if name.lower() in _intrinsic_fundesc:
-        fn = _intrinsic_fundesc[name][SLOT.INVOKE]
-    elif name.lower() in _instrinsic_aliases:
-        fn = _instrinsic_aliases[name][SLOT.INVOKE]
+def invoke_generator(env, name, args):
+    return invoke_intrinsic(env, name, args, disptab=_generator_funcdesc)
+
+
+def invoke_intrinsic(env, name, args, disptab=None):
+    disptab = _intrinsic_fundesc if disptab is None else disptab
+    if name.lower() in disptab:
+        fn = disptab[name][SLOT.INVOKE]
+    elif name.lower() in disptab:
+        fn = disptab[name][SLOT.INVOKE]
     else:
         raise ValueError(f"Unknown function: {name}")
     if args is None or args.is_empty():
@@ -45,6 +52,13 @@ def init_intrinsic(name):
 # Tables
 # -----------------------------------
 
+tk2generator = {
+    TK.DATAFRAME: 'generate_dataframe',
+    TK.LIST: 'generate_list',
+    TK.SERIES: 'generate_series',
+}
+
+
 # these are function descriptors for the intrinsic functions
 # the format is (invoke_fn, init_fn)
 _intrinsic_fundesc = {
@@ -55,6 +69,18 @@ _intrinsic_fundesc = {
     'today': (do_now, None),
     'yahoo': (do_yahoo, init_yahoo),
 }
+
+# these are allowable aliases (which can easily be overridden)
+_instrinsic_aliases = {
+    'dataframe': (create_dataset, None),  # allowable for now
+}
+
+_generator_funcdesc = {
+    'generate_dataframe': (generate_dataframe, None),
+    'generate_list': (generate_list, None),
+    'generate_series': (generate_series, None),
+}
+
 
 _intrinsic_not_impl = [
     # type constructors
@@ -102,8 +128,3 @@ _intrinsic_not_impl = [
     'load',        # format=numpy will load numpy data, format=txt will save text. fomats to support: focal, numpy, pandas, excel, csv, text/other
     'save',        # format=numpy will save numpy data, format=txt will save text
 ]
-
-# these are allowable aliases (which can easily be overridden)
-_instrinsic_aliases = {
-    'dataframe': (create_dataset, None),  # allowable for now
-}

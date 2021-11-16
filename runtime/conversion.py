@@ -30,7 +30,7 @@ def c_unbox(u):
 
 def c_type(u):
     tid = TK.NONE
-    if getattr(u, 'token', False):
+    if hasattr(u, 'token'):
         tid = u.token.id
         return tid
     v = c_unbox(u)

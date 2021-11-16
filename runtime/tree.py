@@ -33,7 +33,7 @@ class AST:
             self._value = token.value
 
     def __str__(self):
-        if getattr(self, 'format', None) is not None:
+        if hasattr(self, 'format') is not None:
             return self.format()
         return self.__repr__()
 
@@ -101,18 +101,21 @@ class ASTCompound(AST):
     def values(self):
         return self._items
 
-    def format(self):
+    def format(self, brief=True):
         if self.value is None:
             return '{}'
         else:
-            fstr = ''
-            max = (len(self._items) - 1)
-            if max > 0:
-                for idx in range(0, len(self.value)):
-                    fstr += f'{self._items[idx]}'
-                    fstr += ',' if idx < max else ''
+            if not brief:
+                fstr = ''
+                max = (len(self._items) - 1)
+                if max > 0:
+                    for idx in range(0, len(self.value)):
+                        fstr += f'{self._items[idx]}'
+                        fstr += ',' if idx < max else ''
+                else:
+                    fstr = f'{self._value}'
             else:
-                fstr = f'{self._value}'
+                fstr = f'count={len(self.value)}'
             return '{' + f'{fstr}' + '}'
 
 
@@ -143,10 +146,18 @@ class Assign(Expression):
         if right is not None:
             right.parent = self
 
-    def format(self):
-        left = "None" if self.token is None else f'{self.token}'
-        right = 'None' if self.right is None else f'{self.right}'
-        return f'Assign({self.op}, {self.token}: l={left}, r={right})'
+    def format(self, brief=True):
+        left = self.left
+        right = self.right
+        lval = "None"
+        rval = "None"
+        if left is not None:
+            if hasattr(left, 'format'):
+                lval = left.format(brief=brief)
+        if right is not None:
+            if hasattr(right, 'format'):
+                rval = right.format(brief=brief)
+        return f'Assign({self.op.name}: {lval}, {rval})'
 
 
 @dataclass
@@ -165,10 +176,18 @@ class BinOp(Expression):
             right.parent = self
             self.is_lvalue &= right.is_lvalue
 
-    def format(self):
-        left = "None" if self.left is None else f'{self.left}'
-        right = 'None' if self.right is None else f'{self.right}'
-        return f'BinOp({self.token}: l={left}, r={right}'
+    def format(self, brief=True):
+        left = self.left
+        right = self.right
+        lval = "None"
+        rval = "None"
+        if left is not None:
+            if hasattr(left, 'format'):
+                lval = left.format(brief=brief)
+        if right is not None:
+            if hasattr(right, 'format'):
+                rval = right.format(brief=brief)
+        return f'BinOp(TK.{self.op.name}: {lval}, {rval})'
 
 
 @dataclass
@@ -198,44 +217,18 @@ class Define(Assign):
             self.is_lvalue = right.is_lvalue
         self.tid = self.op = TK.DEFINE
 
-    def format(self):
-        left = "None" if self.left is None else f'{self.left}'
-        right = 'None' if self.right is None else f'{self.right}'
-        return f'Define({self.op}, {self.token}: l={left}, r={right})'
-
-
-@dataclass
-class Generate(Expression):
-    """
-    A Generator is a node in the AST that generates a runtime object.  Productions currently supported are:
-    1) Blocks
-    2) Lists
-    3) Sets
-    4) Series
-    5) DataFrames
-    """
-    def __init__(self, target=None, items=None, loc=None, is_lvalue=True):
-        """
-        :param name: Expression that evaluates to 'name'
-        :param target: Target token-id
-        :param items: List of items for the generator to operate on
-        :param loc: Token location
-        :param is_lvalue: Whether or not this can appear on the Left-Hand-Side of an expression
-        """
-        super().__init__(token=Token.GEN(loc=loc), is_lvalue=is_lvalue)
-        self._items = items or []
-        self.target = target    # target type (tid)
-
-    def format(self):
-        if self._items is None:
-            return f'[]:{_tk2glyph[self.target]}'
-        else:
-            fstr = ''
-            max = (len(self._items)-1)
-            for idx in range(0, len(self._items)):
-                fstr += f'{self._items[idx]}'
-                fstr += ',' if idx < max else ''
-            return '[' + f'{fstr}' + f']:{_tk2glyph[self.target]}'
+    def format(self, brief=True):
+        left = self.left
+        right = self.right
+        lval = "None"
+        rval = "None"
+        if left is not None:
+            if hasattr(left, 'format'):
+                lval = left.format(brief=brief)
+        if right is not None:
+            if hasattr(right, 'format'):
+                rval = right.format(brief=brief)
+        return f'Define(TK.{self.op.name}: {lval}, {rval})'
 
 
 # holds a reference
@@ -252,7 +245,7 @@ class Ref(Expression):
         get.parent = self.parent
         return get
 
-    def format(self):
+    def format(self, brief=True):
         token = 'None' if self.token is None else f'{self.token}'
         return f'Ref({token})'
 
@@ -292,10 +285,18 @@ class Apply(Define):
         op = Token(tid=TK.APPLY, tcl=TCL.BINOP, lex=">>", loc=loc) if op is None else op
         super().__init__(left=left, op=op, right=right, is_lvalue=is_lvalue)
 
-    def format(self):
-        left = "None" if self.left is None else f'{self.left}'
-        right = 'None' if self.right is None else f'{self.right}'
-        return f'Apply({self.op}, {self.token}: l={left}, r={right})'
+    def format(self, brief=True):
+        left = self.left
+        right = self.right
+        lval = "None"
+        rval = "None"
+        if left is not None:
+            if hasattr(left, 'format'):
+                lval = left.format(brief=brief)
+        if right is not None:
+            if hasattr(right, 'format'):
+                rval = right.format(brief=brief)
+        return f'Apply(TK.{self.op.name}: {lval}, {rval})'
 
 
 @dataclass
@@ -305,10 +306,18 @@ class ApplyChainProd(Apply):
         op.id = tid or TK.APPLY
         super().__init__(left=left, op=op, is_lvalue=is_lvalue)
 
-    def format(self):
-        left = "None" if self.left is None else f'{self.left}'
-        right = 'None' if self.right is None else f'{self.right}'
-        return f'ApplyChainProd({self.op}, {self.token}: l={left}, r={right})'
+    def format(self, brief=True):
+        left = self.left
+        right = self.right
+        lval = "None"
+        rval = "None"
+        if left is not None:
+            if hasattr(left, 'format'):
+                lval = left.format(brief=brief)
+        if right is not None:
+            if hasattr(right, 'format'):
+                rval = right.format(brief=brief)
+        return f'ApplyChainProd(TK.{self.op.name}: {lval}, {rval})'
 
 
 # evaluated each access
@@ -329,11 +338,23 @@ class DefineFn(Define):  # left = FnRef, op=TK, plist, right = Block
         super().__init__(left=left, op=op, right=right, is_lvalue=False)
         self.args = args
 
-    def format(self):
-        left = "None" if self.left is None else f'{self.left}'
-        right = 'None' if self.right is None else f'{self.right}'
-        args = 'None' if self.args is None else f'{self.args}'
-        return f'DefineFn({self.op}, {self.token}: l={left}, a={args}, r={right})'
+    def format(self, brief=True):
+        left = self.left
+        right = self.right
+        args = self.args
+        lval = "None"
+        rval = "None"
+        aval = "None"
+        if left is not None:
+            if hasattr(left, 'format'):
+                lval = left.format(brief=brief)
+        if right is not None:
+            if hasattr(right, 'format'):
+                rval = right.format(brief=brief)
+        if args is not None:
+            if hasattr(args, 'format'):
+                aval = args.format(brief=brief)
+        return f'DefineFn({self.op}: {lval}(a={aval}) = {rval})'
 
 
 # value takes on defined range during iteration
@@ -342,10 +363,18 @@ class DefineVar(Define):
     def __init__(self, left=None, op=None, right=None, is_lvalue=None):
         super().__init__(left=left, op=op, right=right, is_lvalue=False if is_lvalue is None else is_lvalue)
 
-    def format(self):
-        left = "None" if self.left is None else f'{self.left}'
-        right = 'None' if self.right is None else f'{self.right}'
-        return f'DefineVar({self.op}, {self.token}: l={left}, r={right})'
+    def format(self, brief=True):
+        left = self.left
+        right = self.right
+        lval = "None"
+        rval = "None"
+        if left is not None:
+            if hasattr(left, 'format'):
+                lval = left.format(brief=brief)
+        if right is not None:
+            if hasattr(right, 'format'):
+                rval = right.format(brief=brief)
+        return f'DefineVar(TK.{self.op.name}: {lval}, {rval})'
 
 
 # value takes on defined range during iteration, and is evaluated each time
@@ -355,11 +384,23 @@ class DefineVarFn(DefineVar):
         super().__init__(left=left, op=op, right=right, is_lvalue=False)
         self.args = args
 
-    def format(self):
-        left = "None" if self.left is None else f'{self.left}'
-        right = 'None' if self.right is None else f'{self.right}'
-        args = 'None' if self.args is None else f'{self.args}'
-        return f'DefineVarFn({self.op}, {self.token}: l={left}, a={args}, r={right})'
+    def format(self, brief=True):
+        left = self.left
+        right = self.right
+        args = self.args
+        lval = "None"
+        rval = "None"
+        aval = "None"
+        if left is not None:
+            if hasattr(left, 'format'):
+                lval = left.format(brief=brief)
+        if right is not None:
+            if hasattr(right, 'format'):
+                rval = right.format(brief=brief)
+        if args is not None:
+            if hasattr(args, 'format'):
+                aval = args.format(brief=brief)
+        return f'DefineVarFn({self.op}: {lval}(a={aval}) = {rval})'
 
 
 # dereferences to value
@@ -375,8 +416,13 @@ class Get(Ref):
     def get(self):
         return self._value
 
-    def format(self):
-        token = 'None' if self.token is None else f'{self.token}'
+    def format(self, brief=True):
+        token = 'None'
+        if self.token is not None:
+            if brief:
+                token = f'{self.token.lexeme}'
+            else:
+                token = f'{self.token}'
         return f'Get({token})'
 
 
@@ -399,6 +445,43 @@ class FnCall(FnRef):
         assert ref is not None, "no Ref passed to FnCall constructor"
         op = Token.FNCALL(name=ref.name, loc=ref.location) if op is None else op
         super().__init__(ref=ref, op=op, parameters=parameters, is_lvalue=is_lvalue)
+
+
+@dataclass
+class Generate(Expression):
+    """
+    A Generator is a node in the AST that generates a runtime object.  Productions currently supported are:
+    1) Blocks
+    2) Lists
+    3) Sets
+    4) Series
+    5) DataFrames
+    """
+    def __init__(self, target=None, parameters=None, loc=None, is_lvalue=True):
+        """
+        :param name: Expression that evaluates to 'name'
+        :param target: Target token-id
+        :param parameters: List of items for the generator to operate on
+        :param loc: Token location
+        :param is_lvalue: Whether or not this can appear on the Left-Hand-Side of an expression
+        """
+        super().__init__(token=Token.GEN(loc=loc), is_lvalue=is_lvalue)
+        self._items = parameters or []
+        self.target = target    # target type (tid)
+
+    def format(self, brief=True):
+        if self._items is None:
+            return f'[]:{_tk2glyph[self.target]}'
+        else:
+            if not brief:
+                fstr = ''
+                max = (len(self._items)-1)
+                for idx in range(0, len(self._items)):
+                    fstr += f'{self._items[idx]}'
+                    fstr += ',' if idx < max else ''
+            else:
+                fstr = f'count={len(self._items) - 1}'
+            return '[' + f'{fstr}' + f']:{_tk2glyph[self.target]}'
 
 
 @dataclass

@@ -189,7 +189,7 @@ def _dump_symbols(logger, scope):
         s = q.get()
         if s._members is None or len(s._members) == 0:
             continue
-        if getattr(s, 'token', False):
+        if hasattr(s, 'token'):
             logger.print(f'\nscope: {s.token.lexeme}')
         else:
             logger.print(f'\nglobal scope:')

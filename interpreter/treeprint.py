@@ -179,7 +179,7 @@ def print_tree(tree, logger=None, label=None, print_notation=True, print_results
     if tree.values is not None and print_results:
         v = tree.values if type(tree.values).__name__ != 'list' else tree.values[0]
         if v is not None:
-            if getattr(v, 'value', False):
+            if hasattr(v, 'value'):
                 v = v.value
             ty = type(v).__name__
             if v is None:
@@ -241,7 +241,7 @@ def _format_node(node, print_location=False):
     elif isinstance(node, BinOp):
         op = node.op
         return f'{ty}(TK.{op.name}, \'{lex}\'){loc}'
-    elif getattr(node, 'op', False):
+    elif hasattr(node, 'op'):
         op = node.op
         return f'{ty}(TK.{op.name}, TK.{tk.name}, \'{lex}\'){loc}'
     elif isinstance(node, Str):
