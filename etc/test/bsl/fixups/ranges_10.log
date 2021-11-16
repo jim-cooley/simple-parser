@@ -5,8 +5,8 @@ test: 10:
 
 tree1:  [0..10:5]
     1  : List(TK.LIST, [BinOp()])
-    2  :     BinOp(TK.RANGE, '.')
-    3  :         Float(TK.FLOT, 0.0)
+    2  :     BinOp(TK.RANGE, '..')
+    3  :         Int(TK.INT, 0)
     4  :         Time(TK.TIME, 10:05:00)
 
 tree1:(post)  [0..10:5]

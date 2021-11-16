@@ -129,6 +129,10 @@ class Lexer:
                 cs = _.tkState[cs][cc]
                 if cs < 0:
                     cs = -cs
+                    if cs == int(TK.FLOT) and cc == _.CL.DOT:     # double-dot parse correction
+                        self._head -= 1
+                        tk.lexeme = tk.lexeme[:len(tk.lexeme)-1]  # strip the '.' so we can reparse
+                        cs = TK.INT
                     # if state transition, don't record but fetch.  If token, don't fetch. don't record
                     fetch = (cs == TK.QUOT) or (cs < _.ST.MAX)  # for quote, toss trailing quote
                 else:

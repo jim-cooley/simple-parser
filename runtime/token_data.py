@@ -94,6 +94,7 @@ _tk2glyph = {
     TK.DEFINE: ':=',
     TK.DEFINE_FN: '=>',
     TK.DIV: '/',
+    TK.DOT: '.',
     TK.DUR: 'dur',
     TK.EMPTY: 'Ø',  # empty set
     TK.EQLS: '=',
@@ -134,7 +135,7 @@ _tk2glyph = {
     TK.RBRC: '}',
     TK.REF: 'ref',
     TK.RETURN: 'ret',
-    TK.RISE_ABOVE: '|>',  # >|
+    TK.RISE_ABOVE: '|>',  # >|`
     TK.SERIES: 'series',
     TK.SET: 'set',
     TK.STR: 'str',

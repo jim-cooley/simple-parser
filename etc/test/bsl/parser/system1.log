@@ -53,8 +53,8 @@ tree2:  sma_period = [3,5,10..20,28]
     3  :     List(TK.LIST, [Int(), Int(), BinOp(), Int()])
     4  :         Int(TK.INT, 3)
     5  :         Int(TK.INT, 5)
-    6  :         BinOp(TK.RANGE, '.')
-    7  :             Float(TK.FLOT, 10.0)
+    6  :         BinOp(TK.RANGE, '..')
+    7  :             Int(TK.INT, 10)
     8  :             Int(TK.INT, 20)
     9  :         Int(TK.INT, 28)
 
