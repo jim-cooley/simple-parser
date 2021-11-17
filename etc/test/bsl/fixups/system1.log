@@ -41,9 +41,11 @@ tree1:  periods = {
     5  :             Ref(TK.IDENT, 'train')
     6  :             BinOp(TK.RANGE, '..')
     7  :                 BinOp(TK.SUB, '-')
-    8  :                     Get(TK.IDENT, 'today')
-    9  :                     Duration(TK.DUR, 730 days, 0:00:00)
-   10  :                 Get(TK.IDENT, 'today')
+    8  :                     FnCall('today')
+    9  :                         Get(TK.IDENT, 'today')
+   10  :                     Duration(TK.DUR, 730 days, 0:00:00)
+   11  :                 FnCall('today')
+   12  :                     Get(TK.IDENT, 'today')
 
 tree2:  sma_period = [3,5,10..20,28]
     1  : Define(TK.DEFINE, TK.DEFINE, '=')
@@ -222,9 +224,11 @@ tree1:(post)  periods = {
     5  :             Ref(TK.IDENT, 'train')
     6  :             BinOp(TK.RANGE, '..')
     7  :                 BinOp(TK.SUB, '-')
-    8  :                     Get(TK.IDENT, 'today')
-    9  :                     Duration(TK.DUR, 730 days, 0:00:00)
-   10  :                 Get(TK.IDENT, 'today')
+    8  :                     FnCall('today')
+    9  :                         Get(TK.IDENT, 'today')
+   10  :                     Duration(TK.DUR, 730 days, 0:00:00)
+   11  :                 FnCall('today')
+   12  :                     Get(TK.IDENT, 'today')
 
 tree2:(post)  sma_period = [3,5,10..20,28]
     1  : Define(TK.DEFINE, TK.DEFINE, '=')

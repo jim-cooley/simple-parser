@@ -6,6 +6,8 @@ test: 6:
 tree1:  (today-2y)..today
     1  : BinOp(TK.RANGE, '..')
     2  :     BinOp(TK.SUB, '-')
-    3  :         Get(TK.IDENT, 'today')
-    4  :         Duration(TK.DUR, 730 days, 0:00:00)
-    5  :     Get(TK.IDENT, 'today')
+    3  :         FnCall('today')
+    4  :             Get(TK.IDENT, 'today')
+    5  :         Duration(TK.DUR, 730 days, 0:00:00)
+    6  :     FnCall('today')
+    7  :         Get(TK.IDENT, 'today')

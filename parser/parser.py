@@ -13,7 +13,7 @@ from runtime.token import Token
 from runtime.token_ids import TK
 from runtime.tree import UnaryOp, BinOp, Command, Assign, Get, FnCall, Index, PropRef, Define, DefineFn, DefineVar, \
     DefineVarFn, ApplyChainProd, Ref, FnRef, Return, IfThenElse, Generate
-from runtime.scope import Block, Flow
+from runtime.scope import Block, Flow, Function
 from runtime.literals import Duration, Float, Int, Percent, Str, Time, Bool, List, Set, Literal
 
 from parser.rewrites import RewriteGets2Refs, RewriteFnCall2DefineFn, RewriteFnCall2FnDef
@@ -517,6 +517,7 @@ class Parser(object):
         identifier | identifier ( plist ) | identifier . identifier
         """
         tk = self.advance()
+        ident = self.environment.keywords.find(token=tk)
         token = self.peek()
         if token.id == TK.DOT:
             token = self.consume_next(TK.IDENT)
@@ -531,7 +532,7 @@ class Parser(object):
         elif token.id == TK.LBRK:
             node = Index(ref=Get(tk), parameters=self.idx_list())
         else:
-            if tk.t_class == TCL.FUNCTION:
+            if isinstance(ident, Function) or tk.t_class == TCL.FUNCTION:
                 node = FnCall(ref=Get(tk), parameters=None)
             else:
                 is_lval = self.check(ASSIGNMENT_TOKENS_REF)
