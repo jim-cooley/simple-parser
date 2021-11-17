@@ -9,4 +9,6 @@ tree1:  3 <| empty
     3  :     Set(TK.EMPTY, {})
 
 tree1:(post)  3 <| empty
-    1  : Literal(TK.NONE, None)
+    1  : BinOp(TK.FALL_BELOW, '<|')
+    2  :     Int(TK.INT, 3)
+    3  :     Set(TK.EMPTY, {})

@@ -7,15 +7,6 @@ NAME_PROPERTY = 'name'
 INDEX_PROPERTY = 'index'
 COLUMNS_PROPERTY = 'columns'
 
-
-def generate_dataframe(env, args):
-    return None
-
-
-def generate_list(env, args):
-    return args.values()
-
-
 _DEFAULT_SERIES_ITEMS = {
     'name': None,
     'index': None,
@@ -28,6 +19,18 @@ _DEFAULT_DATAFRAME_ITEMS = {
 }
 
 
+def generate_dataframe(env, args):
+    return None
+
+
+def generate_list(env, args):
+    return args.values()
+
+
+def generate_range(env, args):
+    pass
+
+
 def generate_series(env, args):
     name = None
     index = None
@@ -38,4 +41,3 @@ def generate_series(env, args):
     args.remove([NAME_PROPERTY, INDEX_PROPERTY])
     series = Series(name=name, index=index, values=args.dict())
     return series
-

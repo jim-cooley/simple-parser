@@ -4,12 +4,12 @@ from abc import ABC
 
 from runtime.conversion import c_unbox, c_type
 from runtime.environment import Environment
-from runtime.tree import AST, BinOp
+from runtime.tree import AST, BinOp, Generate
 from runtime.literals import List, Literal, Bool
 from runtime.token import Token
 from runtime.token_ids import TK
 
-from runtime.eval_binops import eval_binops_dispatch_fixup
+from runtime.eval_binops import eval_binops_dispatch_fixup, is_supported_binop
 from runtime.eval_unary import decrement_literal, increment_literal, negate_literal, not_literal
 from runtime.evaluate import _INTRINSIC_VALUE_TYPES
 
@@ -148,11 +148,16 @@ class Fixups(TreeModifier, ABC):
         rnode = self.visit_binary_node(node, label)
         if node is not None:
             tkid = node.token.id
+            if tkid == TK.RANGE:
+                rnode = Generate(TK.RANGE, parameters=[node.left, node.right], loc=node.token.location)
+                rnode.parent = node.parent
+                return rnode
             if tkid == TK.TUPLE:
                 return self.convert_coln_plist(node, label)
             if isinstance(node.left, Literal) and isinstance(node.right, Literal):
-                rnode = _fixup_binary_operation(rnode)
-                rnode = _lift(rnode, Literal.lit(rnode.value, other=rnode))
+                if is_supported_binop(node.op):
+                    rnode = _fixup_binary_operation(rnode)
+                    rnode = _lift(rnode, Literal.lit(rnode.value, other=rnode))
         return rnode
 
     def process_command(self, node, label=None):

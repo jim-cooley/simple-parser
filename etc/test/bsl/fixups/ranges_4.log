@@ -14,7 +14,9 @@ tree1:  [a..b, 1..2]
 
 tree1:(post)  [a..b, 1..2]
     1  : Generate(TK.LIST, len=2)
-    2  :     BinOp(TK.RANGE, '..')
+    2  :     Generate(TK.RANGE, len=2)
     3  :         Ref(TK.IDENT, 'a')
     4  :         Get(TK.IDENT, 'b')
-    5  :     Literal(TK.NONE, None)
+    5  :     Generate(TK.RANGE, len=2)
+    6  :         Int(TK.INT, 1)
+    7  :         Int(TK.INT, 2)

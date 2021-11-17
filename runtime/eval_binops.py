@@ -46,6 +46,10 @@ _type2native = {
 }
 
 
+def is_supported_binop(op):
+    return op in _binops_dispatch_table or op in _boolean_dispatch_table
+
+
 # --------------------------------------------------
 #            M A N U A L   C H A N G E S 
 # --------------------------------------------------

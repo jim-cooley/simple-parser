@@ -222,7 +222,7 @@ tree1:(post)  periods = {
     3  :     Block(TK.BLOCK, v=[Define()], '')
     4  :         Define(TK.DEFINE, TK.DEFINE, ':')
     5  :             Ref(TK.IDENT, 'train')
-    6  :             BinOp(TK.RANGE, '..')
+    6  :             Generate(TK.RANGE, len=2)
     7  :                 BinOp(TK.SUB, '-')
     8  :                     FnCall('today')
     9  :                         Get(TK.IDENT, 'today')
@@ -236,8 +236,10 @@ tree2:(post)  sma_period = [3,5,10..20,28]
     3  :     Generate(TK.LIST, len=4)
     4  :         Int(TK.INT, 3)
     5  :         Int(TK.INT, 5)
-    6  :         Literal(TK.NONE, None)
-    7  :         Int(TK.INT, 28)
+    6  :         Generate(TK.RANGE, len=2)
+    7  :             Int(TK.INT, 10)
+    8  :             Int(TK.INT, 20)
+    9  :         Int(TK.INT, 28)
 
 tree3:(post)  atr := (high + low) / 2
     1  : DefineVar(TK.DEFINE, TK.DEFINE, ':=')

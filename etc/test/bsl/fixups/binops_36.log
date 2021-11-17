@@ -9,4 +9,6 @@ tree1:  false |> none
     3  :     Literal(TK.NONE, None)
 
 tree1:(post)  false |> none
-    1  : Literal(TK.NONE, None)
+    1  : BinOp(TK.RISE_ABOVE, '|>')
+    2  :     Bool(TK.BOOL, False)
+    3  :     Literal(TK.NONE, None)

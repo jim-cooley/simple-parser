@@ -1,7 +1,7 @@
 from enum import unique, IntEnum
 
 from runtime.dataframe import create_dataset, create_series
-from runtime.generators import generate_dataframe, generate_list, generate_series
+from runtime.generators import generate_dataframe, generate_list, generate_series, generate_range
 from runtime.intrinsics import do_now
 from runtime.print import do_print, init_print
 from runtime.scope import IntrinsicFunction
@@ -55,6 +55,7 @@ def init_intrinsic(name):
 tk2generator = {
     TK.DATAFRAME: 'generate_dataframe',
     TK.LIST: 'generate_list',
+    TK.RANGE: 'generate_range',
     TK.SERIES: 'generate_series',
 }
 
@@ -78,6 +79,7 @@ _instrinsic_aliases = {
 _generator_funcdesc = {
     'generate_dataframe': (generate_dataframe, None),
     'generate_list': (generate_list, None),
+    'generate_range': (generate_range, None),
     'generate_series': (generate_series, None),
 }
 

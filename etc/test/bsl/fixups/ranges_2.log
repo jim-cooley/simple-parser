@@ -9,6 +9,6 @@ tree1:  a..b
     3  :     Get(TK.IDENT, 'b')
 
 tree1:(post)  a..b
-    1  : BinOp(TK.RANGE, '..')
+    1  : Generate(TK.RANGE, len=2)
     2  :     Ref(TK.IDENT, 'a')
     3  :     Get(TK.IDENT, 'b')
