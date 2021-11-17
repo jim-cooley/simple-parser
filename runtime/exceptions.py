@@ -6,22 +6,22 @@ from runtime.indexdict import IndexedDict
 from runtime.logwriter import IndentedLogWriter
 
 
-class SemtexError(Exception):
+class FocalError(Exception):
     def __init__(self, *args, **kwargs):  # real signature unknown
         super().__init__(*args, **kwargs)
 
 
-class SemtexWarning(Warning):
+class FocalWarning(Warning):
     def __init__(self, *args, **kwargs):  # real signature unknown
         super().__init__(*args, **kwargs)
 
 
-class SemtexRuntimeError(RuntimeError):
+class FocalRuntimeError(RuntimeError):
     def __init__(self, *args, **kwargs):  # real signature unknown
         super().__init__(*args, **kwargs)
 
 
-class SemtexRuntimeWarning(RuntimeWarning):
+class FocalRuntimeWarning(RuntimeWarning):
     def __init__(self, *args, **kwargs):  # real signature unknown
         super().__init__(*args, **kwargs)
 
@@ -88,40 +88,36 @@ class ExceptionReporter(IndentedLogWriter):
         error_text = f'Invalid Syntax: {message}.'
         self.report(error_text, loc)
         if exception:
-            raise SemtexError(error_text)
+            raise FocalError(error_text)
 
     def strict_warning(self, message, loc=None):
         error_text = f'Warning: Invalid Syntax: {message}.'
         self.report(error_text, loc)
         if self.option.strict or self.option.force_errors:
-            raise SemtexError(error_text)
-        # warnings.warn("message", SemtexWarning(message))  # UNDONE: says these aren't subclasses of Warning.
+            raise FocalError(error_text)
 
     def warning(self, message, loc=None):
         error_text = f'Warning: Invalid Syntax: {message}.'
         self.report(error_text, loc)
         if self.option.force_errors:
-            raise SemtexError(error_text)
-        # warnings.warn("message", SemtexWarning(message))
+            raise FocalError(error_text)
 
     def runtime_error(self, message, loc=None):
         error_text = f'Runtime Error: {message}.'
         self.report(error_text, loc)
-        raise SemtexError(error_text)
+        raise FocalError(error_text)
 
     def runtime_strict_warning(self, message, loc=None):
         error_text = f'Warning: {message}.'
         self.report(error_text, loc)
         if self.option.strict or self.option.force_errors:
-            raise SemtexError(error_text)
-        # warnings.warn("message", SemtexRuntimeWarning(message))
+            raise FocalError(error_text)
 
     def runtime_warning(self, message, loc=None):
         error_text = f'Warning: {message}.'
         self.report(error_text, loc)
         if self.option.force_errors:
-            raise SemtexError(error_text)
-        # warnings.warn("message", SemtexRuntimeWarning(message))
+            raise FocalError(error_text)
 
     def report(self, message, loc=None):
         if self.option.stack_trace:
@@ -142,7 +138,7 @@ class ExceptionReporter(IndentedLogWriter):
 _defaultOptions = {
     'strict': False,
     'force_errors': False,
-    'log_file': './semtex.log',
+    'log_file': './focal.log',
     'stack_trace': False,
 }
 

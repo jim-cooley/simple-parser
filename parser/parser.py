@@ -1,10 +1,8 @@
 from copy import copy
 from dataclasses import dataclass
 
-from runtime.dataframe import Series
 from runtime.environment import Environment
-from runtime.exceptions import SemtexError, getLogFacility
-from runtime.keywords import Keywords
+from runtime.exceptions import FocalError, getLogFacility
 from runtime.options import getOptions
 from runtime.token_data import ADDITION_TOKENS, COMPARISON_TOKENS, FLOW_TOKENS, \
     EQUALITY_TEST_TOKENS, LOGIC_TOKENS, MULTIPLICATION_TOKENS, UNARY_TOKENS, IDENTIFIER_TYPES, ASSIGNMENT_TOKENS, \
@@ -115,7 +113,7 @@ class Parser(object):
             elif self.match1(TK.DEFINE):
                 return self.definition()
             return self.statement()
-        except SemtexError as se:
+        except FocalError as se:
             self.synchronize()
             raise se
         except Exception as e:

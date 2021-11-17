@@ -60,11 +60,11 @@ else
     p | parser)
         prefx="parser"
         ;;
-    f | fixups)
+    f | fi | fixups)
         prefx="fixups"
         ;;
-    s | semtex | focal)
-        prefx="semtex"
+    fo | i | s | semtex | focal)
+        prefx="focal"
         ;;
     *)
         prefx="parser"
@@ -75,7 +75,7 @@ else
 
   start=$(date +%s)
   case "$prefx" in
-      semtex|fixups|parser)
+      focal|fixups|parser)
           ./test_${prefx}.py $suite
           ;;
       *)

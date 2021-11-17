@@ -68,7 +68,7 @@ _skip_tests = [
 class SemanticAnalysisTestRunner(TestSuiteRunner, ABC):
 
     def __init__(self, test_data, skip_tests=_skip_tests):
-        super().__init__(test_data, skip_tests, log_dir='./etc/test/log/semtex')
+        super().__init__(test_data, skip_tests, log_dir='./etc/test/log/focal')
         self.verbose = True
         self.test = True
 

@@ -47,11 +47,11 @@ suite=$2
     p | parser)
         prefx="parser"
         ;;
-    f | fixups)
+    f | fi | fixups)
         prefx="fixups"
         ;;
-    s | semtex | focal)
-        prefx="semtex"
+    i | fo | s | semtex | focal)
+        prefx="focal"
         ;;
     *)
         prefx="parser"

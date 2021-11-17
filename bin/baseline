@@ -27,11 +27,11 @@ case "$prefx" in
   p | parser)
       prefx="parser"
       ;;
-  f | fixups)
+  f | fi | fixups)
       prefx="fixups"
       ;;
-  s | semtex | focal)
-      prefx="semtex"
+  i | s | semtex | focal)
+      prefx="focal"
       ;;
   *)
       prefx="parser"
