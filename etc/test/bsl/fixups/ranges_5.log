@@ -5,18 +5,14 @@ today-2y..today
 
 tree1:  today-2y..today
     1  : BinOp(TK.SUB, '-')
-    2  :     FnCall('today')
-    3  :         Get(TK.IDENT, 'today')
-    4  :     BinOp(TK.RANGE, '..')
-    5  :         Duration(TK.DUR, 730 days, 0:00:00)
-    6  :         FnCall('today')
-    7  :             Get(TK.IDENT, 'today')
+    2  :     Get(TK.IDENT, 'today')
+    3  :     BinOp(TK.RANGE, '..')
+    4  :         Duration(TK.DUR, 730 days, 0:00:00)
+    5  :         Get(TK.IDENT, 'today')
 
 tree1:(post)  today-2y..today
     1  : BinOp(TK.SUB, '-')
-    2  :     FnCall('today')
-    3  :         Get(TK.IDENT, 'today')
-    4  :     BinOp(TK.RANGE, '..')
-    5  :         Duration(TK.DUR, 730 days, 0:00:00)
-    6  :         FnCall('today')
-    7  :             Get(TK.IDENT, 'today')
+    2  :     Get(TK.IDENT, 'today')
+    3  :     BinOp(TK.RANGE, '..')
+    4  :         Duration(TK.DUR, 730 days, 0:00:00)
+    5  :         Get(TK.IDENT, 'today')

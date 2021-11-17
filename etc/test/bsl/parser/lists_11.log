@@ -1,8 +1,13 @@
 
 
 test: 11:
-[[]]
+[[a],[b],[c]]
 
-tree1:  [[]]
-    1  : List(TK.LIST, [List()])
-    2  :     List(TK.LIST, None)
+tree1:  [[a],[b],[c]]
+    1  : Generate(TK.LIST, len=3)
+    2  :     Generate(TK.LIST, len=1)
+    3  :         Get(TK.IDENT, 'a')
+    4  :     Generate(TK.LIST, len=1)
+    5  :         Get(TK.IDENT, 'b')
+    6  :     Generate(TK.LIST, len=1)
+    7  :         Get(TK.IDENT, 'c')

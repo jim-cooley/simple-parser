@@ -4,10 +4,9 @@ test: 2:
 [a]
 
 tree1:  [a]
-    1  : List(TK.LIST, [Get()])
+    1  : Generate(TK.LIST, len=1)
     2  :     Get(TK.IDENT, 'a')
 
 tree1:(post)  [a]
-result: list([Get()])
-    1  : List(TK.LIST, [Get()])
+    1  : Generate(TK.LIST, len=1)
     2  :     Get(TK.IDENT, 'a')

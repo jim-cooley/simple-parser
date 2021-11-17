@@ -246,8 +246,7 @@ class Ref(Expression):
         return get
 
     def format(self, brief=True):
-        token = 'None' if self.token is None else f'{self.token}'
-        return f'Ref({token})'
+        return f'Ref({_tk_name(self.token)}: \'{self.name}\')'
 
 
 @dataclass
@@ -539,3 +538,19 @@ class Command(Statement):
         self.expr = expr
         if expr is not None:
             expr.parent = self
+
+
+def _tk_name(token):
+    _tn = 'None'
+    if token is not None:
+        _tn = f'{token.id.name}' if hasattr(token.id, "name") else f'{token.id}, '
+    return f'TK.{_tn}'
+
+
+def _format_token(token):
+    _tn = f'.{token.id.name}(' if hasattr(token.id, "name") else f'({token.id}, '
+    _tv = 'None' if token.value is None else f'{token.value}'
+    _tl = f'\'{token.lexeme}\'' if token.lexeme is not None else 'None'
+    if _tl == '\'\n\'':
+        _tl = "'\\n'"
+    return f'{_tk_name(token)}({_tl}, v={_tv})'

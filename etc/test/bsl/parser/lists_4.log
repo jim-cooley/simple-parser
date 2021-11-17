@@ -1,10 +1,16 @@
 
 
 test: 4:
-['a', 'b', 'c']
+[a*2, b*3, c/a]
 
-tree1:  ['a', 'b', 'c']
-    1  : List(TK.LIST, [Str(), Str(), Str()])
-    2  :     Str(TK.STR, 'a')
-    3  :     Str(TK.STR, 'b')
-    4  :     Str(TK.STR, 'c')
+tree1:  [a*2, b*3, c/a]
+    1  : Generate(TK.LIST, len=3)
+    2  :     BinOp(TK.MUL, '*')
+    3  :         Get(TK.IDENT, 'a')
+    4  :         Int(TK.INT, 2)
+    5  :     BinOp(TK.MUL, '*')
+    6  :         Get(TK.IDENT, 'b')
+    7  :         Int(TK.INT, 3)
+    8  :     BinOp(TK.DIV, '/')
+    9  :         Get(TK.IDENT, 'c')
+   10  :         Get(TK.IDENT, 'a')

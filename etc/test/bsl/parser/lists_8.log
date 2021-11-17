@@ -1,14 +1,15 @@
 
 
 test: 8:
-['a':5, 'b':'c', d]
+[a:5, b:[c, d]]
 
-tree1:  ['a':5, 'b':'c', d]
-    1  : Generate(TK.SERIES, len=3)
+tree1:  [a:5, b:[c, d]]
+    1  : Generate(TK.SERIES, len=2)
     2  :     Define(TK.DEFINE, TK.DEFINE, ':')
-    3  :         Str(TK.STR, 'a')
+    3  :         Ref(TK.IDENT, 'a')
     4  :         Int(TK.INT, 5)
     5  :     Define(TK.DEFINE, TK.DEFINE, ':')
-    6  :         Str(TK.STR, 'b')
-    7  :         Str(TK.STR, 'c')
-    8  :     Get(TK.IDENT, 'd')
+    6  :         Ref(TK.IDENT, 'b')
+    7  :         Generate(TK.LIST, len=2)
+    8  :             Get(TK.IDENT, 'c')
+    9  :             Get(TK.IDENT, 'd')

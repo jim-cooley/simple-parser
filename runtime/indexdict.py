@@ -21,113 +21,156 @@ class IndexedDict(object):
 
     """
 
-    def __init__(self, items=None, defaults=None):
+    def __init__(self, items=None, fields=None, values=None, defaults=None):
         super().__init__()
-        self._defaults = {} if defaults is None else defaults
-        if defaults is not None:
-            self.__dict__.update(self._defaults)
+        self._fields = None
+        self._values = None
+        _items = defaults or {}
         if items is not None:
-            self.__dict__.update(items)
+            _items.update(items)
+            self._fields = list(_items.keys())
+            self._values = list(_items.values())
+            self.__dict__.update(_items)
+        else:
+            if not values:
+                self._fields = list(_items.keys())
+                self._values = list(_items.values())
+                self.__dict__.update(_items)
+            else:
+                for k in _items:
+                    if k not in fields:
+                        fields.append(k)
+                        values.append(_items[k])
+                self._fields = fields
+                self._values = values
+                if fields:
+                    self.__dict__.update(_rzip(fields, values))
 
     def __getitem__(self, key):
         if isinstance(key, int):
-            return self._get_item_by_index(key)
-        return self._get_item_by_key(key, self._get_default(key, None))
+            if key < 0 or key > len(self._values):
+                raise IndexError('Index out of range')
+            return self._values[key]
+        if key not in self._fields:
+            raise KeyError(f'Key {key} not in dictionary')
+        key = self._fields.index[key]
+        return self._values[key]
 
     def __setitem__(self, key, value):
-        self._set_item_by_key(key, value)
+        if isinstance(key, int):
+            if key < 0 or key > len(self._values):
+                raise IndexError('Index out of range')
+            self._values[key] = value
+            key = self._fields[key]
+        else:
+            idx = self._fields.index(key)
+            if idx < 0:
+                self._fields.append(key)
+                self._values.append(value)
+            else:
+                self._values[idx] = value
+        if key in self.__dict__:
+            self.__dict__[key] = value
 
     def __str__(self):
         return self.format()
 
     def __len__(self):
-        return len(self.__dict__.keys()) - 1   # don't count '__dict__'
+        return len(self._values)
+
+    def append(self, key=None, value=None):
+        if key:
+            if key in self._fields:
+                raise KeyError(f'Key {key} already in dictionary')
+            self._fields.append(key)
+            self.__dict__[key] = value
+        self._values.append(value)
 
     def is_empty(self):
-        return len(self.__dict__.keys()) - 1 < 1
+        return len(self._values) == 0
 
     def items(self):                        # UNDONE: should be generator/iterator
-        k = list(self.__dict__.items())
-        return k[1:]
+        return _rzip(self._fields, self._values)
 
     def keys(self, keys=None):              # UNDONE: iterator?
-        k = list(self.__dict__.keys())[1:]
-        return k
+        return self._fields
 
     def remove(self, key):
         if isinstance(key, list):
             for k in key:
+                idx = self._fields.index(k)
+                del self._fields[idx]
+                del self._values[idx]
                 self.__dict__.pop(k, None)
         else:
+            idx = self._fields.index(k)
+            del self._fields[idx]
+            del self._values[idx]
             self.__dict__.pop(key, None)
 
     def values(self):                       # UNDONE: iterator?
-        k = list(self.__dict__.values())
-        return k[1:]
+        return self._values
 
     def dict(self, keys=None, filter=None):
         if filter is None:
-            filter = ['_defaults']
-        d = deepcopy(self._defaults)
-        d.update(self.__dict__)
+            filter = ['_values']
+        _d = dict(zip(self._fields, self._values))
         if keys is not None:
-            k = {}
+            _k = {}
             for ky in keys:
-                if ky in d:
-                    k[ky] = d[ky]
-            d = k
+                if ky in _d:
+                    _k[ky] = _d[ky]
+            _d = _k
         if filter is not None:
             for ky in filter:
-                if ky in d:
-                    d.pop(ky, None)
-        return d
+                if ky in _d:
+                    _d.pop(ky, None)
+        return _d
 
     def to_list(self):
-        return deepcopy(self.values())
+        return self._values
 
     def update(self, items):
         self.__dict__.update(items)
+        for k in items:
+            idx = self._fields.index(k)
+            if idx >= 0:
+                self._values[idx] = items[k]
+            else:
+                self._fields.append(k)
+                self._values.append(items[k])
 
     def format(self, brief=True):
-        if self.__dict__ is None:
+        if not len(self._values):
             return '{}'
         else:
             if not brief:
                 fstr = ''
-                _max = (len(self.__dict__.keys())-1)
-                if _max == 1:
-                    fstr += f'{self._get_item_by_index(0)}'  # skips '__dict__'
-                else:
-                    for idx in range(0, _max-1):
-                        fstr += f'{self._get_item_by_index(idx)}'  # skips '__dict__'
-                        fstr += ',' if idx < _max else ''
+                _lenv, _lenf = len(self._values), len(self._fields)
+                for idx in range(0, _lenv):
+                    if idx < _lenf:
+                        fstr += f'{self._fields[idx]}: {self._values[idx]}'
+                    else:
+                        fstr += f'{self._values[idx]}'
+                    fstr += ',' if idx < _lenv else ''
             else:
                 fstr = f'count={len(self.__dict__.keys())-1}'
             return '{' + f'{fstr}' + '}'
 
-    def _get_item_by_index(self, index, default=None):
-        keys = list(self.__dict__.keys())
-        index += 1  # _defaults takes the first slot
-        if index < 0 or index > len(keys):
-            raise IndexError('Index out of range')
-        return self._get_item_by_key(keys[index], default)
 
-    def _set_item_by_index(self, index, value=None):
-        keys = list(self.__dict__.keys())
-        if index < 0 or index > len(keys):
-            raise IndexError('Index out of range')
-        return self._set_item_by_key(keys[index], value)
-
-    def _get_item_by_key(self, key, default=None):
-        if key not in self.__dict__:
-            return default
-        return self.__dict__[key]
-
-    def _set_item_by_key(self, key, value=None):
-        self.__dict__[key] = value
-
-    def _get_default(self, key, default):
-        return default if key not in self._defaults else self._defaults[key]
+# Helpers:
+def _rzip(*iterables):
+    # zip('ABCD', 'xy') --> Cx Dy
+    sentinel = object()
+    iterators = [reversed(it) for it in iterables]
+    while iterators:
+        result = []
+        for it in iterators:
+            elem = next(it, sentinel)
+            if elem is sentinel:
+                return
+            result.append(elem)
+        yield tuple(result)
 
 
 # Test Harness

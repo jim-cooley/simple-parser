@@ -10,7 +10,7 @@ tree1:  a[x][y]
     4  :         Get(TK.IDENT, 'x')
 
 tree2:  a[x][y]
-    1  : List(TK.LIST, [Get()])
+    1  : Generate(TK.LIST, len=1)
     2  :     Get(TK.IDENT, 'y')
 
 tree1:(post)  a[x][y]
@@ -20,6 +20,5 @@ tree1:(post)  a[x][y]
     4  :         Get(TK.IDENT, 'x')
 
 tree2:(post)  a[x][y]
-result: list([Get()])
-    1  : List(TK.LIST, [Get()])
+    1  : Generate(TK.LIST, len=1)
     2  :     Get(TK.IDENT, 'y')

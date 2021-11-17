@@ -468,7 +468,6 @@ class Parser(object):
         elif token.id == TK.LBRK:
             self.consume(TK.LBRK)
             node = self.series()
-            # node = List(self.sequence(), token.remap2litval())
             self.consume(TK.RBRK)
             return node
         elif token.t_class in IDENTIFIER_TYPES or token.id in [TK.IDENT, TK.ANON]:
@@ -591,10 +590,7 @@ class Parser(object):
             seq.append(expr)
             if not self.match1(TK.COMA):
                 break
-        if is_series:
-            node = Generate(target=TK.SERIES, parameters=seq, loc=loc)
-        else:
-            node = List(items=seq, loc=loc)
+        node = Generate(target=(TK.SERIES if is_series else TK.LIST), parameters=seq, loc=loc)
         return node
 
     def sequence(self, node=None):

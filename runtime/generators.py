@@ -13,7 +13,7 @@ def generate_dataframe(env, args):
 
 
 def generate_list(env, args):
-    return None
+    return args.values()
 
 
 _DEFAULT_SERIES_ITEMS = {
@@ -36,6 +36,6 @@ def generate_series(env, args):
     if hasattr(args, INDEX_PROPERTY):
         index = deepcopy(c_unbox(args.index))
     args.remove([NAME_PROPERTY, INDEX_PROPERTY])
-    series = Series(name=name, index=[name], values=args.dict())
+    series = Series(name=name, index=index, values=args.dict())
     return series
 

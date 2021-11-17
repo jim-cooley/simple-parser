@@ -4,7 +4,7 @@ test: 9:
 [3,5,10..20,28]
 
 tree1:  [3,5,10..20,28]
-    1  : List(TK.LIST, [Int(), Int(), BinOp(), Int()])
+    1  : Generate(TK.LIST, len=4)
     2  :     Int(TK.INT, 3)
     3  :     Int(TK.INT, 5)
     4  :     BinOp(TK.RANGE, '..')
@@ -13,8 +13,7 @@ tree1:  [3,5,10..20,28]
     7  :     Int(TK.INT, 28)
 
 tree1:(post)  [3,5,10..20,28]
-result: list([Int(), Int(), Literal(), Int()])
-    1  : List(TK.LIST, [Int(), Int(), Literal(), Int()])
+    1  : Generate(TK.LIST, len=4)
     2  :     Int(TK.INT, 3)
     3  :     Int(TK.INT, 5)
     4  :     Literal(TK.NONE, None)

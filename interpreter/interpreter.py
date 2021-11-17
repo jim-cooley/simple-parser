@@ -9,7 +9,7 @@ from runtime.literals import Literal
 from runtime.options import getOptions
 from runtime.scope import Block, Scope, Object
 from runtime.token import Token
-from runtime.tree import FnCall, Define, Ref, Generate
+from runtime.tree import FnCall, Define, Ref, Generate, Assign
 
 from runtime.eval_unary import is_true
 from runtime.evaluate import reduce_value, evaluate_binary_operation, evaluate_unary_operation, evaluate_identifier, \
@@ -110,13 +110,13 @@ class Interpreter(TreeFilter):
 
         for t in environment.trees:
             self.visit(t.root)
-            v = self.stack.pop()
-            ty = type(v).__name__
-            if hasattr(v, 'value'):
-                v = v.value
-            t.values = v
-            if self.option.verbose:
-                print(f'\nresult: {ty.lower()}({v})\n')
+#            v = self.stack.pop()
+#            ty = type(v).__name__
+#            if hasattr(v, 'value'):
+#                v = v.value
+#            t.values = v
+#            if self.option.verbose:
+#                print(f'\nresult: {ty.lower()}({v})\n')
         if self.option.verbose:
             print(f'stack depth: {self.stack.depth()}')
         return environment
@@ -363,51 +363,49 @@ class Interpreter(TreeFilter):
         self.visit(fnode.code)
         Environment.leave()
 
+    # UNDONE: may want to make a list of tuples and then process it into a dict / list combination (ie. put a list in IndexedDict for un-named parameters)
     # VERIFY: this may not handle embedded expressions correctly
     # the reason that this is not simply _process_sequence is that it must handle k:v pairs without evaluating them
     def reduce_parameters(self, scope=None, args=None):
-        items = {}
+        _values = []
+        _fields = []
+        _defaults = {}
         if scope is not None:
             Environment.enter(scope)
             if hasattr(scope, 'defaults'):
                 if scope.defaults is not None:
-                    items = deepcopy(scope.defaults)
+                    _defaults = deepcopy(scope.defaults)
+                    _fields = list(_defaults.keys())
+                    _values = list(_defaults.values())
         if args is not None:
             for idx in range(0, len(args)):
                 ref = args[idx]
-                if isinstance(ref, Define):
-                    value = ref.right
-                    ref = ref.left
-                    sym = reduce_ref(scope=scope, ref=ref)
+                if isinstance(ref, Assign):
+                    self.visit(ref.right)
+                    value = self.stack.pop()
+                    sym = reduce_ref(scope=scope, ref=ref.left)
                     if isinstance(sym, Object):
-                        items[sym.name] = value
+                        _fields.append(sym.name)
+                        _values.append(c_unbox(value))
                     elif isinstance(sym, Token):    # tokens are keywords / reserved words
-                        items[sym.lexeme] = value
+                        _fields.append(sym.lexeme)
+                        # self.visit(value)
+                        # val = self.stack.pop()
+                        _values.append(c_unbox(value))
                     else:
-                        slot = list(items.keys())[idx]
-                        items[slot] = c_unbox(sym)
-                elif isinstance(ref, Ref):
-                    sym = reduce_ref(scope=scope, ref=ref)
-                    if isinstance(sym, Object):
-                        items[sym.name] = sym
-                    else:
-                        slot = list(items.keys())[idx]
-                        items[slot] = c_unbox(sym)
-                elif isinstance(ref, Literal):
-                    if idx >= len(items):
-                        v = c_unbox(ref)
-                        items[v] = v
-                    else:
-                        slot = list(items.keys())[idx]
-                        items[slot] = c_unbox(ref)
+                        assert False, "Unexpected argument type in Define"
                 else:
-                    self.visit(ref)
-                    val = self.stack.pop()
-                    slot = list(items.keys())[idx]
-                    items[slot] = c_unbox(val)  # UNDONE: is this legit on named parameters?
+                    if _fields:
+                        runtime_error("Cannot have un-named items following named items.", loc=ref.token.location)
+                    if isinstance(ref, Literal):
+                        _values.append(c_unbox(ref))
+                    else:
+                        self.visit(ref)
+                        val = self.stack.pop()
+                        _values.append(c_unbox(val))
         if scope is not None:
             Environment.leave()
-        return IndexedDict(items)
+        return IndexedDict(fields=_fields, values=_values)
 
     def _process_sequence(self, seq):
         self.indent()

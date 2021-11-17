@@ -33,7 +33,7 @@ def invoke_intrinsic(env, name, args, disptab=None):
         fn = disptab[name][SLOT.INVOKE]
     else:
         raise ValueError(f"Unknown function: {name}")
-    if args is None or args.is_empty():
+    if not args:
         return fn(env)
     else:
         return fn(env, args)

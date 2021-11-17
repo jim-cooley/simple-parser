@@ -1,15 +1,12 @@
 
 
 test: 12:
-[[a]]
+[[]]
 
-tree1:  [[a]]
-    1  : List(TK.LIST, [List()])
-    2  :     List(TK.LIST, [Get()])
-    3  :         Get(TK.IDENT, 'a')
+tree1:  [[]]
+    1  : Generate(TK.LIST, len=1)
+    2  :     List(TK.LIST, None)
 
-tree1:(post)  [[a]]
-result: list([List()])
-    1  : List(TK.LIST, [List()])
-    2  :     List(TK.LIST, [Get()])
-    3  :         Get(TK.IDENT, 'a')
+tree1:(post)  [[]]
+    1  : Generate(TK.LIST, len=1)
+    2  :     List(TK.LIST, None)
