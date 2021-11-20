@@ -126,7 +126,7 @@ tree7:  price10a := _.delay(1d)[10:00]
     7  :             List(TK.LIST, [Duration()])
     8  :                 Duration(TK.DUR, 1 day, 0:00:00)
 
-tree8:  price10a := _.delay(1d)[10:00]
+tree8:  periods = {
     1  : Generate(TK.LIST, len=1)
     2  :     Time(TK.TIME, 10:00:00)
 

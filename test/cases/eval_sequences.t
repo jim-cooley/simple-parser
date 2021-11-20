@@ -1,4 +1,3 @@
-%%option{strict=false}
 a | { b:1 } | c
 a | { b=1, 'k':v } | c
 a | { b + 1 } | c

@@ -80,13 +80,12 @@ class SemanticAnalysisTestRunner(TestSuiteRunner, ABC):
         command = FocalShell(parser=parser, interpreter=interp)
         environment = fixups.apply(parser.parse(source=test))
         if self.verbose:
-            _dump_environment(environment, label='post', print_tokens=False, print_results=False)
+            _dump_environment(environment, label='post', print_results=False, print_tokens=False)
         logger.banner("RUN")
         environment = command.run(target=environment)
         if self.test:
-            _dump_environment(environment, label='post',
-                              print_tokens=False, print_trees=False, print_results=True, print_symbols=True,
-                              print_commands=False)
+            _dump_environment(environment, label='post', print_results=True, print_tokens=False, print_trees=False,
+                              print_symbols=True)
 
 
 # this is only for execution under debugger or via command-line

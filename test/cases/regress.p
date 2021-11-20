@@ -1,3 +1,12 @@
+def factorial(x) := {
+    print('in factorial')
+    if x == 1 then
+        return 1
+    else
+        return x * factorial(x - 1)
+}
+
+result = factorial(5)
 
 a = [1..2]
 print(a)
@@ -10,20 +19,6 @@ s1 = [name:'series', 'a':5, 'b':'c', 'd'=3, index=['a','b']]
 
 def fn(x, y) = x*y
 r = fn(2, y=3)
-
-
-def factorial(x) := {
-    print('in factorial')
-    if x == 1 then
-        return 1
-    else
-        return x * factorial(x - 1)
-}
-
-result = factorial(5)
-
-
-
 
 #s = [5, 6, 7, 8, 9, 10, name:'series']
 print(a)

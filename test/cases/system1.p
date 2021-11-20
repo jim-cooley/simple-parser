@@ -1,9 +1,4 @@
 # sample rules file for pyser / qtradr
-
-%%yahoo (file='spq500.csv', 2y)
-%%backtest (rules, period='train')
-%%report { report >> rules }
-
 #
 periods = {
     train: (today-2y)..today

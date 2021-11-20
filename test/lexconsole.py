@@ -2,8 +2,8 @@ from argparse import ArgumentParser
 from enum import IntEnum, unique
 
 from parser.lexer import Lexer
+from parser.tokenstream import TokenStream
 from runtime.exceptions import getLogFacility
-from runtime.indexdict import IndexedDict
 from runtime.options import getOptions
 from runtime.runtime import load_file
 
@@ -46,7 +46,7 @@ class LexConsole:
         else:
             lines = source
         for line in lines:
-            lexer = Lexer(source=line, verbose=self.option.verbose)
+            lexer = TokenStream(source=line)
             print('\n\nsource:')
             print(line)
             print('tokens:')

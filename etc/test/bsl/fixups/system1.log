@@ -2,11 +2,6 @@
 
 test:
 # sample rules file for pyser / qtradr
-
-%%yahoo (file='spq500.csv', 2y)
-%%backtest (rules, period='train')
-%%report { report >> rules }
-
 #
 periods = {
     train: (today-2y)..today
@@ -86,7 +81,7 @@ tree5:  price10a := price.delay(1d)[10:00]
     7  :             List(TK.LIST, [Duration()])
     8  :                 Duration(TK.DUR, 1 day, 0:00:00)
 
-tree6:  price10a := price.delay(1d)[10:00]
+tree6:  # sample rules file for pyser / qtradr
     1  : Generate(TK.LIST, len=1)
     2  :     Time(TK.TIME, 10:00:00)
 
@@ -269,7 +264,7 @@ tree5:(post)  price10a := price.delay(1d)[10:00]
     7  :             List(TK.LIST, [Duration()])
     8  :                 Duration(TK.DUR, 1 day, 0:00:00)
 
-tree6:(post)  price10a := price.delay(1d)[10:00]
+tree6:(post)  # sample rules file for pyser / qtradr
     1  : Generate(TK.LIST, len=1)
     2  :     Time(TK.TIME, 10:00:00)
 
@@ -398,27 +393,3 @@ tree8:(post)  rules: {
   107  :                             Ref(TK.IDENT, 'delay')
   108  :                             List(TK.LIST, [Duration()])
   109  :                                 Duration(TK.DUR, 1 day, 0:00:00)
-
-tree1:  # sample rules file for pyser / qtradr
-    1  : Command(TK.IDENT, TK.IDENT, '%%yahoo')
-    2  :     List(TK.TUPLE, [Define(), Duration()])
-    3  :         Define(TK.DEFINE, TK.DEFINE, '=')
-    4  :             Ref(TK.IDENT, 'file')
-    5  :             Str(TK.STR, 'spq500.csv')
-    6  :         Duration(TK.DUR, 730 days, 0:00:00)
-
-tree2:  %%backtest (rules, period='train')
-    1  : Command(TK.IDENT, TK.IDENT, '%%backtest')
-    2  :     List(TK.TUPLE, [Get(), Define()])
-    3  :         Get(TK.IDENT, 'rules')
-    4  :         Define(TK.DEFINE, TK.DEFINE, '=')
-    5  :             Ref(TK.IDENT, 'period')
-    6  :             Str(TK.STR, 'train')
-
-tree3:  %%report { report >> rules }
-    1  : Command(TK.IDENT, TK.IDENT, '%%report')
-    2  :     Block(TK.BLOCK, v=[Flow()], '')
-    3  :         Flow(TK.APPLY, v=[Get(), ApplyChainProd()], '>>')
-    4  :             Get(TK.IDENT, 'report')
-    5  :             ApplyChainProd(TK.DEFINE, TK.DEFINE, '>>')
-    6  :                 Ref(TK.IDENT, 'rules')

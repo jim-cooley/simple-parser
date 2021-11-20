@@ -25,11 +25,10 @@ class SemanticAnalysisTestRunner(TestSuiteRunner, ABC):
         parser = Parser()
         fixups = Fixups()
         environment = parser.parse(source=test)
-        _dump_environment(environment, print_commands=False, print_results=False, print_symbols=False, print_tokens=False)
+        _dump_environment(environment, print_results=False, print_tokens=False, print_symbols=False)
         environment = fixups.apply(environment)
-        _dump_environment(environment, label='post',
-                          print_tokens=False, print_trees=True, print_results=True, print_symbols=False,
-                          print_commands=True)
+        _dump_environment(environment, label='post', print_results=True, print_tokens=False, print_trees=True,
+                          print_symbols=False)
 
 
 # this is only for execution under debugger or via command-line

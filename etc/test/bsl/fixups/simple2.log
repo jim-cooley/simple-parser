@@ -2,8 +2,6 @@
 
 test:
 # sample rules file for pyser / qtradr
-%%backtest (period='train5', rules=rules)
-
 atr := (high + low) / 2
 median_price := (open + close) / 2
 trade_size := position * 10%
@@ -33,9 +31,6 @@ def rules5 = {
 }
 
 report := { trades | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price') }
-
-%%report (report)
-
 
 
 tree1:  atr := (high + low) / 2
@@ -719,17 +714,3 @@ tree11:(post)  report := { trades | select('symbol', 'buy_date', 'buy_price', 's
    11  :                     Str(TK.STR, 'buy_price')
    12  :                     Str(TK.STR, 'sell_date')
    13  :                     Str(TK.STR, 'sell_price')
-
-tree1:  %%backtest (period='train5', rules=rules)
-    1  : Command(TK.IDENT, TK.IDENT, '%%backtest')
-    2  :     List(TK.TUPLE, [Define(), Define()])
-    3  :         Define(TK.DEFINE, TK.DEFINE, '=')
-    4  :             Ref(TK.IDENT, 'period')
-    5  :             Str(TK.STR, 'train5')
-    6  :         Define(TK.DEFINE, TK.DEFINE, '=')
-    7  :             Ref(TK.IDENT, 'rules')
-    8  :             Get(TK.IDENT, 'rules')
-
-tree2:  %%report (report)
-    1  : Command(TK.IDENT, TK.IDENT, '%%report')
-    2  :     Get(TK.IDENT, 'report')

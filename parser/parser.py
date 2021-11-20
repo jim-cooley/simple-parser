@@ -1,6 +1,8 @@
 from copy import copy
 from dataclasses import dataclass
 
+from parser.lexer import Lexer
+from parser.tokenstream import TokenStream
 from runtime.environment import Environment
 from runtime.exceptions import FocalError, getLogFacility
 from runtime.options import getOptions
@@ -17,7 +19,6 @@ from runtime.scope import Block, Flow, Function
 from runtime.literals import Duration, Float, Int, Percent, Str, Time, Bool, List, Set, Literal
 
 from parser.rewrites import RewriteGets2Refs, RewriteFnCall2DefineFn, RewriteFnCall2FnDef
-from parser.lexer import Lexer
 
 
 @dataclass
@@ -33,7 +34,6 @@ class Parser(object):
         self.environment = None
         self.logger = getLogFacility('focal')
         self.options = getOptions('focal')
-        self._skip_end_of_line = True
 
     @property
     def token(self):
@@ -52,8 +52,6 @@ class Parser(object):
         environment = self._init(environment, source)
         self.environment = environment
         while True:
-            if not self._lexer.seek(0, Lexer.SEEK.NEXT):
-                break
             decl = self.declaration()
             tkid = self.peek().id
             if decl is not None:
@@ -61,54 +59,23 @@ class Parser(object):
                 environment.trees += [ParseTree(_) for _ in decls]
             elif tkid != TK.EOF:  # decl is None
                 continue
-            elif tkid == TK.EOF or decl.token.id == TK.EOF:
+            if tkid == TK.EOF or decl.token.id == TK.EOF:
                 break
         return environment
 
     def _init(self, environment=None, source=None):
-        self._lexer = Lexer(source=source)
-        logger = getLogFacility('focal')
+        self.tokens = TokenStream(source=source)
         if environment is None:
             environment = Environment()
-        environment.commands = []
-        environment.trees = []
-        environment.source = source
-        environment.lines = source.splitlines()
-        environment.tokens = self._lexer
-        Environment.current = environment
-        logger.lines = environment.lines
-        self._skip_end_of_line = True
+        environment.set(source=source, tokens=self.tokens, current=True)
         return environment
-
-    # UNDONE: removing commands from this parse will simplify MANY things
-    def command(self):
-        tk = self.peek()
-        commands = []
-        self._skip_end_of_line = False
-        self.advance()
-        while tk.id != TK.EOL:
-            command = Command(tk, self.expression())
-            if command is None:
-                self.logger.error(self.peek(), "Invalid token")
-                break
-            commands.append(command)
-            tk = self.peek()
-            if tk.id in [TK.EOF, TK.EOL]:
-                break
-            tk = self.consume(TK.SEMI, expect=False)  # optional semi-colon
-        self._skip_end_of_line = True
-        self.environment.commands += commands
-        return
 
     # -----------------------------------
     # Recursive Descent Parser Entry
     # -----------------------------------
     def declaration(self):
         try:
-            if self.match1(TK.PCT2):
-                self.command()
-                return None
-            elif self.match1(TK.VAR):
+            if self.match1(TK.VAR):
                 return self.var()
             elif self.match1(TK.DEFINE):
                 return self.definition()
@@ -578,7 +545,7 @@ class Parser(object):
         """
         seq = []
         is_series = False
-        loc = self._lexer.get_location()
+        loc = self.tokens.location
         if self.peek().id == TK.RBRK:
             return Literal.EMPTY_LIST(loc=loc)
         while True:
@@ -604,25 +571,12 @@ class Parser(object):
     # return current token with provision for fetching if there are none.
     # after the first token, self.token works fine for peek.
     def peek(self, rel=0):
-        tk = self._lexer.peek(rel=rel)
-        if not self._skip_end_of_line or tk.id != TK.EOL:
-            return tk
-        self._lexer.seek(1, Lexer.SEEK.NEXT)
-        return self._lexer.peek()
+        tk = self.tokens.peek(rel=rel)
+        return tk
 
     # returns current token and advances
     def advance(self):
-        while True:
-            tk = self._lexer.read1()
-            if tk.id == TK.EOL:
-                if self._skip_end_of_line:
-                    continue
-            break
-        while True:
-            if self._skip_end_of_line and self.peek().id == TK.EOL:
-                self._lexer.read1()
-                continue
-            break
+        tk = self.tokens.read1()
         return tk
 
     # if current token matches
@@ -642,13 +596,8 @@ class Parser(object):
 
     # skip over the expected current token.
     def consume(self, ex_tid, expect=True):
-        while True:
-            tk = self.peek()
-            if self._skip_end_of_line and tk.id == TK.EOL:
-                self.advance()
-                continue
-            break
-        if self.peek().id == ex_tid:
+        tk = self.peek()
+        if tk.id == ex_tid:
             self.advance()
             return self.peek()
         if expect:

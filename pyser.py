@@ -1,6 +1,6 @@
 # Python-based Parser
 #
-from parser.lexer import Lexer
+from parser.tokenstream2 import Lexer
 
 
 def main():

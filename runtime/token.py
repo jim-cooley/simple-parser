@@ -13,6 +13,10 @@ class Token:
             self.line = line
             self.offset = offset
 
+        @staticmethod
+        def ZERO():
+            return Token.Loc(0,0)
+
     def __init__(self, tid, tcl=None, lex="", val=None, loc=None, reserved=False):
         self.id = tid
         self.t_class: TCL = TCL(tcl) if tcl is not None else TCL.NONE

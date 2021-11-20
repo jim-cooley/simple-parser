@@ -21,19 +21,33 @@ class Environment:
     """
     current = None
 
-    def __init__(self, keywords=None):
+    def __init__(self, keywords=None, source=None):
         self.keywords = keywords if keywords is not None else Keywords()
         self.globals = Scope(parent_scope=self.keywords)
         self.scope = self.globals
-        self.commands = []
         self.trees = []
+        self.source = source
         self.lines = None
-        self.source = None
         self.tokens = None
         self.logger = getLogFacility('focal')
         self.stack = RuntimeStack()
         self.version = VERSION
         Environment.current = self
+        if source:
+            self.lines = source.splitlines()
+
+    def set(self, source=None, tokens=None, trees=None, current=False):
+        self.source = source
+        if source:
+            self.lines = source.splitlines()
+            self.logger.lines = self.lines
+        self.tokens = tokens
+        if trees:
+            self.trees = trees
+        else:
+            self.trees = []
+        if current:
+            Environment.current = self
 
     def get_logger(self):
         return self.logger

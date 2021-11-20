@@ -1,12 +1,12 @@
 import copy
 from dataclasses import dataclass
-from enum import IntEnum
 
-import parser.statedef as _
+from parser import statedef as _
+
 from runtime.keywords import Keywords
-from runtime.token_data import u16_to_tkid
-from runtime.token_class import TCL
 from runtime.token import Token
+from runtime.token_class import TCL
+from runtime.token_data import u16_to_tkid
 from runtime.token_ids import TK
 
 _MAX_TOKEN_LEN = 128
@@ -15,109 +15,30 @@ _MAX_TOKEN_LEN = 128
 @dataclass
 class Lexer:
 
-    class SEEK(IntEnum):
-        HEAD = 0
-        CURR = 1
-        TAIL = 2
-        NEXT = 3    # next non-eol
-        EOL = 4     # seek to next EOL (+1)
-
-    def __init__(self, source, verbose=False):
+    def __init__(self, source):
         self.keywords = Keywords()
         self._char = None
         self._chid = None
-        self.pos = 0
-        self.tokens = self._lex(source)
-        self._has_more = True
-        self._verbose = verbose
+        self.head = 0
+        self.length = len(source)
+        self.source = source
+        self.location = Token.Loc.ZERO()
+        self.has_more = True
 
     def __iter__(self):
-        self.pos = 0
+        self.get_char()
         return self
 
     def __next__(self):
-        if not self._has_more:
+        if not self.has_more:
             raise StopIteration
-        t = self.read1()
-        self._has_more = t.id != TK.EOF
-        return t
-
-    def get_location(self):
-        """
-        Returns a location from the token stream after it has been parsed.  The property 'pos' maintains the position
-        in the token stream, however to relate this back to line & offset, you will want to call 'get_location'
-        :return: Loc(): The current line & offset
-        """
-        tk = self.peek()
-        return tk.location
-
-    def get_tokens(self):
-        return self.tokens
-
-    def peek(self, rel=0):
-        pos = self.pos + rel
-        return self.tokens[pos] if pos < len(self.tokens) else Token.EOF(self._loc)
-
-    def read1(self):
-        t = self.tokens[self.pos] if self.pos < len(self.tokens) else Token.EOF(self._loc)
-        self.pos += 1
-        self._has_more = t.id != TK.EOF
-        return t
-
-    def reset(self):
-        self.pos = 0
-        self._has_more = True
-
-    def seek(self, rel, whence=SEEK.HEAD):
-        if whence == Lexer.SEEK.HEAD:
-            self.pos = rel
-        elif whence == Lexer.SEEK.CURR:
-            self.pos += rel
-        elif whence == Lexer.SEEK.TAIL:
-            self.pos = len(self.tokens) + rel - 1
-        elif whence == Lexer.SEEK.NEXT:  # seek to next non-whitespace token
-            while self.tokens[self.pos].id == TK.EOL:
-                self.pos += 1
-                if self.tokens[self.pos].id == TK.EOF:
-                    break
-        elif whence == Lexer.SEEK.EOL:   # seek just past the next EOL (useful for sync)
-            while self.tokens[self.pos].id != TK.EOL:
-                self.pos += 1
-                if self.tokens[self.pos].id == TK.EOF:
-                    self.pos +=1
-                    break
-        if self.pos > len(self.tokens):
-            self.pos = len(self.tokens)
-        self._has_more = self.tokens[self.pos].id != TK.EOF
-        return self._has_more
-
-    def tell(self):
-        return self.pos
-
-    def printall(self):
-        tk = None
-        idx = 0
-        for tk in self.tokens:
-            print(f'{idx:5d} : {tk}: line:{tk.location.line}, pos:{tk.location.offset}')
-            idx += 1
-        self.reset()
-
-    def _lex(self, source):
-        self.source = source
-        self._len = len(source)
-        self._loc = Token.Loc(0, 0)
-        self._head = 0
-        self.get_char()
-        tids = []
-        while True:
-            tk = self._fetch()
-            tids.append(tk)
-            if tk.id == TK.EOF:
-                break
-        return tids
+        tk = self._fetch()
+        if tk.id == TK.EOF:
+            self.has_more = False
+        return tk
 
     def _fetch(self):
-        tk = Token(TK.EOF)
+        tk = Token.EOF()
         fetch = False
 
         while True:
@@ -129,12 +50,12 @@ class Lexer:
                 cs = _.tkState[cs][cc]
                 if cs < 0:
                     cs = -cs
-                    if cs == int(TK.FLOT) and cc == _.CL.DOT:     # double-dot parse correction
-                        self._head -= 1
+                    if cs == int(TK.FLOT) and cc == _.CL.DOT:     # double-dot lex glob correction
+                        self.head -= 1
                         tk.lexeme = tk.lexeme[:len(tk.lexeme)-1]  # strip the '.' so we can reparse
                         cs = TK.INT
                     # if state transition, don't record but fetch.  If token, don't fetch. don't record
-                    fetch = (cs == TK.QUOT) or (cs < _.ST.MAX)  # for quote, toss trailing quote
+                    fetch = (cs == TK.QUOT) or (cs < _.ST.MAX)    # for quote, remove trailing quote from stream
                 else:
                     tk.lexeme += self._char
                     fetch = True
@@ -145,12 +66,13 @@ class Lexer:
                     fetch = False
                     self.get_char()
             tk.id = TK(cs)
-            tk.location = copy.copy(self._loc)
+            tk.location = copy.copy(self.location)
             if tk.id == TK.WHT:
                 continue
             if tk.id == TK.EOL:
-                self._loc.line += 1
-                self._loc.offset = 0
+                self.location.line += 1
+                self.location.offset = 0
+                continue
             elif tk.id == TK.SPEC:
                 tk.id = TK(self._chid)
             elif tk.id == TK.EOF:
@@ -170,8 +92,8 @@ class Lexer:
         return tk
 
     def _get_next_char(self):
-        c = 0 if self._head >= self._len else ord(self.source[self._head])
-        self._head += 1
+        c = 0 if self.head >= self.length else ord(self.source[self.head])
+        self.head += 1
         return c
 
     def get_char(self):
@@ -179,15 +101,8 @@ class Lexer:
         self._chid = c
         self._char = chr(c)
         if c > 0:
-            self._loc.offset += 1
+            self.location.offset += 1
             if c > 127:
                 c = u16_to_tkid[c]
                 self._chid = c
         return c
-
-
-def _tk_copy(token, loc=None):
-    tk = copy.copy(token)
-    if loc is not None:
-        tk.location = copy.copy(loc)
-    return tk

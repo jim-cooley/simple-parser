@@ -135,12 +135,7 @@ def _log_exception(e, log, name):
         print(f'{trace}')
 
 
-def _dump_environment(env, label=None,
-                      print_results=False,
-                      print_commands=True,
-                      print_tokens=True,
-                      print_trees=True,
-                      print_symbols=False,
+def _dump_environment(env, label=None, print_results=False, print_tokens=True, print_trees=True, print_symbols=False,
                       print_notation=True):
     logger = env.logger
     if print_tokens:
@@ -149,9 +144,6 @@ def _dump_environment(env, label=None,
     if print_trees:
         _print_banner("parse tree")
         print_forest(env, logger, label, print_results=print_results, print_notation=print_notation)
-        logger.flush()
-    if print_commands:
-        _print_commands(env, env.commands, logger=logger)
         logger.flush()
     if print_symbols:
         _print_banner("symbols")
