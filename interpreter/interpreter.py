@@ -110,15 +110,6 @@ class Interpreter(TreeFilter):
 
         for t in environment.trees:
             self.visit(t.root)
-#            v = self.stack.pop()
-#            ty = type(v).__name__
-#            if hasattr(v, 'value'):
-#                v = v.value
-#            t.values = v
-#            if self.option.verbose:
-#                print(f'\nresult: {ty.lower()}({v})\n')
-        if self.option.verbose:
-            print(f'stack depth: {self.stack.depth()}')
         return environment
 
     # default
@@ -273,7 +264,6 @@ class Interpreter(TreeFilter):
     def process_generator(self, node, label=None):
         self._print_node(node)
         self.indent()
-        # self._process_sequence(node)  # this will process and push the parameters to the stack.
         args = self.reduce_parameters(scope=None, args=node.items())  # process & return them as an IndexedDict
         fname = tk2generator[node.target]
         result = invoke_generator(env=self.environment, name=fname, args=args)
@@ -385,27 +375,45 @@ class Interpreter(TreeFilter):
                     value = self.stack.pop()
                     sym = reduce_ref(scope=scope, ref=ref.left)
                     if isinstance(sym, Object):
-                        _fields.append(sym.name)
-                        _values.append(c_unbox(value))
+                        self._resolve(idx, sym.name, c_unbox(value), _fields, _values)
+                        # _fields.append(sym.name)
+                        # _values.append(c_unbox(value))
                     elif isinstance(sym, Token):    # tokens are keywords / reserved words
-                        _fields.append(sym.lexeme)
+                        self._resolve(idx, sym.lexeme, c_unbox(value), _fields, _values)
+                        #_fields.append(sym.lexeme)
                         # self.visit(value)
                         # val = self.stack.pop()
-                        _values.append(c_unbox(value))
+                        #_values.append(c_unbox(value))
                     else:
                         assert False, "Unexpected argument type in Define"
                 else:
-                    if _fields:
-                        runtime_error("Cannot have un-named items following named items.", loc=ref.token.location)
+                    # if _fields:
+                    #     runtime_error("Cannot have un-named items following named items.", loc=ref.token.location)
                     if isinstance(ref, Literal):
-                        _values.append(c_unbox(ref))
+                        self._resolve(idx, None, c_unbox(ref), _fields, _values)
+                        #_values.append(c_unbox(ref))
                     else:
                         self.visit(ref)
                         val = self.stack.pop()
-                        _values.append(c_unbox(val))
+                        self._resolve(idx, None, c_unbox(val), _fields, _values)
+                        #_values.append(c_unbox(val))
         if scope is not None:
             Environment.leave()
         return IndexedDict(fields=_fields, values=_values)
+
+    def _resolve(self, idx, name, value, fields, values):
+        if name is None:
+            if idx < len(values):
+                values[idx] = value
+            else:
+                values.append(value)
+        else:
+            if name in fields:
+                slot = fields.index(name)
+                values[slot] = value
+            else:
+                fields.append(name)
+                values.append(value)
 
     def _process_sequence(self, seq):
         self.indent()

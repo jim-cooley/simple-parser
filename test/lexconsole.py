@@ -5,7 +5,7 @@ from parser.lexer import Lexer
 from runtime.exceptions import getLogFacility
 from runtime.indexdict import IndexedDict
 from runtime.options import getOptions
-from runtime.runtime import load_script
+from runtime.runtime import load_file
 
 
 _help_text = {
@@ -37,7 +37,7 @@ class LexConsole:
     def load(self, fname):
         if self.option.verbose:
             print(f'\n\nloading {fname}...')
-        source = load_script(fname)
+        source = load_file(fname)
         return self.lex(source)
 
     def lex(self, source):

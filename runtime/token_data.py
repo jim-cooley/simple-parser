@@ -215,16 +215,22 @@ _tk2lit = {
     TK.TRUE: TK.BOOL,
 }
 
-native2tkid = {
+type2tid = {
+    'Block': TK.BLOCK,
+    'Bool': TK.BOOL,
+    'DataFrame': TK.DATAFRAME,
+    'NoneType': TK.NONE,
+    'Object': TK.OBJECT,
+    'Range': TK.RANGE,
+    'Series': TK.SERIES,
     'bool': TK.BOOL,
     'float': TK.FLOT,
     'int': TK.INT,
-    'NoneType': TK.NONE,
+    'list': TK.LIST,
     'object': TK.NONE,  # CONSIDER: TK.OBJECT ?
+    'range': TK.RANGE,
     'str': TK.STR,
     'timedelta': TK.DUR,
-    'Object': TK.OBJECT,
-    'Block': TK.BLOCK,
 }
 
 # maps extended special characters directly to tokens

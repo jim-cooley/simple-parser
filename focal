@@ -1,8 +1,7 @@
 #!/Volumes/HD2/Lab/Repository/jimc/python3.9/bin/python3
 from argparse import ArgumentParser
 
-from interpreter.console import FocalConsole
-from interpreter.shell import do_help
+from interpreter.console import FocalConsole, do_help
 from runtime.environment import Environment
 
 LOG_FILE = './focal.log'
@@ -10,7 +9,6 @@ LOG_FILE = './focal.log'
 
 if __name__ == '__main__':
     parser = ArgumentParser()
-
     parser.add_argument('-f', '--file', default=None, help="script file to execute")
     parser.add_argument('-p', '--parse', dest='no_run', action='store_false', help="parse only, no_run")
     parser.add_argument('--no_run', dest='no_run', action='store_true', help="parse only, no_run")
@@ -18,7 +16,7 @@ if __name__ == '__main__':
     parser.add_argument('-t', '--tokens', dest='print_tokens', action='store_true', help="print tokens")
     parser.add_argument('-v', '--verbose', dest='verbose', action='store_true', help="more verbose output")
     parser.add_argument('file', nargs='?', default=None, help="script file to execute")
-    parser.set_defaults(print_tokens=False, no_run=True, verbose=False)
+    parser.set_defaults(print_tokens=False, no_run=False, verbose=False)
     args = parser.parse_args()
 
     with open(LOG_FILE, 'w') as log:

@@ -1,16 +1,10 @@
 
 
 test: 7:
-{ 'train': today-2y..today }
+[1..2]
 
-tree1:  { 'train': today-2y..today }
-    1  : Block(TK.BLOCK, v=[Define()], '')
-    2  :     Define(TK.DEFINE, TK.DEFINE, ':')
-    3  :         Str(TK.STR, 'train')
-    4  :         BinOp(TK.SUB, '-')
-    5  :             FnCall('today')
-    6  :                 Get(TK.IDENT, 'today')
-    7  :             BinOp(TK.RANGE, '..')
-    8  :                 Duration(TK.DUR, 730 days, 0:00:00)
-    9  :                 FnCall('today')
-   10  :                     Get(TK.IDENT, 'today')
+tree1:  [1..2]
+    1  : Generate(TK.LIST, len=1)
+    2  :     BinOp(TK.RANGE, '..')
+    3  :         Int(TK.INT, 1)
+    4  :         Int(TK.INT, 2)

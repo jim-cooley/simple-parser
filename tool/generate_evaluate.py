@@ -7,18 +7,22 @@ from runtime.logwriter import LogWriter
 from tool.tables import _assign_obj_fn, _evaluate_boolops_fn, _evaluate_binops_fn
 
 
-_COLUMNS = ['any', 'int', 'float', 'bool', 'str', 'timedelta', 'Object', 'Block']
+_COLUMNS = ['any', 'int', 'float', 'bool', 'str', 'timedelta', 'Object', 'Block', 'DataFrame', 'Range', 'Series']
 
 _rc2tok = [TK.OBJECT, TK.INT, TK.FLOT, TK.BOOL, TK.STR, TK.DUR, TK.OBJECT, TK.BLOCK]
 
+# this is used primarily to create the Fn names, so parforms type translation and to_lower()
 _type2native = {
-    'Ident': 'ident',
     'Bool': 'bool',
+    'DataFrame': 'dateframe',
     'DateTime': 'datetime',
     'Duration': 'timedelta',
     'Float': 'float',
+    'Ident': 'ident',
     'Int': 'int',
     'Percent': 'float',
+    'Range': 'range',
+    'Series': 'series',
     'Str': 'str',
     'Time': 'datetime',
 }
@@ -267,6 +271,8 @@ class GenerateEvalDispatch:
         self.o.write_close(TY.DICT)
 
     def _pretty_print_table_section(self, table, sect, width, quote=False):
+        rc_max = len(_COLUMNS)
+        t_len = len(table)
         q = '\"' if quote is True else ''
         sep = ', '
         self.indent()
@@ -276,13 +282,16 @@ class GenerateEvalDispatch:
         for c in _COLUMNS:
             self.o.print(f'{c:^{width}s}', end='', append=True)
         self.o.blank_line(1)
-        for r in range(0, len(table)):
+        for r in range(0, max(t_len, rc_max)):
             self.o.print('[', end='')
-            _len = len(table[r])
-            for c in range(0, _len):
-                code = table[r][c]
+            for c in range(0, max(t_len, rc_max)):
+                if r >= t_len or c >= t_len:
+                    # code = f"_invalid_{sect.name.lower()}"
+                    code = f"invalid"
+                else:
+                    code = table[r][c]
                 self.o.print(f'{q}{code}{q}', end='', append=True)
-                if c < _len - 1:
+                if c < t_len - 1:
                     pad = max(width-len(code), 0)
                     self.o.print(f'{sep:{pad}s}', end='', append=True)
             self.o.print('],   # ', end='', append=True)

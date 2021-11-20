@@ -1,9 +1,13 @@
 
 
 test: 2:
-a..b
+(today-2y)..today
 
-tree1:  a..b
+tree1:  (today-2y)..today
     1  : BinOp(TK.RANGE, '..')
-    2  :     Ref(TK.IDENT, 'a')
-    3  :     Get(TK.IDENT, 'b')
+    2  :     BinOp(TK.SUB, '-')
+    3  :         FnCall('today')
+    4  :             Get(TK.IDENT, 'today')
+    5  :         Duration(TK.DUR, 730 days, 0:00:00)
+    6  :     FnCall('today')
+    7  :         Get(TK.IDENT, 'today')

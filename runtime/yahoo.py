@@ -10,8 +10,9 @@ from runtime.indexdict import IndexedDict
 from runtime.literals import Duration, Literal
 from runtime.scope import IntrinsicFunction, Object
 
-from runtime.dataframe import Dataset, print_dataframe
-from runtime.intrinsics import get_now
+from runtime.dataframe import Dataset
+from runtime.pandas import print_dataframe
+from runtime.intrinsics import get_t_now
 from runtime.runtime import _find_file
 
 file_suffix = {'1d': 'daily', '1wk': 'weekly'}
@@ -49,7 +50,7 @@ def init_yahoo(name):
     return IntrinsicFunction(name=name,
                              defaults=IndexedDict({'symbols': None,
                                                    'first': None,
-                                                   'last': get_now(),
+                                                   'last': get_t_now(),
                                                    'span': Duration(DEFAULT_SPAN_YRS),
                                                    'frequency': DAILY,
                                                    'dropna': True,

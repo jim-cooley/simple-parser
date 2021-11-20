@@ -5,9 +5,11 @@
 from copy import copy
 from datetime import timedelta
 
+from numpy import floor
+
 from runtime.exceptions import runtime_error
 from runtime.literals import Bool, Int, Float, _parse_duration
-from runtime.token_data import native2tkid
+from runtime.token_data import type2tid
 from runtime.token_ids import TK
 
 
@@ -35,15 +37,25 @@ def c_type(u):
         return tid
     v = c_unbox(u)
     ty = type(v).__name__
-    if ty in native2tkid:
-        tid = native2tkid[ty]
+    if ty in type2tid:
+        tid = type2tid[ty]
     return tid
+
+
+def c_sign(u):
+    v = c_to_int(c_unbox(u))
+    if v < 0:
+        return -1
+    elif v > 0:
+        return 1
+    else:
+        return 0
 
 
 # --------------------------------
 # General type conversion helpers
 # --------------------------------
-def c_to_bool(val, tid):
+def c_to_bool(val, tid=None):
     """
     Convert a value to a bool.  Value may be an intrinsic (platform) or runtime Object
 
@@ -70,7 +82,7 @@ def c_to_bool(val, tid):
         return val != 0
 
 
-def c_to_dur(val, tid):
+def c_to_dur(val, tid=None):
     """
     Convert a value to a Duration.  Value may be an intrinsic (platform) or another runtime Object.  String parsing
     is supported via _parse_duration()
@@ -107,7 +119,7 @@ def c_to_dur(val, tid):
     return None
 
 
-def c_to_float(val, tid):
+def c_to_float(val, tid=None):
     """
     Convert a value to a float.  Value may be an intrinsic (platform) or runtime Object
 
@@ -147,7 +159,7 @@ def c_to_float(val, tid):
     return None
 
 
-def c_to_int(val, tid):
+def c_to_int(val, tid=None):
     """
     Converts a value to an int(). The value may be another intrinsic or it may be a structured type descending from
     Object.
@@ -159,10 +171,12 @@ def c_to_int(val, tid):
     """
     if val is None:
         return 0
-    tid = tid if tid is not None else c_type(val)
+    val = c_unbox(val)
+    if tid == TK.NATIVE or tid is None:
+        tid = c_type(val)
     if tid == TK.INT:
         return val
-    elif tid in [TK.NATIVE, TK.IDENT]:
+    elif tid == TK.IDENT:
         ty = type(val).__name__
         if ty == 'int':
             return val
@@ -170,7 +184,7 @@ def c_to_int(val, tid):
             try:
                 v = int(val)
                 return v
-            except ValueError as e:
+            except (ValueError, TypeError) as e:
                 pass
     elif tid in [TK.EMPTY, TK.NONE, TK.FALSE]:
         return 0
@@ -190,7 +204,7 @@ def c_to_int(val, tid):
 # --------------------------------
 # Specific value conversion helpers
 # --------------------------------
-def _c_str2bool(val):
+def _c_str2bool(val=None):
     """
     Converts a value to a bool(). The value may be another intrinsic or it may be a structured type descending from
     Object.

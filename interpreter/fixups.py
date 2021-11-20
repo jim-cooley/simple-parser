@@ -4,7 +4,7 @@ from abc import ABC
 
 from runtime.conversion import c_unbox, c_type
 from runtime.environment import Environment
-from runtime.tree import AST, BinOp, Generate
+from runtime.tree import AST, BinOp, Generate, FnCall
 from runtime.literals import List, Literal, Bool
 from runtime.token import Token
 from runtime.token_ids import TK
@@ -46,7 +46,7 @@ _fixupNodeTypeMappings = {
     'Duration': VALUE_NODE,
     'Float': VALUE_NODE,
     'Flow': SEQUENCE_NODE,
-    'FnCall': _FUNCTION_NODE,
+    'FnCall': BINARY_NODE,
     'Generate': SEQUENCE_NODE,
     'Get': VALUE_NODE,
     'IfThenElse': TRINARY_NODE,
@@ -148,7 +148,11 @@ class Fixups(TreeModifier, ABC):
         rnode = self.visit_binary_node(node, label)
         if node is not None:
             tkid = node.token.id
-            if tkid == TK.RANGE:
+            if isinstance(node, FnCall) and node.ref.name == 'range':
+                rnode = Generate(TK.RANGE, parameters=node.right, loc=node.token.location)
+                rnode.parent = node.parent
+                return rnode
+            elif tkid == TK.RANGE:
                 rnode = Generate(TK.RANGE, parameters=[node.left, node.right], loc=node.token.location)
                 rnode.parent = node.parent
                 return rnode

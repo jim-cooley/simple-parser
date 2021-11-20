@@ -1,7 +1,5 @@
 from dataclasses import dataclass
 
-from numpy import sort, unique
-
 from runtime.token_data import _tk2binop, _tk2lit, _tk2unop, _tk2type, _tk2glyph
 from runtime.token_class import TCL
 from runtime.token_ids import TK

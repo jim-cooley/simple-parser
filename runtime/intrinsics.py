@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from runtime.dataframe import Dataset
 from runtime.literals import Time
 
 
@@ -13,12 +14,26 @@ from runtime.literals import Time
 
 # Now, Today
 # -----------------------------------
+from runtime.series import Series
+
 
 def do_now(env=None):
-    return get_now()
+    return get_t_now()
 
 
-def get_now():
+def get_t_now():
     return Time(datetime.now())
 
 
+def get_dt_now():
+    return datetime.now()
+
+
+def create_dataset(env=None, args=None):
+    d = Dataset()
+    return d
+
+
+def create_series(env=None, args=None):
+    r = Series()
+    return r

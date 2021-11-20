@@ -3,7 +3,7 @@
 import sys
 from abc import ABC
 
-from interpreter.shell import CommandShell
+from interpreter.shell import FocalShell
 from interpreter.fixups import Fixups
 from interpreter.interpreter import Interpreter
 from parser.parser import Parser
@@ -77,7 +77,7 @@ class SemanticAnalysisTestRunner(TestSuiteRunner, ABC):
         parser = Parser()
         fixups = Fixups()
         interp = Interpreter()
-        command = CommandShell(parser=parser, interpreter=interp)
+        command = FocalShell(parser=parser, interpreter=interp)
         environment = fixups.apply(parser.parse(source=test))
         if self.verbose:
             _dump_environment(environment, label='post', print_tokens=False, print_results=False)

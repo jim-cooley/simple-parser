@@ -35,8 +35,8 @@ def _find_file(name, search_paths=None, extensions=None):
     raise IOError(f'invalid filename: {name}, cannot be found or is not a file')
 
 
-def load_script(fname):
-    fname = _find_file(fname)
+def load_file(fname, search_paths=None):
+    fname = _find_file(fname, search_paths=search_paths)
     name = os.path.splitext(os.path.basename(fname))[0]
     ext = os.path.splitext(fname)[1]
     idx = 0

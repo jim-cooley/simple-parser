@@ -1,4 +1,5 @@
-from runtime.dataframe import Dataset, print_dataframe
+from runtime.dataframe import Dataset
+from runtime.pandas import print_dataframe
 from runtime.exceptions import getLogFacility
 from runtime.scope import IntrinsicFunction
 

@@ -83,7 +83,7 @@ def gen_token_data():
         lex = tk.lexeme or ''
         val = f'{tk.value}'
         line = [
-            "TD( ",
+            "   TD( ",
             f"{_tag('tk', tk_name):20s}",
             f"{_tag('tcl',tcl_name):20s}",
             f"{_tag('lex', lex, q=True):14s}",

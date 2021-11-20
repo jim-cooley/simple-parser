@@ -444,6 +444,7 @@ class FnCall(FnRef):
         assert ref is not None, "no Ref passed to FnCall constructor"
         op = Token.FNCALL(name=ref.name, loc=ref.location) if op is None else op
         super().__init__(ref=ref, op=op, parameters=parameters, is_lvalue=is_lvalue)
+        self.ref = ref  # for convenience
 
 
 @dataclass

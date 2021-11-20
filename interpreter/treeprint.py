@@ -201,6 +201,27 @@ def print_node(node, logger=None, label=None, print_notation=True):
         logger.print(tree)
 
 
+def print_results(env, logger=None):
+    idx = 0
+    trees = env.trees
+    for i in range(0, len(trees)):
+        t = trees[i]
+        if t is None or t.root is None:
+            continue
+        idx += 1
+        logger.print(f'\ntree{idx}:')
+        if t.values is not None and print_results:
+            v = t.values if type(t.values).__name__ != 'list' else t.values[0]
+            if v is not None:
+                if hasattr(v, 'value'):
+                    v = v.value
+                ty = type(v).__name__
+                if v is None:
+                    ty = 'Lit'
+                if print_results:
+                    logger.print(f'result: {ty}({v})')
+
+
 def _format_token(tk, print_value=True):
     _tname = f'.{tk.id.name}(' if hasattr(tk.id, "name") else f'({tk.id}, '
     _tclass = f'{tk.t_class.name}' if hasattr(tk.t_class, "name") else 'TCL({tk.t_type})'

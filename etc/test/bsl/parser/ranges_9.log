@@ -1,13 +1,13 @@
 
 
 test: 9:
-[3,5,10..20,28]
+today-2y..today
 
-tree1:  [3,5,10..20,28]
-    1  : Generate(TK.LIST, len=4)
-    2  :     Int(TK.INT, 3)
-    3  :     Int(TK.INT, 5)
+tree1:  today-2y..today
+    1  : BinOp(TK.SUB, '-')
+    2  :     FnCall('today')
+    3  :         Get(TK.IDENT, 'today')
     4  :     BinOp(TK.RANGE, '..')
-    5  :         Int(TK.INT, 10)
-    6  :         Int(TK.INT, 20)
-    7  :     Int(TK.INT, 28)
+    5  :         Duration(TK.DUR, 730 days, 0:00:00)
+    6  :         FnCall('today')
+    7  :             Get(TK.IDENT, 'today')
