@@ -4,11 +4,11 @@ test: 10:
 b = 1; b -= 2
 
 tree1:  b = 1; b -= 2
-    1  : Define(TK.DEFINE, TK.DEFINE, '=')
+    1  : Define(TK.DEFINE: b = 1)
     2  :     Ref(TK.IDENT, 'b')
     3  :     Int(TK.INT, 1)
 
 tree2:  b = 1; b -= 2
-    1  : Assign(TK.ASSIGN, TK.ASSIGN, '-=')
+    1  : Assign(TK.ASSIGN: b -= 2)
     2  :     Get(TK.IDENT, 'b')
     3  :     Int(TK.INT, 2)

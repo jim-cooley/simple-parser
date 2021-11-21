@@ -8,7 +8,8 @@ from datetime import timedelta
 from numpy import floor
 
 from runtime.exceptions import runtime_error
-from runtime.literals import Bool, Int, Float, _parse_duration
+from runtime.literals import Bool, Int, Float
+from runtime.time import _parse_duration
 from runtime.token_data import type2tid
 from runtime.token_ids import TK
 

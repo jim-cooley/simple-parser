@@ -4,8 +4,10 @@ from abc import ABC
 
 from runtime.conversion import c_unbox, c_type
 from runtime.environment import Environment
+from runtime.factory import to_lit
 from runtime.tree import AST, BinOp, Generate, FnCall
-from runtime.literals import List, Literal, Bool
+from runtime.literals import Literal, Bool
+from runtime.collections import List
 from runtime.token import Token
 from runtime.token_ids import TK
 
@@ -34,6 +36,7 @@ _fixupNodeTypeMappings = {
     'BinOp': BINARY_NODE,
     'Block': SEQUENCE_NODE,
     'Bool': VALUE_NODE,
+    'Combine': ASSIGNMENT_NODE,
     'Command': 'process_command',
     'Dataset': SEQUENCE_NODE,
     'DateDiff': VALUE_NODE,
@@ -43,6 +46,7 @@ _fixupNodeTypeMappings = {
     'DefineFn': _VISIT_DEFINE_FN,
     'DefineVar': _VISIT_DEFINITION,
     'DefineVarFn': _VISIT_DEFINE_FN,
+    'Dict': SEQUENCE_NODE,
     'Duration': VALUE_NODE,
     'Float': VALUE_NODE,
     'Flow': SEQUENCE_NODE,
@@ -55,6 +59,7 @@ _fixupNodeTypeMappings = {
     'Int': VALUE_NODE,
     'List': 'convert_tuples',
     'Literal': VALUE_NODE,
+    'NamedTuple': SEQUENCE_NODE,
     'Node': DEFAULT_NODE,
     'Percent': VALUE_NODE,
     'PropCall': BINARY_NODE,
@@ -65,6 +70,7 @@ _fixupNodeTypeMappings = {
     'Set': 'convert_tuples',
     'Str': VALUE_NODE,
     'Time': VALUE_NODE,
+    'Tuple': SEQUENCE_NODE,
     'UnaryOp': UNARY_NODE,
     'int': _NATIVE_VALUE,
     'str': _NATIVE_VALUE,
@@ -92,7 +98,7 @@ class Fixups(TreeModifier, ABC):
         for t in environment.trees:
             val = self.visit(t.root)
             if not isinstance(val, AST):
-                val = Literal.lit(val)
+                val = to_lit(val)
             t.root = val
         return environment
 
@@ -161,7 +167,7 @@ class Fixups(TreeModifier, ABC):
             if isinstance(node.left, Literal) and isinstance(node.right, Literal):
                 if is_supported_binop(node.op):
                     rnode = _fixup_binary_operation(rnode)
-                    rnode = _lift(rnode, Literal.lit(rnode.value, other=rnode))
+                    rnode = _lift(rnode, to_lit(rnode.value, other=rnode))
         return rnode
 
     def process_command(self, node, label=None):
@@ -203,13 +209,13 @@ class Fixups(TreeModifier, ABC):
                 return _lift(node, Bool(value=l_value, loc=expr.token.location))
             elif opid == TK.INCREMENT:
                 l_value = increment_literal(l_value, l_tid)
-                return _lift(node, Literal.lit(l_value, other=expr))
+                return _lift(node, to_lit(l_value, other=expr))
             elif opid == TK.DECREMENT:
                 l_value = decrement_literal(l_value, l_tid)
-                return _lift(node, Literal.lit(l_value, other=expr))
+                return _lift(node, to_lit(l_value, other=expr))
             elif opid == TK.NEG:
                 l_value = negate_literal(l_value, l_tid)
-                return _lift(node, Literal.lit(l_value, other=expr))
+                return _lift(node, to_lit(l_value, other=expr))
             elif opid == TK.POS:
                 return _lift(node, expr)
         return node

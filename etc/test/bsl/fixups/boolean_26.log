@@ -4,7 +4,7 @@ test: 26:
 ! "true"
 
 tree1:  ! "true"
-    1  : UnaryOp(TK.NOT, TK.NOT, '!')
+    1  : UnaryOp(TK.NOT, '!')
     2  :     Str(TK.STR, 'true')
 
 tree1:(post)  ! "true"

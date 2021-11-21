@@ -4,11 +4,11 @@ test: 21:
 def f = x
 
 tree1:  def f = x
-    1  : Define(TK.DEFINE, TK.DEFINE, '=')
+    1  : Define(TK.DEFINE: f = Ref(TK.IDENT, 'x'))
     2  :     Ref(TK.IDENT, 'f')
     3  :     Ref(TK.IDENT, 'x')
 
 tree1:(post)  def f = x
-    1  : Define(TK.DEFINE, TK.DEFINE, '=')
+    1  : Define(TK.DEFINE: f = Ref(TK.IDENT, 'x'))
     2  :     Ref(TK.IDENT, 'f')
     3  :     Ref(TK.IDENT, 'x')

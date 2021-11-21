@@ -4,7 +4,7 @@ test: 16:
 a.b(1, 2, z)
 
 tree1:  a.b(1, 2, z)
-    1  : PropRef(TK.REF, '.')
+    1  : PropRef(TK.REF: a . FnCall(TK.FUNCTION, 'b'))
     2  :     Get(TK.IDENT, 'a')
     3  :     FnCall('b')
     4  :         Get(TK.IDENT, 'b')
@@ -14,7 +14,7 @@ tree1:  a.b(1, 2, z)
     8  :             Get(TK.IDENT, 'z')
 
 tree1:(post)  a.b(1, 2, z)
-    1  : PropRef(TK.REF, '.')
+    1  : PropRef(TK.REF: a . FnCall(TK.FUNCTION, 'b'))
     2  :     Get(TK.IDENT, 'a')
     3  :     FnCall('b')
     4  :         Get(TK.IDENT, 'b')

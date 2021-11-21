@@ -4,5 +4,5 @@ test: 5:
 not {}
 
 tree1:  not {}
-    1  : UnaryOp(TK.NOT, TK.NOT, 'not')
+    1  : UnaryOp(TK.NOT, 'not')
     2  :     Set(TK.EMPTY, [])

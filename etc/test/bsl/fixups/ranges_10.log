@@ -4,8 +4,8 @@ test: 10:
 { 'train': today-2y..today }
 
 tree1:  { 'train': today-2y..today }
-    1  : Block(TK.BLOCK, v=[Define()], '')
-    2  :     Define(TK.DEFINE, TK.DEFINE, ':')
+    1  : Block{TK.BLOCK, len=1}
+    2  :     Combine(TK.COMBINE: train None BinOp(TK.SUB, '-'))
     3  :         Str(TK.STR, 'train')
     4  :         BinOp(TK.SUB, '-')
     5  :             FnCall('today')
@@ -16,9 +16,9 @@ tree1:  { 'train': today-2y..today }
    10  :                     Get(TK.IDENT, 'today')
 
 tree1:(post)  { 'train': today-2y..today }
-result: list([Define()])
-    1  : Block(TK.BLOCK, v=[Define()], '')
-    2  :     Define(TK.DEFINE, TK.DEFINE, ':')
+result: list([Combine()])
+    1  : Block{TK.BLOCK, len=1}
+    2  :     Combine(TK.COMBINE: train None BinOp(TK.SUB, '-'))
     3  :         Str(TK.STR, 'train')
     4  :         BinOp(TK.SUB, '-')
     5  :             FnCall('today')

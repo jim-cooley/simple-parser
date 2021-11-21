@@ -4,6 +4,6 @@ test: 24:
 none >> empty
 
 tree1:  none >> empty
-    1  : Flow(TK.APPLY, v=[Literal(), Set()], '>>')
+    1  : Flow{TK.APPLY, '>>' len=2}
     2  :     Literal(TK.NONE, None)
-    3  :     Set(TK.EMPTY, {})
+    3  :     Literal(TK.EMPTY, {})

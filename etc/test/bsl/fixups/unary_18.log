@@ -4,11 +4,11 @@ test: 18:
 ++++b
 
 tree1:  ++++b
-    1  : UnaryOp(TK.INCREMENT, TK.INCREMENT, '++')
-    2  :     UnaryOp(TK.INCREMENT, TK.INCREMENT, '++')
+    1  : UnaryOp(TK.INCREMENT, '++')
+    2  :     UnaryOp(TK.INCREMENT, '++')
     3  :         Get(TK.IDENT, 'b')
 
 tree1:(post)  ++++b
-    1  : UnaryOp(TK.INCREMENT, TK.INCREMENT, '++')
-    2  :     UnaryOp(TK.INCREMENT, TK.INCREMENT, '++')
+    1  : UnaryOp(TK.INCREMENT, '++')
+    2  :     UnaryOp(TK.INCREMENT, '++')
     3  :         Get(TK.IDENT, 'b')

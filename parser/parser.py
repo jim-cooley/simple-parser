@@ -9,14 +9,16 @@ from runtime.options import getOptions
 from runtime.token_data import ADDITION_TOKENS, COMPARISON_TOKENS, FLOW_TOKENS, \
     EQUALITY_TEST_TOKENS, LOGIC_TOKENS, MULTIPLICATION_TOKENS, UNARY_TOKENS, IDENTIFIER_TYPES, ASSIGNMENT_TOKENS, \
     SET_UNARY_TOKENS, IDENTIFIER_TOKENS, IDENTIFIER_TOKENS_EX, ASSIGNMENT_TOKENS_REF, \
-    VALUE_TOKENS
+    VALUE_TOKENS, _tk2binop
 from runtime.token_class import TCL
 from runtime.token import Token
 from runtime.token_ids import TK
 from runtime.tree import UnaryOp, BinOp, Command, Assign, Get, FnCall, Index, PropRef, Define, DefineFn, DefineVar, \
-    DefineVarFn, ApplyChainProd, Ref, FnRef, Return, IfThenElse, Generate
+    DefineVarFn, ApplyChainProd, Ref, FnRef, Return, IfThenElse, Generate, Combine
 from runtime.scope import Block, Flow, Function
-from runtime.literals import Duration, Float, Int, Percent, Str, Time, Bool, List, Set, Literal
+from runtime.literals import Float, Int, Percent, Str, Bool, Literal
+from runtime.time import Time, Duration
+from runtime.collections import Set, List
 
 from parser.rewrites import RewriteGets2Refs, RewriteFnCall2DefineFn, RewriteFnCall2FnDef
 
@@ -89,7 +91,6 @@ class Parser(object):
                 raise e
 
     def statement(self):
-        op = self.peek()
         if self.match1(TK.IF):
             test = self.block_expr()
             self.consume(TK.THEN)
@@ -116,7 +117,7 @@ class Parser(object):
     def synchronize(self):
         while True:
             self.advance()
-            if self.peek(-1).id in [TK.SEMI, TK.EOF, TK.EOL]:  # just passed
+            if self.peek(-1).id in [TK.SEMI, TK.EOF, TK.RBRC]:  # just passed
                 return
             tkid = self.peek().id  # just landed on
             if tkid in [TK.BLOCK, TK.DEF, TK.DEFINE, TK.COMMAND, TK.VAR, TK.FUNCTION, TK.EOF]:
@@ -167,7 +168,7 @@ class Parser(object):
             elif isinstance(l_expr, FnCall):  # keyword overrides other syntax
                 return DefineFn(left=l_expr.left, op=op, right=self.block_expr2(), args=l_expr.right)
             else:
-                return Define(left=l_expr.left, op=op, right=l_expr.right)
+                return Define(left=l_expr.left, op=op, right=l_expr.right)  # DEFINE var, def ?
         self.logger.error(f"Invalid assignment target {l_expr}", op.location)
         return l_expr
 
@@ -247,9 +248,9 @@ class Parser(object):
             while self.match1(TK.COLN):
                 l_expr = _rewriteGets(l_expr)
                 if l_expr.token.id == TK.FUNCTION:
-                    l_expr = DefineFn(left=l_expr.left, op=op, args=l_expr.right, right=self.tuple())
+                    l_expr = DefineFn(left=l_expr.left, op=op.remap2binop(), args=l_expr.right, right=self.tuple())
                 else:
-                    l_expr = Define(left=l_expr, op=op, right=self.tuple())
+                    l_expr = Combine(left=l_expr, right=self.tuple(), loc=op.location)
                 op = self.peek()
         return l_expr
 
@@ -279,14 +280,14 @@ class Parser(object):
             r_expr = self.block_expr2()
             l_expr = _rewriteFnCall2FnDef(l_expr)
             if isinstance(l_expr, FnCall):
-                return DefineFn(left=l_expr.left, op=op, right=r_expr, args=l_expr.right)
+                return DefineFn(left=l_expr.left, op=op.remap2binop(), right=r_expr, args=l_expr.right)
             elif isinstance(l_expr, FnRef):
-                return DefineFn(left=l_expr.left, op=op, right=r_expr, args=l_expr.right)
+                return DefineFn(left=l_expr.left, op=op.remap2binop(), right=r_expr, args=l_expr.right)
             elif isinstance(l_expr, Ref):
                 if isinstance(r_expr, Define):
-                    return DefineFn(left=l_expr, op=op, right=r_expr.right,
+                    return DefineFn(left=l_expr, op=op.remap2binop(), right=r_expr.right,
                                     args=List([r_expr.left], Token.TUPLE(loc=r_expr.token.location)))
-            return DefineFn(left=l_expr, op=op, right=r_expr, args=None)  # parameterless function
+            return DefineFn(left=l_expr, op=op.remap2binop(), right=r_expr, args=None)  # parameterless function
         return l_expr
 
     def block_expr2(self):  # new block expression parsing for =>
@@ -311,18 +312,23 @@ class Parser(object):
         if l_expr.token.id in IDENTIFIER_TOKENS_EX or l_expr.token.t_class is TCL.IDENTIFIER:
             if op.id in ASSIGNMENT_TOKENS_REF:
                 l_expr = _rewriteFnCall2Definition(l_expr)
-            if op.id in [TK.EQLS, TK.EQGT]:
+            if op.id == TK.EQLS:
                 if isinstance(l_expr, FnCall) or isinstance(l_expr, FnRef) or isinstance(l_expr, DefineFn):
-                    return DefineFn(left=l_expr.left, op=op, right=r_expr, args=l_expr.right)
+                    return DefineFn(left=l_expr.left, op=op.remap2binop(), right=r_expr, args=l_expr.right)
                 else:
-                    return Define(left=l_expr, op=op, right=r_expr)
+                    return Define(left=l_expr, op=op.remap2binop(), right=r_expr)  # common DEFINE '=' Assignment
             elif op.id == TK.COEQ:
                 if isinstance(l_expr, FnCall) or isinstance(l_expr, FnRef):
-                    return DefineVarFn(left=l_expr.left, op=op, right=r_expr, args=l_expr.right)
+                    return DefineVarFn(left=l_expr.left, op=op.remap2binop(), right=r_expr, args=l_expr.right)
                 else:
-                    return DefineVar(left=l_expr, op=op, right=r_expr)
+                    return DefineVar(left=l_expr, op=op.remap2binop(), right=r_expr)
+            elif op.id == TK.EQGT:
+                if isinstance(l_expr, FnCall) or isinstance(l_expr, FnRef) or isinstance(l_expr, DefineFn):
+                    return DefineFn(left=l_expr.left, op=op.remap2binop(), right=r_expr, args=l_expr.right)
+                else:
+                    return Define(left=l_expr, op=op.remap2binop(), right=r_expr)
             else:
-                return Assign(l_expr, op, r_expr)
+                return Assign(l_expr, op.remap2binop(), r_expr)
         token = l_expr.token if not hasattr(l_expr, 'left') else l_expr.left.token
         self.logger.error(f'Invalid assignment target: {token}', op.location)
 
@@ -397,9 +403,9 @@ class Parser(object):
         if token.id == TK.EOL:
             return node
         if token.id == TK.FALSE:
-            node = Literal.FALSE(loc=token.location)
+            node = Bool.FALSE(loc=token.location)
         elif token.id == TK.TRUE:
-            node = Literal.TRUE(loc=token.location)
+            node = Bool.TRUE(loc=token.location)
         elif token.id == TK.INT:
             node = Int(token=token)
         elif token.id == TK.FLOT:
@@ -547,7 +553,7 @@ class Parser(object):
         is_series = False
         loc = self.tokens.location
         if self.peek().id == TK.RBRK:
-            return Literal.EMPTY_LIST(loc=loc)
+            return List.EMPTY(loc=loc)
         while True:
             expr = self.expression()
             if not is_series:

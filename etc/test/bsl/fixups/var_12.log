@@ -4,12 +4,12 @@ test: 12:
 f.a = { var a(x):x*x }
 
 tree1:  f.a = { var a(x):x*x }
-    1  : Define(TK.DEFINE, TK.DEFINE, '=')
-    2  :     PropRef(TK.REF, '.')
+    1  : Define(TK.DEFINE: PropRef(TK.REF, '.') = Block(TK.BLOCK, ''))
+    2  :     PropRef(TK.REF: f . Ref(TK.IDENT, 'a'))
     3  :         Ref(TK.IDENT, 'f')
     4  :         Ref(TK.IDENT, 'a')
-    5  :     Block(TK.BLOCK, v=[DefineVarFn()], '')
-    6  :         DefineVarFn(TK.DEFINE, TK.DEFINE, ':')
+    5  :     Block{TK.BLOCK, len=1}
+    6  :         DefineVarFn(TK.COMBINE: a : BinOp(TK.MUL, '*'))
     7  :             Ref(TK.IDENT, 'a')
     8  :             BinOp(TK.MUL, '*')
     9  :                 Ref(TK.IDENT, 'x')
@@ -18,12 +18,12 @@ tree1:  f.a = { var a(x):x*x }
    12  :                 Ref(TK.IDENT, 'x')
 
 tree1:(post)  f.a = { var a(x):x*x }
-    1  : Define(TK.DEFINE, TK.DEFINE, '=')
-    2  :     PropRef(TK.REF, '.')
+    1  : Define(TK.DEFINE: PropRef(TK.REF, '.') = Block(TK.BLOCK, ''))
+    2  :     PropRef(TK.REF: f . Ref(TK.IDENT, 'a'))
     3  :         Ref(TK.IDENT, 'f')
     4  :         Ref(TK.IDENT, 'a')
-    5  :     Block(TK.BLOCK, v=[DefineVarFn()], '')
-    6  :         DefineVarFn(TK.DEFINE, TK.DEFINE, ':')
+    5  :     Block{TK.BLOCK, len=1}
+    6  :         DefineVarFn(TK.COMBINE: a : BinOp(TK.MUL, '*'))
     7  :             Ref(TK.IDENT, 'a')
     8  :             BinOp(TK.MUL, '*')
     9  :                 Ref(TK.IDENT, 'x')

@@ -4,5 +4,5 @@ test: 21:
 -1y
 
 tree1:  -1y
-    1  : UnaryOp(TK.NEG, TK.NEG, '-')
+    1  : UnaryOp(TK.NEG, '-')
     2  :     Duration(TK.DUR, 365 days, 0:00:00)

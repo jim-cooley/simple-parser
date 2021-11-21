@@ -4,5 +4,5 @@ test: 10:
 --2
 
 tree1:  --2
-    1  : UnaryOp(TK.DECREMENT, TK.DECREMENT, '--')
+    1  : UnaryOp(TK.DECREMENT, '--')
     2  :     Int(TK.INT, 2)

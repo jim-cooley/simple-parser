@@ -4,5 +4,5 @@ test: 27:
 ++1.5m
 
 tree1:  ++1.5m
-    1  : UnaryOp(TK.INCREMENT, TK.INCREMENT, '++')
+    1  : UnaryOp(TK.INCREMENT, '++')
     2  :     Duration(TK.DUR, 0:01:30)

@@ -4,7 +4,7 @@ test: 21:
 ! 1
 
 tree1:  ! 1
-    1  : UnaryOp(TK.NOT, TK.NOT, '!')
+    1  : UnaryOp(TK.NOT, '!')
     2  :     Int(TK.INT, 1)
 
 tree1:(post)  ! 1

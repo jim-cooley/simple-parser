@@ -4,11 +4,11 @@ test: 5:
 a.b
 
 tree1:  a.b
-    1  : PropRef(TK.REF, '.')
+    1  : PropRef(TK.REF: a . Get(TK.IDENT, 'b'))
     2  :     Get(TK.IDENT, 'a')
     3  :     Get(TK.IDENT, 'b')
 
 tree1:(post)  a.b
-    1  : PropRef(TK.REF, '.')
+    1  : PropRef(TK.REF: a . Get(TK.IDENT, 'b'))
     2  :     Get(TK.IDENT, 'a')
     3  :     Get(TK.IDENT, 'b')

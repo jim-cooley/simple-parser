@@ -4,19 +4,19 @@ test: 10:
 a | b | c | d >> e | f | g >> h
 
 tree1:  a | b | c | d >> e | f | g >> h
-    1  : Flow(TK.APPLY, v=[Flow(), ApplyChainProd()], '>>')
-    2  :     Flow(TK.CHAIN, v=[Flow(), Ref(), ApplyChainProd()], '|')
-    3  :         Flow(TK.APPLY, v=[Flow(), ApplyChainProd()], '>>')
-    4  :             Flow(TK.CHAIN, v=[Get(), Ref(), Ref(), ApplyChainProd()], '|')
+    1  : Flow{TK.APPLY, '>>' len=2}
+    2  :     Flow{TK.CHAIN, '|' len=3}
+    3  :         Flow{TK.APPLY, '>>' len=2}
+    4  :             Flow{TK.CHAIN, '|' len=4}
     5  :                 Get(TK.IDENT, 'a')
     6  :                 Ref(TK.IDENT, 'b')
     7  :                 Ref(TK.IDENT, 'c')
-    8  :                 ApplyChainProd(TK.DEFINE, TK.DEFINE, '|')
+    8  :                 ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'd'))
     9  :                     Ref(TK.IDENT, 'd')
-   10  :             ApplyChainProd(TK.DEFINE, TK.DEFINE, '>>')
+   10  :             ApplyChainProd(TK.APPLY: None >> Ref(TK.IDENT, 'e'))
    11  :                 Ref(TK.IDENT, 'e')
    12  :         Ref(TK.IDENT, 'f')
-   13  :         ApplyChainProd(TK.DEFINE, TK.DEFINE, '|')
+   13  :         ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'g'))
    14  :             Ref(TK.IDENT, 'g')
-   15  :     ApplyChainProd(TK.DEFINE, TK.DEFINE, '>>')
+   15  :     ApplyChainProd(TK.APPLY: None >> Ref(TK.IDENT, 'h'))
    16  :         Ref(TK.IDENT, 'h')

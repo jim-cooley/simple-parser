@@ -4,8 +4,8 @@ test: 16:
 { b } >> buy
 
 tree1:  { b } >> buy
-    1  : Flow(TK.APPLY, v=[Set(), ApplyChainProd()], '>>')
+    1  : Flow{TK.APPLY, '>>' len=2}
     2  :     Set(TK.SET, [Get()])
     3  :         Get(TK.IDENT, 'b')
-    4  :     ApplyChainProd(TK.DEFINE, TK.DEFINE, '>>')
+    4  :     ApplyChainProd(TK.APPLY: None >> Ref(TK.IDENT, 'buy'))
     5  :         Ref(TK.IDENT, 'buy')

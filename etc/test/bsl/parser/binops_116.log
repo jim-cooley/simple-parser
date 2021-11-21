@@ -6,4 +6,4 @@ none - empty
 tree1:  none - empty
     1  : BinOp(TK.SUB, '-')
     2  :     Literal(TK.NONE, None)
-    3  :     Set(TK.EMPTY, {})
+    3  :     Literal(TK.EMPTY, {})

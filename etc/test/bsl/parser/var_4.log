@@ -4,15 +4,15 @@ test: 4:
 f.a(x) = { var a(x):x*x }
 
 tree1:  f.a(x) = { var a(x):x*x }
-    1  : Define(TK.DEFINE, TK.DEFINE, '=')
-    2  :     PropRef(TK.REF, '.')
+    1  : Define(TK.DEFINE: PropRef(TK.REF, '.') = Block(TK.BLOCK, ''))
+    2  :     PropRef(TK.REF: f . FnRef(TK.FUNCTION, 'a'))
     3  :         Ref(TK.IDENT, 'f')
     4  :         FnRef(TK.FUNCTION, 'a')
     5  :             Ref(TK.IDENT, 'a')
     6  :             List(TK.LIST, [Ref()])
     7  :                 Ref(TK.IDENT, 'x')
-    8  :     Block(TK.BLOCK, v=[DefineVarFn()], '')
-    9  :         DefineVarFn(TK.DEFINE, TK.DEFINE, ':')
+    8  :     Block{TK.BLOCK, len=1}
+    9  :         DefineVarFn(TK.COMBINE: a : BinOp(TK.MUL, '*'))
    10  :             Ref(TK.IDENT, 'a')
    11  :             BinOp(TK.MUL, '*')
    12  :                 Ref(TK.IDENT, 'x')

@@ -4,12 +4,12 @@ test: 24:
 def f.a.b.c(x) = x*x # vars in parameter list need to be Ref, not Get's
 
 tree1:  def f.a.b.c(x) = x*x # vars in parameter list need to be Ref, not Get's
-    1  : Define(TK.DEFINE, TK.DEFINE, '=')
-    2  :     PropRef(TK.REF, '.')
+    1  : Define(TK.DEFINE: PropRef(TK.REF, '.') = BinOp(TK.MUL, '*'))
+    2  :     PropRef(TK.REF: f . PropRef(TK.REF, '.'))
     3  :         Ref(TK.IDENT, 'f')
-    4  :         PropRef(TK.REF, '.')
+    4  :         PropRef(TK.REF: a . PropRef(TK.REF, '.'))
     5  :             Ref(TK.IDENT, 'a')
-    6  :             PropRef(TK.REF, '.')
+    6  :             PropRef(TK.REF: b . FnRef(TK.FUNCTION, 'c'))
     7  :                 Ref(TK.IDENT, 'b')
     8  :                 FnRef(TK.FUNCTION, 'c')
     9  :                     Ref(TK.IDENT, 'c')
@@ -20,12 +20,12 @@ tree1:  def f.a.b.c(x) = x*x # vars in parameter list need to be Ref, not Get's
    14  :         Ref(TK.IDENT, 'x')
 
 tree1:(post)  def f.a.b.c(x) = x*x # vars in parameter list need to be Ref, not Get's
-    1  : Define(TK.DEFINE, TK.DEFINE, '=')
-    2  :     PropRef(TK.REF, '.')
+    1  : Define(TK.DEFINE: PropRef(TK.REF, '.') = BinOp(TK.MUL, '*'))
+    2  :     PropRef(TK.REF: f . PropRef(TK.REF, '.'))
     3  :         Ref(TK.IDENT, 'f')
-    4  :         PropRef(TK.REF, '.')
+    4  :         PropRef(TK.REF: a . PropRef(TK.REF, '.'))
     5  :             Ref(TK.IDENT, 'a')
-    6  :             PropRef(TK.REF, '.')
+    6  :             PropRef(TK.REF: b . FnRef(TK.FUNCTION, 'c'))
     7  :                 Ref(TK.IDENT, 'b')
     8  :                 FnRef(TK.FUNCTION, 'c')
     9  :                     Ref(TK.IDENT, 'c')

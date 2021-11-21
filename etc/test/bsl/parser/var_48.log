@@ -4,10 +4,10 @@ test: 48:
 var f = { var a(x):x*x }
 
 tree1:  var f = { var a(x):x*x }
-    1  : DefineVar(TK.DEFINE, TK.DEFINE, '=')
+    1  : DefineVar(TK.DEFINE: f = Block(TK.BLOCK, ''))
     2  :     Ref(TK.IDENT, 'f')
-    3  :     Block(TK.BLOCK, v=[DefineVarFn()], '')
-    4  :         DefineVarFn(TK.DEFINE, TK.DEFINE, ':')
+    3  :     Block{TK.BLOCK, len=1}
+    4  :         DefineVarFn(TK.COMBINE: a : BinOp(TK.MUL, '*'))
     5  :             Ref(TK.IDENT, 'a')
     6  :             BinOp(TK.MUL, '*')
     7  :                 Ref(TK.IDENT, 'x')

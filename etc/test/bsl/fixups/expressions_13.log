@@ -6,19 +6,19 @@ a * -b --c
 tree1:  a * -b --c
     1  : BinOp(TK.MUL, '*')
     2  :     Get(TK.IDENT, 'a')
-    3  :     UnaryOp(TK.NEG, TK.NEG, '-')
+    3  :     UnaryOp(TK.NEG, '-')
     4  :         Get(TK.IDENT, 'b')
 
 tree2:  a * -b --c
-    1  : UnaryOp(TK.DECREMENT, TK.DECREMENT, '--')
+    1  : UnaryOp(TK.DECREMENT, '--')
     2  :     Get(TK.IDENT, 'c')
 
 tree1:(post)  a * -b --c
     1  : BinOp(TK.MUL, '*')
     2  :     Get(TK.IDENT, 'a')
-    3  :     UnaryOp(TK.NEG, TK.NEG, '-')
+    3  :     UnaryOp(TK.NEG, '-')
     4  :         Get(TK.IDENT, 'b')
 
 tree2:(post)  a * -b --c
-    1  : UnaryOp(TK.DECREMENT, TK.DECREMENT, '--')
+    1  : UnaryOp(TK.DECREMENT, '--')
     2  :     Get(TK.IDENT, 'c')

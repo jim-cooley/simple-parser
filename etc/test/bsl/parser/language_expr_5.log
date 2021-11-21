@@ -4,9 +4,9 @@ test: 5:
 any:{ cross(close, sma(20), delay=1, threshold=0.01) } | buy
 
 tree1:  any:{ cross(close, sma(20), delay=1, threshold=0.01) } | buy
-    1  : UnaryOp(TK.ANY, TK.ANY, 'any')
-    2  :     Flow(TK.CHAIN, v=[Block(), ApplyChainProd()], '|')
-    3  :         Block(TK.BLOCK, v=[FnCall()], '')
+    1  : UnaryOp(TK.ANY, 'any')
+    2  :     Flow{TK.CHAIN, '|' len=2}
+    3  :         Block{TK.BLOCK, len=1}
     4  :             FnCall('cross')
     5  :                 Get(TK.IDENT, 'cross')
     6  :                 List(TK.TUPLE, [Get(), FnCall(), Define(), Define()])
@@ -15,11 +15,11 @@ tree1:  any:{ cross(close, sma(20), delay=1, threshold=0.01) } | buy
     9  :                         Get(TK.IDENT, 'sma')
    10  :                         List(TK.LIST, [Int()])
    11  :                             Int(TK.INT, 20)
-   12  :                     Define(TK.DEFINE, TK.DEFINE, '=')
+   12  :                     Define(TK.DEFINE: delay = 1)
    13  :                         Ref(TK.IDENT, 'delay')
    14  :                         Int(TK.INT, 1)
-   15  :                     Define(TK.DEFINE, TK.DEFINE, '=')
+   15  :                     Define(TK.DEFINE: threshold = 0.01)
    16  :                         Ref(TK.IDENT, 'threshold')
    17  :                         Float(TK.FLOT, 0.01)
-   18  :         ApplyChainProd(TK.DEFINE, TK.DEFINE, '|')
+   18  :         ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'buy'))
    19  :             Ref(TK.IDENT, 'buy')

@@ -4,7 +4,8 @@
 #
 from enum import IntEnum
 
-from runtime.literals import Set, Literal
+from runtime.literals import Literal
+from runtime.collections import Set
 from runtime.token_class import TCL
 from runtime.token_ids import TK
 from interpreter.visitor import TreeFilter, BINARY_NODE, UNARY_NODE, SEQUENCE_NODE, NATIVE_LIST, ASSIGNMENT_NODE, VALUE_NODE, \
@@ -30,12 +31,14 @@ _tk2pfx = {
     TK.CHAIN: 'chain',
     TK.COEQ: 'def_fn',
     TK.COLN: 'coln:',
+    TK.COMBINE: 'comb:',
     TK.COMMAND: 'command',
     TK.COMPARE: 'cmp',
     TK.DATAFRAME: 'dataframe',
     TK.DECREMENT: 'decr',  # --
     TK.DEF: '_def',
     TK.DEFINE: 'def',
+    TK.DICT: 'dict',
     TK.DIV: 'div',  # /
     TK.DOT: '.ref',
     TK.DUR: 'dur',
@@ -63,6 +66,7 @@ _tk2pfx = {
     TK.LTE: 'is_lte',
     TK.MNEQ: 'subeq',
     TK.MUL: 'mul',  # *
+    TK.NAMEDTUPLE: 'ntup',
     TK.NEG: 'neg',  # unary - (negate)
     TK.NEQ: 'is_ne',
     TK.NONE: 'lit',
@@ -94,13 +98,15 @@ _tk2pfx = {
 _tk2grp = {
     TK.CHAIN: ['{', ' | ', '}', '{}'],
     TK.DATAFRAME: ['{', ', ',  '}', '{}'],
+    TK.DICT: ['{', ', ',  '}', '{}'],
     TK.EMPTY: ['{', ', ',  '}', 'Ø'],
     TK.GEN: ['[', ', ', ']', '[]'],
-    TK.SUBSCRIPT: ['[', ', ', ']', '[]'],
     TK.LIST: ['[', ', ', ']', '[]'],
+    TK.NAMEDTUPLE: ['(', ', ', ')', '()'],
     TK.SERIES: ['[', ', ',  ']', '[]'],
     TK.SET: ['{', ', ',  '}', '{}'],
-    TK.TUPLE: ['(', ', ', ')', '()']
+    TK.SUBSCRIPT: ['[', ', ', ']', '[]'],
+    TK.TUPLE: ['(', ', ', ')', '()'],
 }
 
 _DEFAULT_GRP = ['(', ', ', ')', '()']
@@ -117,6 +123,8 @@ _postfixNodeTypeMappings = {
     'BinOp': BINARY_NODE,
     'Block': SEQUENCE_NODE,
     'Bool': VALUE_NODE,
+    'Category': VALUE_NODE,
+    'Combine': ASSIGNMENT_NODE,
     'Command': UNARY_NODE,
     'DateDiff': VALUE_NODE,
     'Dataset': SEQUENCE_NODE,
@@ -126,7 +134,9 @@ _postfixNodeTypeMappings = {
     'DefineFn': _DEFINE_FN_NODE,
     'DefineVar': _DEFINITION_NODE,
     'DefineVarFn': _DEFINE_FN_NODE,
+    'Dict': SEQUENCE_NODE,
     'Duration': VALUE_NODE,
+    'Enumeration': VALUE_NODE,
     'Float': VALUE_NODE,
     'Flow': SEQUENCE_NODE,
     'FnCall': _FUNCTION_NODE,
@@ -139,6 +149,7 @@ _postfixNodeTypeMappings = {
     'Int': VALUE_NODE,
     'List': SEQUENCE_NODE,
     'Literal': VALUE_NODE,
+    'NamedTuple': SEQUENCE_NODE,
     'Node': DEFAULT_NODE,
     'Percent': VALUE_NODE,
     'PropCall': BINARY_NODE,
@@ -149,6 +160,7 @@ _postfixNodeTypeMappings = {
     'Set': SEQUENCE_NODE,
     'Str': VALUE_NODE,
     'Time': VALUE_NODE,
+    'Tuple': SEQUENCE_NODE,
     'UnaryOp': UNARY_NODE,
     'int': NATIVE_VALUE,
     'str': NATIVE_VALUE,

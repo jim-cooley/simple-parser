@@ -1,10 +1,4 @@
 
 
 test: 4:
-a >> b
-
-tree1:  a >> b
-    1  : Flow(TK.APPLY, v=[Get(), ApplyChainProd()], '>>')
-    2  :     Get(TK.IDENT, 'a')
-    3  :     ApplyChainProd(TK.DEFINE, TK.DEFINE, '>>')
-    4  :         Ref(TK.IDENT, 'b')
+# named tuple: (tuple list)

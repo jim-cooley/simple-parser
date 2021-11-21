@@ -125,7 +125,7 @@ def _find_test_file(name, search_paths):
             return f'{fname}.t'
         if os.path.isfile(f'{fname}.f'):
             return f'{fname}.f'
-    raise IOError(f'invalid test suite: {name}, is not a test file')
+    raise IOError(f'invalid test suite: \'{name}\', is not a test file')
 
 
 def _log_exception(e, log, name):

@@ -4,11 +4,11 @@ test: 10:
 {a:5, b:{c}, d}
 
 tree1:  {a:5, b:{c}, d}
-    1  : Set(TK.SET, [Define(), Define(), Get()])
-    2  :     Define(TK.DEFINE, TK.DEFINE, ':')
+    1  : Set(TK.SET, [Combine(), Combine(), Get()])
+    2  :     Combine(TK.COMBINE: a None 5)
     3  :         Ref(TK.IDENT, 'a')
     4  :         Int(TK.INT, 5)
-    5  :     Define(TK.DEFINE, TK.DEFINE, ':')
+    5  :     Combine(TK.COMBINE: b None Set{count=-1})
     6  :         Ref(TK.IDENT, 'b')
     7  :         Set(TK.SET, [Get()])
     8  :             Get(TK.IDENT, 'c')

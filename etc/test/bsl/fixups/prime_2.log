@@ -4,7 +4,7 @@ test: 2:
 -1
 
 tree1:  -1
-    1  : UnaryOp(TK.NEG, TK.NEG, '-')
+    1  : UnaryOp(TK.NEG, '-')
     2  :     Int(TK.INT, 1)
 
 tree1:(post)  -1

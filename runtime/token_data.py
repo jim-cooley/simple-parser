@@ -13,40 +13,48 @@ _tk2type = {
     TK.ASSIGN: TCL.BINOP,
     TK.BLOCK: TCL.SCOPE,
     TK.BOOL: TCL.LITERAL,
+    TK.CATEGORY: TCL.LITERAL,
     TK.CHAIN: TCL.BINOP,
+    TK.COEQ: TCL.BINOP,  # not in Token
     TK.COLN: TCL.BINOP,
+    TK.COMBINE: TCL.BINOP,
     TK.COMMAND: TCL.UNARY,
     TK.DATAFRAME: TCL.LITERAL,
     TK.DECREMENT: TCL.UNARY,
     TK.DEF: TCL.IDENTIFIER,
     TK.DEFINE: TCL.BINOP,
+    TK.DICT: TCL.LITERAL,
     TK.DIV: TCL.BINOP,
     TK.DLRS: TCL.UNARY,
     TK.DOT: TCL.BINOP,
     TK.DUR: TCL.LITERAL,
     TK.ELSE: TCL.BINOP,
     TK.EMPTY: TCL.LITERAL,
+    TK.ENUM: TCL.LITERAL,
     TK.EOF: TCL.LITERAL,
+    TK.EQGT: TCL.BINOP,  # not in Token
+    TK.EQLS: TCL.BINOP,  # not in Token
     TK.FALL_BELOW: TCL.BINOP,
     TK.FLOT: TCL.LITERAL,
     TK.FUNCTION: TCL.FUNCTION,
-    TK.IDENT: TCL.IDENTIFIER,
     TK.GEN: TCL.FUNCTION,
     TK.GTE: TCL.BINOP,
     TK.GTR: TCL.BINOP,
+    TK.IDENT: TCL.IDENTIFIER,
     TK.IDIV: TCL.BINOP,
     TK.IF: TCL.BINOP,
     TK.IN: TCL.BINOP,
     TK.INCREMENT: TCL.UNARY,
-    TK.SUBSCRIPT: TCL.BINOP,
     TK.INT: TCL.LITERAL,
     TK.ISEQ: TCL.BINOP,
+    TK.KVPAIR: TCL.BINOP,   # not in Token
     TK.LESS: TCL.BINOP,
     TK.LIST: TCL.LITERAL,
     TK.LTE: TCL.BINOP,
     TK.MNEQ: TCL.BINOP,
     TK.MOD: TCL.BINOP,
     TK.MUL: TCL.BINOP,
+    TK.NAMEDTUPLE: TCL.TUPLE,
     TK.NEG: TCL.UNARY,
     TK.NEQ: TCL.BINOP,
     TK.NONE: TCL.LITERAL,
@@ -55,6 +63,7 @@ _tk2type = {
     TK.NOW: TCL.FUNCTION,
     TK.OBJECT: TCL.LITERAL,
     TK.OR: TCL.BINOP,
+    TK.PAPPLY: TCL.BINOP,
     TK.PCT: TCL.UNARY,
     TK.PLEQ: TCL.BINOP,
     TK.POS: TCL.UNARY,
@@ -69,6 +78,7 @@ _tk2type = {
     TK.SET: TCL.LITERAL,
     TK.STR: TCL.LITERAL,
     TK.SUB: TCL.BINOP,
+    TK.SUBSCRIPT: TCL.BINOP,
     TK.THEN: TCL.BINOP,
     TK.TIME: TCL.LITERAL,
     TK.TODAY: TCL.FUNCTION,
@@ -84,19 +94,23 @@ _tk2glyph = {
     TK.ANY: 'any',  # any:
     TK.APPLY: 'apply',  # >>
     TK.ASSIGN: '=',  # =
+    TK.CATEGORY: 'cat',
     TK.CHAIN: '|',
     TK.COEQ: ':=',
     TK.COLN: ':',
+    TK.COMBINE: ':',
     TK.COMMAND: 'command',
     TK.COMPARE: '?',
     TK.DATAFRAME: 'dataframe',
     TK.DECREMENT: '--',
     TK.DEFINE: ':=',
     TK.DEFINE_FN: '=>',
+    TK.DICT: 'dict',
     TK.DIV: '/',
     TK.DOT: '.',
     TK.DUR: 'dur',
     TK.EMPTY: 'Ø',  # empty set
+    TK.ENUM: 'enum',
     TK.EQLS: '=',
     TK.EQGT: '=>',
     TK.EVENT: '=>',
@@ -119,6 +133,7 @@ _tk2glyph = {
     TK.LTE: '<=',
     TK.MNEQ: '-=',
     TK.MUL: '*',
+    TK.NAMEDTUPLE: 'ntup',
     TK.NEG: '-',
     TK.NEQ: '!=',
     TK.NONE: 'none',
@@ -142,7 +157,7 @@ _tk2glyph = {
     TK.SUB: '-',  # - (subtract)
     TK.TODAY: 'today',
     TK.TRUE: 'true',
-    TK.TUPLE: '',
+    TK.TUPLE: 'tup',
     TK.VAR: 'var',
 }
 
@@ -155,12 +170,13 @@ _tk2binop = {
     TK.BAR: TK.CHAIN,
     TK.CLN2: TK.DEF,
     TK.COEQ: TK.DEFINE,
-    TK.COLN: TK.KVPAIR,
+    TK.COLN: TK.COMBINE,  # TK.KVPAIR ? TK.PARAMETERIZE, TK.PARAMETER_APPLY
+    TK.COMBINE: TK.COMBINE,
     TK.DOT2: TK.RANGE,
     TK.DOT: TK.DOT,
     TK.EQEQ: TK.ISEQ,  # ==
     TK.EQGT: TK.PRODUCE,
-    TK.EQLS: TK.ASSIGN,
+    TK.EQLS: TK.ASSIGN,  # or TK.DEFINE
     TK.EXCL: TK.NOT,
     TK.EXPN: TK.POW,
     TK.GTE: TK.GTE,
@@ -218,17 +234,23 @@ _tk2lit = {
 type2tid = {
     'Block': TK.BLOCK,
     'Bool': TK.BOOL,
+    'Category': TK.CATEGORY,
     'DataFrame': TK.DATAFRAME,
+    'Dict': TK.DICT,
+    'Enumeration': TK.ENUM,
+    'List': TK.LIST,
     'NoneType': TK.NONE,
     'Object': TK.OBJECT,
     'Range': TK.RANGE,
     'Series': TK.SERIES,
     'bool': TK.BOOL,
+    'dict': TK.DICT,
     'float': TK.FLOT,
     'int': TK.INT,
     'list': TK.LIST,
     'object': TK.NONE,  # CONSIDER: TK.OBJECT ?
     'range': TK.RANGE,
+    'Set': TK.SET,
     'str': TK.STR,
     'timedelta': TK.DUR,
 }
@@ -246,11 +268,12 @@ ASSIGNMENT_TOKENS_REF = [TK.COEQ, TK.EQLS, TK.EQGT, TK.ASSIGN, TK.COLN]
 FLOW_TOKENS = [TK.BAR, TK.GTR2, TK.APPLY, TK.RARR]
 
 IDENTIFIER_TYPES = [TCL.KEYWORD, TCL.DATASET, TCL.IDENTIFIER, TCL.TUPLE, TCL.FUNCTION]
-IDENTIFIER_TOKENS = [TK.IDENT, TK.ANON, TK.REF, TK.DOT, TK.TUPLE, TK.FUNCTION]
+IDENTIFIER_TOKENS = [TK.IDENT, TK.ANON, TK.REF, TK.DOT, TK.COMBINE, TK.FUNCTION]
 
 # used in assignment (k=v, k:v)
-IDENTIFIER_TOKENS_EX = [TK.IDENT, TK.ANON, TK.REF, TK.DOT, TK.TUPLE, TK.FUNCTION, TK.COLN, TK.BLOCK, TK.STR, TK.CHAIN]
-VALUE_TOKENS = [TK.BOOL, TK.EMPTY, TK.FLOT, TK.INT, TK.NONE, TK.STR, TK.DUR, TK.OBJECT, TK.SET, TK.LIST, TK.IDENT]
+IDENTIFIER_TOKENS_EX = [TK.ANON, TK.BLOCK, TK.CHAIN, TK.COLN, TK.COMBINE, TK.DOT,
+                        TK.FUNCTION, TK.GEN, TK.IDENT, TK.RANGE, TK.REF, TK.TUPLE, TK.STR]
+VALUE_TOKENS = [TK.BOOL, TK.DUR, TK.EMPTY, TK.FLOT, TK.IDENT, TK.INT, TK.LIST, TK.NONE, TK.OBJECT, TK.SET, TK.STR]
 
 ADDITION_TOKENS = [TK.PLUS, TK.MNUS, TK.SUB, TK.ADD]
 COMPARISON_TOKENS = [TK.LESS, TK.LTE, TK.GTR, TK.GTE, TK.IN, TK.LBAR, TK.RBAR, TK.FALL_BELOW, TK.RISE_ABOVE]

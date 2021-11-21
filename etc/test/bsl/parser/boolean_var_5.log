@@ -4,7 +4,7 @@ test: 5:
 a | n
 
 tree1:  a | n
-    1  : Flow(TK.CHAIN, v=[Get(), ApplyChainProd()], '|')
+    1  : Flow{TK.CHAIN, '|' len=2}
     2  :     Get(TK.IDENT, 'a')
-    3  :     ApplyChainProd(TK.DEFINE, TK.DEFINE, '|')
+    3  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'n'))
     4  :         Ref(TK.IDENT, 'n')

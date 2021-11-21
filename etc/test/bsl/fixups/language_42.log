@@ -4,8 +4,8 @@ test: 42:
 { a(x):x*x }
 
 tree1:  { a(x):x*x }
-    1  : Block(TK.BLOCK, v=[DefineFn()], '')
-    2  :     DefineFn(TK.DEFINE, TK.DEFINE, ':')
+    1  : Block{TK.BLOCK, len=1}
+    2  :     DefineFn(TK.COMBINE: a : BinOp(TK.MUL, '*'))
     3  :         Ref(TK.IDENT, 'a')
     4  :         BinOp(TK.MUL, '*')
     5  :             Get(TK.IDENT, 'x')
@@ -15,8 +15,8 @@ tree1:  { a(x):x*x }
 
 tree1:(post)  { a(x):x*x }
 result: list([DefineFn()])
-    1  : Block(TK.BLOCK, v=[DefineFn()], '')
-    2  :     DefineFn(TK.DEFINE, TK.DEFINE, ':')
+    1  : Block{TK.BLOCK, len=1}
+    2  :     DefineFn(TK.COMBINE: a : BinOp(TK.MUL, '*'))
     3  :         Ref(TK.IDENT, 'a')
     4  :         BinOp(TK.MUL, '*')
     5  :             Get(TK.IDENT, 'x')

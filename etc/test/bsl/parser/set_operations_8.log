@@ -4,7 +4,7 @@ test: 8:
 {a} >> {b}
 
 tree1:  {a} >> {b}
-    1  : Flow(TK.APPLY, v=[Set(), Set()], '>>')
+    1  : Flow{TK.APPLY, '>>' len=2}
     2  :     Set(TK.SET, [Get()])
     3  :         Get(TK.IDENT, 'a')
     4  :     Set(TK.SET, [Ref()])

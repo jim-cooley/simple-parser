@@ -1,15 +1,21 @@
 
 
 test: 16:
-"{a=5, b='c', d}"
+{a, b, c}:(c=4, a=5, b=6)
 
-tree1:  {a=5, b='c', d}
-result: list([Define(), Define(), Get()])
-    1 : Block TK.BLOCK(SCOPE, '', V=[Define(), Define(), Get()])
-    2 :     Define TK.EQLS(BINOP, '=', V=None)
-    3 :         Ref TK.IDNT(IDENTIFIER, 'a', V=None)
-    4 :         Int TK.INT(LITERAL, '5', V=5)
-    5 :     Define TK.EQLS(BINOP, '=', V=None)
-    6 :         Ref TK.IDNT(IDENTIFIER, 'b', V=None)
-    7 :         Str TK.STR(LITERAL, 'c', V=c)
-    8 :     Get TK.IDNT(IDENTIFIER, 'd', V=None)
+tree1:  {a, b, c}:(c=4, a=5, b=6)
+    1  : Define(TK.TUPLE:  = List[count=3])
+    2  :     Set(TK.SET, [Ref(), Ref(), Ref()])
+    3  :         Ref(TK.IDENT, 'a')
+    4  :         Ref(TK.IDENT, 'b')
+    5  :         Ref(TK.IDENT, 'c')
+    6  :     List(TK.TUPLE, [Define(), Define(), Define()])
+    7  :         Define(TK.DEFINE: c = 4)
+    8  :             Ref(TK.IDENT, 'c')
+    9  :             Int(TK.INT, 4)
+   10  :         Define(TK.DEFINE: a = 5)
+   11  :             Ref(TK.IDENT, 'a')
+   12  :             Int(TK.INT, 5)
+   13  :         Define(TK.DEFINE: b = 6)
+   14  :             Ref(TK.IDENT, 'b')
+   15  :             Int(TK.INT, 6)

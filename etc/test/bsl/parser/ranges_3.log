@@ -4,8 +4,8 @@ test: 3:
 { 'train': (today-2y)..today }
 
 tree1:  { 'train': (today-2y)..today }
-    1  : Block(TK.BLOCK, v=[Define()], '')
-    2  :     Define(TK.DEFINE, TK.DEFINE, ':')
+    1  : Block{TK.BLOCK, len=1}
+    2  :     Combine(TK.COMBINE: train None BinOp(TK.RANGE, '..'))
     3  :         Str(TK.STR, 'train')
     4  :         BinOp(TK.RANGE, '..')
     5  :             BinOp(TK.SUB, '-')

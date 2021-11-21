@@ -4,5 +4,5 @@ test: 1:
 + 2
 
 tree1:  + 2
-    1  : UnaryOp(TK.POS, TK.POS, '+')
+    1  : UnaryOp(TK.POS, '+')
     2  :     Int(TK.INT, 2)

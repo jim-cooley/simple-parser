@@ -98,15 +98,17 @@ class IndexedDict(object):
     def remove(self, key):
         if isinstance(key, list):
             for k in key:
-                idx = self._fields.index(k)
+                if k in self._fields:
+                    idx = self._fields.index(k)
+                    del self._fields[idx]
+                    del self._values[idx]
+                    self.__dict__.pop(k, None)
+        else:
+            if key in self._fields:
+                idx = self._fields.index(key)
                 del self._fields[idx]
                 del self._values[idx]
-                self.__dict__.pop(k, None)
-        else:
-            idx = self._fields.index(k)
-            del self._fields[idx]
-            del self._values[idx]
-            self.__dict__.pop(key, None)
+                self.__dict__.pop(key, None)
 
     def values(self):                       # UNDONE: iterator?
         return self._values

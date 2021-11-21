@@ -4,7 +4,7 @@ test: 1:
 def atr = (high + low) / 2; med = (close + open) /2
 
 tree1:  def atr = (high + low) / 2; med = (close + open) /2
-    1  : Define(TK.DEFINE, TK.DEFINE, '=')
+    1  : Define(TK.DEFINE: atr = BinOp(TK.DIV, '/'))
     2  :     Ref(TK.IDENT, 'atr')
     3  :     BinOp(TK.DIV, '/')
     4  :         BinOp(TK.ADD, '+')
@@ -13,7 +13,7 @@ tree1:  def atr = (high + low) / 2; med = (close + open) /2
     7  :         Int(TK.INT, 2)
 
 tree2:  def atr = (high + low) / 2; med = (close + open) /2
-    1  : Define(TK.DEFINE, TK.DEFINE, '=')
+    1  : Define(TK.DEFINE: med = BinOp(TK.DIV, '/'))
     2  :     Ref(TK.IDENT, 'med')
     3  :     BinOp(TK.DIV, '/')
     4  :         BinOp(TK.ADD, '+')
@@ -22,7 +22,7 @@ tree2:  def atr = (high + low) / 2; med = (close + open) /2
     7  :         Int(TK.INT, 2)
 
 tree1:(post)  def atr = (high + low) / 2; med = (close + open) /2
-    1  : Define(TK.DEFINE, TK.DEFINE, '=')
+    1  : Define(TK.DEFINE: atr = BinOp(TK.DIV, '/'))
     2  :     Ref(TK.IDENT, 'atr')
     3  :     BinOp(TK.DIV, '/')
     4  :         BinOp(TK.ADD, '+')
@@ -31,7 +31,7 @@ tree1:(post)  def atr = (high + low) / 2; med = (close + open) /2
     7  :         Int(TK.INT, 2)
 
 tree2:(post)  def atr = (high + low) / 2; med = (close + open) /2
-    1  : Define(TK.DEFINE, TK.DEFINE, '=')
+    1  : Define(TK.DEFINE: med = BinOp(TK.DIV, '/'))
     2  :     Ref(TK.IDENT, 'med')
     3  :     BinOp(TK.DIV, '/')
     4  :         BinOp(TK.ADD, '+')

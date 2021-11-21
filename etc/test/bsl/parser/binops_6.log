@@ -4,7 +4,7 @@ test: 6:
 1 >> -1
 
 tree1:  1 >> -1
-    1  : Flow(TK.APPLY, v=[Int(), UnaryOp()], '>>')
+    1  : Flow{TK.APPLY, '>>' len=2}
     2  :     Int(TK.INT, 1)
-    3  :     UnaryOp(TK.NEG, TK.NEG, '-')
+    3  :     UnaryOp(TK.NEG, '-')
     4  :         Int(TK.INT, 1)

@@ -4,6 +4,6 @@ test: 8:
 2 >> none
 
 tree1:  2 >> none
-    1  : Flow(TK.APPLY, v=[Int(), Literal()], '>>')
+    1  : Flow{TK.APPLY, '>>' len=2}
     2  :     Int(TK.INT, 2)
     3  :     Literal(TK.NONE, None)

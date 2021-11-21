@@ -4,21 +4,21 @@ test: 3:
 b = 1; a = b
 
 tree1:  b = 1; a = b
-    1  : Define(TK.DEFINE, TK.DEFINE, '=')
+    1  : Define(TK.DEFINE: b = 1)
     2  :     Ref(TK.IDENT, 'b')
     3  :     Int(TK.INT, 1)
 
 tree2:  b = 1; a = b
-    1  : Define(TK.DEFINE, TK.DEFINE, '=')
+    1  : Define(TK.DEFINE: a = Get(TK.IDENT, 'b'))
     2  :     Ref(TK.IDENT, 'a')
     3  :     Get(TK.IDENT, 'b')
 
 tree1:(post)  b = 1; a = b
-    1  : Define(TK.DEFINE, TK.DEFINE, '=')
+    1  : Define(TK.DEFINE: b = 1)
     2  :     Ref(TK.IDENT, 'b')
     3  :     Int(TK.INT, 1)
 
 tree2:(post)  b = 1; a = b
-    1  : Define(TK.DEFINE, TK.DEFINE, '=')
+    1  : Define(TK.DEFINE: a = Get(TK.IDENT, 'b'))
     2  :     Ref(TK.IDENT, 'a')
     3  :     Get(TK.IDENT, 'b')

@@ -4,6 +4,6 @@ test: 22:
 none >> false
 
 tree1:  none >> false
-    1  : Flow(TK.APPLY, v=[Literal(), Bool()], '>>')
+    1  : Flow{TK.APPLY, '>>' len=2}
     2  :     Literal(TK.NONE, None)
     3  :     Bool(TK.BOOL, False)

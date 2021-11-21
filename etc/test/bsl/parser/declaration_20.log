@@ -4,9 +4,9 @@ test: 20:
 def f(x) := { x * 4 }
 
 tree1:  def f(x) := { x * 4 }
-    1  : DefineVarFn(TK.DEFINE, TK.DEFINE, ':=')
+    1  : DefineVarFn(TK.DEFINE: f := Block(TK.BLOCK, ''))
     2  :     Ref(TK.IDENT, 'f')
-    3  :     Block(TK.BLOCK, v=[BinOp()], '')
+    3  :     Block{TK.BLOCK, len=1}
     4  :         BinOp(TK.MUL, '*')
     5  :             Ref(TK.IDENT, 'x')
     6  :             Int(TK.INT, 4)

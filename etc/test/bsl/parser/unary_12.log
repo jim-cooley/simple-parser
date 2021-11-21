@@ -4,6 +4,6 @@ test: 12:
 ---a
 
 tree1:  ---a
-    1  : UnaryOp(TK.DECREMENT, TK.DECREMENT, '--')
-    2  :     UnaryOp(TK.NEG, TK.NEG, '-')
+    1  : UnaryOp(TK.DECREMENT, '--')
+    2  :     UnaryOp(TK.NEG, '-')
     3  :         Get(TK.IDENT, 'a')

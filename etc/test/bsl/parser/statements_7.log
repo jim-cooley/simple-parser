@@ -4,12 +4,12 @@ test: 7:
 a | b >> c ; d
 
 tree1:  a | b >> c ; d
-    1  : Flow(TK.APPLY, v=[Flow(), ApplyChainProd()], '>>')
-    2  :     Flow(TK.CHAIN, v=[Get(), ApplyChainProd()], '|')
+    1  : Flow{TK.APPLY, '>>' len=2}
+    2  :     Flow{TK.CHAIN, '|' len=2}
     3  :         Get(TK.IDENT, 'a')
-    4  :         ApplyChainProd(TK.DEFINE, TK.DEFINE, '|')
+    4  :         ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'b'))
     5  :             Ref(TK.IDENT, 'b')
-    6  :     ApplyChainProd(TK.DEFINE, TK.DEFINE, '>>')
+    6  :     ApplyChainProd(TK.APPLY: None >> Ref(TK.IDENT, 'c'))
     7  :         Ref(TK.IDENT, 'c')
 
 tree2:  a | b >> c ; d

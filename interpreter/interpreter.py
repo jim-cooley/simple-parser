@@ -31,6 +31,7 @@ _PROCESS_BINOP = 'process_binop'
 _PROCESS_BLOCK = 'process_block'
 _PROCESS_DEFINE = 'process_define'
 _PROCESS_CHAIN_PROD = 'process_chain_prod'
+_PROCESS_COMBINE = 'process_combine'
 _PROCESS_DEFINE_FN = 'process_define_fn'
 _PROCESS_FLOW = 'process_flow'
 _PROCESS_FNCALL = 'process_fncall'
@@ -56,6 +57,8 @@ _interpreterVisitNodeMappings = {
     'BinOp': _PROCESS_BINOP,
     'Block': _PROCESS_BLOCK,
     'Bool': _VISIT_LITERAL,
+    'Category': _VISIT_LITERAL,
+    'Combine': _PROCESS_COMBINE,
     'DateDiff': _VISIT_LITERAL,
     'DateTime': _VISIT_LITERAL,
     'Define': _PROCESS_DEFINE,
@@ -63,7 +66,9 @@ _interpreterVisitNodeMappings = {
     'DefineFn': _PROCESS_DEFINE_FN,
     'DefineVar': _PROCESS_DEFINE,
     'DefineVarFn': _PROCESS_DEFINE_FN,
+    'Dict': _PROCESS_SET,
     'Duration': _VISIT_LITERAL,
+    'Enumeration': _VISIT_LITERAL,
     'Float': _VISIT_LITERAL,
     'Flow': _PROCESS_FLOW,
     'FnCall': _PROCESS_FNCALL,
@@ -76,6 +81,7 @@ _interpreterVisitNodeMappings = {
     'Int': _VISIT_LITERAL,
     'List': _PROCESS_LIST,
     'Literal': _VISIT_LITERAL,
+    'NamedTuple': _PROCESS_SET,
     'Node': _VISiT_LEAF,
     'Percent': _VISIT_LITERAL,
     'PropCall': _PROCESS_PROPCALL,
@@ -85,11 +91,12 @@ _interpreterVisitNodeMappings = {
     'Set': _PROCESS_SET,
     'Str': _VISIT_LITERAL,
     'Time': _VISIT_LITERAL,
+    'Tuple': _PROCESS_LIST,
     'UnaryOp': _PROCESS_UNOP,
 
     'int': _NATIVE_VALUE,
     'str': _NATIVE_VALUE,
-    'list':_NATIVE_LIST,
+    'list': _NATIVE_LIST,
 }
 
 
@@ -109,7 +116,10 @@ class Interpreter(TreeFilter):
         assert environment.trees is not None, "empty trees passed via Environment to apply"
 
         for t in environment.trees:
-            self.visit(t.root)
+            v = self.visit(t.root)
+            if v is None:
+                v = self.stack.pop()
+            t.values = v
         return environment
 
     # default
@@ -190,6 +200,10 @@ class Interpreter(TreeFilter):
         else:
             self.visit(els)
 
+    # Combine
+    def process_combine(self, node, label=None):
+        self.process_define(node, label)
+
     # Define, DefineVar
     def process_define(self, node, label=None):
         self._print_node(node)
@@ -237,13 +251,10 @@ class Interpreter(TreeFilter):
         if values is None:
             self.stack.push(node)
         else:
-            prev = None
             for idx in range(0, len(values)):
                 n = values[idx]
                 if n is None:
                     continue
-                if prev is not None:
-                    pass  # look for something to assign it to
                 self.visit(n)
         self.dedent()
 

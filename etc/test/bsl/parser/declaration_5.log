@@ -4,8 +4,8 @@ test: 5:
 var f.a = 5
 
 tree1:  var f.a = 5
-    1  : DefineVar(TK.DEFINE, TK.DEFINE, '=')
-    2  :     PropRef(TK.REF, '.')
+    1  : DefineVar(TK.DEFINE: PropRef(TK.REF, '.') = 5)
+    2  :     PropRef(TK.REF: f . Ref(TK.IDENT, 'a'))
     3  :         Ref(TK.IDENT, 'f')
     4  :         Ref(TK.IDENT, 'a')
     5  :     Int(TK.INT, 5)

@@ -4,14 +4,14 @@ test: 3:
 any:{a, b, c}
 
 tree1:  any:{a, b, c}
-    1  : UnaryOp(TK.ANY, TK.ANY, 'any')
+    1  : UnaryOp(TK.ANY, 'any')
     2  :     Set(TK.SET, [Get(), Get(), Get()])
     3  :         Get(TK.IDENT, 'a')
     4  :         Get(TK.IDENT, 'b')
     5  :         Get(TK.IDENT, 'c')
 
 tree1:(post)  any:{a, b, c}
-    1  : UnaryOp(TK.ANY, TK.ANY, 'any')
+    1  : UnaryOp(TK.ANY, 'any')
     2  :     Set(TK.SET, [Get(), Get(), Get()])
     3  :         Get(TK.IDENT, 'a')
     4  :         Get(TK.IDENT, 'b')

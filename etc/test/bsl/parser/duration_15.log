@@ -4,5 +4,5 @@ test: 15:
 -1s
 
 tree1:  -1s
-    1  : UnaryOp(TK.NEG, TK.NEG, '-')
+    1  : UnaryOp(TK.NEG, '-')
     2  :     Duration(TK.DUR, 0:00:01)

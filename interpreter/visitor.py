@@ -15,8 +15,10 @@ _defaultNodeTypeMappings = {
     'Assign': BINARY_NODE,
     'BinOp': BINARY_NODE,
     'Block': SEQUENCE_NODE,
+    'Combine': BINARY_NODE,
     'Command': UNARY_NODE,
     'Dataset': SEQUENCE_NODE,
+    'Dict': SEQUENCE_NODE,
     'Define': BINARY_NODE,
     'DefineChainProd': BINARY_NODE,
     'DefineFn': TRINARY_NODE,
@@ -27,10 +29,12 @@ _defaultNodeTypeMappings = {
     'Flow': SEQUENCE_NODE,
     'Index': BINARY_NODE,
     'List': SEQUENCE_NODE,
+    'NamedTuple': SEQUENCE_NODE,
     'PropCall': BINARY_NODE,
     'PropRef': BINARY_NODE,
     'Series': SEQUENCE_NODE,
     'Set': SEQUENCE_NODE,
+    'Tuple': SEQUENCE_NODE,
     'UnaryOp': UNARY_NODE,
 }
 

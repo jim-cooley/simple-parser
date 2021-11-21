@@ -4,22 +4,22 @@ test: 15:
 start: open.delay(1d) | buy; end: open | sell
 
 tree1:  start: open.delay(1d) | buy; end: open | sell
-    1  : Flow(TK.CHAIN, v=[Define(), ApplyChainProd()], '|')
-    2  :     Define(TK.DEFINE, TK.DEFINE, ':')
+    1  : Flow{TK.CHAIN, '|' len=2}
+    2  :     Combine(TK.COMBINE: start None PropRef(TK.REF, '.'))
     3  :         Ref(TK.IDENT, 'start')
-    4  :         PropRef(TK.REF, '.')
+    4  :         PropRef(TK.REF: open . FnCall(TK.FUNCTION, 'delay'))
     5  :             Get(TK.IDENT, 'open')
     6  :             FnCall('delay')
     7  :                 Get(TK.IDENT, 'delay')
     8  :                 List(TK.LIST, [Duration()])
     9  :                     Duration(TK.DUR, 1 day, 0:00:00)
-   10  :     ApplyChainProd(TK.DEFINE, TK.DEFINE, '|')
+   10  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'buy'))
    11  :         Ref(TK.IDENT, 'buy')
 
 tree2:  start: open.delay(1d) | buy; end: open | sell
-    1  : Flow(TK.CHAIN, v=[Define(), ApplyChainProd()], '|')
-    2  :     Define(TK.DEFINE, TK.DEFINE, ':')
+    1  : Flow{TK.CHAIN, '|' len=2}
+    2  :     Combine(TK.COMBINE: end None Get(TK.IDENT, 'open'))
     3  :         Ref(TK.IDENT, 'end')
     4  :         Get(TK.IDENT, 'open')
-    5  :     ApplyChainProd(TK.DEFINE, TK.DEFINE, '|')
+    5  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'sell'))
     6  :         Ref(TK.IDENT, 'sell')

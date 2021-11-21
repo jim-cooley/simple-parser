@@ -1,4 +1,5 @@
 #!/Volumes/HD2/Lab/Repository/jimc/python3.9/bin/python3
+import os
 from enum import unique, IntEnum
 from multiprocessing import SimpleQueue
 
@@ -9,7 +10,7 @@ from runtime.dataframe import Dataset
 from runtime.exceptions import getLogFacility, runtime_error
 from runtime.options import getOptions
 from runtime.pandas import print_dataframe
-from runtime.runtime import load_file
+from runtime.runtime import load_file, find_file
 from runtime.scope import Object
 from test.suite_runner import _t_print
 
@@ -32,8 +33,20 @@ class FocalConsole:
         verbose = self.option.verbose
         if verbose:
             print(f'\n\nloading {fname}...')
-        source = load_file(fname)
-        self.parse(source)
+        source = load_file(self.find_file(fname))
+        if not self.option.step_wise:
+            self.parse(source)
+        else:
+            for line in source.splitlines():
+                if line:
+                    self.parse(line)
+
+    def find_file(self, fname):
+        fname = find_file(fname)
+        ty = os.path.splitext(fname)[1]
+        if ty == '.t':
+            self.option.step_wise = True
+        return fname
 
     def parse(self, lines):
         verbose = self.option.verbose

@@ -4,5 +4,5 @@ test: 42:
 +1.25y
 
 tree1:  +1.25y
-    1  : UnaryOp(TK.POS, TK.POS, '+')
+    1  : UnaryOp(TK.POS, '+')
     2  :     Duration(TK.DUR, 456 days, 6:00:00)

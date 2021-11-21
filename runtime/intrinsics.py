@@ -1,8 +1,7 @@
 from datetime import datetime
 
 from runtime.dataframe import Dataset
-from runtime.literals import Time
-
+from runtime.time import Time
 
 # -----------------------------------
 # Intrinsic Functions

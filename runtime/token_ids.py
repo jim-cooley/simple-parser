@@ -100,6 +100,7 @@ class TK(IntEnum):
     BOOL = auto()
     CATEGORY = auto()  # category enumeration
     CHAIN = auto()
+    COMBINE = auto()
     COMMAND = auto()
     COMPARE = auto()  # ?  a ? b is to compare a to b
     DATAFRAME = auto()
@@ -107,6 +108,7 @@ class TK(IntEnum):
     DEF = auto()  # set version of REF
     DEFINE = auto()  # :=, 'def'
     DEFINE_FN = auto()  # =>,  'def' f(x)
+    DICT = auto()
     DOTPROD = auto()  # •
     ENUM = auto()  # Integer enumeration
     EVENT = auto()  # from =>
@@ -119,10 +121,12 @@ class TK(IntEnum):
     KVPAIR = auto()  # key:value
     LIST = auto()
     MUL = auto()  # *
+    NAMEDTUPLE = auto()
     NATIVE = auto()  # token represents native literal
     NEG = auto()  # unary - (negate)
     OBJECT = auto()  # unknown type
     OR = auto()
+    PAPPLY = auto()  # PARAMETER_APPLY
     POS = auto()  # unary +
     POW = auto()  # ^
     PRODUCE = auto()  # => signal

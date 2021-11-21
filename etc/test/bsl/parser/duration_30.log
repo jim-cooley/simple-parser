@@ -4,5 +4,5 @@ test: 30:
 +1m
 
 tree1:  +1m
-    1  : UnaryOp(TK.POS, TK.POS, '+')
+    1  : UnaryOp(TK.POS, '+')
     2  :     Duration(TK.DUR, 0:01:00)

@@ -4,29 +4,29 @@ test: 10:
 node => { _ : _.left = _.right}
 
 tree1:  node => { _ : _.left = _.right}
-    1  : DefineFn(TK.DEFINE, TK.DEFINE, '=>')
+    1  : DefineFn(TK.PRODUCE: node => Block(TK.BLOCK, ''))
     2  :     Ref(TK.IDENT, 'node')
-    3  :     Block(TK.BLOCK, v=[Define()], '')
-    4  :         Define(TK.DEFINE, TK.DEFINE, ':')
+    3  :     Block{TK.BLOCK, len=1}
+    4  :         Combine(TK.COMBINE: _ None Define(TK.DEFINE, '='))
     5  :             Ref(TK.ANON, '_')
-    6  :             Define(TK.DEFINE, TK.DEFINE, '=')
-    7  :                 PropRef(TK.REF, '.')
+    6  :             Define(TK.DEFINE: PropRef(TK.REF, '.') = PropRef(TK.REF, '.'))
+    7  :                 PropRef(TK.REF: _ . Ref(TK.IDENT, 'left'))
     8  :                     Ref(TK.ANON, '_')
     9  :                     Ref(TK.IDENT, 'left')
-   10  :                 PropRef(TK.REF, '.')
+   10  :                 PropRef(TK.REF: _ . Get(TK.IDENT, 'right'))
    11  :                     Get(TK.ANON, '_')
    12  :                     Get(TK.IDENT, 'right')
 
 tree1:(post)  node => { _ : _.left = _.right}
-    1  : DefineFn(TK.DEFINE, TK.DEFINE, '=>')
+    1  : DefineFn(TK.PRODUCE: node => Block(TK.BLOCK, ''))
     2  :     Ref(TK.IDENT, 'node')
-    3  :     Block(TK.BLOCK, v=[Define()], '')
-    4  :         Define(TK.DEFINE, TK.DEFINE, ':')
+    3  :     Block{TK.BLOCK, len=1}
+    4  :         Combine(TK.COMBINE: _ None Define(TK.DEFINE, '='))
     5  :             Ref(TK.ANON, '_')
-    6  :             Define(TK.DEFINE, TK.DEFINE, '=')
-    7  :                 PropRef(TK.REF, '.')
+    6  :             Define(TK.DEFINE: PropRef(TK.REF, '.') = PropRef(TK.REF, '.'))
+    7  :                 PropRef(TK.REF: _ . Ref(TK.IDENT, 'left'))
     8  :                     Ref(TK.ANON, '_')
     9  :                     Ref(TK.IDENT, 'left')
-   10  :                 PropRef(TK.REF, '.')
+   10  :                 PropRef(TK.REF: _ . Get(TK.IDENT, 'right'))
    11  :                     Get(TK.ANON, '_')
    12  :                     Get(TK.IDENT, 'right')

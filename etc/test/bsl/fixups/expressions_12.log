@@ -7,7 +7,7 @@ tree1:  a * -b - c
     1  : BinOp(TK.SUB, '-')
     2  :     BinOp(TK.MUL, '*')
     3  :         Get(TK.IDENT, 'a')
-    4  :         UnaryOp(TK.NEG, TK.NEG, '-')
+    4  :         UnaryOp(TK.NEG, '-')
     5  :             Get(TK.IDENT, 'b')
     6  :     Get(TK.IDENT, 'c')
 
@@ -15,6 +15,6 @@ tree1:(post)  a * -b - c
     1  : BinOp(TK.SUB, '-')
     2  :     BinOp(TK.MUL, '*')
     3  :         Get(TK.IDENT, 'a')
-    4  :         UnaryOp(TK.NEG, TK.NEG, '-')
+    4  :         UnaryOp(TK.NEG, '-')
     5  :             Get(TK.IDENT, 'b')
     6  :     Get(TK.IDENT, 'c')

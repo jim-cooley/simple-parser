@@ -4,7 +4,7 @@ test: 25:
 ! "2"
 
 tree1:  ! "2"
-    1  : UnaryOp(TK.NOT, TK.NOT, '!')
+    1  : UnaryOp(TK.NOT, '!')
     2  :     Str(TK.STR, '2')
 
 tree1:(post)  ! "2"

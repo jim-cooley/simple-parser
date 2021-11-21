@@ -4,8 +4,8 @@ test: 13:
 close >| sma(10) and close <| sma(20) | signal >> open.delay(1d)
 
 tree1:  close >| sma(10) and close <| sma(20) | signal >> open.delay(1d)
-    1  : Flow(TK.APPLY, v=[Flow(), PropRef()], '>>')
-    2  :     Flow(TK.CHAIN, v=[BinOp(), BinOp(), ApplyChainProd()], '|')
+    1  : Flow{TK.APPLY, '>>' len=2}
+    2  :     Flow{TK.CHAIN, '|' len=3}
     3  :         BinOp(TK.GTR, '>')
     4  :             Get(TK.IDENT, 'close')
     5  :         BinOp(TK.AND, 'and')
@@ -19,9 +19,9 @@ tree1:  close >| sma(10) and close <| sma(20) | signal >> open.delay(1d)
    13  :                     Ref(TK.IDENT, 'sma')
    14  :                     List(TK.LIST, [Int()])
    15  :                         Int(TK.INT, 20)
-   16  :         ApplyChainProd(TK.DEFINE, TK.DEFINE, '|')
+   16  :         ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'signal'))
    17  :             Ref(TK.IDENT, 'signal')
-   18  :     PropRef(TK.REF, '.')
+   18  :     PropRef(TK.REF: open . FnCall(TK.FUNCTION, 'delay'))
    19  :         Ref(TK.IDENT, 'open')
    20  :         FnCall('delay')
    21  :             Ref(TK.IDENT, 'delay')

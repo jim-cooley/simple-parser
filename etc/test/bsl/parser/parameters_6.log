@@ -4,9 +4,9 @@ test: 6:
 close.weekly.sma(20)
 
 tree1:  close.weekly.sma(20)
-    1  : PropRef(TK.REF, '.')
+    1  : PropRef(TK.REF: close . PropRef(TK.REF, '.'))
     2  :     Get(TK.IDENT, 'close')
-    3  :     PropRef(TK.REF, '.')
+    3  :     PropRef(TK.REF: weekly . FnCall(TK.FUNCTION, 'sma'))
     4  :         Get(TK.IDENT, 'weekly')
     5  :         FnCall('sma')
     6  :             Get(TK.IDENT, 'sma')

@@ -4,9 +4,9 @@ test: 14:
 close >| sma(10) and close <| sma(20) | signal >> open.delay(1d) | buy
 
 tree1:  close >| sma(10) and close <| sma(20) | signal >> open.delay(1d) | buy
-    1  : Flow(TK.CHAIN, v=[Flow(), ApplyChainProd()], '|')
-    2  :     Flow(TK.APPLY, v=[Flow(), PropRef()], '>>')
-    3  :         Flow(TK.CHAIN, v=[BinOp(), BinOp(), ApplyChainProd()], '|')
+    1  : Flow{TK.CHAIN, '|' len=2}
+    2  :     Flow{TK.APPLY, '>>' len=2}
+    3  :         Flow{TK.CHAIN, '|' len=3}
     4  :             BinOp(TK.GTR, '>')
     5  :                 Get(TK.IDENT, 'close')
     6  :             BinOp(TK.AND, 'and')
@@ -20,22 +20,22 @@ tree1:  close >| sma(10) and close <| sma(20) | signal >> open.delay(1d) | buy
    14  :                         Ref(TK.IDENT, 'sma')
    15  :                         List(TK.LIST, [Int()])
    16  :                             Int(TK.INT, 20)
-   17  :             ApplyChainProd(TK.DEFINE, TK.DEFINE, '|')
+   17  :             ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'signal'))
    18  :                 Ref(TK.IDENT, 'signal')
-   19  :         PropRef(TK.REF, '.')
+   19  :         PropRef(TK.REF: open . FnCall(TK.FUNCTION, 'delay'))
    20  :             Ref(TK.IDENT, 'open')
    21  :             FnCall('delay')
    22  :                 Ref(TK.IDENT, 'delay')
    23  :                 List(TK.LIST, [Duration()])
    24  :                     Duration(TK.DUR, 1 day, 0:00:00)
-   25  :     ApplyChainProd(TK.DEFINE, TK.DEFINE, '|')
+   25  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'buy'))
    26  :         Ref(TK.IDENT, 'buy')
 
 tree1:(post)  close >| sma(10) and close <| sma(20) | signal >> open.delay(1d) | buy
 result: list([Flow(), ApplyChainProd()])
-    1  : Flow(TK.CHAIN, v=[Flow(), ApplyChainProd()], '|')
-    2  :     Flow(TK.APPLY, v=[Flow(), PropRef()], '>>')
-    3  :         Flow(TK.CHAIN, v=[BinOp(), BinOp(), ApplyChainProd()], '|')
+    1  : Flow{TK.CHAIN, '|' len=2}
+    2  :     Flow{TK.APPLY, '>>' len=2}
+    3  :         Flow{TK.CHAIN, '|' len=3}
     4  :             BinOp(TK.GTR, '>')
     5  :                 Get(TK.IDENT, 'close')
     6  :             BinOp(TK.AND, 'and')
@@ -49,13 +49,13 @@ result: list([Flow(), ApplyChainProd()])
    14  :                         Ref(TK.IDENT, 'sma')
    15  :                         List(TK.LIST, [Int()])
    16  :                             Int(TK.INT, 20)
-   17  :             ApplyChainProd(TK.DEFINE, TK.DEFINE, '|')
+   17  :             ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'signal'))
    18  :                 Ref(TK.IDENT, 'signal')
-   19  :         PropRef(TK.REF, '.')
+   19  :         PropRef(TK.REF: open . FnCall(TK.FUNCTION, 'delay'))
    20  :             Ref(TK.IDENT, 'open')
    21  :             FnCall('delay')
    22  :                 Ref(TK.IDENT, 'delay')
    23  :                 List(TK.LIST, [Duration()])
    24  :                     Duration(TK.DUR, 1 day, 0:00:00)
-   25  :     ApplyChainProd(TK.DEFINE, TK.DEFINE, '|')
+   25  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'buy'))
    26  :         Ref(TK.IDENT, 'buy')

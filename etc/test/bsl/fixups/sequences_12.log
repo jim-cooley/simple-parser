@@ -1,23 +1,26 @@
 
 
 test: 12:
-a(x) | b
+(x, y, z) = (1, 2, 3) # Define(TK.DEFINE: List(TK.TUPLE) '=' List(TK.TUPLE))
 
-tree1:  a(x) | b
-    1  : Flow(TK.CHAIN, v=[FnCall(), ApplyChainProd()], '|')
-    2  :     FnCall('a')
-    3  :         Get(TK.IDENT, 'a')
-    4  :         List(TK.LIST, [Get()])
-    5  :             Get(TK.IDENT, 'x')
-    6  :     ApplyChainProd(TK.DEFINE, TK.DEFINE, '|')
-    7  :         Ref(TK.IDENT, 'b')
+tree1:  (x, y, z) = (1, 2, 3) # Define(TK.DEFINE: List(TK.TUPLE) '=' List(TK.TUPLE))
+    1  : Define(TK.DEFINE: ( = List[count=3])
+    2  :     List(TK.TUPLE, [Ref(), Ref(), Ref()])
+    3  :         Ref(TK.IDENT, 'x')
+    4  :         Ref(TK.IDENT, 'y')
+    5  :         Ref(TK.IDENT, 'z')
+    6  :     List(TK.TUPLE, [Int(), Int(), Int()])
+    7  :         Int(TK.INT, 1)
+    8  :         Int(TK.INT, 2)
+    9  :         Int(TK.INT, 3)
 
-tree1:(post)  a(x) | b
-result: list([FnCall(), ApplyChainProd()])
-    1  : Flow(TK.CHAIN, v=[FnCall(), ApplyChainProd()], '|')
-    2  :     FnCall('a')
-    3  :         Get(TK.IDENT, 'a')
-    4  :         List(TK.LIST, [Get()])
-    5  :             Get(TK.IDENT, 'x')
-    6  :     ApplyChainProd(TK.DEFINE, TK.DEFINE, '|')
-    7  :         Ref(TK.IDENT, 'b')
+tree1:(post)  (x, y, z) = (1, 2, 3) # Define(TK.DEFINE: List(TK.TUPLE) '=' List(TK.TUPLE))
+    1  : Define(TK.DEFINE: ( = List[count=3])
+    2  :     List(TK.TUPLE, [Ref(), Ref(), Ref()])
+    3  :         Ref(TK.IDENT, 'x')
+    4  :         Ref(TK.IDENT, 'y')
+    5  :         Ref(TK.IDENT, 'z')
+    6  :     List(TK.TUPLE, [Int(), Int(), Int()])
+    7  :         Int(TK.INT, 1)
+    8  :         Int(TK.INT, 2)
+    9  :         Int(TK.INT, 3)

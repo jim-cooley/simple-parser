@@ -12,5 +12,5 @@ tree1:  a + 2 * 3 + 4 or not 5
     6  :                 Int(TK.INT, 2)
     7  :                 Int(TK.INT, 3)
     8  :         Int(TK.INT, 4)
-    9  :     UnaryOp(TK.NOT, TK.NOT, 'not')
+    9  :     UnaryOp(TK.NOT, 'not')
    10  :         Int(TK.INT, 5)

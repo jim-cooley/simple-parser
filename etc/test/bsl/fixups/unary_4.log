@@ -4,7 +4,7 @@ test: 4:
 not False
 
 tree1:  not False
-    1  : UnaryOp(TK.NOT, TK.NOT, 'not')
+    1  : UnaryOp(TK.NOT, 'not')
     2  :     Bool(TK.BOOL, False)
 
 tree1:(post)  not False

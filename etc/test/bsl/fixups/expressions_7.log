@@ -4,7 +4,7 @@ test: 7:
 a = 2 * 3 + 4
 
 tree1:  a = 2 * 3 + 4
-    1  : Define(TK.DEFINE, TK.DEFINE, '=')
+    1  : Define(TK.DEFINE: a = BinOp(TK.ADD, '+'))
     2  :     Ref(TK.IDENT, 'a')
     3  :     BinOp(TK.ADD, '+')
     4  :         BinOp(TK.MUL, '*')
@@ -13,6 +13,6 @@ tree1:  a = 2 * 3 + 4
     7  :         Int(TK.INT, 4)
 
 tree1:(post)  a = 2 * 3 + 4
-    1  : Define(TK.DEFINE, TK.DEFINE, '=')
+    1  : Define(TK.DEFINE: a = 10)
     2  :     Ref(TK.IDENT, 'a')
     3  :     Int(TK.INT, 10)

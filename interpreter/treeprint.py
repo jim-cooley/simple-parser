@@ -1,5 +1,6 @@
 from runtime.literals import Literal, Str
-from runtime.tree import Ref, UnaryOp, Command, PropRef, BinOp, FnCall, Generate
+from runtime.scope import Block, Flow
+from runtime.tree import Ref, UnaryOp, Command, PropRef, BinOp, FnCall, Generate, Assign, DefineFn, ApplyChainProd
 
 from interpreter.notation import FunctionalNotationPrinter
 from interpreter.visitor import NodeVisitor, BINARY_NODE, UNARY_NODE, SEQUENCE_NODE, DEFAULT_NODE, VALUE_NODE, NATIVE_VALUE, \
@@ -12,6 +13,7 @@ _nodeTypeMappings = {
     'BinOp': BINARY_NODE,
     'Block': SEQUENCE_NODE,
     'Bool': VALUE_NODE,
+    'Combine': ASSIGNMENT_NODE,
     'Command': UNARY_NODE,
     'Dataset': SEQUENCE_NODE,
     'DateDiff': VALUE_NODE,
@@ -21,6 +23,7 @@ _nodeTypeMappings = {
     'DefineFn': TRINARY_NODE,
     'DefineVar': ASSIGNMENT_NODE,
     'DefineVarFn': TRINARY_NODE,
+    'Dict': SEQUENCE_NODE,
     'Duration': VALUE_NODE,
     'Float': VALUE_NODE,
     'Flow': SEQUENCE_NODE,
@@ -34,6 +37,7 @@ _nodeTypeMappings = {
     'Int': VALUE_NODE,
     'List': SEQUENCE_NODE,
     'Literal': VALUE_NODE,
+    'NamedTuple': SEQUENCE_NODE,
     'Node': DEFAULT_NODE,
     'Percent': VALUE_NODE,
     'PropCall': BINARY_NODE,
@@ -44,6 +48,7 @@ _nodeTypeMappings = {
     'Set': SEQUENCE_NODE,
     'Str': VALUE_NODE,
     'Time': VALUE_NODE,
+    'Tuple': SEQUENCE_NODE,
     'UnaryOp': UNARY_NODE,
     'int': NATIVE_VALUE,
     'str': NATIVE_VALUE,
@@ -244,36 +249,70 @@ def _format_node(node, print_location=False):
     tk = node.token.id
     loc = f'{_format_loc(node.token.location)}' if print_location else ''
     text = None
-    if isinstance(node, UnaryOp):
-        op = node.op
-        return f'{ty}(TK.{op.name}, TK.{tk.name}, \'{lex}\'){loc}'
-    elif isinstance(node, Ref):
-        return f'{ty}(TK.{tk.name}, \'{lex}\'){loc}'
-    elif isinstance(node, PropRef):
-        op = node.op
-        return f'{ty}(TK.{op.name}, \'{lex}\'){loc}'
-    elif isinstance(node, Command):
-        op = node.op
-        return f'{ty}(TK.{op.name}, TK.{tk.name}, \'%%{lex}\'){loc}'
+    lbc, rbc = '{', '}'
+    if isinstance(node, ApplyChainProd):
+        return f'{_format_binary_node(node, node.right, node.left, lex)}{loc}'
+    if isinstance(node, DefineFn):
+        return f'{_format_binary_node(node, node.left, node.right, lex)}{loc}'
+    elif isinstance(node, Assign):
+        return f'{_format_binary_node(node, node.left, node.right, lex)}{loc}'
+    elif isinstance(node, Flow):
+        return f'{ty}{lbc}TK.{tk.name}, \'{lex}\' len={len(node)}{rbc}{loc}'
+    elif isinstance(node, Block):
+        return f'{ty}{lbc}TK.{tk.name}, len={len(node)}{rbc}{loc}'
     elif isinstance(node, FnCall):
         return f'{ty}(\'{node.left.token.lexeme}\'){loc}'
     elif isinstance(node, Generate):
         return f'{ty}(TK.{node.target.name}, len={len(node.items())}){loc}'
+    elif isinstance(node, PropRef):
+        return f'{_format_binary_node(node, node.left, node.right, lex)}{loc}'
+    elif isinstance(node, Ref):
+        return f'{ty}(TK.{tk.name}, \'{lex}\'){loc}'
     elif isinstance(node, BinOp):
         op = node.op
         return f'{ty}(TK.{op.name}, \'{lex}\'){loc}'
-    elif hasattr(node, 'op'):
+    elif isinstance(node, UnaryOp):
         op = node.op
-        return f'{ty}(TK.{op.name}, TK.{tk.name}, \'{lex}\'){loc}'
+        return f'{ty}(TK.{op.name}, \'{lex}\'){loc}'
     elif isinstance(node, Str):
         return f'{ty}(TK.{tk.name}, \'{node.value}\'){loc}'
     elif isinstance(node, Literal):
         return f'{ty}(TK.{tk.name}, {node.value}){loc}'
+    elif hasattr(node, 'op'):
+        op = node.op
+        return f'{ty}(TK.{op.name}, TK.{tk.name}, \'{lex}\'){loc}'
     else:
         return f'{ty}(TK.{tk.name}, v={node.value}, \'{lex}\'){loc}'
+
+
+def _format_binary_node(node, left, right, lex):
+    ty = type(node).__name__
+    lval = f'{left}'
+    if hasattr(left, 'name'):
+        lval = f'{left.name}'
+    if right is not None:
+        if isinstance(right, Literal):
+            r = f'{right}'
+        else:
+            rty = type(right).__name__
+            rtk = right.token
+            r = f'{rty}(TK.{rtk.id.name}, \'{right.lexeme}\')'
+    else:
+        r = 'TK.NONE'
+    return f'{ty}(TK.{node.op.name}: {lval} {lex} {r})'
 
 
 def _format_loc(loc):
     if loc is None:
         return ''
     return f': line:{loc.line}, pos:{loc.offset}'
+
+
+def fn_foo():
+    if isinstance(node.right, Literal):
+        r = f'{node.right}'
+    else:
+        rty = type(node.right).__name__
+        rtk = node.right.token
+        r = f'{rty}()'
+    return f'{ty}(TK.{node.op.name}: {node.left.name}({node.args}) = {r}){loc}'

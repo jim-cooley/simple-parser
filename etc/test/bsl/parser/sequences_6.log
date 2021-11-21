@@ -1,16 +1,16 @@
 
 
 test: 6:
-a | b >> c | d
+(x=1, y=2, z=3)  # List(TK.TUPLE: Define(TK.DEFINE), Define(TK.DEFINE), Define(TK.DEFINE))
 
-tree1:  a | b >> c | d
-    1  : Flow(TK.CHAIN, v=[Flow(), ApplyChainProd()], '|')
-    2  :     Flow(TK.APPLY, v=[Flow(), ApplyChainProd()], '>>')
-    3  :         Flow(TK.CHAIN, v=[Get(), ApplyChainProd()], '|')
-    4  :             Get(TK.IDENT, 'a')
-    5  :             ApplyChainProd(TK.DEFINE, TK.DEFINE, '|')
-    6  :                 Ref(TK.IDENT, 'b')
-    7  :         ApplyChainProd(TK.DEFINE, TK.DEFINE, '>>')
-    8  :             Ref(TK.IDENT, 'c')
-    9  :     ApplyChainProd(TK.DEFINE, TK.DEFINE, '|')
-   10  :         Ref(TK.IDENT, 'd')
+tree1:  (x=1, y=2, z=3)  # List(TK.TUPLE: Define(TK.DEFINE), Define(TK.DEFINE), Define(TK.DEFINE))
+    1  : List(TK.TUPLE, [Define(), Define(), Define()])
+    2  :     Define(TK.DEFINE: x = 1)
+    3  :         Ref(TK.IDENT, 'x')
+    4  :         Int(TK.INT, 1)
+    5  :     Define(TK.DEFINE: y = 2)
+    6  :         Ref(TK.IDENT, 'y')
+    7  :         Int(TK.INT, 2)
+    8  :     Define(TK.DEFINE: z = 3)
+    9  :         Ref(TK.IDENT, 'z')
+   10  :         Int(TK.INT, 3)

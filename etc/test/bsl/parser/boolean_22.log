@@ -4,5 +4,5 @@ test: 22:
 ! 0
 
 tree1:  ! 0
-    1  : UnaryOp(TK.NOT, TK.NOT, '!')
+    1  : UnaryOp(TK.NOT, '!')
     2  :     Int(TK.INT, 0)

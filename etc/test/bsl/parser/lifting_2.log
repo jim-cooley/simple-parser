@@ -6,5 +6,5 @@ test: 2:
 tree1:  2*-1
     1  : BinOp(TK.MUL, '*')
     2  :     Int(TK.INT, 2)
-    3  :     UnaryOp(TK.NEG, TK.NEG, '-')
+    3  :     UnaryOp(TK.NEG, '-')
     4  :         Int(TK.INT, 1)

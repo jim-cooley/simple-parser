@@ -6,4 +6,4 @@ false ^ empty
 tree1:  false ^ empty
     1  : BinOp(TK.POW, '^')
     2  :     Bool(TK.BOOL, False)
-    3  :     Set(TK.EMPTY, {})
+    3  :     Literal(TK.EMPTY, {})

@@ -4,12 +4,12 @@ test: 1:
 a=1; b=0; a |> b
 
 tree1:  a=1; b=0; a |> b
-    1  : Define(TK.DEFINE, TK.DEFINE, '=')
+    1  : Define(TK.DEFINE: a = 1)
     2  :     Ref(TK.IDENT, 'a')
     3  :     Int(TK.INT, 1)
 
 tree2:  a=1; b=0; a |> b
-    1  : Define(TK.DEFINE, TK.DEFINE, '=')
+    1  : Define(TK.DEFINE: b = 0)
     2  :     Ref(TK.IDENT, 'b')
     3  :     Int(TK.INT, 0)
 
@@ -19,12 +19,12 @@ tree3:  a=1; b=0; a |> b
     3  :     Get(TK.IDENT, 'b')
 
 tree1:(post)  a=1; b=0; a |> b
-    1  : Define(TK.DEFINE, TK.DEFINE, '=')
+    1  : Define(TK.DEFINE: a = 1)
     2  :     Ref(TK.IDENT, 'a')
     3  :     Int(TK.INT, 1)
 
 tree2:(post)  a=1; b=0; a |> b
-    1  : Define(TK.DEFINE, TK.DEFINE, '=')
+    1  : Define(TK.DEFINE: b = 0)
     2  :     Ref(TK.IDENT, 'b')
     3  :     Int(TK.INT, 0)
 

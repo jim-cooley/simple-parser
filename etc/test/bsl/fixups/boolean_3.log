@@ -4,7 +4,7 @@ test: 3:
 not "none"
 
 tree1:  not "none"
-    1  : UnaryOp(TK.NOT, TK.NOT, 'not')
+    1  : UnaryOp(TK.NOT, 'not')
     2  :     Str(TK.STR, 'none')
 
 tree1:(post)  not "none"

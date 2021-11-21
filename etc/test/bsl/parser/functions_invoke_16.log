@@ -4,13 +4,13 @@ test: 16:
 f(a, b, c):{a=5, b='c', d}
 
 tree1:  f(a, b, c):{a=5, b='c', d}
-    1  : DefineFn(TK.DEFINE, TK.DEFINE, ':')
+    1  : DefineFn(TK.COMBINE: f : Set{count=-1})
     2  :     Ref(TK.IDENT, 'f')
     3  :     Set(TK.SET, [Define(), Define(), Get()])
-    4  :         Define(TK.DEFINE, TK.DEFINE, '=')
+    4  :         Define(TK.DEFINE: a = 5)
     5  :             Ref(TK.IDENT, 'a')
     6  :             Int(TK.INT, 5)
-    7  :         Define(TK.DEFINE, TK.DEFINE, '=')
+    7  :         Define(TK.DEFINE: b = c)
     8  :             Ref(TK.IDENT, 'b')
     9  :             Str(TK.STR, 'c')
    10  :         Get(TK.IDENT, 'd')

@@ -4,12 +4,12 @@ test: 14:
 false >> empty
 
 tree1:  false >> empty
-    1  : Flow(TK.APPLY, v=[Bool(), Set()], '>>')
+    1  : Flow{TK.APPLY, '>>' len=2}
     2  :     Bool(TK.BOOL, False)
-    3  :     Set(TK.EMPTY, {})
+    3  :     Literal(TK.EMPTY, {})
 
 tree1:(post)  false >> empty
-result: list([Bool(), Set()])
-    1  : Flow(TK.APPLY, v=[Bool(), Set()], '>>')
+result: list([Bool(), Literal()])
+    1  : Flow{TK.APPLY, '>>' len=2}
     2  :     Bool(TK.BOOL, False)
-    3  :     Set(TK.EMPTY, {})
+    3  :     Literal(TK.EMPTY, {})

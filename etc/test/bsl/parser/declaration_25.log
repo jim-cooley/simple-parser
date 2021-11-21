@@ -4,7 +4,7 @@ test: 25:
 f(x) := x * 4;
 
 tree1:  f(x) := x * 4;
-    1  : DefineVarFn(TK.DEFINE, TK.DEFINE, ':=')
+    1  : DefineVarFn(TK.DEFINE: f := BinOp(TK.MUL, '*'))
     2  :     Ref(TK.IDENT, 'f')
     3  :     BinOp(TK.MUL, '*')
     4  :         Get(TK.IDENT, 'x')

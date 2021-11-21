@@ -1,15 +1,4 @@
 
 
 test: 14:
-a.b(x) | c
-
-tree1:  a.b(x) | c
-    1  : Flow(TK.CHAIN, v=[PropRef(), ApplyChainProd()], '|')
-    2  :     PropRef(TK.REF, '.')
-    3  :         Get(TK.IDENT, 'a')
-    4  :         FnCall('b')
-    5  :             Get(TK.IDENT, 'b')
-    6  :             List(TK.LIST, [Get()])
-    7  :                 Get(TK.IDENT, 'x')
-    8  :     ApplyChainProd(TK.DEFINE, TK.DEFINE, '|')
-    9  :         Ref(TK.IDENT, 'c')
+# simple assignment with parameterization

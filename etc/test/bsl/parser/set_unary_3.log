@@ -4,7 +4,7 @@ test: 3:
 all:{a, b, c}
 
 tree1:  all:{a, b, c}
-    1  : UnaryOp(TK.ALL, TK.ALL, 'all')
+    1  : UnaryOp(TK.ALL, 'all')
     2  :     Set(TK.SET, [Get(), Get(), Get()])
     3  :         Get(TK.IDENT, 'a')
     4  :         Get(TK.IDENT, 'b')

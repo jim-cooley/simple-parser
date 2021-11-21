@@ -4,9 +4,9 @@ test: 6:
 ! b
 
 tree1:  ! b
-    1  : UnaryOp(TK.NOT, TK.NOT, '!')
+    1  : UnaryOp(TK.NOT, '!')
     2  :     Get(TK.IDENT, 'b')
 
 tree1:(post)  ! b
-    1  : UnaryOp(TK.NOT, TK.NOT, '!')
+    1  : UnaryOp(TK.NOT, '!')
     2  :     Get(TK.IDENT, 'b')

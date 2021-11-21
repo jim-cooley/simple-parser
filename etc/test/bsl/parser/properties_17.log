@@ -4,9 +4,9 @@ test: 17:
 a.b.c()
 
 tree1:  a.b.c()
-    1  : PropRef(TK.REF, '.')
+    1  : PropRef(TK.REF: a . PropRef(TK.REF, '.'))
     2  :     Get(TK.IDENT, 'a')
-    3  :     PropRef(TK.REF, '.')
+    3  :     PropRef(TK.REF: b . FnCall(TK.FUNCTION, 'c'))
     4  :         Get(TK.IDENT, 'b')
     5  :         FnCall('c')
     6  :             Get(TK.IDENT, 'c')

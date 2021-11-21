@@ -4,7 +4,7 @@ test: 13:
 var f(x) := x * 4;
 
 tree1:  var f(x) := x * 4;
-    1  : DefineVarFn(TK.DEFINE, TK.DEFINE, ':=')
+    1  : DefineVarFn(TK.DEFINE: f := BinOp(TK.MUL, '*'))
     2  :     Ref(TK.IDENT, 'f')
     3  :     BinOp(TK.MUL, '*')
     4  :         Ref(TK.IDENT, 'x')
@@ -13,7 +13,7 @@ tree1:  var f(x) := x * 4;
     7  :         Ref(TK.IDENT, 'x')
 
 tree1:(post)  var f(x) := x * 4;
-    1  : DefineVarFn(TK.DEFINE, TK.DEFINE, ':=')
+    1  : DefineVarFn(TK.DEFINE: f := BinOp(TK.MUL, '*'))
     2  :     Ref(TK.IDENT, 'f')
     3  :     BinOp(TK.MUL, '*')
     4  :         Ref(TK.IDENT, 'x')

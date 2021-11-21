@@ -4,7 +4,7 @@ test: 4:
 not "empty"
 
 tree1:  not "empty"
-    1  : UnaryOp(TK.NOT, TK.NOT, 'not')
+    1  : UnaryOp(TK.NOT, 'not')
     2  :     Str(TK.STR, 'empty')
 
 tree1:(post)  not "empty"

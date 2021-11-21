@@ -4,10 +4,10 @@ test: 45:
 def f = { a(x):x*x }
 
 tree1:  def f = { a(x):x*x }
-    1  : Define(TK.DEFINE, TK.DEFINE, '=')
+    1  : Define(TK.DEFINE: f = Block(TK.BLOCK, ''))
     2  :     Ref(TK.IDENT, 'f')
-    3  :     Block(TK.BLOCK, v=[DefineFn()], '')
-    4  :         DefineFn(TK.DEFINE, TK.DEFINE, ':')
+    3  :     Block{TK.BLOCK, len=1}
+    4  :         DefineFn(TK.COMBINE: a : BinOp(TK.MUL, '*'))
     5  :             Ref(TK.IDENT, 'a')
     6  :             BinOp(TK.MUL, '*')
     7  :                 Ref(TK.IDENT, 'x')

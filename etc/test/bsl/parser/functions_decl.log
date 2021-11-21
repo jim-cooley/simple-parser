@@ -49,7 +49,7 @@ trade_size := position * 10%
 
 
 tree1:  x => x:x + 1
-    1  : DefineFn(TK.DEFINE, TK.DEFINE, '=>')
+    1  : DefineFn(TK.PRODUCE: x => BinOp(TK.ADD, '+'))
     2  :     Ref(TK.IDENT, 'x')
     3  :     BinOp(TK.ADD, '+')
     4  :         Get(TK.IDENT, 'x')
@@ -58,9 +58,9 @@ tree1:  x => x:x + 1
     7  :         Ref(TK.IDENT, 'x')
 
 tree2:  sugar(x) => { x + 1 }
-    1  : DefineFn(TK.DEFINE, TK.DEFINE, '=>')
+    1  : DefineFn(TK.PRODUCE: sugar => Block(TK.BLOCK, ''))
     2  :     Ref(TK.IDENT, 'sugar')
-    3  :     Block(TK.BLOCK, v=[BinOp()], '')
+    3  :     Block{TK.BLOCK, len=1}
     4  :         BinOp(TK.ADD, '+')
     5  :             Get(TK.IDENT, 'x')
     6  :             Int(TK.INT, 1)
@@ -68,9 +68,9 @@ tree2:  sugar(x) => { x + 1 }
     8  :         Ref(TK.IDENT, 'x')
 
 tree3:  sugar(x) := { x + 1 }
-    1  : DefineVarFn(TK.DEFINE, TK.DEFINE, ':=')
+    1  : DefineVarFn(TK.DEFINE: sugar := Block(TK.BLOCK, ''))
     2  :     Ref(TK.IDENT, 'sugar')
-    3  :     Block(TK.BLOCK, v=[BinOp()], '')
+    3  :     Block{TK.BLOCK, len=1}
     4  :         BinOp(TK.ADD, '+')
     5  :             Get(TK.IDENT, 'x')
     6  :             Int(TK.INT, 1)
@@ -78,9 +78,9 @@ tree3:  sugar(x) := { x + 1 }
     8  :         Ref(TK.IDENT, 'x')
 
 tree4:  sugar(x) = { x + 1 }
-    1  : DefineFn(TK.DEFINE, TK.DEFINE, '=')
+    1  : DefineFn(TK.DEFINE: sugar = Block(TK.BLOCK, ''))
     2  :     Ref(TK.IDENT, 'sugar')
-    3  :     Block(TK.BLOCK, v=[BinOp()], '')
+    3  :     Block{TK.BLOCK, len=1}
     4  :         BinOp(TK.ADD, '+')
     5  :             Get(TK.IDENT, 'x')
     6  :             Int(TK.INT, 1)
@@ -88,9 +88,9 @@ tree4:  sugar(x) = { x + 1 }
     8  :         Ref(TK.IDENT, 'x')
 
 tree5:  def simple(x) := {
-    1  : DefineVarFn(TK.DEFINE, TK.DEFINE, ':=')
+    1  : DefineVarFn(TK.DEFINE: simple := Block(TK.BLOCK, ''))
     2  :     Ref(TK.IDENT, 'simple')
-    3  :     Block(TK.BLOCK, v=[BinOp()], '')
+    3  :     Block{TK.BLOCK, len=1}
     4  :         BinOp(TK.ADD, '+')
     5  :             Ref(TK.IDENT, 'x')
     6  :             Int(TK.INT, 1)
@@ -98,14 +98,14 @@ tree5:  def simple(x) := {
     8  :         Ref(TK.IDENT, 'x')
 
 tree6:  def factorial(x) := {
-    1  : DefineVarFn(TK.DEFINE, TK.DEFINE, ':=')
+    1  : DefineVarFn(TK.DEFINE: factorial := Block(TK.BLOCK, ''))
     2  :     Ref(TK.IDENT, 'factorial')
-    3  :     Block(TK.BLOCK, v=[IfThenElse()], '')
+    3  :     Block{TK.BLOCK, len=1}
     4  :         IfThenElse(TK.IF, 'if')
     5  :             BinOp(TK.ISEQ, '==')
     6  :                 Get(TK.IDENT, 'x')
     7  :                 Int(TK.INT, 1)
-    8  :             Return(TK.RETURN, TK.RETURN, 'return')
+    8  :             Return(TK.RETURN, 'return')
     9  :                 Int(TK.INT, 1)
    10  :             BinOp(TK.MUL, '*')
    11  :                 Get(TK.IDENT, 'x')
@@ -119,26 +119,26 @@ tree6:  def factorial(x) := {
    19  :         Ref(TK.IDENT, 'x')
 
 tree7:  a := 3
-    1  : DefineVar(TK.DEFINE, TK.DEFINE, ':=')
+    1  : DefineVar(TK.DEFINE: a := 3)
     2  :     Ref(TK.IDENT, 'a')
     3  :     Int(TK.INT, 3)
 
 tree8:  a := a + 1
-    1  : DefineVar(TK.DEFINE, TK.DEFINE, ':=')
+    1  : DefineVar(TK.DEFINE: a := BinOp(TK.ADD, '+'))
     2  :     Ref(TK.IDENT, 'a')
     3  :     BinOp(TK.ADD, '+')
     4  :         Get(TK.IDENT, 'a')
     5  :         Int(TK.INT, 1)
 
 tree9:  a => a + 1
-    1  : DefineFn(TK.DEFINE, TK.DEFINE, '=>')
+    1  : DefineFn(TK.PRODUCE: a => BinOp(TK.ADD, '+'))
     2  :     Ref(TK.IDENT, 'a')
     3  :     BinOp(TK.ADD, '+')
     4  :         Get(TK.IDENT, 'a')
     5  :         Int(TK.INT, 1)
 
 tree10:  def atr = (high + low) / 2
-    1  : Define(TK.DEFINE, TK.DEFINE, '=')
+    1  : Define(TK.DEFINE: atr = BinOp(TK.DIV, '/'))
     2  :     Ref(TK.IDENT, 'atr')
     3  :     BinOp(TK.DIV, '/')
     4  :         BinOp(TK.ADD, '+')
@@ -147,7 +147,7 @@ tree10:  def atr = (high + low) / 2
     7  :         Int(TK.INT, 2)
 
 tree11:  def avg_daily_price = (open + close) / 2
-    1  : Define(TK.DEFINE, TK.DEFINE, '=')
+    1  : Define(TK.DEFINE: avg_daily_price = BinOp(TK.DIV, '/'))
     2  :     Ref(TK.IDENT, 'avg_daily_price')
     3  :     BinOp(TK.DIV, '/')
     4  :         BinOp(TK.ADD, '+')
@@ -156,14 +156,14 @@ tree11:  def avg_daily_price = (open + close) / 2
     7  :         Int(TK.INT, 2)
 
 tree12:  def trade_size = position * 10%
-    1  : Define(TK.DEFINE, TK.DEFINE, '=')
+    1  : Define(TK.DEFINE: trade_size = BinOp(TK.MUL, '*'))
     2  :     Ref(TK.IDENT, 'trade_size')
     3  :     BinOp(TK.MUL, '*')
     4  :         Ref(TK.IDENT, 'position')
     5  :         Percent(TK.PCT, 0.1)
 
 tree13:  atr := (high + low) / 2
-    1  : DefineVar(TK.DEFINE, TK.DEFINE, ':=')
+    1  : DefineVar(TK.DEFINE: atr := BinOp(TK.DIV, '/'))
     2  :     Ref(TK.IDENT, 'atr')
     3  :     BinOp(TK.DIV, '/')
     4  :         BinOp(TK.ADD, '+')
@@ -172,7 +172,7 @@ tree13:  atr := (high + low) / 2
     7  :         Int(TK.INT, 2)
 
 tree14:  avg_daily_price := (open + close) / 2
-    1  : DefineVar(TK.DEFINE, TK.DEFINE, ':=')
+    1  : DefineVar(TK.DEFINE: avg_daily_price := BinOp(TK.DIV, '/'))
     2  :     Ref(TK.IDENT, 'avg_daily_price')
     3  :     BinOp(TK.DIV, '/')
     4  :         BinOp(TK.ADD, '+')
@@ -181,7 +181,7 @@ tree14:  avg_daily_price := (open + close) / 2
     7  :         Int(TK.INT, 2)
 
 tree15:  trade_size := position * 10%
-    1  : DefineVar(TK.DEFINE, TK.DEFINE, ':=')
+    1  : DefineVar(TK.DEFINE: trade_size := BinOp(TK.MUL, '*'))
     2  :     Ref(TK.IDENT, 'trade_size')
     3  :     BinOp(TK.MUL, '*')
     4  :         Get(TK.IDENT, 'position')
@@ -194,7 +194,7 @@ tree16:  (a, b, c,)                   # tuple
     4  :     Get(TK.IDENT, 'c')
 
 tree17:  (a, b, c) = (4, 5, 6)        # tuple assignment
-    1  : Define(TK.DEFINE, TK.DEFINE, '=')
+    1  : Define(TK.DEFINE: ( = List[count=3])
     2  :     List(TK.TUPLE, [Ref(), Ref(), Ref()])
     3  :         Ref(TK.IDENT, 'a')
     4  :         Ref(TK.IDENT, 'b')
@@ -205,7 +205,7 @@ tree17:  (a, b, c) = (4, 5, 6)        # tuple assignment
     9  :         Int(TK.INT, 6)
 
 tree18:  (a, b, c) := (4, 5, 6)       # tuple assignment (var)
-    1  : DefineVar(TK.DEFINE, TK.DEFINE, ':=')
+    1  : DefineVar(TK.DEFINE: ( := List[count=3])
     2  :     List(TK.TUPLE, [Ref(), Ref(), Ref()])
     3  :         Ref(TK.IDENT, 'a')
     4  :         Ref(TK.IDENT, 'b')
@@ -216,24 +216,24 @@ tree18:  (a, b, c) := (4, 5, 6)       # tuple assignment (var)
     9  :         Int(TK.INT, 6)
 
 tree19:  (a, b, c) = (a:5, b:3, c:4)  # tuple assignment k:v
-    1  : Define(TK.DEFINE, TK.DEFINE, '=')
+    1  : Define(TK.DEFINE: ( = List[count=3])
     2  :     List(TK.TUPLE, [Ref(), Ref(), Ref()])
     3  :         Ref(TK.IDENT, 'a')
     4  :         Ref(TK.IDENT, 'b')
     5  :         Ref(TK.IDENT, 'c')
-    6  :     List(TK.TUPLE, [Define(), Define(), Define()])
-    7  :         Define(TK.DEFINE, TK.DEFINE, ':')
+    6  :     List(TK.TUPLE, [Combine(), Combine(), Combine()])
+    7  :         Combine(TK.COMBINE: a None 5)
     8  :             Ref(TK.IDENT, 'a')
     9  :             Int(TK.INT, 5)
-   10  :         Define(TK.DEFINE, TK.DEFINE, ':')
+   10  :         Combine(TK.COMBINE: b None 3)
    11  :             Ref(TK.IDENT, 'b')
    12  :             Int(TK.INT, 3)
-   13  :         Define(TK.DEFINE, TK.DEFINE, ':')
+   13  :         Combine(TK.COMBINE: c None 4)
    14  :             Ref(TK.IDENT, 'c')
    15  :             Int(TK.INT, 4)
 
 tree20:  {a, b, c}:(4, 5, 6)          # set parameterization
-    1  : Define(TK.DEFINE, TK.DEFINE, ':')
+    1  : Combine(TK.COMBINE:  None List[count=3])
     2  :     Set(TK.SET, [Ref(), Ref(), Ref()])
     3  :         Ref(TK.IDENT, 'a')
     4  :         Ref(TK.IDENT, 'b')
@@ -244,69 +244,69 @@ tree20:  {a, b, c}:(4, 5, 6)          # set parameterization
     9  :         Int(TK.INT, 6)
 
 tree21:  {a, b, c}:(a:5, b:3, c:4)    # set parameterization k:v
-    1  : Define(TK.DEFINE, TK.DEFINE, ':')
+    1  : Combine(TK.COMBINE:  None List[count=3])
     2  :     Set(TK.SET, [Ref(), Ref(), Ref()])
     3  :         Ref(TK.IDENT, 'a')
     4  :         Ref(TK.IDENT, 'b')
     5  :         Ref(TK.IDENT, 'c')
-    6  :     List(TK.TUPLE, [Define(), Define(), Define()])
-    7  :         Define(TK.DEFINE, TK.DEFINE, ':')
+    6  :     List(TK.TUPLE, [Combine(), Combine(), Combine()])
+    7  :         Combine(TK.COMBINE: a None 5)
     8  :             Ref(TK.IDENT, 'a')
     9  :             Int(TK.INT, 5)
-   10  :         Define(TK.DEFINE, TK.DEFINE, ':')
+   10  :         Combine(TK.COMBINE: b None 3)
    11  :             Ref(TK.IDENT, 'b')
    12  :             Int(TK.INT, 3)
-   13  :         Define(TK.DEFINE, TK.DEFINE, ':')
+   13  :         Combine(TK.COMBINE: c None 4)
    14  :             Ref(TK.IDENT, 'c')
    15  :             Int(TK.INT, 4)
 
 tree22:  {a, b, c}:(a=5, b=3, c=4)    # set parameterization k=v (error?)
-    1  : Define(TK.DEFINE, TK.DEFINE, ':')
+    1  : Combine(TK.COMBINE:  None List[count=3])
     2  :     Set(TK.SET, [Ref(), Ref(), Ref()])
     3  :         Ref(TK.IDENT, 'a')
     4  :         Ref(TK.IDENT, 'b')
     5  :         Ref(TK.IDENT, 'c')
     6  :     List(TK.TUPLE, [Define(), Define(), Define()])
-    7  :         Define(TK.DEFINE, TK.DEFINE, '=')
+    7  :         Define(TK.DEFINE: a = 5)
     8  :             Ref(TK.IDENT, 'a')
     9  :             Int(TK.INT, 5)
-   10  :         Define(TK.DEFINE, TK.DEFINE, '=')
+   10  :         Define(TK.DEFINE: b = 3)
    11  :             Ref(TK.IDENT, 'b')
    12  :             Int(TK.INT, 3)
-   13  :         Define(TK.DEFINE, TK.DEFINE, '=')
+   13  :         Define(TK.DEFINE: c = 4)
    14  :             Ref(TK.IDENT, 'c')
    15  :             Int(TK.INT, 4)
 
 tree23:  {a, b, c}:{a=5, b=3, c=4}    # set parameterization k=v (block)
-    1  : Define(TK.DEFINE, TK.DEFINE, ':')
+    1  : Combine(TK.COMBINE:  None Set{count=-1})
     2  :     Set(TK.SET, [Ref(), Ref(), Ref()])
     3  :         Ref(TK.IDENT, 'a')
     4  :         Ref(TK.IDENT, 'b')
     5  :         Ref(TK.IDENT, 'c')
     6  :     Set(TK.SET, [Define(), Define(), Define()])
-    7  :         Define(TK.DEFINE, TK.DEFINE, '=')
+    7  :         Define(TK.DEFINE: a = 5)
     8  :             Ref(TK.IDENT, 'a')
     9  :             Int(TK.INT, 5)
-   10  :         Define(TK.DEFINE, TK.DEFINE, '=')
+   10  :         Define(TK.DEFINE: b = 3)
    11  :             Ref(TK.IDENT, 'b')
    12  :             Int(TK.INT, 3)
-   13  :         Define(TK.DEFINE, TK.DEFINE, '=')
+   13  :         Define(TK.DEFINE: c = 4)
    14  :             Ref(TK.IDENT, 'c')
    15  :             Int(TK.INT, 4)
 
 tree24:  {a, b, c}:{a:5, b:3, c:4}    # set parameterization k=v (block)
-    1  : Define(TK.DEFINE, TK.DEFINE, ':')
+    1  : Combine(TK.COMBINE:  None Set{count=-1})
     2  :     Set(TK.SET, [Ref(), Ref(), Ref()])
     3  :         Ref(TK.IDENT, 'a')
     4  :         Ref(TK.IDENT, 'b')
     5  :         Ref(TK.IDENT, 'c')
-    6  :     Set(TK.SET, [Define(), Define(), Define()])
-    7  :         Define(TK.DEFINE, TK.DEFINE, ':')
+    6  :     Set(TK.SET, [Combine(), Combine(), Combine()])
+    7  :         Combine(TK.COMBINE: a None 5)
     8  :             Ref(TK.IDENT, 'a')
     9  :             Int(TK.INT, 5)
-   10  :         Define(TK.DEFINE, TK.DEFINE, ':')
+   10  :         Combine(TK.COMBINE: b None 3)
    11  :             Ref(TK.IDENT, 'b')
    12  :             Int(TK.INT, 3)
-   13  :         Define(TK.DEFINE, TK.DEFINE, ':')
+   13  :         Combine(TK.COMBINE: c None 4)
    14  :             Ref(TK.IDENT, 'c')
    15  :             Int(TK.INT, 4)

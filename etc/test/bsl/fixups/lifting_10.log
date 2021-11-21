@@ -6,7 +6,7 @@ test: 10:
 tree1:  1+-1
     1  : BinOp(TK.ADD, '+')
     2  :     Int(TK.INT, 1)
-    3  :     UnaryOp(TK.NEG, TK.NEG, '-')
+    3  :     UnaryOp(TK.NEG, '-')
     4  :         Int(TK.INT, 1)
 
 tree1:(post)  1+-1

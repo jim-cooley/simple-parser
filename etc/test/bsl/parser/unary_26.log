@@ -4,5 +4,5 @@ test: 26:
 --1.5s
 
 tree1:  --1.5s
-    1  : UnaryOp(TK.DECREMENT, TK.DECREMENT, '--')
+    1  : UnaryOp(TK.DECREMENT, '--')
     2  :     Duration(TK.DUR, 0:00:01.500000)

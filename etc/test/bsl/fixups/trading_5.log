@@ -4,15 +4,15 @@ test: 5:
 buy: position += trade_size
 
 tree1:  buy: position += trade_size
-    1  : Define(TK.DEFINE, TK.DEFINE, ':')
+    1  : Combine(TK.COMBINE: buy None Assign(TK.ASSIGN, '+='))
     2  :     Ref(TK.IDENT, 'buy')
-    3  :     Assign(TK.ASSIGN, TK.ASSIGN, '+=')
+    3  :     Assign(TK.ASSIGN: position += Get(TK.IDENT, 'trade_size'))
     4  :         Get(TK.IDENT, 'position')
     5  :         Get(TK.IDENT, 'trade_size')
 
 tree1:(post)  buy: position += trade_size
-    1  : Define(TK.DEFINE, TK.DEFINE, ':')
+    1  : Combine(TK.COMBINE: buy None Assign(TK.ASSIGN, '+='))
     2  :     Ref(TK.IDENT, 'buy')
-    3  :     Assign(TK.ASSIGN, TK.ASSIGN, '+=')
+    3  :     Assign(TK.ASSIGN: position += Get(TK.IDENT, 'trade_size'))
     4  :         Get(TK.IDENT, 'position')
     5  :         Get(TK.IDENT, 'trade_size')

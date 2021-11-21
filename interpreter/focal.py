@@ -16,6 +16,7 @@ _option_defaults = {
     'log_filename': './focal.log',
     'no_run': False,
     'print_tokens': False,
+    'step_wise': False,     # console: run line by line (for test scripts)
     'strict': False,        # option_strict forces variables to be defined before they are used
     'throw_errors': True,
     'verbose': True,

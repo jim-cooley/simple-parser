@@ -5,7 +5,7 @@ a.b*c()
 
 tree1:  a.b*c()
     1  : BinOp(TK.MUL, '*')
-    2  :     PropRef(TK.REF, '.')
+    2  :     PropRef(TK.REF: a . Get(TK.IDENT, 'b'))
     3  :         Get(TK.IDENT, 'a')
     4  :         Get(TK.IDENT, 'b')
     5  :     FnCall('c')

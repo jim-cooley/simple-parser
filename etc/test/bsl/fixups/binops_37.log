@@ -6,9 +6,9 @@ false |> empty
 tree1:  false |> empty
     1  : BinOp(TK.RISE_ABOVE, '|>')
     2  :     Bool(TK.BOOL, False)
-    3  :     Set(TK.EMPTY, {})
+    3  :     Literal(TK.EMPTY, {})
 
 tree1:(post)  false |> empty
     1  : BinOp(TK.RISE_ABOVE, '|>')
     2  :     Bool(TK.BOOL, False)
-    3  :     Set(TK.EMPTY, {})
+    3  :     Literal(TK.EMPTY, {})

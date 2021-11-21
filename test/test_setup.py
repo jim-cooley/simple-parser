@@ -17,6 +17,7 @@ test_data = {
     'eval_sequences': 'eval_sequences.t',
     'eval_test': 'eval_test.p',
     'expressions': 'expressions.t',
+    'flow': 'flow.p',
     'functions_invoke': 'functions_invoke.t',
     'functions_decl': 'functions_decl.f',
     'grouping': 'grouping.t',

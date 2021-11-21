@@ -22,7 +22,7 @@ _DEFAULT_EXTENSIONS = [
 ]
 
 
-def _find_file(name, search_paths=None, extensions=None):
+def find_file(name, search_paths=None, extensions=None):
     extensions = extensions or _DEFAULT_EXTENSIONS
     search_paths = search_paths or _BASE_SEARCH_PATH
     for path in search_paths:
@@ -36,7 +36,7 @@ def _find_file(name, search_paths=None, extensions=None):
 
 
 def load_file(fname, search_paths=None):
-    fname = _find_file(fname, search_paths=search_paths)
+    fname = find_file(fname, search_paths=search_paths)
     name = os.path.splitext(os.path.basename(fname))[0]
     ext = os.path.splitext(fname)[1]
     idx = 0

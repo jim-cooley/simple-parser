@@ -4,7 +4,7 @@ test: 6:
 not 0
 
 tree1:  not 0
-    1  : UnaryOp(TK.NOT, TK.NOT, 'not')
+    1  : UnaryOp(TK.NOT, 'not')
     2  :     Int(TK.INT, 0)
 
 tree1:(post)  not 0

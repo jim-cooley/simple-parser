@@ -4,12 +4,12 @@ test: 12:
 false >> false
 
 tree1:  false >> false
-    1  : Flow(TK.APPLY, v=[Bool(), Bool()], '>>')
+    1  : Flow{TK.APPLY, '>>' len=2}
     2  :     Bool(TK.BOOL, False)
     3  :     Bool(TK.BOOL, False)
 
 tree1:(post)  false >> false
 result: list([Bool(), Bool()])
-    1  : Flow(TK.APPLY, v=[Bool(), Bool()], '>>')
+    1  : Flow{TK.APPLY, '>>' len=2}
     2  :     Bool(TK.BOOL, False)
     3  :     Bool(TK.BOOL, False)

@@ -4,7 +4,7 @@ test: 14:
 {a, b, c}:(4, 5, 6)
 
 tree1:  {a, b, c}:(4, 5, 6)
-    1  : Define(TK.DEFINE, TK.DEFINE, ':')
+    1  : Combine(TK.COMBINE:  None List[count=3])
     2  :     Set(TK.SET, [Ref(), Ref(), Ref()])
     3  :         Ref(TK.IDENT, 'a')
     4  :         Ref(TK.IDENT, 'b')

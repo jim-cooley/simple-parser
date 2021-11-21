@@ -23,16 +23,21 @@ class CodeWriter:
     def dedent(self):
         self.level -= 1
 
-    def print(self, line=None, level=None, append=False, end=None):
+    def format(self, string, level=None):
         level = self.level if level is None else level
-        indent = f'{_get_indent(level)}' if not append else ''
-        self.logger.write(f'{indent}{line}', append, end)
+        indent = '' if not level else ' '.ljust(level * 4)
+        lines = [f'{indent}{line}' for line in string.splitlines()]
+        return '\n'.join(lines)
+
+    def print(self, line=None, level=None, append=False, end=None):
+        line = self.format(line, level if not append else 0)
+        self.logger.write(f'{line}', append, end)
 
     def l_print(self, level, line, end=None):
         self.print(line=line, level=level, end=end)
 
     def blank_line(self, num=1):
-        self.l_print(0, "\n"*num)
+        self.logger.write("\n"*num)
 
     def horiz_line(self, count):
         self.l_print(0, f'# {"-"*count}')

@@ -1,23 +1,29 @@
 
 
 test: 5:
-a | b >> c
+(x:1, y:2, z:3)  # List(TK.TUPLE: Define(TK.COMBINE), Define(TK.COMBINE), Define(TK.COMBINE))
 
-tree1:  a | b >> c
-    1  : Flow(TK.APPLY, v=[Flow(), ApplyChainProd()], '>>')
-    2  :     Flow(TK.CHAIN, v=[Get(), ApplyChainProd()], '|')
-    3  :         Get(TK.IDENT, 'a')
-    4  :         ApplyChainProd(TK.DEFINE, TK.DEFINE, '|')
-    5  :             Ref(TK.IDENT, 'b')
-    6  :     ApplyChainProd(TK.DEFINE, TK.DEFINE, '>>')
-    7  :         Ref(TK.IDENT, 'c')
+tree1:  (x:1, y:2, z:3)  # List(TK.TUPLE: Define(TK.COMBINE), Define(TK.COMBINE), Define(TK.COMBINE))
+    1  : List(TK.TUPLE, [Combine(), Combine(), Combine()])
+    2  :     Combine(TK.COMBINE: x None 1)
+    3  :         Ref(TK.IDENT, 'x')
+    4  :         Int(TK.INT, 1)
+    5  :     Combine(TK.COMBINE: y None 2)
+    6  :         Ref(TK.IDENT, 'y')
+    7  :         Int(TK.INT, 2)
+    8  :     Combine(TK.COMBINE: z None 3)
+    9  :         Ref(TK.IDENT, 'z')
+   10  :         Int(TK.INT, 3)
 
-tree1:(post)  a | b >> c
-result: list([Flow(), ApplyChainProd()])
-    1  : Flow(TK.APPLY, v=[Flow(), ApplyChainProd()], '>>')
-    2  :     Flow(TK.CHAIN, v=[Get(), ApplyChainProd()], '|')
-    3  :         Get(TK.IDENT, 'a')
-    4  :         ApplyChainProd(TK.DEFINE, TK.DEFINE, '|')
-    5  :             Ref(TK.IDENT, 'b')
-    6  :     ApplyChainProd(TK.DEFINE, TK.DEFINE, '>>')
-    7  :         Ref(TK.IDENT, 'c')
+tree1:(post)  (x:1, y:2, z:3)  # List(TK.TUPLE: Define(TK.COMBINE), Define(TK.COMBINE), Define(TK.COMBINE))
+result: list([Combine(), Combine(), Combine()])
+    1  : List(TK.TUPLE, [Combine(), Combine(), Combine()])
+    2  :     Combine(TK.COMBINE: x None 1)
+    3  :         Ref(TK.IDENT, 'x')
+    4  :         Int(TK.INT, 1)
+    5  :     Combine(TK.COMBINE: y None 2)
+    6  :         Ref(TK.IDENT, 'y')
+    7  :         Int(TK.INT, 2)
+    8  :     Combine(TK.COMBINE: z None 3)
+    9  :         Ref(TK.IDENT, 'z')
+   10  :         Int(TK.INT, 3)

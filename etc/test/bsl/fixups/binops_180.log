@@ -4,11 +4,11 @@ test: 180:
 a = b
 
 tree1:  a = b
-    1  : Define(TK.DEFINE, TK.DEFINE, '=')
+    1  : Define(TK.DEFINE: a = Get(TK.IDENT, 'b'))
     2  :     Ref(TK.IDENT, 'a')
     3  :     Get(TK.IDENT, 'b')
 
 tree1:(post)  a = b
-    1  : Define(TK.DEFINE, TK.DEFINE, '=')
+    1  : Define(TK.DEFINE: a = Get(TK.IDENT, 'b'))
     2  :     Ref(TK.IDENT, 'a')
     3  :     Get(TK.IDENT, 'b')

@@ -4,14 +4,14 @@ test: 19:
 ( b ) | buy
 
 tree1:  ( b ) | buy
-    1  : Flow(TK.CHAIN, v=[Get(), ApplyChainProd()], '|')
+    1  : Flow{TK.CHAIN, '|' len=2}
     2  :     Get(TK.IDENT, 'b')
-    3  :     ApplyChainProd(TK.DEFINE, TK.DEFINE, '|')
+    3  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'buy'))
     4  :         Ref(TK.IDENT, 'buy')
 
 tree1:(post)  ( b ) | buy
 result: list([Get(), ApplyChainProd()])
-    1  : Flow(TK.CHAIN, v=[Get(), ApplyChainProd()], '|')
+    1  : Flow{TK.CHAIN, '|' len=2}
     2  :     Get(TK.IDENT, 'b')
-    3  :     ApplyChainProd(TK.DEFINE, TK.DEFINE, '|')
+    3  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'buy'))
     4  :         Ref(TK.IDENT, 'buy')

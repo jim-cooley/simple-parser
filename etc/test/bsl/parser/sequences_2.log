@@ -1,11 +1,10 @@
 
 
 test: 2:
-a | b | c
+(1, 2, 3)   # List(TK.TUPLE)
 
-tree1:  a | b | c
-    1  : Flow(TK.CHAIN, v=[Get(), Ref(), ApplyChainProd()], '|')
-    2  :     Get(TK.IDENT, 'a')
-    3  :     Ref(TK.IDENT, 'b')
-    4  :     ApplyChainProd(TK.DEFINE, TK.DEFINE, '|')
-    5  :         Ref(TK.IDENT, 'c')
+tree1:  (1, 2, 3)   # List(TK.TUPLE)
+    1  : List(TK.TUPLE, [Int(), Int(), Int()])
+    2  :     Int(TK.INT, 1)
+    3  :     Int(TK.INT, 2)
+    4  :     Int(TK.INT, 3)

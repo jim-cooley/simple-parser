@@ -39,7 +39,10 @@ class AST:
 
     @property
     def token(self):
-        return Token(tid=self.tid, tcl=_tk2type[self.tid], lex=self.lexeme, loc=self.location)
+        if self.tid:
+            return Token(tid=self.tid, tcl=_tk2type[self.tid], lex=self.lexeme, loc=self.location)
+        else:
+            return Token.NONE(self.location)
 
     @property
     def value(self):
@@ -176,6 +179,9 @@ class BinOp(Expression):
             right.parent = self
             self.is_lvalue &= right.is_lvalue
 
+    def __str__(self):
+        return f'{type(self).__name__}(TK.{self.op.name}, \'{self.token.lexeme}\')'
+
     def format(self, brief=True):
         left = self.left
         right = self.right
@@ -210,12 +216,16 @@ class Define(Assign):
         """
         is_lvalue = False
         if op is not None:
-            if op.id == TK.COLN:
+            if op.id in [TK.COLN, TK.TUPLE]:
                 is_lvalue = is_lvalue
+            op.remap2binop().remap(TK.ASSIGN, TK.DEFINE)
         super().__init__(left=left, op=op, right=right, is_lvalue=is_lvalue)
         if right is not None:
             self.is_lvalue = right.is_lvalue
-        self.tid = self.op = TK.DEFINE
+        if op is not None:
+            self.tid = self.op = op.id
+        else:
+            self.tid = self.op = TK.DEFINE
 
     def format(self, brief=True):
         left = self.left
@@ -319,7 +329,15 @@ class ApplyChainProd(Apply):
         return f'ApplyChainProd(TK.{self.op.name}: {lval}, {rval})'
 
 
-# evaluated each access
+@dataclass
+class Combine(Define):
+    def __init__(self, left=None, op=None, right=None, loc=None):
+        super().__init__(left=left, op=op, right=right, is_lvalue=True)
+        self.op = TK.COMBINE
+        if loc is not None:
+            self.location = loc
+
+
 @dataclass
 class DefineFn(Define):  # left = FnRef, op=TK, plist, right = Block
     def __init__(self, left=None, op=None, right=None, args=None):
@@ -353,7 +371,7 @@ class DefineFn(Define):  # left = FnRef, op=TK, plist, right = Block
         if args is not None:
             if hasattr(args, 'format'):
                 aval = args.format(brief=brief)
-        return f'DefineFn({self.op}: {lval}(a={aval}) = {rval})'
+        return f'DefineFn(TK.{self.op.name}: {lval}(a={aval}) = {rval})'
 
 
 # value takes on defined range during iteration

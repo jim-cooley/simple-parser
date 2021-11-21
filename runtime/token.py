@@ -48,8 +48,16 @@ class Token:
     def map2litval(self):
         return self._map(_tk2lit)
 
-    def remap2binop(self):
-        self.id = self._map(_tk2binop)
+    def remap(self, fr=None, to=None):
+        if not self.id or self.id == fr:
+            self.id = to
+        return self
+
+    def remap2binop(self, key=None, to=None):
+        id = self._map(_tk2binop)
+        if id == key:
+            id = to
+        self.id = id
         return self
 
     def remap2unop(self):
@@ -158,6 +166,10 @@ class Token:
         return Token(tid=TK.COLN, tcl=TCL.BINOP, lex=':', loc=loc)
 
     @staticmethod
+    def COMBINE(loc=None):
+        return Token(tid=TK.COMBINE, tcl=TCL.BINOP, lex=':', loc=loc)
+
+    @staticmethod
     def COMMAND(loc=None):
         return Token(tid=TK.COMMAND, tcl=TCL.UNARY, lex='%%', loc=loc)
 
@@ -176,6 +188,10 @@ class Token:
     @staticmethod
     def DEFINE(loc=None):
         return Token(tid=TK.DEFINE, tcl=TCL.FUNCTION, lex=':=', val=None, loc=loc)
+
+    @staticmethod
+    def DICT(loc=None, value=None):
+        return Token(tid=TK.DICT, tcl=TCL.LITERAL, lex='', val=value, loc=loc)
 
     @staticmethod
     def DIV(loc=None):
@@ -306,6 +322,10 @@ class Token:
         return Token(tid=TK.MUL, tcl=TCL.BINOP, lex='*', val=None, loc=loc)
 
     @staticmethod
+    def NAMEDTUPLE(loc=None):
+        return Token(TK.NAMEDTUPLE, tcl=TCL.TUPLE, lex='', val=None, loc=loc)
+
+    @staticmethod
     def NEG(loc=None):
         return Token(tid=TK.NEG, tcl=TCL.UNARY, lex='-', val=None, loc=loc)
 
@@ -337,6 +357,10 @@ class Token:
     @staticmethod
     def OR(loc=None):
         return Token(tid=TK.OR, tcl=TCL.BINOP, lex='or', val=None, loc=loc)
+
+    @staticmethod
+    def PAPPLY(loc=None):
+        return Token(tid=TK.PAPPLY, tcl=TCL.BINOP, lex=':', val=None, loc=loc)
 
     @staticmethod
     def PCT(loc=None):

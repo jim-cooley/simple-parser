@@ -4,7 +4,7 @@ test: 12:
 not {b}
 
 tree1:  not {b}
-    1  : UnaryOp(TK.NOT, TK.NOT, 'not')
+    1  : UnaryOp(TK.NOT, 'not')
     2  :     Set(TK.SET, [Get()])
     3  :         Get(TK.IDENT, 'b')
 

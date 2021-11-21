@@ -4,10 +4,10 @@ test: 21:
 f(x) = { a(_):_*_ }
 
 tree1:  f(x) = { a(_):_*_ }
-    1  : DefineFn(TK.DEFINE, TK.DEFINE, '=')
+    1  : DefineFn(TK.DEFINE: f = Block(TK.BLOCK, ''))
     2  :     Ref(TK.IDENT, 'f')
-    3  :     Block(TK.BLOCK, v=[DefineFn()], '')
-    4  :         DefineFn(TK.DEFINE, TK.DEFINE, ':')
+    3  :     Block{TK.BLOCK, len=1}
+    4  :         DefineFn(TK.COMBINE: a : BinOp(TK.MUL, '*'))
     5  :             Ref(TK.IDENT, 'a')
     6  :             BinOp(TK.MUL, '*')
     7  :                 Get(TK.ANON, '_')
@@ -18,10 +18,10 @@ tree1:  f(x) = { a(_):_*_ }
    12  :         Ref(TK.IDENT, 'x')
 
 tree1:(post)  f(x) = { a(_):_*_ }
-    1  : DefineFn(TK.DEFINE, TK.DEFINE, '=')
+    1  : DefineFn(TK.DEFINE: f = Block(TK.BLOCK, ''))
     2  :     Ref(TK.IDENT, 'f')
-    3  :     Block(TK.BLOCK, v=[DefineFn()], '')
-    4  :         DefineFn(TK.DEFINE, TK.DEFINE, ':')
+    3  :     Block{TK.BLOCK, len=1}
+    4  :         DefineFn(TK.COMBINE: a : BinOp(TK.MUL, '*'))
     5  :             Ref(TK.IDENT, 'a')
     6  :             BinOp(TK.MUL, '*')
     7  :                 Get(TK.ANON, '_')

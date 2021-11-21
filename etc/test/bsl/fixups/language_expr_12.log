@@ -4,7 +4,7 @@ test: 12:
 close >| sma(10) and close <| sma(20) | signal
 
 tree1:  close >| sma(10) and close <| sma(20) | signal
-    1  : Flow(TK.CHAIN, v=[BinOp(), BinOp(), ApplyChainProd()], '|')
+    1  : Flow{TK.CHAIN, '|' len=3}
     2  :     BinOp(TK.GTR, '>')
     3  :         Get(TK.IDENT, 'close')
     4  :     BinOp(TK.AND, 'and')
@@ -18,12 +18,12 @@ tree1:  close >| sma(10) and close <| sma(20) | signal
    12  :                 Ref(TK.IDENT, 'sma')
    13  :                 List(TK.LIST, [Int()])
    14  :                     Int(TK.INT, 20)
-   15  :     ApplyChainProd(TK.DEFINE, TK.DEFINE, '|')
+   15  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'signal'))
    16  :         Ref(TK.IDENT, 'signal')
 
 tree1:(post)  close >| sma(10) and close <| sma(20) | signal
 result: list([BinOp(), BinOp(), ApplyChainProd()])
-    1  : Flow(TK.CHAIN, v=[BinOp(), BinOp(), ApplyChainProd()], '|')
+    1  : Flow{TK.CHAIN, '|' len=3}
     2  :     BinOp(TK.GTR, '>')
     3  :         Get(TK.IDENT, 'close')
     4  :     BinOp(TK.AND, 'and')
@@ -37,5 +37,5 @@ result: list([BinOp(), BinOp(), ApplyChainProd()])
    12  :                 Ref(TK.IDENT, 'sma')
    13  :                 List(TK.LIST, [Int()])
    14  :                     Int(TK.INT, 20)
-   15  :     ApplyChainProd(TK.DEFINE, TK.DEFINE, '|')
+   15  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'signal'))
    16  :         Ref(TK.IDENT, 'signal')

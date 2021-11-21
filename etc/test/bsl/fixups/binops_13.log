@@ -4,12 +4,12 @@ test: 13:
 false >> none
 
 tree1:  false >> none
-    1  : Flow(TK.APPLY, v=[Bool(), Literal()], '>>')
+    1  : Flow{TK.APPLY, '>>' len=2}
     2  :     Bool(TK.BOOL, False)
     3  :     Literal(TK.NONE, None)
 
 tree1:(post)  false >> none
 result: list([Bool(), Literal()])
-    1  : Flow(TK.APPLY, v=[Bool(), Literal()], '>>')
+    1  : Flow{TK.APPLY, '>>' len=2}
     2  :     Bool(TK.BOOL, False)
     3  :     Literal(TK.NONE, None)

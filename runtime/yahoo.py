@@ -6,14 +6,16 @@ import pandas as pd
 import requests as requests
 
 from runtime.conversion import c_unbox
+from runtime.factory import to_lit
 from runtime.indexdict import IndexedDict
-from runtime.literals import Duration, Literal
+from runtime.literals import Literal
+from runtime.time import Duration
 from runtime.scope import IntrinsicFunction, Object
 
 from runtime.dataframe import Dataset
 from runtime.pandas import print_dataframe
 from runtime.intrinsics import get_t_now
-from runtime.runtime import _find_file
+from runtime.runtime import find_file
 
 file_suffix = {'1d': 'daily', '1wk': 'weekly'}
 config_root = './config/'
@@ -81,7 +83,7 @@ def do_yahoo(env, args):
         if type(val).__name__ == 'DataFrame' or isinstance(val, dict) or isinstance(val, IndexedDict):
             ds[key] = Dataset(name=key, value=val)
         else:
-            ds[key] = Literal.lit(val=val)
+            ds[key] = to_lit(val=val)
     o = Object()
     o.from_dict(ds)
     return o
@@ -179,7 +181,7 @@ def get_quotefilename(basename, folder=None, _suffix=DAILY):
 
 
 def read_symbol_list(name):
-    symbol_list_filename = _find_file(name, extensions=['.csv'])
+    symbol_list_filename = find_file(name, extensions=['.csv'])
     symbol_list = create_symbols_table()
     if os.path.isfile(symbol_list_filename) and os.access(symbol_list_filename, os.R_OK):
         ext = get_file_type(symbol_list_filename)

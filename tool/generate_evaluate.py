@@ -7,9 +7,9 @@ from runtime.logwriter import LogWriter
 from tool.tables import _assign_obj_fn, _evaluate_boolops_fn, _evaluate_binops_fn
 
 
-_COLUMNS = ['any', 'int', 'float', 'bool', 'str', 'timedelta', 'Object', 'Block', 'DataFrame', 'Range', 'Series']
+_COLUMNS = ['any', 'int', 'float', 'bool', 'str', 'timedelta', 'Object', 'Block', 'DataFrame', 'Range', 'Series', 'Set', 'list']
 
-_rc2tok = [TK.OBJECT, TK.INT, TK.FLOT, TK.BOOL, TK.STR, TK.DUR, TK.OBJECT, TK.BLOCK]
+_rc2tok = [TK.OBJECT, TK.INT, TK.FLOT, TK.BOOL, TK.STR, TK.DUR, TK.OBJECT, TK.BLOCK, TK.DATAFRAME, TK.RANGE, TK.SERIES, TK.SET, TK.LIST]
 
 # this is used primarily to create the Fn names, so parforms type translation and to_lower()
 _type2native = {
@@ -20,6 +20,7 @@ _type2native = {
     'Float': 'float',
     'Ident': 'ident',
     'Int': 'int',
+    'List': 'list',
     'Percent': 'float',
     'Range': 'range',
     'Series': 'series',
@@ -89,18 +90,18 @@ class GenerateEvalDispatch:
         self.generate_dispatch_table(name)
 
     def write_header(self, name, insert_fixup_dispatch=True, insert_assignment_fixup=False):
-        self.o.imports({'conversion':['c_box', 'c_to_bool', 'c_to_float', 'c_to_int', 'c_unbox'],
-                        'environment':['Environment'],
-                        'exceptions':['runtime_error'],
-                        'tokens':['TK'],
+        self.o.imports({'runtime.conversion':['c_box', 'c_to_bool', 'c_to_float', 'c_to_int', 'c_unbox'],
+                        'runtime.environment':['Environment'],
+                        'runtime.exceptions':['runtime_error'],
+                        'runtime.token_ids':['TK'],
                         })
         if insert_fixup_dispatch:
-            self.o.imports({'eval_boolean':['_boolean_dispatch_table', 'eval_boolean_dispatch']})
+            self.o.imports({'runtime.eval_boolean':['_boolean_dispatch_table', 'eval_boolean_dispatch']})
         self.o.horiz_line(98)
         self.o.l_print(0, "# NOTE: This is a generated file.  Please port any manual changes to tool/generate_evaluate.py")
         self.o.horiz_line(98)
         self.o.blank_line(2)
-        self.o.define_dict(f'_SUPPORTED_{name.upper()}_OPERATIONS', ty=TY.LIST, data=[f'TK.{_.name}' for _ in self.source.keys()], quote=False)
+        self.o.define_dict(f'_SUPPORTED_{name.upper()}_TOKENS', ty=TY.LIST, data=[f'TK.{_.name}' for _ in self.source.keys()], quote=False)
         self.o.blank_line()
         self.o.define_const('_INTRINSIC_VALUE_TYPES', _COLUMNS)
         self.o.blank_line()
@@ -109,6 +110,9 @@ class GenerateEvalDispatch:
         self.o.define_dict(name='_type2native', ty=TY.DICT, data=_type2native)
         self.o.banner("MANUAL CHANGES")
         if insert_fixup_dispatch:
+            self.o.print("def is_supported_binop(op):\n"
+                         "    return op in _binops_dispatch_table or op in _boolean_dispatch_table")
+            self.o.blank_line(2)
             self.o.print("# used by fixups\n"
                          f"def eval_{name}_dispatch_fixup(node):\n"
                          "    if node is None:\n"
@@ -128,22 +132,33 @@ class GenerateEvalDispatch:
         self.o.blank_line(2)
         self.o.define_fn(f'eval_{name}_dispatch', 'node, left, right')
         self.o.l_print(0, "    l_value = left\n"
-                          "    l_ty = type(l_value).__name__\n"
-                          "    if hasattr(left, 'value') or l_ty in ['Int', 'Bool', 'Str', 'Float']:\n"
-                          "        l_value = left.value\n"
-                          "        l_ty = type(l_value).__name__\n"
-                          "    r_value = right\n"
-                          "    r_ty = type(r_value).__name__\n"
-                          "    if hasattr(right, 'value') or r_ty in ['Int', 'Bool', 'Str', 'Float']:\n"
+                          "    l_ty = type(l_value).__name__\n")
+        if self.is_assign_style:
+            self.o.l_print(0,
+                           "    if l_ty != 'Object':    # for assignment, left is a ref not a value")
+            indent = 1
+        else:
+            indent = 0
+
+        self.o.l_print(indent, "    if hasattr(left, 'value') or l_ty in ['Int', 'Bool', 'Str', 'Float']:\n"
+                               "        l_value = left.value\n"
+                               "        l_ty = type(l_value).__name__\n")
+
+        self.o.l_print(0, "    r_value = right\n"
+                          "    r_ty = type(r_value).__name__\n")
+
+        self.o.l_print(0, "    if hasattr(right, 'value') or r_ty in ['Int', 'Bool', 'Str', 'Float']:\n"
                           "        r_value = right.value\n"
                           "        r_ty = type(r_value).__name__\n"
                           "    if l_ty == 'Ident':\n"
                           "        l_value = Environment.current.scope.find(left.token).value\n"
                           "    if r_ty == 'Ident':\n"
-                          "        r_value = Environment.current.scope.find(right.token).value\n"
-                          "    if l_value is None or r_value is None:\n"
-                          "        return None\n"
-                          f"    return eval_{name}_dispatch2(node.op, l_value, r_value)")
+                          "        r_value = Environment.current.scope.find(right.token).value\n")
+        if not self.is_assign_style:
+            self.o.l_print(0, "    if l_value is None or r_value is None:\n"
+                              "        return None\n")
+
+        self.o.l_print(0, f"    return eval_{name}_dispatch2(node.op, l_value, r_value)")
 
     def write_dispatch_inner(self, name):
         self.o.blank_line(2)
@@ -207,7 +222,8 @@ class GenerateEvalDispatch:
         self.indent()
         self.o.l_print(2, '#', end='')
         for c in _COLUMNS:
-            self.o.print(f'{c:^{width}s}', end='', append=True)
+            pad = ' ' * (max(width - len(c) - 1, 2) // 2)
+            self.o.print(f'{pad}{c}{pad}', end='', append=True)
         self.o.blank_line(1)
         for r in range(0, len(table)):
             self.o.print('[', end='')
@@ -226,7 +242,7 @@ class GenerateEvalDispatch:
                     pad = max(width-len(fn), 1)
                     self.o.print(f'{sep:{pad}s}', end='', append=True)
             self.o.print('],   # ', end='', append=True)
-            self.o.print(f'{_COLUMNS[r]}      ', append=True)
+            self.o.print(f'{_COLUMNS[r]}  ', append=True)
         self.dedent()
         self.o.print('\n    ],')
         self.dedent()
@@ -280,7 +296,8 @@ class GenerateEvalDispatch:
         self.indent()
         self.o.l_print(2, '#', end='')
         for c in _COLUMNS:
-            self.o.print(f'{c:^{width}s}', end='', append=True)
+            pad = ' ' * ((max(width - len(c), 2) // 2) + 1)
+            self.o.print(f'{pad}{c}{pad}', end='', append=True)
         self.o.blank_line(1)
         for r in range(0, max(t_len, rc_max)):
             self.o.print('[', end='')
@@ -291,7 +308,7 @@ class GenerateEvalDispatch:
                 else:
                     code = table[r][c]
                 self.o.print(f'{q}{code}{q}', end='', append=True)
-                if c < t_len - 1:
+                if c < max(t_len, rc_max) - 1:
                     pad = max(width-len(code), 0)
                     self.o.print(f'{sep:{pad}s}', end='', append=True)
             self.o.print('],   # ', end='', append=True)

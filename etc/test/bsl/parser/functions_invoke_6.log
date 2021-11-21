@@ -8,6 +8,6 @@ tree1:  a ().b.c
     2  :     FnCall('a')
     3  :         Get(TK.IDENT, 'a')
     4  :         List(TK.LIST, [])
-    5  :     PropRef(TK.REF, '.')
+    5  :     PropRef(TK.REF: b . Get(TK.IDENT, 'c'))
     6  :         Get(TK.IDENT, 'b')
     7  :         Get(TK.IDENT, 'c')

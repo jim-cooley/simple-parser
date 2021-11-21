@@ -4,10 +4,10 @@ test: 4:
 a = b = c = 4
 
 tree1:  a = b = c = 4
-    1  : Define(TK.DEFINE, TK.DEFINE, '=')
+    1  : Define(TK.DEFINE: a = Define(TK.DEFINE, '='))
     2  :     Ref(TK.IDENT, 'a')
-    3  :     Define(TK.DEFINE, TK.DEFINE, '=')
+    3  :     Define(TK.DEFINE: b = Define(TK.DEFINE, '='))
     4  :         Ref(TK.IDENT, 'b')
-    5  :         Define(TK.DEFINE, TK.DEFINE, '=')
+    5  :         Define(TK.DEFINE: c = 4)
     6  :             Ref(TK.IDENT, 'c')
     7  :             Int(TK.INT, 4)

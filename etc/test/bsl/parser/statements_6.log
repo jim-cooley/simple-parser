@@ -4,9 +4,9 @@ test: 6:
 a >> b ; c
 
 tree1:  a >> b ; c
-    1  : Flow(TK.APPLY, v=[Get(), ApplyChainProd()], '>>')
+    1  : Flow{TK.APPLY, '>>' len=2}
     2  :     Get(TK.IDENT, 'a')
-    3  :     ApplyChainProd(TK.DEFINE, TK.DEFINE, '>>')
+    3  :     ApplyChainProd(TK.APPLY: None >> Ref(TK.IDENT, 'b'))
     4  :         Ref(TK.IDENT, 'b')
 
 tree2:  a >> b ; c
