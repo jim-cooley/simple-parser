@@ -4,10 +4,10 @@ test: 5:
 {{a}, {b}, {c}}
 
 tree1:  {{a}, {b}, {c}}
-    1  : Set(TK.SET, [Set(), Set(), Set()])
-    2  :     Set(TK.SET, [Get()])
+    1  : Generate(TK.SET, len=3)
+    2  :     Generate(TK.SET, len=1)
     3  :         Get(TK.IDENT, 'a')
-    4  :     Set(TK.SET, [Get()])
+    4  :     Generate(TK.SET, len=1)
     5  :         Get(TK.IDENT, 'b')
-    6  :     Set(TK.SET, [Get()])
+    6  :     Generate(TK.SET, len=1)
     7  :         Get(TK.IDENT, 'c')

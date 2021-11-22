@@ -1,3 +1,10 @@
+{{a, b, c}}
+{{1, 2, 3}}
+
+f = { a=5 }      # should be block, not set
+{1, 2, 3}
+{a:1, b:2, c:3}
+
 [a:5, b:4]
 [a=5, b='c', d]
 

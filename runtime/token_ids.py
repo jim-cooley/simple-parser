@@ -165,4 +165,5 @@ class TK(IntEnum):
     THEN = auto()
     TODAY = auto()
     TRUE = auto()
+    VAL = auto()
     VAR = auto()

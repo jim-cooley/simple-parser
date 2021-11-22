@@ -4,17 +4,17 @@ test: 2:
 var f = { a=5 }
 
 tree1:  var f = { a=5 }
-    1  : DefineVar(TK.DEFINE: f = Set{count=-1})
+    1  : DefineVar(TK.DEFINE: f = Block(TK.BLOCK, ''))
     2  :     Ref(TK.IDENT, 'f')
-    3  :     Set(TK.SET, [Define()])
+    3  :     Block{TK.BLOCK, len=1}
     4  :         Define(TK.DEFINE: a = 5)
     5  :             Ref(TK.IDENT, 'a')
     6  :             Int(TK.INT, 5)
 
 tree1:(post)  var f = { a=5 }
-    1  : DefineVar(TK.DEFINE: f = Set{count=-1})
+    1  : DefineVar(TK.DEFINE: f = Block(TK.BLOCK, ''))
     2  :     Ref(TK.IDENT, 'f')
-    3  :     Set(TK.SET, [Define()])
+    3  :     Block{TK.BLOCK, len=1}
     4  :         Define(TK.DEFINE: a = 5)
     5  :             Ref(TK.IDENT, 'a')
     6  :             Int(TK.INT, 5)

@@ -23,6 +23,7 @@ _tk2pfx = {
     TK.ADD: 'add',  # +
     TK.ALL: 'all',  # all:
     TK.AND: 'and',
+    TK.ANON: '_',
     TK.ANY: 'any',  # any:
     TK.APPLY: 'apply>',  # >>
     TK.ASSIGN: 'assign',  # =
@@ -57,6 +58,7 @@ _tk2pfx = {
     TK.IN: 'in',
     TK.INCREMENT: 'incr',
     TK.SUBSCRIPT: 'idx',  # indexing expression
+    TK.IDENT: 'id',
     TK.INT: 'i',
     TK.ISEQ: 'is_eq',  # ==
     TK.KVPAIR: 'kv',  # key:value
@@ -92,6 +94,7 @@ _tk2pfx = {
     TK.TODAY: 'today',
     TK.TRUE: 'b',
     TK.TUPLE: 'tup',
+    TK.VAL: 'val',
     TK.VAR: 'var',
 }
 
@@ -100,7 +103,7 @@ _tk2grp = {
     TK.DATAFRAME: ['{', ', ',  '}', '{}'],
     TK.DICT: ['{', ', ',  '}', '{}'],
     TK.EMPTY: ['{', ', ',  '}', 'Ø'],
-    TK.GEN: ['[', ', ', ']', '[]'],
+    TK.GEN: ['{', ', ', '}', '{}'],
     TK.LIST: ['[', ', ', ']', '[]'],
     TK.NAMEDTUPLE: ['(', ', ', ')', '()'],
     TK.SERIES: ['[', ', ',  ']', '[]'],
@@ -132,7 +135,9 @@ _postfixNodeTypeMappings = {
     'Define': _DEFINITION_NODE,
     'DefineChainProd': _DEFINITION_NODE,
     'DefineFn': _DEFINE_FN_NODE,
+    'DefineVal': _DEFINITION_NODE,
     'DefineVar': _DEFINITION_NODE,
+    'DefineValFn': _DEFINE_FN_NODE,
     'DefineVarFn': _DEFINE_FN_NODE,
     'Dict': SEQUENCE_NODE,
     'Duration': VALUE_NODE,
@@ -142,6 +147,7 @@ _postfixNodeTypeMappings = {
     'FnCall': _FUNCTION_NODE,
     'FnRef': _FUNCTION_NODE,
     'Generate': _GENERATOR_NODE,
+    'GenerateRange': _GENERATOR_NODE,
     'Get': VALUE_NODE,
     'Ident': _IDENT_NODE,
     'IfThenElse': TRINARY_NODE,

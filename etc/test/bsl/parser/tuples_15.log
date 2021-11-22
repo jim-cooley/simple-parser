@@ -4,8 +4,8 @@ test: 15:
 ((a, b), c)                  # tuple in a tuple
 
 tree1:  ((a, b), c)                  # tuple in a tuple
-    1  : List(TK.TUPLE, [List(), Get()])
-    2  :     List(TK.TUPLE, [Get(), Get()])
+    1  : Generate(TK.TUPLE, len=2)
+    2  :     Generate(TK.TUPLE, len=2)
     3  :         Get(TK.IDENT, 'a')
     4  :         Get(TK.IDENT, 'b')
     5  :     Get(TK.IDENT, 'c')

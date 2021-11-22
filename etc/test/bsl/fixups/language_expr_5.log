@@ -9,7 +9,7 @@ tree1:  any:{ cross(close, sma(20), delay=1, threshold=0.01) } | buy
     3  :         Block{TK.BLOCK, len=1}
     4  :             FnCall('cross')
     5  :                 Get(TK.IDENT, 'cross')
-    6  :                 List(TK.TUPLE, [Get(), FnCall(), Define(), Define()])
+    6  :                 Generate(TK.NAMEDTUPLE, len=4)
     7  :                     Get(TK.IDENT, 'close')
     8  :                     FnCall('sma')
     9  :                         Get(TK.IDENT, 'sma')
@@ -30,7 +30,7 @@ tree1:(post)  any:{ cross(close, sma(20), delay=1, threshold=0.01) } | buy
     3  :         Block{TK.BLOCK, len=1}
     4  :             FnCall('cross')
     5  :                 Get(TK.IDENT, 'cross')
-    6  :                 List(TK.TUPLE, [Get(), FnCall(), Define(), Define()])
+    6  :                 Generate(TK.NAMEDTUPLE, len=4)
     7  :                     Get(TK.IDENT, 'close')
     8  :                     FnCall('sma')
     9  :                         Get(TK.IDENT, 'sma')

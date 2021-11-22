@@ -5,15 +5,15 @@ test: 8:
 
 tree1:  {a} >> {b}
     1  : Flow{TK.APPLY, '>>' len=2}
-    2  :     Set(TK.SET, [Get()])
+    2  :     Generate(TK.SET, len=1)
     3  :         Get(TK.IDENT, 'a')
-    4  :     Set(TK.SET, [Ref()])
-    5  :         Ref(TK.IDENT, 'b')
+    4  :     Generate(TK.SET, len=1)
+    5  :         Get(TK.IDENT, 'b')
 
 tree1:(post)  {a} >> {b}
-result: list([Set(), Set()])
+result: list([Generate(), Generate()])
     1  : Flow{TK.APPLY, '>>' len=2}
-    2  :     Set(TK.SET, [Get()])
+    2  :     Generate(TK.SET, len=1)
     3  :         Get(TK.IDENT, 'a')
-    4  :     Set(TK.SET, [Ref()])
-    5  :         Ref(TK.IDENT, 'b')
+    4  :     Generate(TK.SET, len=1)
+    5  :         Get(TK.IDENT, 'b')

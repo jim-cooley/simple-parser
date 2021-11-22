@@ -1,20 +1,20 @@
 
 
 test: 31:
-f = { a=5 }      # should be block, not set
+f = { a=5 }
 
-tree1:  f = { a=5 }      # should be block, not set
-    1  : Define(TK.DEFINE: f = Set{count=-1})
+tree1:  f = { a=5 }
+    1  : Define(TK.DEFINE: f = Block(TK.BLOCK, ''))
     2  :     Ref(TK.IDENT, 'f')
-    3  :     Set(TK.SET, [Define()])
+    3  :     Block{TK.BLOCK, len=1}
     4  :         Define(TK.DEFINE: a = 5)
     5  :             Ref(TK.IDENT, 'a')
     6  :             Int(TK.INT, 5)
 
-tree1:(post)  f = { a=5 }      # should be block, not set
-    1  : Define(TK.DEFINE: f = Set{count=-1})
+tree1:(post)  f = { a=5 }
+    1  : Define(TK.DEFINE: f = Block(TK.BLOCK, ''))
     2  :     Ref(TK.IDENT, 'f')
-    3  :     Set(TK.SET, [Define()])
+    3  :     Block{TK.BLOCK, len=1}
     4  :         Define(TK.DEFINE: a = 5)
     5  :             Ref(TK.IDENT, 'a')
     6  :             Int(TK.INT, 5)

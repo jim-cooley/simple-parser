@@ -4,8 +4,8 @@ test: 6:
 {a, {b, c}}
 
 tree1:  {a, {b, c}}
-    1  : Set(TK.SET, [Get(), Set()])
+    1  : Generate(TK.SET, len=2)
     2  :     Get(TK.IDENT, 'a')
-    3  :     Set(TK.SET, [Get(), Get()])
+    3  :     Generate(TK.SET, len=2)
     4  :         Get(TK.IDENT, 'b')
     5  :         Get(TK.IDENT, 'c')

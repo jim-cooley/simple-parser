@@ -4,12 +4,12 @@ test: 23:
 {a, b, c}:(a:5, b:3, c:4)    # set parameterization k:v
 
 tree1:  {a, b, c}:(a:5, b:3, c:4)    # set parameterization k:v
-    1  : Combine(TK.COMBINE:  None List[count=3])
-    2  :     Set(TK.SET, [Ref(), Ref(), Ref()])
-    3  :         Ref(TK.IDENT, 'a')
-    4  :         Ref(TK.IDENT, 'b')
-    5  :         Ref(TK.IDENT, 'c')
-    6  :     List(TK.TUPLE, [Combine(), Combine(), Combine()])
+    1  : Combine(TK.COMBINE: [count=2]:set None Generate(TK.GEN, ''))
+    2  :     Generate(TK.SET, len=3)
+    3  :         Get(TK.IDENT, 'a')
+    4  :         Get(TK.IDENT, 'b')
+    5  :         Get(TK.IDENT, 'c')
+    6  :     Generate(TK.NAMEDTUPLE, len=3)
     7  :         Combine(TK.COMBINE: a None 5)
     8  :             Ref(TK.IDENT, 'a')
     9  :             Int(TK.INT, 5)
@@ -21,12 +21,12 @@ tree1:  {a, b, c}:(a:5, b:3, c:4)    # set parameterization k:v
    15  :             Int(TK.INT, 4)
 
 tree1:(post)  {a, b, c}:(a:5, b:3, c:4)    # set parameterization k:v
-    1  : Combine(TK.COMBINE:  None List[count=3])
-    2  :     Set(TK.SET, [Ref(), Ref(), Ref()])
-    3  :         Ref(TK.IDENT, 'a')
-    4  :         Ref(TK.IDENT, 'b')
-    5  :         Ref(TK.IDENT, 'c')
-    6  :     List(TK.TUPLE, [Combine(), Combine(), Combine()])
+    1  : Combine(TK.COMBINE: [count=2]:set None Generate(TK.GEN, ''))
+    2  :     Generate(TK.SET, len=3)
+    3  :         Get(TK.IDENT, 'a')
+    4  :         Get(TK.IDENT, 'b')
+    5  :         Get(TK.IDENT, 'c')
+    6  :     Generate(TK.NAMEDTUPLE, len=3)
     7  :         Combine(TK.COMBINE: a None 5)
     8  :             Ref(TK.IDENT, 'a')
     9  :             Int(TK.INT, 5)

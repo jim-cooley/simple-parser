@@ -7,7 +7,7 @@ tree1:  [3,5,10..20,28]
     1  : Generate(TK.LIST, len=4)
     2  :     Int(TK.INT, 3)
     3  :     Int(TK.INT, 5)
-    4  :     BinOp(TK.RANGE, '..')
+    4  :     GenerateRange(TK.RANGE, len=3)
     5  :         Int(TK.INT, 10)
     6  :         Int(TK.INT, 20)
     7  :     Int(TK.INT, 28)

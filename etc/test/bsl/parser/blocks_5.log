@@ -5,8 +5,8 @@ any:{a=False, b=False, c=False}:{a=True}
 
 tree1:  any:{a=False, b=False, c=False}:{a=True}
     1  : UnaryOp(TK.ANY, 'any')
-    2  :     Combine(TK.COMBINE:  None Set{count=-1})
-    3  :         Set(TK.SET, [Define(), Define(), Define()])
+    2  :     Combine(TK.COMBINE:  None Block(TK.BLOCK, ''))
+    3  :         Block{TK.BLOCK, len=3}
     4  :             Define(TK.DEFINE: a = false)
     5  :                 Ref(TK.IDENT, 'a')
     6  :                 Bool(TK.BOOL, False)
@@ -16,7 +16,7 @@ tree1:  any:{a=False, b=False, c=False}:{a=True}
    10  :             Define(TK.DEFINE: c = false)
    11  :                 Ref(TK.IDENT, 'c')
    12  :                 Bool(TK.BOOL, False)
-   13  :         Set(TK.SET, [Define()])
+   13  :         Block{TK.BLOCK, len=1}
    14  :             Define(TK.DEFINE: a = true)
    15  :                 Ref(TK.IDENT, 'a')
    16  :                 Bool(TK.BOOL, True)

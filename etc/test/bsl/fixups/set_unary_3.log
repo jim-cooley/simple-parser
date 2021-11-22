@@ -5,14 +5,14 @@ all:{a, b, c}
 
 tree1:  all:{a, b, c}
     1  : UnaryOp(TK.ALL, 'all')
-    2  :     Set(TK.SET, [Get(), Get(), Get()])
+    2  :     Generate(TK.SET, len=3)
     3  :         Get(TK.IDENT, 'a')
     4  :         Get(TK.IDENT, 'b')
     5  :         Get(TK.IDENT, 'c')
 
 tree1:(post)  all:{a, b, c}
     1  : UnaryOp(TK.ALL, 'all')
-    2  :     Set(TK.SET, [Get(), Get(), Get()])
+    2  :     Generate(TK.SET, len=3)
     3  :         Get(TK.IDENT, 'a')
     4  :         Get(TK.IDENT, 'b')
     5  :         Get(TK.IDENT, 'c')

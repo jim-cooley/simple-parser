@@ -4,7 +4,7 @@ test: 14:
 (a = 5, b='a')
 
 tree1:  (a = 5, b='a')
-    1  : List(TK.TUPLE, [Define(), Define()])
+    1  : Generate(TK.NAMEDTUPLE, len=2)
     2  :     Define(TK.DEFINE: a = 5)
     3  :         Ref(TK.IDENT, 'a')
     4  :         Int(TK.INT, 5)

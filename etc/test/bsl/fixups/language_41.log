@@ -4,10 +4,9 @@ test: 41:
 { b };
 
 tree1:  { b };
-    1  : Set(TK.SET, [Get()])
+    1  : Generate(TK.SET, len=1)
     2  :     Get(TK.IDENT, 'b')
 
 tree1:(post)  { b };
-result: list([Get()])
-    1  : Set(TK.SET, [Get()])
+    1  : Generate(TK.SET, len=1)
     2  :     Get(TK.IDENT, 'b')

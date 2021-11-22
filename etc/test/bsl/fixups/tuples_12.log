@@ -4,12 +4,11 @@ test: 12:
 ((a,),)                      # tuple in a tuple
 
 tree1:  ((a,),)                      # tuple in a tuple
-    1  : List(TK.TUPLE, [List()])
-    2  :     List(TK.TUPLE, [Get()])
+    1  : Generate(TK.TUPLE, len=1)
+    2  :     Generate(TK.TUPLE, len=1)
     3  :         Get(TK.IDENT, 'a')
 
 tree1:(post)  ((a,),)                      # tuple in a tuple
-result: list([List()])
-    1  : List(TK.TUPLE, [List()])
-    2  :     List(TK.TUPLE, [Get()])
+    1  : Generate(TK.TUPLE, len=1)
+    2  :     Generate(TK.TUPLE, len=1)
     3  :         Get(TK.IDENT, 'a')

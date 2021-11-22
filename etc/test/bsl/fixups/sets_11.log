@@ -4,24 +4,24 @@ test: 11:
 {a:5, b:{c, d}}
 
 tree1:  {a:5, b:{c, d}}
-    1  : Set(TK.SET, [Combine(), Combine()])
+    1  : Block{TK.BLOCK, len=2}
     2  :     Combine(TK.COMBINE: a None 5)
     3  :         Ref(TK.IDENT, 'a')
     4  :         Int(TK.INT, 5)
-    5  :     Combine(TK.COMBINE: b None Set{count=-1})
+    5  :     Combine(TK.COMBINE: b None Generate(TK.GEN, ''))
     6  :         Ref(TK.IDENT, 'b')
-    7  :         Set(TK.SET, [Get(), Get()])
+    7  :         Generate(TK.SET, len=2)
     8  :             Get(TK.IDENT, 'c')
     9  :             Get(TK.IDENT, 'd')
 
 tree1:(post)  {a:5, b:{c, d}}
 result: list([Combine(), Combine()])
-    1  : Set(TK.SET, [Combine(), Combine()])
+    1  : Block{TK.BLOCK, len=2}
     2  :     Combine(TK.COMBINE: a None 5)
     3  :         Ref(TK.IDENT, 'a')
     4  :         Int(TK.INT, 5)
-    5  :     Combine(TK.COMBINE: b None Set{count=-1})
+    5  :     Combine(TK.COMBINE: b None Generate(TK.GEN, ''))
     6  :         Ref(TK.IDENT, 'b')
-    7  :         Set(TK.SET, [Get(), Get()])
+    7  :         Generate(TK.SET, len=2)
     8  :             Get(TK.IDENT, 'c')
     9  :             Get(TK.IDENT, 'd')

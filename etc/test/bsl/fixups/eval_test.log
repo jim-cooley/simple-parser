@@ -30,9 +30,9 @@ tree3:  a = 4
     3  :     Int(TK.INT, 4)
 
 tree4:  s = { a=5 }
-    1  : Define(TK.DEFINE: s = Set{count=-1})
+    1  : Define(TK.DEFINE: s = Block(TK.BLOCK, ''))
     2  :     Ref(TK.IDENT, 's')
-    3  :     Set(TK.SET, [Define()])
+    3  :     Block{TK.BLOCK, len=1}
     4  :         Define(TK.DEFINE: a = 5)
     5  :             Ref(TK.IDENT, 'a')
     6  :             Int(TK.INT, 5)
@@ -94,9 +94,9 @@ tree3:(post)  a = 4
     3  :     Int(TK.INT, 4)
 
 tree4:(post)  s = { a=5 }
-    1  : Define(TK.DEFINE: s = Set{count=-1})
+    1  : Define(TK.DEFINE: s = Block(TK.BLOCK, ''))
     2  :     Ref(TK.IDENT, 's')
-    3  :     Set(TK.SET, [Define()])
+    3  :     Block{TK.BLOCK, len=1}
     4  :         Define(TK.DEFINE: a = 5)
     5  :             Ref(TK.IDENT, 'a')
     6  :             Int(TK.INT, 5)

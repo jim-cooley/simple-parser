@@ -4,9 +4,9 @@ test: 16:
 f(a, b, c):{a=5, b='c', d}
 
 tree1:  f(a, b, c):{a=5, b='c', d}
-    1  : DefineFn(TK.COMBINE: f : Set{count=-1})
+    1  : DefineFn(TK.COMBINE: f : Block(TK.BLOCK, ''))
     2  :     Ref(TK.IDENT, 'f')
-    3  :     Set(TK.SET, [Define(), Define(), Get()])
+    3  :     Block{TK.BLOCK, len=3}
     4  :         Define(TK.DEFINE: a = 5)
     5  :             Ref(TK.IDENT, 'a')
     6  :             Int(TK.INT, 5)
@@ -14,15 +14,15 @@ tree1:  f(a, b, c):{a=5, b='c', d}
     8  :             Ref(TK.IDENT, 'b')
     9  :             Str(TK.STR, 'c')
    10  :         Get(TK.IDENT, 'd')
-   11  :     List(TK.TUPLE, [Ref(), Ref(), Ref()])
-   12  :         Ref(TK.IDENT, 'a')
-   13  :         Ref(TK.IDENT, 'b')
-   14  :         Ref(TK.IDENT, 'c')
+   11  :     Generate(TK.LIST, len=3)
+   12  :         Get(TK.IDENT, 'a')
+   13  :         Get(TK.IDENT, 'b')
+   14  :         Get(TK.IDENT, 'c')
 
 tree1:(post)  f(a, b, c):{a=5, b='c', d}
-    1  : DefineFn(TK.COMBINE: f : Set{count=-1})
+    1  : DefineFn(TK.COMBINE: f : Block(TK.BLOCK, ''))
     2  :     Ref(TK.IDENT, 'f')
-    3  :     Set(TK.SET, [Define(), Define(), Get()])
+    3  :     Block{TK.BLOCK, len=3}
     4  :         Define(TK.DEFINE: a = 5)
     5  :             Ref(TK.IDENT, 'a')
     6  :             Int(TK.INT, 5)
@@ -30,7 +30,7 @@ tree1:(post)  f(a, b, c):{a=5, b='c', d}
     8  :             Ref(TK.IDENT, 'b')
     9  :             Str(TK.STR, 'c')
    10  :         Get(TK.IDENT, 'd')
-   11  :     List(TK.TUPLE, [Ref(), Ref(), Ref()])
-   12  :         Ref(TK.IDENT, 'a')
-   13  :         Ref(TK.IDENT, 'b')
-   14  :         Ref(TK.IDENT, 'c')
+   11  :     Generate(TK.LIST, len=3)
+   12  :         Get(TK.IDENT, 'a')
+   13  :         Get(TK.IDENT, 'b')
+   14  :         Get(TK.IDENT, 'c')

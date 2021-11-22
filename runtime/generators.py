@@ -116,8 +116,16 @@ def generate_dataframe(env, args):
     return None
 
 
+def generate_dict(env, args):
+    return None
+
+
 def generate_list(env, args):
     return args.values()
+
+
+def generate_named_tuple(env, args):
+    return None
 
 
 # UNDONE: right now we are materializing the generator product, but we could pass the generator back.
@@ -166,3 +174,11 @@ def generate_series(env, args):
     gen = SeriesGenerator(name=name, values=args.dict(), index=index)
     series = gen.getall()
     return series
+
+
+def generate_set(env, args):
+    return None
+
+
+def generate_tuple(env, args):
+    return None

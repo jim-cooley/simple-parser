@@ -44,7 +44,9 @@ _fixupNodeTypeMappings = {
     'Define': _VISIT_DEFINITION,
     'DefineChainProd': _VISIT_DEFINITION,
     'DefineFn': _VISIT_DEFINE_FN,
+    'DefineVal': _VISIT_DEFINITION,
     'DefineVar': _VISIT_DEFINITION,
+    'DefineValFn': _VISIT_DEFINE_FN,
     'DefineVarFn': _VISIT_DEFINE_FN,
     'Dict': SEQUENCE_NODE,
     'Duration': VALUE_NODE,
@@ -52,6 +54,7 @@ _fixupNodeTypeMappings = {
     'Flow': SEQUENCE_NODE,
     'FnCall': BINARY_NODE,
     'Generate': SEQUENCE_NODE,
+    'GenerateRange': SEQUENCE_NODE,
     'Get': VALUE_NODE,
     'IfThenElse': TRINARY_NODE,
     'Ident': _IDENT_NODE,
@@ -155,11 +158,11 @@ class Fixups(TreeModifier, ABC):
         if node is not None:
             tkid = node.token.id
             if isinstance(node, FnCall) and node.ref.name == 'range':
-                rnode = Generate(TK.RANGE, parameters=node.right, loc=node.token.location)
+                rnode = Generate(TK.RANGE, items=node.right, loc=node.token.location)
                 rnode.parent = node.parent
                 return rnode
             elif tkid == TK.RANGE:
-                rnode = Generate(TK.RANGE, parameters=[node.left, node.right], loc=node.token.location)
+                rnode = Generate(TK.RANGE, items=[node.left, node.right], loc=node.token.location)
                 rnode.parent = node.parent
                 return rnode
             if tkid == TK.TUPLE:

@@ -4,16 +4,15 @@ test: 7:
 {{a, b}, c}
 
 tree1:  {{a, b}, c}
-    1  : Set(TK.SET, [Set(), Get()])
-    2  :     Set(TK.SET, [Get(), Get()])
+    1  : Generate(TK.SET, len=2)
+    2  :     Generate(TK.SET, len=2)
     3  :         Get(TK.IDENT, 'a')
     4  :         Get(TK.IDENT, 'b')
     5  :     Get(TK.IDENT, 'c')
 
 tree1:(post)  {{a, b}, c}
-result: list([Set(), Get()])
-    1  : Set(TK.SET, [Set(), Get()])
-    2  :     Set(TK.SET, [Get(), Get()])
+    1  : Generate(TK.SET, len=2)
+    2  :     Generate(TK.SET, len=2)
     3  :         Get(TK.IDENT, 'a')
     4  :         Get(TK.IDENT, 'b')
     5  :     Get(TK.IDENT, 'c')

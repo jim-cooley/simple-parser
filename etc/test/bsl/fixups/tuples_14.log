@@ -4,12 +4,11 @@ test: 14:
 ((a, b))                     # grouping of tuple
 
 tree1:  ((a, b))                     # grouping of tuple
-    1  : List(TK.TUPLE, [Get(), Get()])
+    1  : Generate(TK.TUPLE, len=2)
     2  :     Get(TK.IDENT, 'a')
     3  :     Get(TK.IDENT, 'b')
 
 tree1:(post)  ((a, b))                     # grouping of tuple
-result: list([Get(), Get()])
-    1  : List(TK.TUPLE, [Get(), Get()])
+    1  : Generate(TK.TUPLE, len=2)
     2  :     Get(TK.IDENT, 'a')
     3  :     Get(TK.IDENT, 'b')

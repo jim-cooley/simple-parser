@@ -79,7 +79,8 @@ _KEYWORDS = [
     # unary
     (TK.NOT, TCL.UNARY, 'not'),
     (TK.DEFINE, TCL.UNARY, 'def'),
-    (TK.VAR, TCL.UNARY, 'var'),
+    (TK.VAL, TCL.UNARY, 'val'),         # immutable (default)
+    (TK.VAR, TCL.UNARY, 'var'),         # non-immutable
 
     # binops
     (TK.AND, TCL.BINOP, 'and'),

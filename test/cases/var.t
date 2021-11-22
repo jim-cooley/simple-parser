@@ -24,11 +24,11 @@ f(x) = { a(_):_*_ }
 var f = { a(x):x*x }
 f = { a(x):x*x }
 
-var f = { a:5 }      # should be block, not set
-f = { a:5 }      # should be block, not set
+var f = { a:5 }
+f = { a:5 }
 
-var f = { a=5 }      # should be block, not set
-f = { a=5 }      # should be block, not set
+var f = { a=5 }
+f = { a=5 }
 
 var f.a.b.c(x) = x*x # vars in parameter list need to be Ref, not Get's
 f.a.b.c(x) = x*x # vars in parameter list need to be Ref, not Get's

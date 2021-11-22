@@ -5,15 +5,15 @@ test: 16:
 
 tree1:  { b } >> buy
     1  : Flow{TK.APPLY, '>>' len=2}
-    2  :     Set(TK.SET, [Get()])
+    2  :     Generate(TK.SET, len=1)
     3  :         Get(TK.IDENT, 'b')
     4  :     ApplyChainProd(TK.APPLY: None >> Ref(TK.IDENT, 'buy'))
     5  :         Ref(TK.IDENT, 'buy')
 
 tree1:(post)  { b } >> buy
-result: list([Set(), ApplyChainProd()])
+result: list([Generate(), ApplyChainProd()])
     1  : Flow{TK.APPLY, '>>' len=2}
-    2  :     Set(TK.SET, [Get()])
+    2  :     Generate(TK.SET, len=1)
     3  :         Get(TK.IDENT, 'b')
     4  :     ApplyChainProd(TK.APPLY: None >> Ref(TK.IDENT, 'buy'))
     5  :         Ref(TK.IDENT, 'buy')

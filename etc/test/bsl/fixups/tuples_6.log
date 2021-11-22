@@ -4,12 +4,11 @@ test: 6:
 (a, b)                       # tuple
 
 tree1:  (a, b)                       # tuple
-    1  : List(TK.TUPLE, [Get(), Get()])
+    1  : Generate(TK.TUPLE, len=2)
     2  :     Get(TK.IDENT, 'a')
     3  :     Get(TK.IDENT, 'b')
 
 tree1:(post)  (a, b)                       # tuple
-result: list([Get(), Get()])
-    1  : List(TK.TUPLE, [Get(), Get()])
+    1  : Generate(TK.TUPLE, len=2)
     2  :     Get(TK.IDENT, 'a')
     3  :     Get(TK.IDENT, 'b')

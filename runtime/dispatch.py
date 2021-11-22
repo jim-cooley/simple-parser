@@ -1,6 +1,7 @@
 from enum import unique, IntEnum
 
-from runtime.generators import generate_dataframe, generate_list, generate_series, generate_range
+from runtime.generators import generate_dataframe, generate_list, generate_series, generate_range, generate_dict, \
+    generate_named_tuple, generate_tuple, generate_set
 from runtime.intrinsics import do_now, create_dataset, create_series
 from runtime.print import do_print, init_print
 from runtime.scope import IntrinsicFunction
@@ -80,9 +81,13 @@ _instrinsic_aliases = {
 
 _generator_funcdesc = {
     'generate_dataframe': (generate_dataframe, 1, None),
+    'generate_dict': (generate_dict, 1, None),
     'generate_list': (generate_list, 1, None),
+    'generate_named_tuple': (generate_named_tuple, 1, None),
     'generate_range': (generate_range, 1, None),
     'generate_series': (generate_series, 1, None),
+    'generate_set': (generate_set, 1, None),
+    'generate_tuple': (generate_tuple, 1, None),
 }
 
 

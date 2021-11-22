@@ -4,7 +4,7 @@ test: 2:
 (today-2y)..today
 
 tree1:  (today-2y)..today
-    1  : BinOp(TK.RANGE, '..')
+    1  : GenerateRange(TK.RANGE, len=3)
     2  :     BinOp(TK.SUB, '-')
     3  :         FnCall('today')
     4  :             Get(TK.IDENT, 'today')

@@ -4,9 +4,9 @@ test: 18:
 f():{a=5, b='c', d}
 
 tree1:  f():{a=5, b='c', d}
-    1  : DefineFn(TK.COMBINE: f : Set{count=-1})
+    1  : DefineFn(TK.COMBINE: f : Block(TK.BLOCK, ''))
     2  :     Ref(TK.IDENT, 'f')
-    3  :     Set(TK.SET, [Define(), Define(), Get()])
+    3  :     Block{TK.BLOCK, len=3}
     4  :         Define(TK.DEFINE: a = 5)
     5  :             Ref(TK.IDENT, 'a')
     6  :             Int(TK.INT, 5)
@@ -17,9 +17,9 @@ tree1:  f():{a=5, b='c', d}
    11  :     List(TK.LIST, [])
 
 tree1:(post)  f():{a=5, b='c', d}
-    1  : DefineFn(TK.COMBINE: f : Set{count=-1})
+    1  : DefineFn(TK.COMBINE: f : Block(TK.BLOCK, ''))
     2  :     Ref(TK.IDENT, 'f')
-    3  :     Set(TK.SET, [Define(), Define(), Get()])
+    3  :     Block{TK.BLOCK, len=3}
     4  :         Define(TK.DEFINE: a = 5)
     5  :             Ref(TK.IDENT, 'a')
     6  :             Int(TK.INT, 5)

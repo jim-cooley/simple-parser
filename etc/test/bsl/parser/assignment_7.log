@@ -4,7 +4,7 @@ test: 7:
 {a = 5}
 
 tree1:  {a = 5}
-    1  : Set(TK.SET, [Define()])
+    1  : Block{TK.BLOCK, len=1}
     2  :     Define(TK.DEFINE: a = 5)
     3  :         Ref(TK.IDENT, 'a')
     4  :         Int(TK.INT, 5)

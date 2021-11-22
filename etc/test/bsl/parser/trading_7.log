@@ -8,7 +8,7 @@ tree1:  trades | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_pr
     2  :     Get(TK.IDENT, 'trades')
     3  :     FnCall('select')
     4  :         Ref(TK.IDENT, 'select')
-    5  :         List(TK.TUPLE, [Str(), Str(), Str(), Str(), Str()])
+    5  :         List(TK.LIST, [Str(), Str(), Str(), Str(), Str()])
     6  :             Str(TK.STR, 'symbol')
     7  :             Str(TK.STR, 'buy_date')
     8  :             Str(TK.STR, 'buy_price')

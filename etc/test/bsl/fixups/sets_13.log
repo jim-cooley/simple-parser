@@ -4,7 +4,7 @@ test: 13:
 {a=5, b='c', d}
 
 tree1:  {a=5, b='c', d}
-    1  : Set(TK.SET, [Define(), Define(), Get()])
+    1  : Block{TK.BLOCK, len=3}
     2  :     Define(TK.DEFINE: a = 5)
     3  :         Ref(TK.IDENT, 'a')
     4  :         Int(TK.INT, 5)
@@ -15,7 +15,7 @@ tree1:  {a=5, b='c', d}
 
 tree1:(post)  {a=5, b='c', d}
 result: list([Define(), Define(), Get()])
-    1  : Set(TK.SET, [Define(), Define(), Get()])
+    1  : Block{TK.BLOCK, len=3}
     2  :     Define(TK.DEFINE: a = 5)
     3  :         Ref(TK.IDENT, 'a')
     4  :         Int(TK.INT, 5)

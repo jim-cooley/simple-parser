@@ -5,8 +5,10 @@ not {b}
 
 tree1:  not {b}
     1  : UnaryOp(TK.NOT, 'not')
-    2  :     Set(TK.SET, [Get()])
+    2  :     Generate(TK.SET, len=1)
     3  :         Get(TK.IDENT, 'b')
 
 tree1:(post)  not {b}
-    1  : Bool(TK.BOOL, False)
+    1  : UnaryOp(TK.NOT, 'not')
+    2  :     Generate(TK.SET, len=1)
+    3  :         Get(TK.IDENT, 'b')

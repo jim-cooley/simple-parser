@@ -1,20 +1,20 @@
 
 
 test: 27:
-var f = { a:5 }      # should be block, not set
+var f = { a:5 }
 
-tree1:  var f = { a:5 }      # should be block, not set
-    1  : DefineVar(TK.DEFINE: f = Set{count=-1})
+tree1:  var f = { a:5 }
+    1  : DefineVar(TK.DEFINE: f = Generate(TK.GEN, ''))
     2  :     Ref(TK.IDENT, 'f')
-    3  :     Set(TK.SET, [Combine()])
+    3  :     Generate(TK.SERIES, len=1)
     4  :         Combine(TK.COMBINE: a None 5)
     5  :             Ref(TK.IDENT, 'a')
     6  :             Int(TK.INT, 5)
 
-tree1:(post)  var f = { a:5 }      # should be block, not set
-    1  : DefineVar(TK.DEFINE: f = Set{count=-1})
+tree1:(post)  var f = { a:5 }
+    1  : DefineVar(TK.DEFINE: f = Generate(TK.GEN, ''))
     2  :     Ref(TK.IDENT, 'f')
-    3  :     Set(TK.SET, [Combine()])
+    3  :     Generate(TK.SERIES, len=1)
     4  :         Combine(TK.COMBINE: a None 5)
     5  :             Ref(TK.IDENT, 'a')
     6  :             Int(TK.INT, 5)

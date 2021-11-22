@@ -394,6 +394,26 @@ class DefineVar(Define):
         return f'DefineVar(TK.{self.op.name}: {lval}, {rval})'
 
 
+# value is immutable
+@dataclass
+class DefineVal(DefineVar):
+    def __init__(self, left=None, op=None, right=None, is_lvalue=None):
+        super().__init__(left=left, op=op, right=right, is_lvalue=False if is_lvalue is None else is_lvalue)
+
+    def format(self, brief=True):
+        left = self.left
+        right = self.right
+        lval = "None"
+        rval = "None"
+        if left is not None:
+            if hasattr(left, 'format'):
+                lval = left.format(brief=brief)
+        if right is not None:
+            if hasattr(right, 'format'):
+                rval = right.format(brief=brief)
+        return f'DefineVal(TK.{self.op.name}: {lval}, {rval})'
+
+
 # value takes on defined range during iteration, and is evaluated each time
 @dataclass
 class DefineVarFn(DefineVar):
@@ -475,16 +495,16 @@ class Generate(Expression):
     4) Series
     5) DataFrames
     """
-    def __init__(self, target=None, parameters=None, loc=None, is_lvalue=True):
+    def __init__(self, target=None, items=None, loc=None, is_lvalue=True):
         """
         :param name: Expression that evaluates to 'name'
         :param target: Target token-id
-        :param parameters: List of items for the generator to operate on
+        :param items: List of items for the generator to operate on
         :param loc: Token location
         :param is_lvalue: Whether or not this can appear on the Left-Hand-Side of an expression
         """
         super().__init__(token=Token.GEN(loc=loc), is_lvalue=is_lvalue)
-        self._items = parameters or []
+        self._items = items or []
         self.target = target    # target type (tid)
 
     def format(self, brief=True):
@@ -500,6 +520,11 @@ class Generate(Expression):
             else:
                 fstr = f'count={len(self._items) - 1}'
             return '[' + f'{fstr}' + f']:{_tk2glyph[self.target]}'
+
+
+class GenerateRange(Generate):
+    def __init__(self, start=None, end=None, step=None, loc=None, is_lvalue=True):
+        super().__init__(target=TK.RANGE, items=[start, end, step], loc=loc, is_lvalue=is_lvalue)
 
 
 @dataclass

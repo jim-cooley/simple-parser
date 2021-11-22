@@ -5,10 +5,14 @@ test: 3:
 
 tree1:  {a} and {b}
     1  : BinOp(TK.AND, 'and')
-    2  :     Set(TK.SET, [Get()])
+    2  :     Generate(TK.SET, len=1)
     3  :         Get(TK.IDENT, 'a')
-    4  :     Set(TK.SET, [Get()])
+    4  :     Generate(TK.SET, len=1)
     5  :         Get(TK.IDENT, 'b')
 
 tree1:(post)  {a} and {b}
-    1  : Literal(TK.NONE, None)
+    1  : BinOp(TK.AND, 'and')
+    2  :     Generate(TK.SET, len=1)
+    3  :         Get(TK.IDENT, 'a')
+    4  :     Generate(TK.SET, len=1)
+    5  :         Get(TK.IDENT, 'b')

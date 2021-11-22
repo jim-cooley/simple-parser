@@ -8,7 +8,7 @@ tree1:  [a..b, 1..2]
     2  :     BinOp(TK.RANGE, '..')
     3  :         Ref(TK.IDENT, 'a')
     4  :         Get(TK.IDENT, 'b')
-    5  :     BinOp(TK.RANGE, '..')
+    5  :     GenerateRange(TK.RANGE, len=3)
     6  :         Int(TK.INT, 1)
     7  :         Int(TK.INT, 2)
 
@@ -17,6 +17,6 @@ tree1:(post)  [a..b, 1..2]
     2  :     Generate(TK.RANGE, len=2)
     3  :         Ref(TK.IDENT, 'a')
     4  :         Get(TK.IDENT, 'b')
-    5  :     Generate(TK.RANGE, len=2)
+    5  :     GenerateRange(TK.RANGE, len=3)
     6  :         Int(TK.INT, 1)
     7  :         Int(TK.INT, 2)

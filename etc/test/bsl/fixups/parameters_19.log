@@ -4,14 +4,13 @@ test: 19:
 (a = 5,)
 
 tree1:  (a = 5,)
-    1  : List(TK.TUPLE, [Define()])
+    1  : Generate(TK.NAMEDTUPLE, len=1)
     2  :     Define(TK.DEFINE: a = 5)
     3  :         Ref(TK.IDENT, 'a')
     4  :         Int(TK.INT, 5)
 
 tree1:(post)  (a = 5,)
-result: list([Define()])
-    1  : List(TK.TUPLE, [Define()])
+    1  : Generate(TK.NAMEDTUPLE, len=1)
     2  :     Define(TK.DEFINE: a = 5)
     3  :         Ref(TK.IDENT, 'a')
     4  :         Int(TK.INT, 5)

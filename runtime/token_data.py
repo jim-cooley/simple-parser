@@ -83,6 +83,7 @@ _tk2type = {
     TK.TIME: TCL.LITERAL,
     TK.TODAY: TCL.FUNCTION,
     TK.TUPLE: TCL.TUPLE,
+    TK.VAL: TCL.UNARY,
     TK.VAR: TCL.UNARY,
     TK.WHT: TCL.NONE,
 }
@@ -158,6 +159,7 @@ _tk2glyph = {
     TK.TODAY: 'today',
     TK.TRUE: 'true',
     TK.TUPLE: 'tup',
+    TK.VAL: 'val',
     TK.VAR: 'var',
 }
 
@@ -214,6 +216,8 @@ _tk2unop = {
     TK.PLUS: TK.POS,  # unary +
     TK.PLU2: TK.INCREMENT,  # unary ++
     TK.RETURN: TK.RETURN,
+    TK.VAL: TK.VAL,
+    TK.VAR: TK.VAR,
 }
 # UNDONE: remove the need for this. by removing TK.FALSE, TK.TRUE, TK.TODAY, TK.NOW as unique tokens and just use
 # the type token with a constant value (see Token.FALSE, for instance)
@@ -235,6 +239,7 @@ type2tid = {
     'Block': TK.BLOCK,
     'Bool': TK.BOOL,
     'Category': TK.CATEGORY,
+    'Dataset': TK.DATAFRAME,
     'DataFrame': TK.DATAFRAME,
     'Dict': TK.DICT,
     'Enumeration': TK.ENUM,

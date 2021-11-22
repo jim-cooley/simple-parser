@@ -1,9 +1,13 @@
 from dataclasses import dataclass
-from enum import Enum
+from enum import Enum, unique, IntEnum, auto
 
+from runtime.exceptions import runtime_error
 from runtime.literals import Literal
+from runtime.scope import Block
+from runtime.series import Series
 from runtime.token import Token
 from runtime.token_ids import TK
+from runtime.tree import Generate
 
 
 class DUR(Enum):
@@ -245,16 +249,14 @@ class Dict(Set):
     def __init__(self, items=None, token=None, loc=None):
         token = Token.DICT(loc=loc)
         super().__init__(items=items, token=token, loc=loc)
-        self.tid = TK.DICT
 
 
 # Specialized derivative of List
 @dataclass
 class Tuple(List):
     def __init__(self, items=None, token=None, loc=None):
-        token = Token.DICT(loc=loc)
+        token = token or Token.TUPLE(loc=loc)
         super().__init__(items, token, loc)
-        self.tid = TK.TUPLE
 
 
 # Named Tuple when there are named items (k:v)
@@ -263,4 +265,38 @@ class NamedTuple(Tuple):
     def __init__(self, items=None, token=None, loc=None):
         token = Token.NAMEDTUPLE(loc=loc)
         super().__init__(items=items, token=token, loc=loc)
-        self.tid = TK.NAMEDTUPLE
+
+
+def build_collection(tid=None, items=None, loc=None):
+    is_literal = True
+    for item in items:
+        if not isinstance(item, Literal):
+            is_literal = False
+    if is_literal:
+        return lit_collection(tid=tid, items=items, loc=loc)
+    else:
+        if tid in [TK.DATAFRAME, TK.DICT, TK.LIST, TK.NAMEDTUPLE, TK.SERIES, TK.SET, TK.TUPLE]:
+            return Generate(tid, items=items, loc=loc)
+        else:
+            runtime_error("Unsupported target type for collection")
+
+
+def lit_collection(tid=None, items=None, loc=None):
+    if tid == TK.LIST:
+        return List(items=items, loc=loc)
+    elif tid == TK.TUPLE:
+        return Tuple(items=items, loc=loc)
+    elif tid == TK.NAMEDTUPLE:
+        return NamedTuple(items=items, loc=loc)
+    elif tid == TK.BLOCK:
+        return Block(items=items, loc=loc)
+    elif tid == TK.SET:
+        return Set(items=items, loc=loc)
+    elif tid == TK.DICT:
+        return Dict(items=items, loc=loc)
+    elif tid == TK.SERIES:
+        return Generate(TK.SERIES, items=items, loc=loc)
+    elif tid == TK.DATAFRAME:
+        return Generate(TK.DATAFRAME, items=items, loc=loc)
+    else:
+        runtime_error("Unsupported target type for collection")

@@ -68,7 +68,7 @@ tree2:  df = {
    37  :             Str(TK.STR, 'three')
    38  :             FnCall('Series')
    39  :                 Get(TK.IDENT, 'Series')
-   40  :                 List(TK.TUPLE, [FnCall(), Define()])
+   40  :                 Generate(TK.NAMEDTUPLE, len=2)
    41  :                     FnCall('rand')
    42  :                         Get(TK.IDENT, 'rand')
    43  :                         List(TK.LIST, [Int()])

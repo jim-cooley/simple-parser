@@ -21,7 +21,7 @@ a = {q, r, s}:(1, 2, 3)
 (x, y, z) = {q, r, s}:[1, 2, 3] #
 
 # tuple assignment with keyword parameterization
-(x, y, z) = {q, r, s}:{q=1, r=2, s=3}   # Define(TK.DEFINE: List(TK.TUPLE: Ref, Ref, Ref) '=' Combine( Set ':' List(TK.TUPLE: Define, Define, Define)  ) # NamedTuple() ?
+(x, y, z) = {q, r, s}:{q=1, s=3, r=2}   # Define(TK.DEFINE: List(TK.TUPLE: Ref, Ref, Ref) '=' Combine( Set ':' List(TK.TUPLE: Define, Define, Define)  ) # NamedTuple() ?
 
 {a}:(threshold=0.05, how='any')
 [1..10 => b: b * 2]

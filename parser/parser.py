@@ -1,7 +1,6 @@
 from copy import copy
 from dataclasses import dataclass
 
-from parser.lexer import Lexer
 from parser.tokenstream import TokenStream
 from runtime.environment import Environment
 from runtime.exceptions import FocalError, getLogFacility
@@ -9,16 +8,16 @@ from runtime.options import getOptions
 from runtime.token_data import ADDITION_TOKENS, COMPARISON_TOKENS, FLOW_TOKENS, \
     EQUALITY_TEST_TOKENS, LOGIC_TOKENS, MULTIPLICATION_TOKENS, UNARY_TOKENS, IDENTIFIER_TYPES, ASSIGNMENT_TOKENS, \
     SET_UNARY_TOKENS, IDENTIFIER_TOKENS, IDENTIFIER_TOKENS_EX, ASSIGNMENT_TOKENS_REF, \
-    VALUE_TOKENS, _tk2binop
+    VALUE_TOKENS
 from runtime.token_class import TCL
 from runtime.token import Token
 from runtime.token_ids import TK
-from runtime.tree import UnaryOp, BinOp, Command, Assign, Get, FnCall, Index, PropRef, Define, DefineFn, DefineVar, \
-    DefineVarFn, ApplyChainProd, Ref, FnRef, Return, IfThenElse, Generate, Combine
+from runtime.tree import UnaryOp, BinOp, Assign, Get, FnCall, Index, PropRef, Define, DefineFn, DefineVar, \
+    DefineVarFn, ApplyChainProd, Ref, FnRef, Return, IfThenElse, Generate, Combine, GenerateRange
 from runtime.scope import Block, Flow, Function
 from runtime.literals import Float, Int, Percent, Str, Bool, Literal
 from runtime.time import Time, Duration
-from runtime.collections import Set, List
+from runtime.collections import Set, List, Tuple, NamedTuple, build_collection, lit_collection
 
 from parser.rewrites import RewriteGets2Refs, RewriteFnCall2DefineFn, RewriteFnCall2FnDef
 
@@ -28,7 +27,6 @@ class ParseTree(object):
     def __init__(self, root, values=None, start=None, length=None):
         self.root = root
         self.values = values if values is not None else [root.value]
-        # UNODNE: place source, tokens, lines here?  Except original source is shared amongst trees in a forest
 
 
 class Parser(object):
@@ -54,6 +52,9 @@ class Parser(object):
         environment = self._init(environment, source)
         self.environment = environment
         while True:
+            tkid = self.peek().id
+            if tkid == TK.EOF:
+                break
             decl = self.declaration()
             tkid = self.peek().id
             if decl is not None:
@@ -270,7 +271,6 @@ class Parser(object):
                 if l_expr.is_lvalue:
                     r_expr = self.block_expr()
                     return self.process_assignment(op=op, l_expr=l_expr, r_expr=r_expr)
-
                 if isinstance(l_expr, BinOp):
                     self.logger.error(f'Invalid assignment target: {l_expr.left.token.lexeme}', op.location)
             self.logger.error(f'Invalid assignment target: {l_expr.token}', op.location)
@@ -383,7 +383,11 @@ class Parser(object):
                     return l_node
             if l_node is None:
                 self.logger.error("Invalid assignment target", op.location)
-            l_node = BinOp(left=l_node, op=op.remap2binop(), right=r_node)
+            op.remap2binop()
+            if op.id == TK.RANGE:
+                l_node = GenerateRange(start=l_node, end=r_node, loc=l_node.token.location)
+            else:
+                l_node = BinOp(left=l_node, op=op, right=r_node)
             op = self.peek()
         return l_node
 
@@ -425,7 +429,6 @@ class Parser(object):
         elif token.id == TK.LBRC:
             self.advance()
             node = self.block()
-#           node = Set(token, self.sequence())
             self.consume(TK.RBRC)
             return node
         elif token.id == TK.LPRN:
@@ -456,12 +459,16 @@ class Parser(object):
         tk = self.peek()
         loc = tk.location
         is_lvalue_strict = is_lvalue    # no assignment or operators on rhs of included exprs
-
+        cid = TK.SET
         while self.peek().id != TK.EOF and self.peek().id != TK.RBRC:
             decl = self.declaration()
             seq.append(decl)
-            #            if self.peek().id == TK.RBRC:   # must check closure before (empty set) and after as decl can finish parsing
-            #                break
+            if isinstance(decl, Combine):
+                cid = TK.SERIES
+            elif isinstance(decl, Assign):
+                if cid == TK.SET:
+                    cid = TK.BLOCK
+                    is_lvalue_strict = False
             if is_lvalue:
                 if hasattr(decl, 'is_lvalue'):
                     is_lvalue = decl.is_lvalue
@@ -470,7 +477,7 @@ class Parser(object):
                         is_lvalue_strict = is_lvalue = False
                 if is_lvalue_strict:
                     if decl.token.id not in VALUE_TOKENS:
-                        if decl.token.id not in [TK.COLN]:
+                        if decl.token.id not in [TK.COLN, TK.GEN]:
                             is_lvalue_strict = False
                             if hasattr(decl, 'right'):
                                 if decl.right is not None:
@@ -481,7 +488,7 @@ class Parser(object):
         if len(seq) == 0:
             return Set(seq, Token.EMPTY(loc=loc))
         elif is_lvalue and is_lvalue_strict:
-            return Set(seq, Token.SET(loc=loc))
+            return build_collection(cid, items=seq, loc=loc)
         else:
             return Block(items=seq, loc=loc)
 
@@ -500,7 +507,6 @@ class Parser(object):
             node = BinOp(left=Ref(tk), op=token.remap2binop(), right=self.expression())
         elif token.id == TK.LPRN:
             plist = self.plist()
-            plist.token.id = TK.TUPLE
             node = FnCall(ref=Get(tk), parameters=plist)
         elif token.id == TK.LBRK:
             node = Index(ref=Get(tk), parameters=self.idx_list())
@@ -524,21 +530,29 @@ class Parser(object):
 
     def plist(self, node=None):
         """( EXPR ',' ... )"""
+        cid = TK.LIST
+        is_literal = True
         seq = [] if node is None else [node]
         self.match1(TK.LPRN)
         token = copy(self.peek())
-        is_tuple = self.match1(TK.COMA)
+        if self.match1(TK.COMA):
+            cid = TK.TUPLE
         if token.id != TK.RPRN:
             seq = self.sequence(node)
+        for s in seq:
+            if isinstance(s, Assign):
+                cid = TK.NAMEDTUPLE
+            if not isinstance(s, Literal):
+                is_literal = False
         self.consume(TK.RPRN)
-        if is_tuple or len(seq) > 1:
-            token = Token.TUPLE(loc=token.location)
+        if len(seq) > 1:
             if seq[len(seq) - 1] is None:
                 seq.pop()
+            if is_literal:
+                return lit_collection(cid, items=seq, loc=token.location)
+            return Generate(cid, items=seq, loc=token.location)
         else:
-            token = Token.LIST(loc=token.location)
-        token.lexeme = '('  # fixup token.
-        return List(items=seq, token=token)
+            return List(items=seq, loc=token.location)
 
     def series(self):
         """
@@ -562,7 +576,7 @@ class Parser(object):
             seq.append(expr)
             if not self.match1(TK.COMA):
                 break
-        node = Generate(target=(TK.SERIES if is_series else TK.LIST), parameters=seq, loc=loc)
+        node = Generate(target=(TK.SERIES if is_series else TK.LIST), items=seq, loc=loc)
         return node
 
     def sequence(self, node=None):

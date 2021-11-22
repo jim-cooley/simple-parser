@@ -16,9 +16,8 @@ class Literal(Object):
             else:
                 token = Token(tid=TK.OBJECT, tcl=TCL.LITERAL, val=value, loc=loc)
         else:
-            tid = token.map2litval() if tid is None else tid
+            token.id = tid or token.map2litval()
             token.t_class = TCL.LITERAL
-            token.id = tid
         super().__init__(value=value, parent=parent, token=token)
 
     # special values

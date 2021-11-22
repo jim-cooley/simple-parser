@@ -4,12 +4,12 @@ test: 21:
 (a, b, c) = (a:5, b:3, c:4)  # tuple assignment k:v
 
 tree1:  (a, b, c) = (a:5, b:3, c:4)  # tuple assignment k:v
-    1  : Define(TK.DEFINE: ( = List[count=3])
-    2  :     List(TK.TUPLE, [Ref(), Ref(), Ref()])
-    3  :         Ref(TK.IDENT, 'a')
-    4  :         Ref(TK.IDENT, 'b')
-    5  :         Ref(TK.IDENT, 'c')
-    6  :     List(TK.TUPLE, [Combine(), Combine(), Combine()])
+    1  : Define(TK.DEFINE: [count=2]:tup = Generate(TK.GEN, ''))
+    2  :     Generate(TK.TUPLE, len=3)
+    3  :         Get(TK.IDENT, 'a')
+    4  :         Get(TK.IDENT, 'b')
+    5  :         Get(TK.IDENT, 'c')
+    6  :     Generate(TK.NAMEDTUPLE, len=3)
     7  :         Combine(TK.COMBINE: a None 5)
     8  :             Ref(TK.IDENT, 'a')
     9  :             Int(TK.INT, 5)
