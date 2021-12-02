@@ -570,20 +570,6 @@ class Return(UnaryOp):
         super().__init__(token, expr)
 
 
-# -----------------------------------
-# Statement Nodes
-# -----------------------------------
-@dataclass
-class Command(Statement):
-    def __init__(self, token, expr):
-        super().__init__(token=token)
-        token.t_class = TCL.UNARY
-        self.op = token.id
-        self.expr = expr
-        if expr is not None:
-            expr.parent = self
-
-
 def _tk_name(token):
     _tn = 'None'
     if token is not None:

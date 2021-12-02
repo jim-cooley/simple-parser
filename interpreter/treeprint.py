@@ -1,6 +1,6 @@
 from runtime.literals import Literal, Str
 from runtime.scope import Block, Flow
-from runtime.tree import Ref, UnaryOp, Command, PropRef, BinOp, FnCall, Generate, Assign, DefineFn, ApplyChainProd
+from runtime.tree import Ref, UnaryOp, PropRef, BinOp, FnCall, Generate, Assign, DefineFn, ApplyChainProd
 
 from interpreter.notation import FunctionalNotationPrinter
 from interpreter.visitor import NodeVisitor, BINARY_NODE, UNARY_NODE, SEQUENCE_NODE, DEFAULT_NODE, VALUE_NODE, NATIVE_VALUE, \

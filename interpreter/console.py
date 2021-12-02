@@ -54,7 +54,10 @@ class FocalConsole:
             self.do_command(lines)
         else:
             if verbose:
-                print(f'parsing')
+                if self.option.step_wise:
+                    print(f'parsing: {lines}')
+                else:
+                    print(f'parsing')
             target = self.focal.parse(lines)
             if verbose:
                 print_forest(target, self.logger, label=None, print_results=verbose, print_notation=False)

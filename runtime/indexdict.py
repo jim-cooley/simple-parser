@@ -53,7 +53,7 @@ class IndexedDict(object):
             return self._values[key]
         if key not in self._fields:
             raise KeyError(f'Key {key} not in dictionary')
-        key = self._fields.index[key]
+        key = self._fields.index(key)
         return self._values[key]
 
     def __setitem__(self, key, value):

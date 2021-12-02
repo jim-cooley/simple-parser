@@ -50,11 +50,9 @@ tree1:  periods = {
     5  :             Str(TK.STR, 'train')
     6  :             GenerateRange(TK.RANGE, len=3)
     7  :                 BinOp(TK.SUB, '-')
-    8  :                     FnCall('today')
-    9  :                         Get(TK.IDENT, 'today')
-   10  :                     Duration(TK.DUR, 730 days, 0:00:00)
-   11  :                 FnCall('today')
-   12  :                     Get(TK.IDENT, 'today')
+    8  :                     Get(TK.IDENT, 'today')
+    9  :                     Duration(TK.DUR, 730 days, 0:00:00)
+   10  :                 Get(TK.IDENT, 'today')
 
 tree2:  var sma_periods1 = [3,5,10..20,28]
     1  : DefineVar(TK.DEFINE: sma_periods1 = Generate(TK.GEN, ''))
@@ -395,7 +393,7 @@ tree12:  rules => report | print
     2  :     Ref(TK.IDENT, 'rules')
     3  :     Flow{TK.CHAIN, '|' len=2}
     4  :         Get(TK.IDENT, 'report')
-    5  :         FnCall('print')
+    5  :         ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'print'))
     6  :             Ref(TK.IDENT, 'print')
 
 tree1:(post)  periods = {
@@ -406,11 +404,9 @@ tree1:(post)  periods = {
     5  :             Str(TK.STR, 'train')
     6  :             GenerateRange(TK.RANGE, len=3)
     7  :                 BinOp(TK.SUB, '-')
-    8  :                     FnCall('today')
-    9  :                         Get(TK.IDENT, 'today')
-   10  :                     Duration(TK.DUR, 730 days, 0:00:00)
-   11  :                 FnCall('today')
-   12  :                     Get(TK.IDENT, 'today')
+    8  :                     Get(TK.IDENT, 'today')
+    9  :                     Duration(TK.DUR, 730 days, 0:00:00)
+   10  :                 Get(TK.IDENT, 'today')
 
 tree2:(post)  var sma_periods1 = [3,5,10..20,28]
     1  : DefineVar(TK.DEFINE: sma_periods1 = Generate(TK.GEN, ''))
@@ -751,5 +747,5 @@ tree12:(post)  rules => report | print
     2  :     Ref(TK.IDENT, 'rules')
     3  :     Flow{TK.CHAIN, '|' len=2}
     4  :         Get(TK.IDENT, 'report')
-    5  :         FnCall('print')
+    5  :         ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'print'))
     6  :             Ref(TK.IDENT, 'print')

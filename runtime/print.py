@@ -1,16 +1,12 @@
 from runtime.dataframe import Dataset
 from runtime.pandas import print_dataframe
 from runtime.exceptions import getLogFacility
-from runtime.scope import IntrinsicFunction
 
 
 # Print
 # -----------------------------------
 def init_print(name):
-    return IntrinsicFunction(name=name,
-                             defaults={
-                                 'message': '',
-                             })
+    return {'message': ''}
 
 
 def do_print(env, vargs):
@@ -31,7 +27,7 @@ def do_print(env, vargs):
                 line.append(text)
     text = ' '.join(line)
     _t_print(logger, text)
-    return vargs.message
+    return text
 
 
 def _t_print(logger, message, end='\n'):

@@ -5,7 +5,7 @@ from enum import IntEnum, unique, auto
 import numpy
 
 from runtime.conversion import c_unbox, c_sign, c_type
-from runtime.intrinsics import get_t_now, get_dt_now
+from runtime.time import get_dt_now
 from runtime.series import Series
 from runtime.token_ids import TK
 
@@ -132,6 +132,7 @@ def generate_named_tuple(env, args):
 # UNDONE: just need to make sure that works in all cases.
 def generate_range(env, args):
     start = end = _zero = 0
+    args = list(filter(None.__ne__, args))
     ty = c_type(args[0])
     if ty == TK.DUR:
         step = timedelta(days=1)
@@ -182,3 +183,5 @@ def generate_set(env, args):
 
 def generate_tuple(env, args):
     return None
+
+

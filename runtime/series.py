@@ -2,7 +2,6 @@ from copy import deepcopy
 
 import pandas as pd
 
-from runtime.pandas import print_series
 from runtime.scope import Object
 from runtime.token import Token
 
@@ -50,6 +49,3 @@ class Series(Object):
             else:
                 fstr = f'count={len(self._value)-1}'
             return '[' + f'{fstr}' + ']'
-
-    def print(self):
-        print_series(self._value)

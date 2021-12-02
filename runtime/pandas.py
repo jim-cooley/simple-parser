@@ -1,8 +1,10 @@
 import pandas as pd
 
+from runtime.dataframe import Dataset
+from runtime.series import Series
+
 
 def set_print_options():
-#   np.set_printoptions(threshold=sys.maxsize)
     return pd.option_context(
         'display.max_rows', None,
         'display.max_columns', None,
@@ -22,3 +24,13 @@ def print_series(_s, label=None):
         if label:
             print(label)
         print(_s)
+
+
+def create_dataset(env=None, args=None):
+    d = Dataset()
+    return d
+
+
+def create_series(env=None, args=None):
+    r = Series()
+    return r

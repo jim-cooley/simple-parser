@@ -65,24 +65,24 @@ class CodeWriter:
     def define_const(self, name, value):
         self.l_print(0, f'{name} = {value}')
 
-    def define_dict(self, name, ty, data=None, quote=True):
+    def define_dict(self, name, style, data=None, quote=True):
         q ='\'' if quote is True else ''
-        self.write_open(name, ty)
+        self.write_open(name, style)
         if data is not None:
             self.indent()
             idx = 0
             for item in data:
-                if ty == TY.ENUM:
+                if style == TY.ENUM:
                     self.print(f'{q}{item}{q}: {idx},')
-                elif ty == TY.LIST:
-                    self.print(f'{q}{item}{q}{_get_grouping(ty, GRP.SEP)}')
-                elif ty == TY.DICT:
+                elif style == TY.LIST:
+                    self.print(f'{q}{item}{q}{_get_grouping(style, GRP.SEP)}')
+                elif style == TY.DICT:
                     val = data[item]
                     v = f'{q}{data[item]}{q}' if isinstance(val, str) else f'{data[item]}'
                     self.print(f'{q}{item}{q}: {v},')
                 idx += 1
             self.dedent()
-        self.write_close(ty)
+        self.write_close(style)
 
     def imports(self, pairs):
         for f in pairs.keys():

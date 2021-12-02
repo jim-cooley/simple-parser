@@ -14,7 +14,8 @@ from runtime.token import Token
 from runtime.token_ids import TK
 from runtime.tree import UnaryOp, BinOp, Assign, Get, FnCall, Index, PropRef, Define, DefineFn, DefineVar, \
     DefineVarFn, ApplyChainProd, Ref, FnRef, Return, IfThenElse, Generate, Combine, GenerateRange
-from runtime.scope import Block, Flow, Function
+from runtime.scope import Block, Flow
+from runtime.function import Function
 from runtime.literals import Float, Int, Percent, Str, Bool, Literal
 from runtime.time import Time, Duration
 from runtime.collections import Set, List, Tuple, NamedTuple, build_collection, lit_collection

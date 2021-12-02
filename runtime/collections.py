@@ -166,6 +166,9 @@ class List(Literal):
         """
         return self._value
 
+    def set_values(self, values):
+        self._value = values
+
     def format(self, brief=True):
         if self._value is None:
             return '[]'

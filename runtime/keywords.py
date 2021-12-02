@@ -1,11 +1,10 @@
 from dataclasses import dataclass
 
-from runtime.scope import Scope, IntrinsicFunction
-from runtime.token import Token
+from runtime.scope import Scope
 from runtime.token_class import TCL
 from runtime.token_ids import TK
 
-from runtime.dispatch import init_intrinsic, _intrinsic_fundesc, _intrinsic_not_impl
+from runtime.intrinsics import load_intrinsics, load_intrinsics_not_impl
 
 
 @dataclass
@@ -29,16 +28,14 @@ class Keywords(Scope):
         for (tkid, typ, val) in keywords:
             self._add_symbol(tkid=tkid, tcl=typ, lex=val)
 
-    def load_intrinsics(self, intrinsics=None):
-        intrinsics = intrinsics or _intrinsic_fundesc
-        for fname, desc in intrinsics.items():
-            fn = init_intrinsic(fname)
+    def load_intrinsics(self):
+        intrinsics = load_intrinsics()
+        for fname, fn in intrinsics.items():
             self._add_name(fname, fn)
 
-    def load_intrinsics_not_impl(self, not_impl=None):
-        not_impl = not_impl or _intrinsic_not_impl
-        for fname in not_impl:
-            fn = IntrinsicFunction(name=fname, tid=TK.IDENT)
+    def load_intrinsics_not_impl(self):
+        not_impl = load_intrinsics_not_impl()
+        for fname, fn in not_impl.items():
             self._add_name(fname, fn)
 
     @staticmethod

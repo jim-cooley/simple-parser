@@ -29,16 +29,16 @@ def reduce_value(stack: RuntimeStack, node):
     stack.push(node.value)
 
 
-def reduce_ref(scope=None, ref=None, value=None):
+def reduce_ref(scope=None, ref=None, value=None, update=False):
     scope = Environment.current.scope if scope is None else scope
-    symbol = scope.define(token=ref.token, value=value)
+    symbol = scope.define(name=ref.name, value=value, update=update)
     # UNDONE: need to update definitions if symbol exists.  need to call assignment, not update_ref
     return symbol  # should be Object type
 
 
 def reduce_get(scope=None, get=None):
     scope = Environment.current.scope if scope is None else scope
-    symbol = scope.find(token=get.token)
+    symbol = scope.find(name=get.name)
     if symbol is None:
         runtime_strict_warning(f'Symbol `{get.token.lexeme}` referenced before initialized', loc=get.token.location)
     return symbol
@@ -64,9 +64,9 @@ def reduce_propget(left=None, right=None):
     return prop
 
 
-def update_ref(scope=None, sym=None, value=None):
+def update_ref(scope=None, name=None, value=None):
     scope = Environment.current.scope if scope is None else scope
-    symbol = scope.define(sym.name, value, local=True, update=True)
+    symbol = scope.redefine(name=name, value=value, local=True)
     return symbol  # should be Object type
 
 

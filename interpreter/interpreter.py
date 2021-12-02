@@ -3,18 +3,18 @@ from copy import deepcopy
 from interpreter.version import VERSION
 from runtime.conversion import c_unbox
 from runtime.environment import Environment
-from runtime.exceptions import runtime_error
 from runtime.indexdict import IndexedDict
 from runtime.literals import Literal
 from runtime.options import getOptions
 from runtime.scope import Block, Scope, Object
+from runtime.function import Function
 from runtime.token import Token
-from runtime.tree import FnCall, Define, Ref, Generate, Assign
+from runtime.tree import Ref, Assign
 
 from runtime.eval_unary import is_true
 from runtime.evaluate import reduce_value, evaluate_binary_operation, evaluate_unary_operation, evaluate_identifier, \
     evaluate_set, reduce_get, reduce_propref, reduce_ref, update_ref
-from runtime.dispatch import is_intrinsic, invoke_intrinsic, invoke_generator, tk2generator
+from runtime.intrinsics import invoke_generator, tk2generator
 
 from interpreter.visitor import TreeFilter
 
@@ -121,7 +121,7 @@ class Interpreter(TreeFilter):
         for t in environment.trees:
             v = self.visit(t.root)
             if v is None:
-                v = self.stack.pop()
+                v = self.stack.peek()
             t.values = v
         return environment
 
@@ -182,9 +182,12 @@ class Interpreter(TreeFilter):
         self._print_node(node)
         block = Block(loc=node.token.location)
         Environment.enter(block)
-        self._process_sequence(node)
+        value = self._process_sequence(node)    # UNDONE: likely don't want to evaluate the block, just push it.
         Environment.leave()
-        self.stack.push(block)
+        if value is not None:
+            self.stack.push(value[-1])
+        else:
+            self.stack.push(None)
 
     # DefineChainProd.  ApplyChainProd is handled via 'Apply'
     def process_chain_prod(self, node, label=None):
@@ -205,7 +208,19 @@ class Interpreter(TreeFilter):
 
     # Combine
     def process_combine(self, node, label=None):
-        self.process_define(node, label)
+        self._print_node(node)
+        left = node.left
+        right = node.right
+        self.indent()
+        self.visit(left)
+        l_val = self.stack.pop()
+        self.visit(right)
+        r_val = self.stack.pop()
+        if isinstance(left, Ref):
+            var = reduce_ref(ref=left, value=r_val)
+            self.stack.push(var)
+        else:
+            self.stack.push((l_val, r_val))
 
     # Define, DefineVar
     def process_define(self, node, label=None):
@@ -214,17 +229,14 @@ class Interpreter(TreeFilter):
         right = node.right
         self.indent()
         self.visit(left)
-        # UNDONE: need to handle all cases of ':' operator here as well - or split out
-        if isinstance(right, FnCall) or isinstance(right, Generate):
+        if not isinstance(right, Block):
             self.visit(right)
             result = self.stack.pop()
-            var = reduce_ref(ref=left, value=result)
         else:
             self._print_node(right)
             result = right
-            var = reduce_ref(ref=left, value=right)
         self.dedent()
-        var = update_ref(sym=var, value=result)
+        var = reduce_ref(ref=left, value=result, update=True)
         self.stack.push(var)
 
     # DefineFn, DefineVarFn
@@ -239,11 +251,14 @@ class Interpreter(TreeFilter):
         self._print_node(right)     # can't visit right w/o executing it
         self.dedent()
         fn = self.stack.pop()
-        if isinstance(right, Scope):
-            fn.from_block(right)
-        else:
-            fn.code = right
-        fn.defaults = fn.parameters = self.reduce_parameters(scope=fn, args=args)
+        if not isinstance(fn, Function):
+            fn = Function(other=fn)
+            if isinstance(right, Scope):
+                fn.from_block(right, copy=False)
+            else:
+                fn.code = right
+            fn.defaults = fn.parameters = self.reduce_parameters(scope=fn, args=args)
+            update_ref(name=fn.name, value=fn)
         self.stack.push(fn)
 
     # Flow
@@ -331,7 +346,8 @@ class Interpreter(TreeFilter):
     # List
     def process_list_object(self, node, label=None):
         self._print_node(node)
-        self._process_sequence(node)
+        node.set_values(self._process_sequence(node))
+        self.stack.push(node)
 
     # Set
     def process_set_object(self, node, label=None):
@@ -351,36 +367,23 @@ class Interpreter(TreeFilter):
         self.stack.push(evaluate_unary_operation(node, left))
 
     # these need access to stack:
-    def evaluate_invoke(self, name, fn, args):
-        if fn is None:
-            runtime_error(f'Function {name} is undefined')
-        args = self.reduce_parameters(scope=fn, args=args)  # need to have scope be a new parameters object (block?)
-        if is_intrinsic(name):
-            result = invoke_intrinsic(env=self.environment, name=name, args=args)
-            self.stack.push(result)
-        else:
-            self.invoke_fn(fn, args)
+    def evaluate_invoke(self, name, fnode, args):
+        assert fnode is not None, f'Function {name} is undefined'
+        args = self.reduce_parameters(fn=fnode, args=args)
+        fnode.invoke(self, args)
 
-    def invoke_fn(self, fnode, args):
-        fnode.update_members(args)
-        Environment.enter(fnode)
-        self.visit(fnode.code)
-        Environment.leave()
-
-    # UNDONE: may want to make a list of tuples and then process it into a dict / list combination (ie. put a list in IndexedDict for un-named parameters)
-    # VERIFY: this may not handle embedded expressions correctly
-    # the reason that this is not simply _process_sequence is that it must handle k:v pairs without evaluating them
-    def reduce_parameters(self, scope=None, args=None):
+    def reduce_parameters(self, scope=None, fn=None, args=None):
         _values = []
         _fields = []
         _defaults = {}
         if scope is not None:
             Environment.enter(scope)
-            if hasattr(scope, 'defaults'):
-                if scope.defaults is not None:
-                    _defaults = deepcopy(scope.defaults)
-                    _fields = list(_defaults.keys())
-                    _values = list(_defaults.values())
+        fn = fn or scope
+        if hasattr(fn, 'defaults'):
+            if fn.defaults is not None:
+                _defaults = deepcopy(fn.defaults)
+                _fields = list(_defaults.keys())
+                _values = list(_defaults.values())
         if args is not None:
             for idx in range(0, len(args)):
                 ref = args[idx]
@@ -389,28 +392,23 @@ class Interpreter(TreeFilter):
                     value = self.stack.pop()
                     sym = reduce_ref(scope=scope, ref=ref.left)
                     if isinstance(sym, Object):
-                        self._resolve(idx, sym.name, c_unbox(value), _fields, _values)
-                        # _fields.append(sym.name)
-                        # _values.append(c_unbox(value))
-                    elif isinstance(sym, Token):    # tokens are keywords / reserved words
-                        self._resolve(idx, sym.lexeme, c_unbox(value), _fields, _values)
-                        #_fields.append(sym.lexeme)
-                        # self.visit(value)
-                        # val = self.stack.pop()
-                        #_values.append(c_unbox(value))
+                        name = sym.name
+                    elif isinstance(sym, Token):    # tokens are keywords / intrinsics
+                        name = sym.lexeme
                     else:
                         assert False, "Unexpected argument type in Define"
+                    self._resolve(idx, name, c_unbox(value), _fields, _values)
                 else:
-                    # if _fields:
-                    #     runtime_error("Cannot have un-named items following named items.", loc=ref.token.location)
-                    if isinstance(ref, Literal):
+                    if isinstance(ref, Literal) or ref is None:
                         self._resolve(idx, None, c_unbox(ref), _fields, _values)
-                        #_values.append(c_unbox(ref))
                     else:
                         self.visit(ref)
                         val = self.stack.pop()
-                        self._resolve(idx, None, c_unbox(val), _fields, _values)
-                        #_values.append(c_unbox(val))
+                        if hasattr(val, 'name'):
+                            name = val.name
+                        else:
+                            name = None
+                        self._resolve(idx, name, c_unbox(val), _fields, _values)
         if scope is not None:
             Environment.leave()
         return IndexedDict(fields=_fields, values=_values)
@@ -431,15 +429,18 @@ class Interpreter(TreeFilter):
 
     def _process_sequence(self, seq):
         self.indent()
-        values = seq.values()
-        if values is None:
+        items = seq.items()  # was values()
+        values = []
+        if items is None:
             return seq
-        for idx in range(0, len(values)):
-            n = values[idx]
+        for idx in range(0, len(items)):
+            n = items[idx]
             if n is None:
                 continue
             self.visit(n)
+            values.append(self.stack.pop())
         self.dedent()
+        return values
 
     def _init(self, environment):
         Environment.current = environment

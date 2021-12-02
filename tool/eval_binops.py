@@ -1,5 +1,3 @@
-import numpy as np
-
 from runtime.conversion import c_box, c_to_bool, c_to_float, c_to_int, c_unbox
 from runtime.environment import Environment
 from runtime.exceptions import runtime_error
@@ -106,6 +104,8 @@ def eval_binops_dispatch_fixup(node):
 # --------------------------------------------------
 #             D I S P A T C H   C O R E 
 # --------------------------------------------------
+
+
 def eval_binops_dispatch(node, left, right):
     l_value = left
     if hasattr(left, 'value'):
@@ -143,10 +143,6 @@ def _add__object_int(l_value, r_value):
     return c_unbox(l_value) + r_value
 
 
-def _add__any_str(l_value, r_value):
-    return f'{l_value}' + r_value
-
-
 def _add__dataframe_int(l_value, r_value):
     return add_dfi
 
@@ -156,10 +152,11 @@ def _add__series_int(l_value, r_value):
 
 
 def _add__list_int(l_value, r_value):
-    if not isinstance(l_value[0], list):
-        return [l_value[x] + r_value for x in range(0, len(l_value))]
-    else:
-        return [_add__list_int(l_value[x], r_value) for x in range(0, len(l_value))]
+    return add_li
+
+
+def _add__any_str(l_value, r_value):
+    return f'{l_value}' + r_value
 
 
 def _add__dataframe_timedelta(l_value, r_value):
@@ -219,7 +216,11 @@ def _add__series_list(l_value, r_value):
 
 
 def _add__list_list(l_value, r_value):
-    return [l_value[x] + r_value[x] for x in range(0, len(l_value))]
+    return add_ll
+
+
+def _add__dataframe_ndarray(l_value, r_value):
+    return add_dfl
 
 
 def _sub__any_any(l_value, r_value):
@@ -239,10 +240,7 @@ def _sub__series_int(l_value, r_value):
 
 
 def _sub__list_int(l_value, r_value):
-    if not isinstance(l_value[0], list):
-        return [l_value[x] - r_value for x in range(0, len(l_value))]
-    else:
-        return [_sub__list_int(l_value[x], r_value) for x in range(0, len(l_value))]
+    return sub_li
 
 
 def _sub__dataframe_timedelta(l_value, r_value):
@@ -278,7 +276,7 @@ def _sub__set_set(l_value, r_value):
 
 
 def _sub__list_list(l_value, r_value):
-    return [l_value[x] - r_value[x] for x in range(0, len(l_value))]
+    return sub_ll
 
 
 def _div__any_any(l_value, r_value):
@@ -298,10 +296,7 @@ def _div__series_int(l_value, r_value):
 
 
 def _div__list_int(l_value, r_value):
-    if not isinstance(l_value[0], list):
-        return [l_value[x] / r_value for x in range(0, len(l_value))]
-    else:
-        return [_div__list_int(l_value[x], r_value) for x in range(0, len(l_value))]
+    return div_li
 
 
 def _div__int_object(l_value, r_value):
@@ -329,7 +324,7 @@ def _div__set_set(l_value, r_value):
 
 
 def _div__list_list(l_value, r_value):
-    return [l_value[x] / r_value[x] for x in range(0, len(l_value))]
+    return div_ll
 
 
 def _idiv__any_any(l_value, r_value):
@@ -349,10 +344,7 @@ def _idiv__series_int(l_value, r_value):
 
 
 def _idiv__list_int(l_value, r_value):
-    if not isinstance(l_value[0], list):
-        return [l_value[x] // r_value for x in range(0, len(l_value))]
-    else:
-        return [_idiv__list_int(l_value[x], r_value) for x in range(0, len(l_value))]
+    return idiv_li
 
 
 def _idiv__int_object(l_value, r_value):
@@ -376,7 +368,7 @@ def _idiv__series_series(l_value, r_value):
 
 
 def _idiv__list_list(l_value, r_value):
-    return [l_value[x] // r_value[x] for x in range(0, len(l_value))]
+    return idiv_ll
 
 
 def _pow__any_any(l_value, r_value):
@@ -396,10 +388,7 @@ def _pow__series_int(l_value, r_value):
 
 
 def _pow__list_int(l_value, r_value):
-    if not isinstance(l_value[0], list):
-        return [l_value[x] ** r_value for x in range(0, len(l_value))]
-    else:
-        return np.array(l_value) ** r_value
+    return pow_li
 
 
 def _pow__series_float(l_value, r_value):
@@ -427,7 +416,7 @@ def _pow__set_set(l_value, r_value):
 
 
 def _pow__list_list(l_value, r_value):
-    return [l_value[x] ** r_value[x] for x in range(0, len(l_value))]
+    return pow_ll
 
 
 def _mul__any_any(l_value, r_value):
@@ -447,10 +436,7 @@ def _mul__series_int(l_value, r_value):
 
 
 def _mul__list_int(l_value, r_value):
-    if not isinstance(l_value[0], list):
-        return [l_value[x] * r_value for x in range(0, len(l_value))]
-    else:
-        return np.array(l_value) * r_value
+    return mul_li
 
 
 def _mul__int_object(l_value, r_value):
@@ -474,7 +460,7 @@ def _mul__range_range(l_value, r_value):
 
 
 def _mul__int_series(l_value, r_value):
-    return None  # i:*l
+    return i:*l
 
 
 def _mul__series_series(l_value, r_value):
@@ -486,7 +472,7 @@ def _mul__set_set(l_value, r_value):
 
 
 def _mul__list_list(l_value, r_value):
-    return np.multiply(l_value, r_value)
+    return mul_ll
 
 
 def _mod__any_any(l_value, r_value):
@@ -502,7 +488,7 @@ def _mod__dataframe_int(l_value, r_value):
 
 
 def _mod__list_int(l_value, r_value):
-    return [l_value[x] % r_value for x in range(0, len(l_value))]
+    return mod_li
 
 
 def _mod__int_object(l_value, r_value):
@@ -534,7 +520,7 @@ def _mod__set_set(l_value, r_value):
 
 
 def _mod__list_list(l_value, r_value):
-    return [l_value[x] % r_value[x] for x in range(0, len(l_value))]
+    return mod_ll
 
 
 # --------------------------------------------------
@@ -543,31 +529,31 @@ def _mod__list_list(l_value, r_value):
 
 
 def _invalid_add(left, right):
-    runtime_error(f'Type mismatch for operator add({type(left).__name__}, {type(right).__name__})', loc=None)
+    runtime_error(f'Type mismatch for operator add({type(left)}, {type(right)})', loc=None)
 
 
 def _invalid_sub(left, right):
-    runtime_error(f'Type mismatch for operator sub({type(left).__name__}, {type(right).__name__})', loc=None)
+    runtime_error(f'Type mismatch for operator sub({type(left)}, {type(right)})', loc=None)
 
 
 def _invalid_div(left, right):
-    runtime_error(f'Type mismatch for operator div({type(left).__name__}, {type(right).__name__})', loc=None)
+    runtime_error(f'Type mismatch for operator div({type(left)}, {type(right)})', loc=None)
 
 
 def _invalid_idiv(left, right):
-    runtime_error(f'Type mismatch for operator idiv({type(left).__name__}, {type(right).__name__})', loc=None)
+    runtime_error(f'Type mismatch for operator idiv({type(left)}, {type(right)})', loc=None)
 
 
 def _invalid_pow(left, right):
-    runtime_error(f'Type mismatch for operator pow({type(left).__name__}, {type(right).__name__})', loc=None)
+    runtime_error(f'Type mismatch for operator pow({type(left)}, {type(right)})', loc=None)
 
 
 def _invalid_mul(left, right):
-    runtime_error(f'Type mismatch for operator mul({type(left).__name__}, {type(right).__name__})', loc=None)
+    runtime_error(f'Type mismatch for operator mul({type(left)}, {type(right)})', loc=None)
 
 
 def _invalid_mod(left, right):
-    runtime_error(f'Type mismatch for operator mod({type(left).__name__}, {type(right).__name__})', loc=None)
+    runtime_error(f'Type mismatch for operator mod({type(left)}, {type(right)})', loc=None)
 
 
 # --------------------------------------------------
@@ -591,7 +577,7 @@ _binops_dispatch_table = {
         [_invalid_add,     _invalid_add,     _invalid_add,     _invalid_add,     _invalid_add,     _invalid_add,     _invalid_add,     _invalid_add,     _invalid_add,     _invalid_add,     _add__dataframe_series, _invalid_add,     _add__series_series, _invalid_add,     _add__list_series, _add__list_series],   # Series  
         [_invalid_add,     _invalid_add,     _invalid_add,     _invalid_add,     _invalid_add,     _invalid_add,     _invalid_add,     _invalid_add,     _invalid_add,     _invalid_add,     _invalid_add,     _invalid_add,     _invalid_add,     _add__set_set,    _invalid_add,     _invalid_add],   # Set  
         [_invalid_add,     _invalid_add,     _invalid_add,     _invalid_add,     _invalid_add,     _invalid_add,     _invalid_add,     _invalid_add,     _invalid_add,     _invalid_add,     _add__dataframe_list, _invalid_add,     _add__series_list, _invalid_add,     _add__list_list,  _add__list_list],   # list  
-        [_invalid_add,     _invalid_add,     _invalid_add,     _invalid_add,     _invalid_add,     _invalid_add,     _invalid_add,     _invalid_add,     _invalid_add,     _invalid_add,     _add__dataframe_list, _invalid_add,     _add__series_list, _invalid_add,     _add__list_list,  _add__list_list],   # ndarray
+        [_invalid_add,     _invalid_add,     _invalid_add,     _invalid_add,     _invalid_add,     _invalid_add,     _invalid_add,     _invalid_add,     _invalid_add,     _invalid_add,     _add__dataframe_ndarray, _invalid_add,     _add__series_list, _invalid_add,     _add__list_list,  _add__list_list],   # ndarray  
     
         ],
     TK.SUB: [

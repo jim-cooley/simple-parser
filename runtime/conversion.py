@@ -2,13 +2,9 @@
 #
 # conversion helpers
 #
-from copy import copy
 from datetime import timedelta
 
-from numpy import floor
-
-from runtime.exceptions import runtime_error
-from runtime.literals import Bool, Int, Float
+from runtime.collections import List
 from runtime.time import _parse_duration
 from runtime.token_data import type2tid
 from runtime.token_ids import TK
@@ -29,6 +25,15 @@ def c_unbox(u):
     if hasattr(u, 'value'):
         u = u.value
     return u
+
+
+def c_array_unbox(a):
+    if not isinstance(a[0], list) and not isinstance(a[0], List):
+        return [c_unbox(x) for x in a]
+    else:
+        for x in a:
+            a[x] = c_array_unbox(x)
+            return a
 
 
 def c_type(u):

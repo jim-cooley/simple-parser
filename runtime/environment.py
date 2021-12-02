@@ -2,9 +2,7 @@ from dataclasses import dataclass
 
 from runtime import exceptions
 from runtime.exceptions import getLogFacility
-from runtime.indexdict import IndexedDict
 from runtime.keywords import Keywords
-from runtime.options import getOptions
 from runtime.scope import Scope
 
 from runtime.stack import RuntimeStack
@@ -23,7 +21,7 @@ class Environment:
 
     def __init__(self, keywords=None, source=None):
         self.keywords = keywords if keywords is not None else Keywords()
-        self.globals = Scope(parent_scope=self.keywords)
+        self.globals = Scope(name='global', parent_scope=self.keywords, hidden=True)
         self.scope = self.globals
         self.trees = []
         self.source = source

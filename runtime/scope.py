@@ -1,26 +1,33 @@
 # one of javascript's interesting things is that a Scope object is an Object.
 # in our case 'Set' represents that basic Object, but we make this
 # inherit from AST so that we can see where this goes.
-from copy import deepcopy
+from copy import deepcopy, copy
 from dataclasses import dataclass
 from queue import SimpleQueue
 
 from runtime.indexdict import IndexedDict
-from runtime.token_class import TCL
 from runtime.token import Token
+from runtime.token_class import TCL
 from runtime.token_ids import TK
 from runtime.tree import AST, Expression
 
 
 @dataclass
 class Scope:
-    def __init__(self, name=None, parent_scope=None, **kwargs):
+    def __init__(self, name=None, parent_scope=None, members=None, other=None, hidden=False, **kwargs):
         super().__init__(**kwargs)
+        self._hidden = hidden
         self.parent_scope = parent_scope
-        self.code = None
-        self._name = name
-        self._fqname = None
-        self._members = {}
+        if other is not None:
+            self.code = copy(other.code)
+            self._name = copy(other.name)
+            self._fqname = other._fqname
+            self._members = copy(other._members)
+        else:
+            self.code = None
+            self._name = name
+            self._fqname = None
+            self._members = members or {}
 
     def __len__(self):
         return len(self._members.keys())
@@ -44,13 +51,22 @@ class Scope:
         return self
 
     def update_members(self, other):
-        self._members.update(other)
+        if isinstance(other, Scope):
+            self._members.update(other._members)
+        else:
+            self._members.update(other)
 
-    def from_block(self, block):
-        self._members = deepcopy(block._members)
-        for s in self._members.values():
-            s.parent_scope = self
-        self.code = block.code
+    def from_block(self, block, copy=True):
+        if block._members is not None:
+            self._members = block._members
+            if copy:
+                self._members = deepcopy(block._members)
+            for s in self._members:
+                s.parent_scope = self
+        if copy:
+            self.code = deepcopy(block.code)
+        else:
+            self.code = block
         return self
 
     def assign(self, name, expr):
@@ -88,24 +104,30 @@ class Scope:
                         symbol.token.location = value.token.location
                 if hasattr(value, '_members'):
                     symbol._members = deepcopy(value._members)
+                if hasattr(value, 'value'):
                     symbol._value = deepcopy(value.value)
                 else:
-                    if hasattr(value, 'value'):
-                        symbol._value = deepcopy(value.value)
-                    else:
-                        symbol._value = deepcopy(value)
+                    symbol._value = deepcopy(value)
             symbol.parent_scope = self
-            symbol._calc_fqname()
+#           symbol._calc_fqname()
             self._members[name] = symbol
         return symbol
+
+    def redefine(self, name=None, value=None, local=False):
+        symbol = self.find(name, local=local)
+        if symbol is None:
+            return self.define(name=name, value=value, local=local)
+        self._members[name] = value
+        return value
 
     def find(self, name=None, token=None, default=None, local=False):
         scope = self
         if token is not None:
             name = token.lexeme
         while scope is not None:
-            if name in scope._members:
-                return scope._members[name]
+            if scope._members is not None:
+                if name in scope._members:
+                    return scope._members[name]
             if local:
                 break
             scope = scope.parent_scope
@@ -119,14 +141,15 @@ class Scope:
         self._members[name] = symbol
 
     def _calc_fqname(self):
-        if self._name is None:
-            self._fqname = self._name = ''
-        elif self.parent_scope is None:
-            self._fqname = self._name
-        else:
-            pname = self.parent_scope._calc_fqname()
-            pname = '' if pname is None or pname == '.' else f'{pname}.'
-            self._fqname = f'{pname}{self._name}'
+        if not self._hidden:
+            if self._name is None:
+                self._fqname = self._name = ''
+            elif self.parent_scope is None:
+                self._fqname = self._name
+            else:
+                pname = self.parent_scope._calc_fqname()
+                pname = '' if pname is None or pname == '.' else f'{pname}.'
+                self._fqname = f'{pname}{self._name}'
         return self._fqname
 
     def print(self, indent=0):
@@ -137,15 +160,15 @@ class Scope:
 
 @dataclass
 class Object(AST, Scope):
-    def __init__(self, name=None, value=None, parent=None, token=None, **kwargs):
+    def __init__(self, name=None, value=None, members=None, parent=None, token=None, **kwargs):
         if name is None:
             if token is not None and token.lexeme is not None:
                 name = token.lexeme  # UNDONE: this is very silly on Literal subclasses (name = 'true')
-        super().__init__(name=name, parent_scope=None, value=value, parent=parent, token=token, **kwargs)
+        super().__init__(name=name, parent_scope=None, value=value, members=members, parent=parent, token=token, **kwargs)
         self.code = None
         self.parameters = None
         self.is_lvalue = True
-        self._calc_fqname()
+#       self._calc_fqname()
 
     def __str__(self):
         if hasattr(self, 'format') is not None:
@@ -196,10 +219,12 @@ class Object(AST, Scope):
 # -----------------------------------
 @dataclass
 class Block(Expression, Object):
-    def __init__(self, name=None, items=None, loc=None, **kwargs):
-        super().__init__(name=name, token=Token.BLOCK(loc), **kwargs)
+    def __init__(self, name=None, items=None, members=None, loc=None, **kwargs):
+        super().__init__(name=name, token=Token.BLOCK(loc), members=members, **kwargs)
         self._items = items if items is not None else []
-        self._value = self._items
+        self._members = members
+        self.code = self._items
+        self._value = self._items   # UNDONE: ??
         self.is_lvalue = False
 
     def __len__(self):
@@ -211,6 +236,9 @@ class Block(Expression, Object):
         """
         return self._items
 
+    def invoke(self, interpreter, args=None):
+        pass
+
 
 @dataclass
 class Flow(Block):
@@ -219,34 +247,31 @@ class Flow(Block):
         token.value = items
         self.from_token(token)
 
+    def invoke(self, interpreter, args=None):
+        pass
+
 
 @dataclass
-class Function(Block):
-    def __init__(self, name=None, members=None, defaults=None, tid=None, loc=None, is_lvalue=True):
-        super().__init__(name=name, items=members, loc=loc)
+class FunctionBase(Block):
+    def __init__(self, name=None, members=None, arity=None, defaults=None, parameters=None, other=None, tid=None, loc=None, is_lvalue=True):
+        if other is not None:
+            name = other.name
+            members = other._members
+            parameters = other.parameters
+            if isinstance(other, FunctionBase):
+                defaults = other.defaults
+        super().__init__(name=name, members=members, loc=loc)
+        self.arity = arity or 0
         self.set_token(tid=tid or TK.IDENT, tcl=TCL.FUNCTION, loc=loc, lex=name)
         self._value = self._items
         self.is_lvalue = is_lvalue
         self.code = None
-        self.parameters = None
-        self.defaults = None
+        self.parameters = parameters
+        self.defaults = defaults
         if defaults is not None:
             if not isinstance(defaults, IndexedDict):
                 defaults = IndexedDict(items=defaults)
             self.defaults = defaults
-
-    def count(self):
-        """
-        Parameter count.  Defines the Function's signature
-        """
-        return len(self.defaults)
-
-
-@dataclass
-class IntrinsicFunction(Function):
-    def __init__(self, name=None, members=None, defaults=None, tid=None, loc=None, is_lvalue=False):
-        super().__init__(name=name, members=members, defaults=defaults, tid=tid, loc=loc, is_lvalue=is_lvalue)
-        self.token.is_reserved = True
 
 
 def _dump_symbols(scope):
@@ -268,3 +293,5 @@ def _dump_symbols(scope):
                 q.put(v)
                 print(f'{idx:5d}:  `{k}`: {v.qualname} : Object({v.token})')
                 idx += 1
+
+

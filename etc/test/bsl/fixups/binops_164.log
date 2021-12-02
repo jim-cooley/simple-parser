@@ -1,12 +1,4 @@
 
 
 test: 164:
-false ^ true
-
-tree1:  false ^ true
-    1  : BinOp(TK.POW, '^')
-    2  :     Bool(TK.BOOL, False)
-    3  :     Bool(TK.BOOL, True)
-
-tree1:(post)  false ^ true
-    1  : Int(TK.INT, 0)
+#false ^ true

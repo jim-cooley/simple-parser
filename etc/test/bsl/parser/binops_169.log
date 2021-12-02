@@ -1,9 +1,4 @@
 
 
 test: 169:
-true ^ true
-
-tree1:  true ^ true
-    1  : BinOp(TK.POW, '^')
-    2  :     Bool(TK.BOOL, True)
-    3  :     Bool(TK.BOOL, True)
+#true ^ true

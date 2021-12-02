@@ -8,14 +8,12 @@ import requests as requests
 from runtime.conversion import c_unbox
 from runtime.factory import to_lit
 from runtime.indexdict import IndexedDict
-from runtime.literals import Literal
-from runtime.time import Duration
-from runtime.scope import IntrinsicFunction, Object
+from runtime.scope import Object
 
 from runtime.dataframe import Dataset
 from runtime.pandas import print_dataframe
-from runtime.intrinsics import get_t_now
 from runtime.runtime import find_file
+from runtime.time import Duration, get_t_now
 
 file_suffix = {'1d': 'daily', '1wk': 'weekly'}
 config_root = './config/'
@@ -49,15 +47,14 @@ _map2freq = {
 
 
 def init_yahoo(name):
-    return IntrinsicFunction(name=name,
-                             defaults=IndexedDict({'symbols': None,
-                                                   'first': None,
-                                                   'last': get_t_now(),
-                                                   'span': Duration(DEFAULT_SPAN_YRS),
-                                                   'frequency': DAILY,
-                                                   'dropna': True,
-                                                   'offline': False
-                                                   }))
+    return IndexedDict({'symbols': None,
+                        'first': None,
+                        'last': get_t_now(),
+                        'span': Duration(DEFAULT_SPAN_YRS),
+                        'frequency': DAILY,
+                        'dropna': True,
+                        'offline': False
+                        })
 
 
 def do_yahoo(env, args):

@@ -137,3 +137,15 @@ def _parse_duration_units(units):
     elif units in ("s", "sec", "seconds"):
         dur = DUR.SECOND
     return dur
+
+
+def get_t_now():
+    return Time(datetime.now())
+
+
+def get_dt_now():
+    return datetime.now()
+
+
+def do_now(env=None):
+    return get_t_now()

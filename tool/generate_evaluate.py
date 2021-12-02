@@ -1,31 +1,44 @@
 #!/Users/jim/venv/jimc/bin/python
 import sys
+
 from runtime.token_ids import TK
 
 from tool.codewriter import CodeWriter, TY
 from runtime.logwriter import LogWriter
 from tool.tables import _assign_obj_fn, _evaluate_boolops_fn, _evaluate_binops_fn
 
+_COLUMNS = ['any', 'none', 'int', 'float', 'bool', 'str', 'datetime', 'timedelta', 'Object', 'Block', 'DataFrame', 'Range', 'Series', 'Set', 'list', 'ndarray']
 
-_COLUMNS = ['any', 'int', 'float', 'bool', 'str', 'timedelta', 'Object', 'Block', 'DataFrame', 'Range', 'Series', 'Set', 'list']
-
-_rc2tok = [TK.OBJECT, TK.INT, TK.FLOT, TK.BOOL, TK.STR, TK.DUR, TK.OBJECT, TK.BLOCK, TK.DATAFRAME, TK.RANGE, TK.SERIES, TK.SET, TK.LIST]
+_rc2tok = [TK.OBJECT, TK.NONE, TK.INT, TK.FLOT, TK.BOOL, TK.STR, TK.TIME, TK.DUR, TK.OBJECT, TK.BLOCK, TK.DATAFRAME, TK.RANGE, TK.SERIES, TK.SET, TK.LIST, TK.LIST]
 
 # this is used primarily to create the Fn names, so parforms type translation and to_lower()
 _type2native = {
+    'Block': 'block',
     'Bool': 'bool',
-    'DataFrame': 'dateframe',
+    'bool': 'bool',
+    'DataFrame': 'dataframe',
     'DateTime': 'datetime',
+    'datetime': 'datetime',
     'Duration': 'timedelta',
     'Float': 'float',
-    'Ident': 'ident',
+    'float': 'float',
+    'Ident': 'object',
     'Int': 'int',
+    'int': 'int',
     'List': 'list',
+    'list': 'list',
+    'ndarray': 'ndarray',
+    'NoneType': 'none',
+    'Object': 'object',
+    'object': 'object',
     'Percent': 'float',
     'Range': 'range',
     'Series': 'series',
+    'Set': 'set',
     'Str': 'str',
+    'str': 'str',
     'Time': 'datetime',
+    'timedelta': 'timedelta',
 }
 
 
@@ -101,13 +114,13 @@ class GenerateEvalDispatch:
         self.o.l_print(0, "# NOTE: This is a generated file.  Please port any manual changes to tool/generate_evaluate.py")
         self.o.horiz_line(98)
         self.o.blank_line(2)
-        self.o.define_dict(f'_SUPPORTED_{name.upper()}_TOKENS', ty=TY.LIST, data=[f'TK.{_.name}' for _ in self.source.keys()], quote=False)
+        self.o.define_dict(f'_SUPPORTED_{name.upper()}_TOKENS', style=TY.LIST, data=[f'TK.{_.name}' for _ in self.source.keys()], quote=False)
         self.o.blank_line()
         self.o.define_const('_INTRINSIC_VALUE_TYPES', _COLUMNS)
         self.o.blank_line()
-        self.o.define_dict(name='_type2idx', ty=TY.ENUM, data=_COLUMNS)
+        self.o.define_dict(name='_type2native', style=TY.DICT, data=_type2native)
         self.o.blank_line()
-        self.o.define_dict(name='_type2native', ty=TY.DICT, data=_type2native)
+        self.o.define_dict(name='_type2idx', style=TY.DICT, data=cross(_type2native, enum(_COLUMNS, lower=True)))
         self.o.banner("MANUAL CHANGES")
         if insert_fixup_dispatch:
             self.o.print("def is_supported_binop(op):\n"
@@ -131,8 +144,7 @@ class GenerateEvalDispatch:
         self.o.banner("DISPATCH CORE")
         self.o.blank_line(2)
         self.o.define_fn(f'eval_{name}_dispatch', 'node, left, right')
-        self.o.l_print(0, "    l_value = left\n"
-                          "    l_ty = type(l_value).__name__\n")
+        self.o.l_print(0, "    l_value = left\n")
         if self.is_assign_style:
             self.o.l_print(0,
                            "    if l_ty != 'Object':    # for assignment, left is a ref not a value")
@@ -140,34 +152,20 @@ class GenerateEvalDispatch:
         else:
             indent = 0
 
-        self.o.l_print(indent, "    if hasattr(left, 'value') or l_ty in ['Int', 'Bool', 'Str', 'Float']:\n"
-                               "        l_value = left.value\n"
-                               "        l_ty = type(l_value).__name__\n")
+        self.o.l_print(indent, "    if hasattr(left, 'value'):\n"
+                               "        l_value = left.value\n")
+        self.o.l_print(indent, "    l_ty = _type2native[type(l_value).__name__]\n")
 
-        self.o.l_print(0, "    r_value = right\n"
-                          "    r_ty = type(r_value).__name__\n")
-
-        self.o.l_print(0, "    if hasattr(right, 'value') or r_ty in ['Int', 'Bool', 'Str', 'Float']:\n"
+        self.o.l_print(0, "    r_value = right\n")
+        self.o.l_print(0, "    if hasattr(right, 'value'):\n"
                           "        r_value = right.value\n"
-                          "        r_ty = type(r_value).__name__\n"
-                          "    if l_ty == 'Ident':\n"
-                          "        l_value = Environment.current.scope.find(left.token).value\n"
-                          "    if r_ty == 'Ident':\n"
-                          "        r_value = Environment.current.scope.find(right.token).value\n")
-        if not self.is_assign_style:
-            self.o.l_print(0, "    if l_value is None or r_value is None:\n"
-                              "        return None\n")
-
-        self.o.l_print(0, f"    return eval_{name}_dispatch2(node.op, l_value, r_value)")
+                          "    r_ty = _type2native[type(r_value).__name__]\n")
+        self.o.l_print(0, f"    return eval_{name}_dispatch2(node.op, l_value, r_value, l_ty, r_ty)")
 
     def write_dispatch_inner(self, name):
         self.o.blank_line(2)
-        self.o.define_fn(f'eval_{name}_dispatch2', 'tkid, l_value, r_value')
-        self.o.l_print(0, "    l_ty = type(l_value).__name__\n"
-                          "    r_ty = type(r_value).__name__\n"
-                          "    l_ty = l_ty if l_ty not in _type2native else _type2native[l_ty]\n"
-                          "    r_ty = r_ty if r_ty not in _type2native else _type2native[r_ty]\n"
-                          "    if l_ty in _type2idx and r_ty in _type2idx:\n"
+        self.o.define_fn(f'eval_{name}_dispatch2', 'tkid, l_value, r_value, l_ty=None, r_ty=None')
+        self.o.l_print(0, "    if l_ty in _type2idx and r_ty in _type2idx:\n"
                           "        ixl = _type2idx[l_ty]\n"
                           "        ixr = _type2idx[r_ty]\n"
                           f"        fn = _{name}_dispatch_table[tkid][ixr][ixl]\n"
@@ -220,10 +218,10 @@ class GenerateEvalDispatch:
         table = self.source[op]
         self.o.print(f'TK.{op.name}: [')
         self.indent()
-        self.o.l_print(2, '#', end='')
+        self.o.l_print(2, '# ', end='')
         for c in _COLUMNS:
-            pad = ' ' * (max(width - len(c) - 1, 2) // 2)
-            self.o.print(f'{pad}{c}{pad}', end='', append=True)
+            pad = ' ' * (max(width - len(c) - 1, 1) + 1)
+            self.o.print(f'{c.lower()}{pad}', end='', append=True)
         self.o.blank_line(1)
         for r in range(0, len(table)):
             self.o.print('[', end='')
@@ -266,7 +264,7 @@ class GenerateEvalDispatch:
     # -------------------------------
 
     def print_table_header(self):
-        self.o.print("from tokens import TK")
+        self.o.print("from runtime.token_ids import TK")
         self.o.banner("TABLES")
         self.o.print("# 'any' is used to denote the generic routine instead of everything ending up appearing as an int_ conversion\n"
                      "\n"
@@ -294,10 +292,10 @@ class GenerateEvalDispatch:
         self.indent()
         self.o.print(f'TK.{sect.name}: [')
         self.indent()
-        self.o.l_print(2, '#', end='')
+        self.o.l_print(2, '# ', end='')
         for c in _COLUMNS:
-            pad = ' ' * ((max(width - len(c), 2) // 2) + 1)
-            self.o.print(f'{pad}{c}{pad}', end='', append=True)
+            pad = ' ' * (max(width - len(c), 1) + 2)
+            self.o.print(f'{c.lower()}{pad}', end='', append=True)
         self.o.blank_line(1)
         for r in range(0, max(t_len, rc_max)):
             self.o.print('[', end='')
@@ -371,6 +369,24 @@ def xcl(base, rc):
 
 def xcr(base, rc):
     return f"{base}(r, TK.{_rc2tok[rc].name})"
+
+
+def cross(left, right):
+    d = {}
+    for k in left:
+        d[k] = right[left[k]]
+    return d
+
+
+def enum(li, lower=False):
+    d = {}
+    idx = 0
+    for v in li:
+        if lower:
+            v = v.lower()
+        d[v] = idx
+        idx += 1
+    return d
 
 
 # -------------------------------------------------------

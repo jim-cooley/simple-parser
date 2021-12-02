@@ -1,9 +1,4 @@
 
 
 test: 104:
-false - false
-
-tree1:  false - false
-    1  : BinOp(TK.SUB, '-')
-    2  :     Bool(TK.BOOL, False)
-    3  :     Bool(TK.BOOL, False)
+#false - false
