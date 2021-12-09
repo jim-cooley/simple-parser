@@ -1,0 +1,15 @@
+
+
+test: 6:
+a | ( b : b + 1 ) | c
+
+tree1:  a | ( b : b + 1 ) | c
+    1  : Flow{TK.CHAIN, '|' len=3}
+    2  :     Get(TK.IDENT, 'a')
+    3  :     Combine(TK.COMBINE: b None BinOp(TK.ADD, '+'))
+    4  :         Ref(TK.IDENT, 'b')
+    5  :         BinOp(TK.ADD, '+')
+    6  :             Get(TK.IDENT, 'b')
+    7  :             Int(TK.INT, 1)
+    8  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'c'))
+    9  :         Ref(TK.IDENT, 'c')

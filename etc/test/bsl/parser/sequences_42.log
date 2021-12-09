@@ -1,0 +1,31 @@
+
+
+test: 42:
+{x=1, y=2, z=3*(x+y)}:(x=1, y=2, z=3)
+
+tree1:  {x=1, y=2, z=3*(x+y)}:(x=1, y=2, z=3)
+    1  : Combine(TK.COMBINE:  None Generate(TK.GEN, ''))
+    2  :     Block{TK.BLOCK, len=3}
+    3  :         Define(TK.DEFINE: x = 1)
+    4  :             Ref(TK.IDENT, 'x')
+    5  :             Int(TK.INT, 1)
+    6  :         Define(TK.DEFINE: y = 2)
+    7  :             Ref(TK.IDENT, 'y')
+    8  :             Int(TK.INT, 2)
+    9  :         Define(TK.DEFINE: z = BinOp(TK.MUL, '*'))
+   10  :             Ref(TK.IDENT, 'z')
+   11  :             BinOp(TK.MUL, '*')
+   12  :                 Int(TK.INT, 3)
+   13  :                 BinOp(TK.ADD, '+')
+   14  :                     Ref(TK.IDENT, 'x')
+   15  :                     Ref(TK.IDENT, 'y')
+   16  :     Generate(TK.NAMEDTUPLE, len=3)
+   17  :         Define(TK.DEFINE: x = 1)
+   18  :             Ref(TK.IDENT, 'x')
+   19  :             Int(TK.INT, 1)
+   20  :         Define(TK.DEFINE: y = 2)
+   21  :             Ref(TK.IDENT, 'y')
+   22  :             Int(TK.INT, 2)
+   23  :         Define(TK.DEFINE: z = 3)
+   24  :             Ref(TK.IDENT, 'z')
+   25  :             Int(TK.INT, 3)

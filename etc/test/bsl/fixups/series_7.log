@@ -1,0 +1,24 @@
+
+
+test: 7:
+[a=5, b='c', d]
+
+tree1:  [a=5, b='c', d]
+    1  : Generate(TK.SERIES, len=3)
+    2  :     Define(TK.DEFINE: a = 5)
+    3  :         Ref(TK.IDENT, 'a')
+    4  :         Int(TK.INT, 5)
+    5  :     Define(TK.DEFINE: b = c)
+    6  :         Ref(TK.IDENT, 'b')
+    7  :         Str(TK.STR, 'c')
+    8  :     Get(TK.IDENT, 'd')
+
+tree1:(post)  [a=5, b='c', d]
+    1  : Generate(TK.SERIES, len=3)
+    2  :     Define(TK.DEFINE: a = 5)
+    3  :         Ref(TK.IDENT, 'a')
+    4  :         Int(TK.INT, 5)
+    5  :     Define(TK.DEFINE: b = c)
+    6  :         Ref(TK.IDENT, 'b')
+    7  :         Str(TK.STR, 'c')
+    8  :     Get(TK.IDENT, 'd')

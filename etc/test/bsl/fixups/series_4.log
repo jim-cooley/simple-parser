@@ -1,0 +1,16 @@
+
+
+test: 4:
+[name='series']
+
+tree1:  [name='series']
+    1  : Generate(TK.SERIES, len=1)
+    2  :     Define(TK.DEFINE: name = series)
+    3  :         Ref(TK.IDENT, 'name')
+    4  :         Str(TK.STR, 'series')
+
+tree1:(post)  [name='series']
+    1  : Generate(TK.SERIES, len=1)
+    2  :     Define(TK.DEFINE: name = series)
+    3  :         Ref(TK.IDENT, 'name')
+    4  :         Str(TK.STR, 'series')

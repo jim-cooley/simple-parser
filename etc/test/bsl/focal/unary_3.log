@@ -1,0 +1,11 @@
+
+
+test: 3:
+not b
+
+tree1:(post)  not b
+    1  : UnaryOp(TK.NOT, 'not')
+    2  :     Get(TK.IDENT, 'b')
+
+
+symbols: 

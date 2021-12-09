@@ -1,0 +1,12 @@
+
+
+test: 38:
+[range(0,100)]
+
+tree1:  [range(0,100)]
+    1  : Generate(TK.LIST, len=1)
+    2  :     FnCall('range')
+    3  :         Get(TK.IDENT, 'range')
+    4  :         List(TK.LIST, [Int(), Int()])
+    5  :             Int(TK.INT, 0)
+    6  :             Int(TK.INT, 100)

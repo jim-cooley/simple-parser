@@ -1,0 +1,14 @@
+
+
+test: 10:
+{ 'train': today-2y..today }
+
+tree1:  { 'train': today-2y..today }
+    1  : Generate(TK.DATAFRAME, len=1)
+    2  :     Combine(TK.COMBINE: train None BinOp(TK.SUB, '-'))
+    3  :         Str(TK.STR, 'train')
+    4  :         BinOp(TK.SUB, '-')
+    5  :             Get(TK.IDENT, 'today')
+    6  :             GenerateRange(TK.RANGE, len=3)
+    7  :                 Duration(TK.DUR, 730 days, 0:00:00)
+    8  :                 Get(TK.IDENT, 'today')

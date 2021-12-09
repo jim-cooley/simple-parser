@@ -1,0 +1,466 @@
+
+
+test:
+1..10 | reshape(_, 2,5) | print
+
+# need to make parser EOL sensitive.  identifier + ( => fn call otherwise
+1..10 | x | reshape(x, 2, 5) | y
+
+ones(5,5) | flatten | reshape(_, 5, 5) | print
+
+integers(1..10, 25) | reshape(_, 5, 5) | print
+ones(5,5) | print
+print(y)
+(x, y) | print
+
+4 | print
+y = 5
+4 | x | print
+eye(5) | x | print
+
+pd = dataset(x)
+print(pd)
+
+eye(5) | dataset(_) | print
+
+
+df = {
+    "one": Series( rand(3) ) : { index=["a", "b", "c"] },
+
+    "two": Series( rand(4) ) : index=["a", "b", "c", "d"],
+
+    "three": Series( rand(3), index=["b", "c", "d"] ),
+}
+
+# would be nice if df was already a dataframe from the decl above.
+pd = dataset(df)
+print(pd)
+
+
+tree1:  1..10 | reshape(_, 2,5) | print
+    1  : Flow{TK.CHAIN, '|' len=3}
+    2  :     GenerateRange(TK.RANGE, len=3)
+    3  :         Int(TK.INT, 1)
+    4  :         Int(TK.INT, 10)
+    5  :     FnCall('reshape')
+    6  :         Ref(TK.IDENT, 'reshape')
+    7  :         Generate(TK.LIST, len=3)
+    8  :             Get(TK.ANON, '_')
+    9  :             Int(TK.INT, 2)
+   10  :             Int(TK.INT, 5)
+   11  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'print'))
+   12  :         Ref(TK.IDENT, 'print')
+
+tree2:  1..10 | x | reshape(x, 2, 5) | y
+    1  : Flow{TK.CHAIN, '|' len=4}
+    2  :     GenerateRange(TK.RANGE, len=3)
+    3  :         Int(TK.INT, 1)
+    4  :         Int(TK.INT, 10)
+    5  :     Ref(TK.IDENT, 'x')
+    6  :     FnCall('reshape')
+    7  :         Ref(TK.IDENT, 'reshape')
+    8  :         Generate(TK.LIST, len=3)
+    9  :             Get(TK.IDENT, 'x')
+   10  :             Int(TK.INT, 2)
+   11  :             Int(TK.INT, 5)
+   12  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'y'))
+   13  :         Ref(TK.IDENT, 'y')
+
+tree3:  ones(5,5) | flatten | reshape(_, 5, 5) | print
+    1  : Flow{TK.CHAIN, '|' len=4}
+    2  :     FnCall('ones')
+    3  :         Get(TK.IDENT, 'ones')
+    4  :         List(TK.LIST, [Int(), Int()])
+    5  :             Int(TK.INT, 5)
+    6  :             Int(TK.INT, 5)
+    7  :     Ref(TK.IDENT, 'flatten')
+    8  :     FnCall('reshape')
+    9  :         Ref(TK.IDENT, 'reshape')
+   10  :         Generate(TK.LIST, len=3)
+   11  :             Get(TK.ANON, '_')
+   12  :             Int(TK.INT, 5)
+   13  :             Int(TK.INT, 5)
+   14  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'print'))
+   15  :         Ref(TK.IDENT, 'print')
+
+tree4:  integers(1..10, 25) | reshape(_, 5, 5) | print
+    1  : Flow{TK.CHAIN, '|' len=3}
+    2  :     FnCall('integers')
+    3  :         Get(TK.IDENT, 'integers')
+    4  :         Generate(TK.LIST, len=2)
+    5  :             GenerateRange(TK.RANGE, len=3)
+    6  :                 Int(TK.INT, 1)
+    7  :                 Int(TK.INT, 10)
+    8  :             Int(TK.INT, 25)
+    9  :     FnCall('reshape')
+   10  :         Ref(TK.IDENT, 'reshape')
+   11  :         Generate(TK.LIST, len=3)
+   12  :             Get(TK.ANON, '_')
+   13  :             Int(TK.INT, 5)
+   14  :             Int(TK.INT, 5)
+   15  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'print'))
+   16  :         Ref(TK.IDENT, 'print')
+
+tree5:  ones(5,5) | print
+    1  : Flow{TK.CHAIN, '|' len=2}
+    2  :     FnCall('ones')
+    3  :         Get(TK.IDENT, 'ones')
+    4  :         List(TK.LIST, [Int(), Int()])
+    5  :             Int(TK.INT, 5)
+    6  :             Int(TK.INT, 5)
+    7  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'print'))
+    8  :         Ref(TK.IDENT, 'print')
+
+tree6:  1..10 | reshape(_, 2,5) | print
+    1  : FnCall('print')
+    2  :     Get(TK.IDENT, 'print')
+    3  :     List(TK.LIST, [Get()])
+    4  :         Get(TK.IDENT, 'y')
+
+tree7:  (x, y) | print
+    1  : Flow{TK.CHAIN, '|' len=2}
+    2  :     Generate(TK.TUPLE, len=2)
+    3  :         Get(TK.IDENT, 'x')
+    4  :         Get(TK.IDENT, 'y')
+    5  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'print'))
+    6  :         Ref(TK.IDENT, 'print')
+
+tree8:  4 | print
+    1  : Flow{TK.CHAIN, '|' len=2}
+    2  :     Int(TK.INT, 4)
+    3  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'print'))
+    4  :         Ref(TK.IDENT, 'print')
+
+tree9:  y = 5
+    1  : Define(TK.DEFINE: y = 5)
+    2  :     Ref(TK.IDENT, 'y')
+    3  :     Int(TK.INT, 5)
+
+tree10:  4 | x | print
+    1  : Flow{TK.CHAIN, '|' len=3}
+    2  :     Int(TK.INT, 4)
+    3  :     Ref(TK.IDENT, 'x')
+    4  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'print'))
+    5  :         Ref(TK.IDENT, 'print')
+
+tree11:  eye(5) | x | print
+    1  : Flow{TK.CHAIN, '|' len=3}
+    2  :     FnCall('eye')
+    3  :         Get(TK.IDENT, 'eye')
+    4  :         List(TK.LIST, [Int()])
+    5  :             Int(TK.INT, 5)
+    6  :     Ref(TK.IDENT, 'x')
+    7  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'print'))
+    8  :         Ref(TK.IDENT, 'print')
+
+tree12:  pd = dataset(x)
+    1  : Define(TK.DEFINE: pd = FnCall(TK.FUNCTION, 'dataset'))
+    2  :     Ref(TK.IDENT, 'pd')
+    3  :     FnCall('dataset')
+    4  :         Get(TK.IDENT, 'dataset')
+    5  :         List(TK.LIST, [Get()])
+    6  :             Get(TK.IDENT, 'x')
+
+tree13:  1..10 | reshape(_, 2,5) | print
+    1  : FnCall('print')
+    2  :     Get(TK.IDENT, 'print')
+    3  :     List(TK.LIST, [Get()])
+    4  :         Get(TK.IDENT, 'pd')
+
+tree14:  eye(5) | dataset(_) | print
+    1  : Flow{TK.CHAIN, '|' len=3}
+    2  :     FnCall('eye')
+    3  :         Get(TK.IDENT, 'eye')
+    4  :         List(TK.LIST, [Int()])
+    5  :             Int(TK.INT, 5)
+    6  :     FnCall('dataset')
+    7  :         Ref(TK.IDENT, 'dataset')
+    8  :         List(TK.LIST, [Ref()])
+    9  :             Ref(TK.ANON, '_')
+   10  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'print'))
+   11  :         Ref(TK.IDENT, 'print')
+
+tree15:  df = {
+    1  : Define(TK.DEFINE: df = Block(TK.BLOCK, ''))
+    2  :     Ref(TK.IDENT, 'df')
+    3  :     Block{TK.BLOCK, len=3}
+    4  :         Combine(TK.COMBINE: one None DefineFn(TK.COMBINE, ':'))
+    5  :             Str(TK.STR, 'one')
+    6  :             DefineFn(TK.COMBINE: Series : Block(TK.BLOCK, ''))
+    7  :                 Ref(TK.IDENT, 'Series')
+    8  :                 Block{TK.BLOCK, len=1}
+    9  :                     Define(TK.DEFINE: index = Generate(TK.GEN, ''))
+   10  :                         Ref(TK.IDENT, 'index')
+   11  :                         Generate(TK.LIST, len=3)
+   12  :                             Str(TK.STR, 'a')
+   13  :                             Str(TK.STR, 'b')
+   14  :                             Str(TK.STR, 'c')
+   15  :                 List(TK.LIST, [FnCall()])
+   16  :                     FnCall('rand')
+   17  :                         Ref(TK.IDENT, 'rand')
+   18  :                         List(TK.LIST, [Int()])
+   19  :                             Int(TK.INT, 3)
+   20  :         Combine(TK.COMBINE: two None DefineFn(TK.COMBINE, ':'))
+   21  :             Str(TK.STR, 'two')
+   22  :             DefineFn(TK.COMBINE: Series : Define(TK.DEFINE, '='))
+   23  :                 Ref(TK.IDENT, 'Series')
+   24  :                 Define(TK.DEFINE: index = Generate(TK.GEN, ''))
+   25  :                     Ref(TK.IDENT, 'index')
+   26  :                     Generate(TK.LIST, len=4)
+   27  :                         Str(TK.STR, 'a')
+   28  :                         Str(TK.STR, 'b')
+   29  :                         Str(TK.STR, 'c')
+   30  :                         Str(TK.STR, 'd')
+   31  :                 List(TK.LIST, [FnCall()])
+   32  :                     FnCall('rand')
+   33  :                         Ref(TK.IDENT, 'rand')
+   34  :                         List(TK.LIST, [Int()])
+   35  :                             Int(TK.INT, 4)
+   36  :         Combine(TK.COMBINE: three None FnCall(TK.FUNCTION, 'Series'))
+   37  :             Str(TK.STR, 'three')
+   38  :             FnCall('Series')
+   39  :                 Get(TK.IDENT, 'Series')
+   40  :                 Generate(TK.NAMEDTUPLE, len=2)
+   41  :                     FnCall('rand')
+   42  :                         Get(TK.IDENT, 'rand')
+   43  :                         List(TK.LIST, [Int()])
+   44  :                             Int(TK.INT, 3)
+   45  :                     Define(TK.DEFINE: index = Generate(TK.GEN, ''))
+   46  :                         Ref(TK.IDENT, 'index')
+   47  :                         Generate(TK.LIST, len=3)
+   48  :                             Str(TK.STR, 'b')
+   49  :                             Str(TK.STR, 'c')
+   50  :                             Str(TK.STR, 'd')
+
+tree16:  pd = dataset(df)
+    1  : Define(TK.DEFINE: pd = FnCall(TK.FUNCTION, 'dataset'))
+    2  :     Ref(TK.IDENT, 'pd')
+    3  :     FnCall('dataset')
+    4  :         Get(TK.IDENT, 'dataset')
+    5  :         List(TK.LIST, [Get()])
+    6  :             Get(TK.IDENT, 'df')
+
+tree17:  1..10 | reshape(_, 2,5) | print
+    1  : FnCall('print')
+    2  :     Get(TK.IDENT, 'print')
+    3  :     List(TK.LIST, [Get()])
+    4  :         Get(TK.IDENT, 'pd')
+
+tree1:(post)  1..10 | reshape(_, 2,5) | print
+result: list([GenerateRange(), FnCall(), ApplyChainProd()])
+    1  : Flow{TK.CHAIN, '|' len=3}
+    2  :     GenerateRange(TK.RANGE, len=3)
+    3  :         Int(TK.INT, 1)
+    4  :         Int(TK.INT, 10)
+    5  :     FnCall('reshape')
+    6  :         Ref(TK.IDENT, 'reshape')
+    7  :         Generate(TK.LIST, len=3)
+    8  :             Get(TK.ANON, '_')
+    9  :             Int(TK.INT, 2)
+   10  :             Int(TK.INT, 5)
+   11  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'print'))
+   12  :         Ref(TK.IDENT, 'print')
+
+tree2:(post)  1..10 | x | reshape(x, 2, 5) | y
+result: list([GenerateRange(), Ref(), FnCall(), ApplyChainProd()])
+    1  : Flow{TK.CHAIN, '|' len=4}
+    2  :     GenerateRange(TK.RANGE, len=3)
+    3  :         Int(TK.INT, 1)
+    4  :         Int(TK.INT, 10)
+    5  :     Ref(TK.IDENT, 'x')
+    6  :     FnCall('reshape')
+    7  :         Ref(TK.IDENT, 'reshape')
+    8  :         Generate(TK.LIST, len=3)
+    9  :             Get(TK.IDENT, 'x')
+   10  :             Int(TK.INT, 2)
+   11  :             Int(TK.INT, 5)
+   12  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'y'))
+   13  :         Ref(TK.IDENT, 'y')
+
+tree3:(post)  ones(5,5) | flatten | reshape(_, 5, 5) | print
+result: list([FnCall(), Ref(), FnCall(), ApplyChainProd()])
+    1  : Flow{TK.CHAIN, '|' len=4}
+    2  :     FnCall('ones')
+    3  :         Get(TK.IDENT, 'ones')
+    4  :         List(TK.LIST, [Int(), Int()])
+    5  :             Int(TK.INT, 5)
+    6  :             Int(TK.INT, 5)
+    7  :     Ref(TK.IDENT, 'flatten')
+    8  :     FnCall('reshape')
+    9  :         Ref(TK.IDENT, 'reshape')
+   10  :         Generate(TK.LIST, len=3)
+   11  :             Get(TK.ANON, '_')
+   12  :             Int(TK.INT, 5)
+   13  :             Int(TK.INT, 5)
+   14  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'print'))
+   15  :         Ref(TK.IDENT, 'print')
+
+tree4:(post)  integers(1..10, 25) | reshape(_, 5, 5) | print
+result: list([FnCall(), FnCall(), ApplyChainProd()])
+    1  : Flow{TK.CHAIN, '|' len=3}
+    2  :     FnCall('integers')
+    3  :         Get(TK.IDENT, 'integers')
+    4  :         Generate(TK.LIST, len=2)
+    5  :             GenerateRange(TK.RANGE, len=3)
+    6  :                 Int(TK.INT, 1)
+    7  :                 Int(TK.INT, 10)
+    8  :             Int(TK.INT, 25)
+    9  :     FnCall('reshape')
+   10  :         Ref(TK.IDENT, 'reshape')
+   11  :         Generate(TK.LIST, len=3)
+   12  :             Get(TK.ANON, '_')
+   13  :             Int(TK.INT, 5)
+   14  :             Int(TK.INT, 5)
+   15  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'print'))
+   16  :         Ref(TK.IDENT, 'print')
+
+tree5:(post)  ones(5,5) | print
+result: list([FnCall(), ApplyChainProd()])
+    1  : Flow{TK.CHAIN, '|' len=2}
+    2  :     FnCall('ones')
+    3  :         Get(TK.IDENT, 'ones')
+    4  :         List(TK.LIST, [Int(), Int()])
+    5  :             Int(TK.INT, 5)
+    6  :             Int(TK.INT, 5)
+    7  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'print'))
+    8  :         Ref(TK.IDENT, 'print')
+
+tree6:(post)  1..10 | reshape(_, 2,5) | print
+    1  : FnCall('print')
+    2  :     Get(TK.IDENT, 'print')
+    3  :     List(TK.LIST, [Get()])
+    4  :         Get(TK.IDENT, 'y')
+
+tree7:(post)  (x, y) | print
+result: list([Generate(), ApplyChainProd()])
+    1  : Flow{TK.CHAIN, '|' len=2}
+    2  :     Generate(TK.TUPLE, len=2)
+    3  :         Get(TK.IDENT, 'x')
+    4  :         Get(TK.IDENT, 'y')
+    5  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'print'))
+    6  :         Ref(TK.IDENT, 'print')
+
+tree8:(post)  4 | print
+result: list([Int(), ApplyChainProd()])
+    1  : Flow{TK.CHAIN, '|' len=2}
+    2  :     Int(TK.INT, 4)
+    3  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'print'))
+    4  :         Ref(TK.IDENT, 'print')
+
+tree9:(post)  y = 5
+    1  : Define(TK.DEFINE: y = 5)
+    2  :     Ref(TK.IDENT, 'y')
+    3  :     Int(TK.INT, 5)
+
+tree10:(post)  4 | x | print
+result: list([Int(), Ref(), ApplyChainProd()])
+    1  : Flow{TK.CHAIN, '|' len=3}
+    2  :     Int(TK.INT, 4)
+    3  :     Ref(TK.IDENT, 'x')
+    4  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'print'))
+    5  :         Ref(TK.IDENT, 'print')
+
+tree11:(post)  eye(5) | x | print
+result: list([FnCall(), Ref(), ApplyChainProd()])
+    1  : Flow{TK.CHAIN, '|' len=3}
+    2  :     FnCall('eye')
+    3  :         Get(TK.IDENT, 'eye')
+    4  :         List(TK.LIST, [Int()])
+    5  :             Int(TK.INT, 5)
+    6  :     Ref(TK.IDENT, 'x')
+    7  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'print'))
+    8  :         Ref(TK.IDENT, 'print')
+
+tree12:(post)  pd = dataset(x)
+    1  : Define(TK.DEFINE: pd = FnCall(TK.FUNCTION, 'dataset'))
+    2  :     Ref(TK.IDENT, 'pd')
+    3  :     FnCall('dataset')
+    4  :         Get(TK.IDENT, 'dataset')
+    5  :         List(TK.LIST, [Get()])
+    6  :             Get(TK.IDENT, 'x')
+
+tree13:(post)  1..10 | reshape(_, 2,5) | print
+    1  : FnCall('print')
+    2  :     Get(TK.IDENT, 'print')
+    3  :     List(TK.LIST, [Get()])
+    4  :         Get(TK.IDENT, 'pd')
+
+tree14:(post)  eye(5) | dataset(_) | print
+result: list([FnCall(), FnCall(), ApplyChainProd()])
+    1  : Flow{TK.CHAIN, '|' len=3}
+    2  :     FnCall('eye')
+    3  :         Get(TK.IDENT, 'eye')
+    4  :         List(TK.LIST, [Int()])
+    5  :             Int(TK.INT, 5)
+    6  :     FnCall('dataset')
+    7  :         Ref(TK.IDENT, 'dataset')
+    8  :         List(TK.LIST, [Ref()])
+    9  :             Ref(TK.ANON, '_')
+   10  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'print'))
+   11  :         Ref(TK.IDENT, 'print')
+
+tree15:(post)  df = {
+    1  : Define(TK.DEFINE: df = Block(TK.BLOCK, ''))
+    2  :     Ref(TK.IDENT, 'df')
+    3  :     Block{TK.BLOCK, len=3}
+    4  :         Combine(TK.COMBINE: one None DefineFn(TK.COMBINE, ':'))
+    5  :             Str(TK.STR, 'one')
+    6  :             DefineFn(TK.COMBINE: Series : Block(TK.BLOCK, ''))
+    7  :                 Ref(TK.IDENT, 'Series')
+    8  :                 Block{TK.BLOCK, len=1}
+    9  :                     Define(TK.DEFINE: index = Generate(TK.GEN, ''))
+   10  :                         Ref(TK.IDENT, 'index')
+   11  :                         Generate(TK.LIST, len=3)
+   12  :                             Str(TK.STR, 'a')
+   13  :                             Str(TK.STR, 'b')
+   14  :                             Str(TK.STR, 'c')
+   15  :                 List(TK.LIST, [FnCall()])
+   16  :                     FnCall('rand')
+   17  :                         Ref(TK.IDENT, 'rand')
+   18  :                         List(TK.LIST, [Int()])
+   19  :                             Int(TK.INT, 3)
+   20  :         Combine(TK.COMBINE: two None DefineFn(TK.COMBINE, ':'))
+   21  :             Str(TK.STR, 'two')
+   22  :             DefineFn(TK.COMBINE: Series : Define(TK.DEFINE, '='))
+   23  :                 Ref(TK.IDENT, 'Series')
+   24  :                 Define(TK.DEFINE: index = Generate(TK.GEN, ''))
+   25  :                     Ref(TK.IDENT, 'index')
+   26  :                     Generate(TK.LIST, len=4)
+   27  :                         Str(TK.STR, 'a')
+   28  :                         Str(TK.STR, 'b')
+   29  :                         Str(TK.STR, 'c')
+   30  :                         Str(TK.STR, 'd')
+   31  :                 List(TK.LIST, [FnCall()])
+   32  :                     FnCall('rand')
+   33  :                         Ref(TK.IDENT, 'rand')
+   34  :                         List(TK.LIST, [Int()])
+   35  :                             Int(TK.INT, 4)
+   36  :         Combine(TK.COMBINE: three None FnCall(TK.FUNCTION, 'Series'))
+   37  :             Str(TK.STR, 'three')
+   38  :             FnCall('Series')
+   39  :                 Get(TK.IDENT, 'Series')
+   40  :                 Generate(TK.NAMEDTUPLE, len=2)
+   41  :                     FnCall('rand')
+   42  :                         Get(TK.IDENT, 'rand')
+   43  :                         List(TK.LIST, [Int()])
+   44  :                             Int(TK.INT, 3)
+   45  :                     Define(TK.DEFINE: index = Generate(TK.GEN, ''))
+   46  :                         Ref(TK.IDENT, 'index')
+   47  :                         Generate(TK.LIST, len=3)
+   48  :                             Str(TK.STR, 'b')
+   49  :                             Str(TK.STR, 'c')
+   50  :                             Str(TK.STR, 'd')
+
+tree16:(post)  pd = dataset(df)
+    1  : Define(TK.DEFINE: pd = FnCall(TK.FUNCTION, 'dataset'))
+    2  :     Ref(TK.IDENT, 'pd')
+    3  :     FnCall('dataset')
+    4  :         Get(TK.IDENT, 'dataset')
+    5  :         List(TK.LIST, [Get()])
+    6  :             Get(TK.IDENT, 'df')
+
+tree17:(post)  1..10 | reshape(_, 2,5) | print
+    1  : FnCall('print')
+    2  :     Get(TK.IDENT, 'print')
+    3  :     List(TK.LIST, [Get()])
+    4  :         Get(TK.IDENT, 'pd')

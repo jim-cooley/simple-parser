@@ -1,0 +1,12 @@
+
+
+test: 2:
+- 3
+
+tree1:(post)  - 3
+result: int(-3)
+    1  : UnaryOp(TK.NEG, '-')
+    2  :     Int(TK.INT, 3)
+
+
+symbols: 

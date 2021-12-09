@@ -1,0 +1,12 @@
+
+
+test: 25:
+++1y
+
+tree1:(post)  ++1y
+result: float(366.0)
+    1  : UnaryOp(TK.INCREMENT, '++')
+    2  :     Duration(TK.DUR, 365 days, 0:00:00)
+
+
+symbols: 

@@ -1,0 +1,25 @@
+
+
+test: 1:
+a | { b:1 } | c
+
+tree1:  a | { b:1 } | c
+    1  : Flow{TK.CHAIN, '|' len=3}
+    2  :     Get(TK.IDENT, 'a')
+    3  :     Generate(TK.DATAFRAME, len=1)
+    4  :         Combine(TK.COMBINE: b None 1)
+    5  :             Ref(TK.IDENT, 'b')
+    6  :             Int(TK.INT, 1)
+    7  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'c'))
+    8  :         Ref(TK.IDENT, 'c')
+
+tree1:(post)  a | { b:1 } | c
+result: list([Get(), Generate(), ApplyChainProd()])
+    1  : Flow{TK.CHAIN, '|' len=3}
+    2  :     Get(TK.IDENT, 'a')
+    3  :     Generate(TK.DATAFRAME, len=1)
+    4  :         Combine(TK.COMBINE: b None 1)
+    5  :             Ref(TK.IDENT, 'b')
+    6  :             Int(TK.INT, 1)
+    7  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'c'))
+    8  :         Ref(TK.IDENT, 'c')

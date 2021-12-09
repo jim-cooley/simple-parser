@@ -1,0 +1,13 @@
+
+
+test: 13:
+----2
+
+tree1:(post)  ----2
+result: int(0)
+    1  : UnaryOp(TK.DECREMENT, '--')
+    2  :     UnaryOp(TK.DECREMENT, '--')
+    3  :         Int(TK.INT, 2)
+
+
+symbols: 

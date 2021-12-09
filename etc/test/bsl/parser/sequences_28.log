@@ -1,0 +1,17 @@
+
+
+test: 28:
+[1..100] => { _ : _ ^ 2}
+
+tree1:  [1..100] => { _ : _ ^ 2}
+    1  : DefineFn(TK.PRODUCE: [count=0]:list => Generate(TK.GEN, ''))
+    2  :     Generate(TK.LIST, len=1)
+    3  :         GenerateRange(TK.RANGE, len=3)
+    4  :             Int(TK.INT, 1)
+    5  :             Int(TK.INT, 100)
+    6  :     Generate(TK.DATAFRAME, len=1)
+    7  :         Combine(TK.COMBINE: _ None BinOp(TK.POW, '^'))
+    8  :             Ref(TK.ANON, '_')
+    9  :             BinOp(TK.POW, '^')
+   10  :                 Get(TK.ANON, '_')
+   11  :                 Int(TK.INT, 2)

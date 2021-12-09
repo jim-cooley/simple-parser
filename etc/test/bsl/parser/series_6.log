@@ -1,0 +1,14 @@
+
+
+test: 6:
+['a':5, 'b':'c', d]
+
+tree1:  ['a':5, 'b':'c', d]
+    1  : Generate(TK.SERIES, len=3)
+    2  :     Combine(TK.COMBINE: a None 5)
+    3  :         Str(TK.STR, 'a')
+    4  :         Int(TK.INT, 5)
+    5  :     Combine(TK.COMBINE: b None c)
+    6  :         Str(TK.STR, 'b')
+    7  :         Str(TK.STR, 'c')
+    8  :     Get(TK.IDENT, 'd')

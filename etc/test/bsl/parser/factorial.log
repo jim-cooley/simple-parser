@@ -1,0 +1,43 @@
+
+
+test:
+factorial(x) := {
+    if x == 1 then
+        return 1
+    else
+        return x * factorial(x - 1)
+}
+
+print(factorial(10))
+
+
+tree1:  factorial(x) := {
+    1  : DefineVarFn(TK.DEFINE: factorial := Generate(TK.GEN, ''))
+    2  :     Ref(TK.IDENT, 'factorial')
+    3  :     Generate(TK.SET, len=1)
+    4  :         IfThenElse(TK.IF, 'if')
+    5  :             BinOp(TK.ISEQ, '==')
+    6  :                 Get(TK.IDENT, 'x')
+    7  :                 Int(TK.INT, 1)
+    8  :             Return(TK.RETURN, 'return')
+    9  :                 Int(TK.INT, 1)
+   10  :             Return(TK.RETURN, 'return')
+   11  :                 BinOp(TK.MUL, '*')
+   12  :                     Get(TK.IDENT, 'x')
+   13  :                     FnCall('factorial')
+   14  :                         Get(TK.IDENT, 'factorial')
+   15  :                         List(TK.LIST, [BinOp()])
+   16  :                             BinOp(TK.SUB, '-')
+   17  :                                 Get(TK.IDENT, 'x')
+   18  :                                 Int(TK.INT, 1)
+   19  :     List(TK.LIST, [Ref()])
+   20  :         Ref(TK.IDENT, 'x')
+
+tree2:  factorial(x) := {
+    1  : FnCall('print')
+    2  :     Get(TK.IDENT, 'print')
+    3  :     List(TK.LIST, [FnCall()])
+    4  :         FnCall('factorial')
+    5  :             Get(TK.IDENT, 'factorial')
+    6  :             List(TK.LIST, [Int()])
+    7  :                 Int(TK.INT, 10)

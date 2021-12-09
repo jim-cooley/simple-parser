@@ -1,0 +1,12 @@
+
+
+test: 6:
+not 0
+
+tree1:(post)  not 0
+result: bool(True)
+    1  : UnaryOp(TK.NOT, 'not')
+    2  :     Int(TK.INT, 0)
+
+
+symbols: 

@@ -1,0 +1,12 @@
+
+
+test: 37:
+[1..100]:5
+
+tree1:  [1..100]:5
+    1  : Combine(TK.COMBINE: [count=0]:list None 5)
+    2  :     Generate(TK.LIST, len=1)
+    3  :         GenerateRange(TK.RANGE, len=3)
+    4  :             Int(TK.INT, 1)
+    5  :             Int(TK.INT, 100)
+    6  :     Int(TK.INT, 5)

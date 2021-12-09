@@ -1,0 +1,28 @@
+
+
+test: 27:
+[1..10 => b: b * 2]
+
+tree1:  [1..10 => b: b * 2]
+    1  : Generate(TK.LIST, len=1)
+    2  :     DefineFn(TK.PRODUCE: [count=2]:range => Combine(TK.DEFINE, 'None'))
+    3  :         GenerateRange(TK.RANGE, len=3)
+    4  :             Int(TK.INT, 1)
+    5  :             Int(TK.INT, 10)
+    6  :         Combine(TK.COMBINE: b None BinOp(TK.MUL, '*'))
+    7  :             Ref(TK.IDENT, 'b')
+    8  :             BinOp(TK.MUL, '*')
+    9  :                 Get(TK.IDENT, 'b')
+   10  :                 Int(TK.INT, 2)
+
+tree1:(post)  [1..10 => b: b * 2]
+    1  : Generate(TK.LIST, len=1)
+    2  :     DefineFn(TK.PRODUCE: [count=2]:range => Combine(TK.DEFINE, 'None'))
+    3  :         GenerateRange(TK.RANGE, len=3)
+    4  :             Int(TK.INT, 1)
+    5  :             Int(TK.INT, 10)
+    6  :         Combine(TK.COMBINE: b None BinOp(TK.MUL, '*'))
+    7  :             Ref(TK.IDENT, 'b')
+    8  :             BinOp(TK.MUL, '*')
+    9  :                 Get(TK.IDENT, 'b')
+   10  :                 Int(TK.INT, 2)

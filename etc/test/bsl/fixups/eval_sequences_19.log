@@ -1,0 +1,17 @@
+
+
+test: 19:
+a >> b
+
+tree1:  a >> b
+    1  : Flow{TK.APPLY, '>>' len=2}
+    2  :     Get(TK.IDENT, 'a')
+    3  :     ApplyChainProd(TK.APPLY: None >> Ref(TK.IDENT, 'b'))
+    4  :         Ref(TK.IDENT, 'b')
+
+tree1:(post)  a >> b
+result: list([Get(), ApplyChainProd()])
+    1  : Flow{TK.APPLY, '>>' len=2}
+    2  :     Get(TK.IDENT, 'a')
+    3  :     ApplyChainProd(TK.APPLY: None >> Ref(TK.IDENT, 'b'))
+    4  :         Ref(TK.IDENT, 'b')

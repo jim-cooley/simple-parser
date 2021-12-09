@@ -1,0 +1,10 @@
+
+
+test: 16:
+[[],[],[]]
+
+tree1:  [[],[],[]]
+    1  : Generate(TK.LIST, len=3)
+    2  :     List(TK.LIST, None)
+    3  :     List(TK.LIST, None)
+    4  :     List(TK.LIST, None)

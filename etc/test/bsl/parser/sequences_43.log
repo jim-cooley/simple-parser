@@ -1,0 +1,33 @@
+
+
+test: 43:
+def c = {x=1, y=2, z=3*(x+y)}:(x=1, y=2, z=3)
+
+tree1:  def c = {x=1, y=2, z=3*(x+y)}:(x=1, y=2, z=3)
+    1  : Define(TK.DEFINE: c = Combine(TK.DEFINE, 'None'))
+    2  :     Ref(TK.IDENT, 'c')
+    3  :     Combine(TK.COMBINE:  None Generate(TK.GEN, ''))
+    4  :         Block{TK.BLOCK, len=3}
+    5  :             Define(TK.DEFINE: x = 1)
+    6  :                 Ref(TK.IDENT, 'x')
+    7  :                 Int(TK.INT, 1)
+    8  :             Define(TK.DEFINE: y = 2)
+    9  :                 Ref(TK.IDENT, 'y')
+   10  :                 Int(TK.INT, 2)
+   11  :             Define(TK.DEFINE: z = BinOp(TK.MUL, '*'))
+   12  :                 Ref(TK.IDENT, 'z')
+   13  :                 BinOp(TK.MUL, '*')
+   14  :                     Int(TK.INT, 3)
+   15  :                     BinOp(TK.ADD, '+')
+   16  :                         Ref(TK.IDENT, 'x')
+   17  :                         Ref(TK.IDENT, 'y')
+   18  :         Generate(TK.NAMEDTUPLE, len=3)
+   19  :             Define(TK.DEFINE: x = 1)
+   20  :                 Ref(TK.IDENT, 'x')
+   21  :                 Int(TK.INT, 1)
+   22  :             Define(TK.DEFINE: y = 2)
+   23  :                 Ref(TK.IDENT, 'y')
+   24  :                 Int(TK.INT, 2)
+   25  :             Define(TK.DEFINE: z = 3)
+   26  :                 Ref(TK.IDENT, 'z')
+   27  :                 Int(TK.INT, 3)

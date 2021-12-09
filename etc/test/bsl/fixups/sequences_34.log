@@ -1,0 +1,26 @@
+
+
+test: 34:
+[1..100]:{step=5}
+
+tree1:  [1..100]:{step=5}
+    1  : Combine(TK.COMBINE: [count=0]:list None Block(TK.BLOCK, ''))
+    2  :     Generate(TK.LIST, len=1)
+    3  :         GenerateRange(TK.RANGE, len=3)
+    4  :             Int(TK.INT, 1)
+    5  :             Int(TK.INT, 100)
+    6  :     Block{TK.BLOCK, len=1}
+    7  :         Define(TK.DEFINE: step = 5)
+    8  :             Ref(TK.IDENT, 'step')
+    9  :             Int(TK.INT, 5)
+
+tree1:(post)  [1..100]:{step=5}
+    1  : Combine(TK.COMBINE: [count=0]:list None Block(TK.BLOCK, ''))
+    2  :     Generate(TK.LIST, len=1)
+    3  :         GenerateRange(TK.RANGE, len=3)
+    4  :             Int(TK.INT, 1)
+    5  :             Int(TK.INT, 100)
+    6  :     Block{TK.BLOCK, len=1}
+    7  :         Define(TK.DEFINE: step = 5)
+    8  :             Ref(TK.IDENT, 'step')
+    9  :             Int(TK.INT, 5)

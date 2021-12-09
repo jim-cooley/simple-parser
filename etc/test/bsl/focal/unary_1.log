@@ -1,0 +1,12 @@
+
+
+test: 1:
++ 2
+
+tree1:(post)  + 2
+result: int(2)
+    1  : UnaryOp(TK.POS, '+')
+    2  :     Int(TK.INT, 2)
+
+
+symbols: 

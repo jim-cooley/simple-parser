@@ -1,0 +1,10 @@
+
+
+test: 10:
+4 | b
+
+tree1:  4 | b
+    1  : Flow{TK.CHAIN, '|' len=2}
+    2  :     Int(TK.INT, 4)
+    3  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'b'))
+    4  :         Ref(TK.IDENT, 'b')

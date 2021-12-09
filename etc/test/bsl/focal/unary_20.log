@@ -1,0 +1,12 @@
+
+
+test: 20:
+++1m
+
+tree1:(post)  ++1m
+result: float(1.0006944444444446)
+    1  : UnaryOp(TK.INCREMENT, '++')
+    2  :     Duration(TK.DUR, 0:01:00)
+
+
+symbols: 

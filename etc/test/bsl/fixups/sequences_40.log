@@ -1,0 +1,28 @@
+
+
+test: 40:
+[b => b + 1 in (1..100)]
+
+tree1:  [b => b + 1 in (1..100)]
+    1  : Generate(TK.LIST, len=1)
+    2  :     DefineFn(TK.PRODUCE: b => BinOp(TK.IN, 'in'))
+    3  :         Ref(TK.IDENT, 'b')
+    4  :         BinOp(TK.IN, 'in')
+    5  :             BinOp(TK.ADD, '+')
+    6  :                 Get(TK.IDENT, 'b')
+    7  :                 Int(TK.INT, 1)
+    8  :             GenerateRange(TK.RANGE, len=3)
+    9  :                 Int(TK.INT, 1)
+   10  :                 Int(TK.INT, 100)
+
+tree1:(post)  [b => b + 1 in (1..100)]
+    1  : Generate(TK.LIST, len=1)
+    2  :     DefineFn(TK.PRODUCE: b => BinOp(TK.IN, 'in'))
+    3  :         Ref(TK.IDENT, 'b')
+    4  :         BinOp(TK.IN, 'in')
+    5  :             BinOp(TK.ADD, '+')
+    6  :                 Get(TK.IDENT, 'b')
+    7  :                 Int(TK.INT, 1)
+    8  :             GenerateRange(TK.RANGE, len=3)
+    9  :                 Int(TK.INT, 1)
+   10  :                 Int(TK.INT, 100)

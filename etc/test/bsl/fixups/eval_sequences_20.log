@@ -1,0 +1,23 @@
+
+
+test: 20:
+a | b >> c
+
+tree1:  a | b >> c
+    1  : Flow{TK.APPLY, '>>' len=2}
+    2  :     Flow{TK.CHAIN, '|' len=2}
+    3  :         Get(TK.IDENT, 'a')
+    4  :         ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'b'))
+    5  :             Ref(TK.IDENT, 'b')
+    6  :     ApplyChainProd(TK.APPLY: None >> Ref(TK.IDENT, 'c'))
+    7  :         Ref(TK.IDENT, 'c')
+
+tree1:(post)  a | b >> c
+result: list([Flow(), ApplyChainProd()])
+    1  : Flow{TK.APPLY, '>>' len=2}
+    2  :     Flow{TK.CHAIN, '|' len=2}
+    3  :         Get(TK.IDENT, 'a')
+    4  :         ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'b'))
+    5  :             Ref(TK.IDENT, 'b')
+    6  :     ApplyChainProd(TK.APPLY: None >> Ref(TK.IDENT, 'c'))
+    7  :         Ref(TK.IDENT, 'c')

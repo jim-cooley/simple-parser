@@ -1,0 +1,46 @@
+
+
+test: 9:
+s = [name:'series', 'a':1, 'b':2, 'c':3, index=['a']]
+
+tree1:  s = [name:'series', 'a':1, 'b':2, 'c':3, index=['a']]
+    1  : Define(TK.DEFINE: s = Generate(TK.GEN, ''))
+    2  :     Ref(TK.IDENT, 's')
+    3  :     Generate(TK.SERIES, len=5)
+    4  :         Combine(TK.COMBINE: name None series)
+    5  :             Ref(TK.IDENT, 'name')
+    6  :             Str(TK.STR, 'series')
+    7  :         Combine(TK.COMBINE: a None 1)
+    8  :             Str(TK.STR, 'a')
+    9  :             Int(TK.INT, 1)
+   10  :         Combine(TK.COMBINE: b None 2)
+   11  :             Str(TK.STR, 'b')
+   12  :             Int(TK.INT, 2)
+   13  :         Combine(TK.COMBINE: c None 3)
+   14  :             Str(TK.STR, 'c')
+   15  :             Int(TK.INT, 3)
+   16  :         Define(TK.DEFINE: index = Generate(TK.GEN, ''))
+   17  :             Ref(TK.IDENT, 'index')
+   18  :             Generate(TK.LIST, len=1)
+   19  :                 Str(TK.STR, 'a')
+
+tree1:(post)  s = [name:'series', 'a':1, 'b':2, 'c':3, index=['a']]
+    1  : Define(TK.DEFINE: s = Generate(TK.GEN, ''))
+    2  :     Ref(TK.IDENT, 's')
+    3  :     Generate(TK.SERIES, len=5)
+    4  :         Combine(TK.COMBINE: name None series)
+    5  :             Ref(TK.IDENT, 'name')
+    6  :             Str(TK.STR, 'series')
+    7  :         Combine(TK.COMBINE: a None 1)
+    8  :             Str(TK.STR, 'a')
+    9  :             Int(TK.INT, 1)
+   10  :         Combine(TK.COMBINE: b None 2)
+   11  :             Str(TK.STR, 'b')
+   12  :             Int(TK.INT, 2)
+   13  :         Combine(TK.COMBINE: c None 3)
+   14  :             Str(TK.STR, 'c')
+   15  :             Int(TK.INT, 3)
+   16  :         Define(TK.DEFINE: index = Generate(TK.GEN, ''))
+   17  :             Ref(TK.IDENT, 'index')
+   18  :             Generate(TK.LIST, len=1)
+   19  :                 Str(TK.STR, 'a')

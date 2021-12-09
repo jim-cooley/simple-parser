@@ -1,0 +1,11 @@
+
+
+test: 9:
+++a
+
+tree1:(post)  ++a
+    1  : UnaryOp(TK.INCREMENT, '++')
+    2  :     Get(TK.IDENT, 'a')
+
+
+symbols: 

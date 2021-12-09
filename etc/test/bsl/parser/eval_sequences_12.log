@@ -1,0 +1,9 @@
+
+
+test: 12:
+b => 4
+
+tree1:  b => 4
+    1  : DefineFn(TK.PRODUCE: b => 4)
+    2  :     Ref(TK.IDENT, 'b')
+    3  :     Int(TK.INT, 4)

@@ -1,0 +1,14 @@
+
+
+test: 22:
+a | b => c | d
+
+tree1:  a | b => c | d
+    1  : Flow{TK.CHAIN, '|' len=2}
+    2  :     Get(TK.IDENT, 'a')
+    3  :     DefineFn(TK.PRODUCE: b => Flow(TK.CHAIN, '|'))
+    4  :         Ref(TK.IDENT, 'b')
+    5  :         Flow{TK.CHAIN, '|' len=2}
+    6  :             Ref(TK.IDENT, 'c')
+    7  :             ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'd'))
+    8  :                 Ref(TK.IDENT, 'd')

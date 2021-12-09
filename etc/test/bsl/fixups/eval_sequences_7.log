@@ -1,0 +1,29 @@
+
+
+test: 7:
+a | { b => b + 1 } | c
+
+tree1:  a | { b => b + 1 } | c
+    1  : Flow{TK.CHAIN, '|' len=3}
+    2  :     Get(TK.IDENT, 'a')
+    3  :     Block{TK.BLOCK, len=1}
+    4  :         DefineFn(TK.PRODUCE: b => BinOp(TK.ADD, '+'))
+    5  :             Ref(TK.IDENT, 'b')
+    6  :             BinOp(TK.ADD, '+')
+    7  :                 Ref(TK.IDENT, 'b')
+    8  :                 Int(TK.INT, 1)
+    9  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'c'))
+   10  :         Ref(TK.IDENT, 'c')
+
+tree1:(post)  a | { b => b + 1 } | c
+result: list([Get(), Block(), ApplyChainProd()])
+    1  : Flow{TK.CHAIN, '|' len=3}
+    2  :     Get(TK.IDENT, 'a')
+    3  :     Block{TK.BLOCK, len=1}
+    4  :         DefineFn(TK.PRODUCE: b => BinOp(TK.ADD, '+'))
+    5  :             Ref(TK.IDENT, 'b')
+    6  :             BinOp(TK.ADD, '+')
+    7  :                 Ref(TK.IDENT, 'b')
+    8  :                 Int(TK.INT, 1)
+    9  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'c'))
+   10  :         Ref(TK.IDENT, 'c')

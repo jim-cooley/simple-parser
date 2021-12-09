@@ -1,0 +1,40 @@
+
+
+test: 5:
+[name:'series', 'a':5, 'b':'c', d, index=['a','b']]
+
+tree1:  [name:'series', 'a':5, 'b':'c', d, index=['a','b']]
+    1  : Generate(TK.SERIES, len=5)
+    2  :     Combine(TK.COMBINE: name None series)
+    3  :         Ref(TK.IDENT, 'name')
+    4  :         Str(TK.STR, 'series')
+    5  :     Combine(TK.COMBINE: a None 5)
+    6  :         Str(TK.STR, 'a')
+    7  :         Int(TK.INT, 5)
+    8  :     Combine(TK.COMBINE: b None c)
+    9  :         Str(TK.STR, 'b')
+   10  :         Str(TK.STR, 'c')
+   11  :     Get(TK.IDENT, 'd')
+   12  :     Define(TK.DEFINE: index = Generate(TK.GEN, ''))
+   13  :         Ref(TK.IDENT, 'index')
+   14  :         Generate(TK.LIST, len=2)
+   15  :             Str(TK.STR, 'a')
+   16  :             Str(TK.STR, 'b')
+
+tree1:(post)  [name:'series', 'a':5, 'b':'c', d, index=['a','b']]
+    1  : Generate(TK.SERIES, len=5)
+    2  :     Combine(TK.COMBINE: name None series)
+    3  :         Ref(TK.IDENT, 'name')
+    4  :         Str(TK.STR, 'series')
+    5  :     Combine(TK.COMBINE: a None 5)
+    6  :         Str(TK.STR, 'a')
+    7  :         Int(TK.INT, 5)
+    8  :     Combine(TK.COMBINE: b None c)
+    9  :         Str(TK.STR, 'b')
+   10  :         Str(TK.STR, 'c')
+   11  :     Get(TK.IDENT, 'd')
+   12  :     Define(TK.DEFINE: index = Generate(TK.GEN, ''))
+   13  :         Ref(TK.IDENT, 'index')
+   14  :         Generate(TK.LIST, len=2)
+   15  :             Str(TK.STR, 'a')
+   16  :             Str(TK.STR, 'b')

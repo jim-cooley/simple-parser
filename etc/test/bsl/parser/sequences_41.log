@@ -1,0 +1,20 @@
+
+
+test: 41:
+{x=1, y=2, z=3*(x+y)}
+
+tree1:  {x=1, y=2, z=3*(x+y)}
+    1  : Block{TK.BLOCK, len=3}
+    2  :     Define(TK.DEFINE: x = 1)
+    3  :         Ref(TK.IDENT, 'x')
+    4  :         Int(TK.INT, 1)
+    5  :     Define(TK.DEFINE: y = 2)
+    6  :         Ref(TK.IDENT, 'y')
+    7  :         Int(TK.INT, 2)
+    8  :     Define(TK.DEFINE: z = BinOp(TK.MUL, '*'))
+    9  :         Ref(TK.IDENT, 'z')
+   10  :         BinOp(TK.MUL, '*')
+   11  :             Int(TK.INT, 3)
+   12  :             BinOp(TK.ADD, '+')
+   13  :                 Get(TK.IDENT, 'x')
+   14  :                 Get(TK.IDENT, 'y')
