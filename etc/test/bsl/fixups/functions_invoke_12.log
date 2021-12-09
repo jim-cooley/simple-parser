@@ -7,7 +7,7 @@ tree1:  f{a:5, b:'c', d}
     1  : Get(TK.IDENT, 'f')
 
 tree2:  f{a:5, b:'c', d}
-    1  : Generate(TK.SERIES, len=3)
+    1  : Generate(TK.DATAFRAME, len=3)
     2  :     Combine(TK.COMBINE: a None 5)
     3  :         Ref(TK.IDENT, 'a')
     4  :         Int(TK.INT, 5)
@@ -20,7 +20,7 @@ tree1:(post)  f{a:5, b:'c', d}
     1  : Get(TK.IDENT, 'f')
 
 tree2:(post)  f{a:5, b:'c', d}
-    1  : Generate(TK.SERIES, len=3)
+    1  : Generate(TK.DATAFRAME, len=3)
     2  :     Combine(TK.COMBINE: a None 5)
     3  :         Ref(TK.IDENT, 'a')
     4  :         Int(TK.INT, 5)

@@ -4,7 +4,7 @@ test: 9:
 {a:4, b:3, c:2}
 
 tree1:  {a:4, b:3, c:2}
-    1  : Generate(TK.SERIES, len=3)
+    1  : Generate(TK.DATAFRAME, len=3)
     2  :     Combine(TK.COMBINE: a None 4)
     3  :         Ref(TK.IDENT, 'a')
     4  :         Int(TK.INT, 4)

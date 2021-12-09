@@ -4,7 +4,7 @@ test: 10:
 {a:5, b:{c}, d}
 
 tree1:  {a:5, b:{c}, d}
-    1  : Block{TK.BLOCK, len=3}
+    1  : Generate(TK.DATAFRAME, len=3)
     2  :     Combine(TK.COMBINE: a None 5)
     3  :         Ref(TK.IDENT, 'a')
     4  :         Int(TK.INT, 5)
@@ -15,8 +15,7 @@ tree1:  {a:5, b:{c}, d}
     9  :     Get(TK.IDENT, 'd')
 
 tree1:(post)  {a:5, b:{c}, d}
-result: list([Combine(), Combine(), Get()])
-    1  : Block{TK.BLOCK, len=3}
+    1  : Generate(TK.DATAFRAME, len=3)
     2  :     Combine(TK.COMBINE: a None 5)
     3  :         Ref(TK.IDENT, 'a')
     4  :         Int(TK.INT, 5)

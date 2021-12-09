@@ -45,6 +45,7 @@ _tk2type = {
     TK.IF: TCL.BINOP,
     TK.IN: TCL.BINOP,
     TK.INCREMENT: TCL.UNARY,
+    TK.INDEX: TCL.BINOP,
     TK.INT: TCL.LITERAL,
     TK.ISEQ: TCL.BINOP,
     TK.KVPAIR: TCL.BINOP,   # not in Token
@@ -77,6 +78,7 @@ _tk2type = {
     TK.SERIES: TCL.LITERAL,
     TK.SET: TCL.LITERAL,
     TK.STR: TCL.LITERAL,
+    TK.SLICE: TCL.BINOP,
     TK.SUB: TCL.BINOP,
     TK.SUBSCRIPT: TCL.BINOP,
     TK.THEN: TCL.BINOP,
@@ -124,8 +126,9 @@ _tk2glyph = {
     TK.IDIV: 'div',
     TK.IF: 'if',
     TK.IN: 'in',
+    TK.INDEX: 'index',   # indexing expression
     TK.INCREMENT: '++',
-    TK.SUBSCRIPT: '[]',  # indexing expression
+    TK.SUBSCRIPT: '[]',
     TK.INT: 'i',
     TK.ISEQ: '==',
     TK.KVPAIR: ':',
@@ -154,6 +157,7 @@ _tk2glyph = {
     TK.RISE_ABOVE: '|>',  # >|`
     TK.SERIES: 'series',
     TK.SET: 'set',
+    TK.SLICE: 'slice',
     TK.STR: 'str',
     TK.SUB: '-',  # - (subtract)
     TK.TODAY: 'today',
@@ -188,7 +192,7 @@ _tk2binop = {
     TK.IN: TK.IN,
     TK.IF: TK.IF,
     TK.LBAR: TK.FALL_BELOW,
-    TK.LBRK: TK.SUBSCRIPT,
+    TK.LBRK: TK.INDEX,
     TK.LESS: TK.LESS,
     TK.LSS2: TK.LSS2,
     TK.LTE: TK.LTE,
@@ -241,6 +245,7 @@ type2tid = {
     'Category': TK.CATEGORY,
     'Dataset': TK.DATAFRAME,
     'DataFrame': TK.DATAFRAME,
+    'dataframe': TK.DATAFRAME,
     'Dict': TK.DICT,
     'Enumeration': TK.ENUM,
     'List': TK.LIST,
@@ -248,6 +253,7 @@ type2tid = {
     'Object': TK.OBJECT,
     'Range': TK.RANGE,
     'Series': TK.SERIES,
+    'series': TK.SERIES,
     'bool': TK.BOOL,
     'dict': TK.DICT,
     'float': TK.FLOT,

@@ -88,6 +88,7 @@ _tk2pfx = {
     TK.RISE_ABOVE: 'if_above',  # >|
     TK.SERIES: 'series',
     TK.SET: 'set',
+    TK.SLICE: 'slice',
     TK.STR: 'str',
     TK.SUB: 'sub',  # - (subtract)
     TK.TIME: 'time',
@@ -164,6 +165,7 @@ _postfixNodeTypeMappings = {
     'Return': UNARY_NODE,
     'Series': SEQUENCE_NODE,
     'Set': SEQUENCE_NODE,
+    'Slice': TRINARY_NODE,
     'Str': VALUE_NODE,
     'Time': VALUE_NODE,
     'Tuple': SEQUENCE_NODE,

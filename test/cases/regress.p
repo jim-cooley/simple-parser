@@ -1,6 +1,12 @@
 a = [1, 2, 3]
 b = [4, 5, 6]
 
+x = eye(5)
+1..25 | reshape(_, 5,5) | y
+print(x)
+print(y)
+print(x * y)
+
 c = a * b
 
 print (c)

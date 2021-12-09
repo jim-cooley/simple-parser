@@ -550,7 +550,36 @@ class IfThenElse(TernaryOp):
 class Index(FnCall):
     def __init__(self, ref=None, parameters=None, is_lvalue=True):
         assert ref is not None, "no Ref passed to Index constructor"
-        super().__init__(ref=ref, parameters=parameters, op=Token.SUBSCRIPT(loc=ref.location), is_lvalue=is_lvalue)
+        super().__init__(ref=ref, parameters=parameters, op=Token.INDEX(loc=ref.location), is_lvalue=is_lvalue)
+
+
+@dataclass
+class Slice(TernaryOp):
+    def __init__(self, start=None, end=None, step=None, loc=None, is_lvalue=True):
+        slice = Token.SLICE()
+        super().__init__(op=slice, left=start, right=end, mid=step, is_lvalue=is_lvalue)
+        self.start = start
+        self.end = end
+        self.step = step
+        self.location = loc if loc is not None else self.location
+
+    def format(self, brief=True):
+        start = self.start
+        end = self.end
+        step = self.step
+        lval = "None"
+        rval = "None"
+        sval = "1"
+        if start is not None:
+            if hasattr(start, 'format'):
+                lval = start.format(brief=brief)
+        if end is not None:
+            if hasattr(end, 'format'):
+                rval = end.format(brief=brief)
+        if step is not None:
+            if hasattr(step, 'format'):
+                sval = step.format(brief=brief)
+        return f'Slice({lval} : {rval} :: {sval})'
 
 
 @dataclass

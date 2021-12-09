@@ -161,6 +161,7 @@ class TK(IntEnum):
     NOW = auto()
     RETURN = auto()
     RANGE = auto()
+    SLICE = auto()
     SUBSCRIPT = auto()
     THEN = auto()
     TODAY = auto()

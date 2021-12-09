@@ -75,25 +75,25 @@ tree5:  def sell = { position -= trade_size }
     6  :             Ref(TK.IDENT, 'trade_size')
 
 tree6:  rules => {
-    1  : DefineFn(TK.PRODUCE: rules => Block(TK.BLOCK, ''))
+    1  : DefineFn(TK.PRODUCE: rules => Generate(TK.GEN, ''))
     2  :     Ref(TK.IDENT, 'rules')
-    3  :     Block{TK.BLOCK, len=2}
+    3  :     Generate(TK.SET, len=2)
     4  :         UnaryOp(TK.ANY, 'any')
     5  :             Flow{TK.CHAIN, '|' len=2}
     6  :                 Flow{TK.APPLY, '>>' len=2}
     7  :                     Flow{TK.CHAIN, '|' len=2}
-    8  :                         Combine(TK.COMBINE:  None Define(TK.DEFINE, '='))
-    9  :                             Block{TK.BLOCK, len=2}
+    8  :                         Combine(TK.COMBINE: [count=1]:set None Define(TK.DEFINE, '='))
+    9  :                             Generate(TK.SET, len=2)
    10  :                                 Flow{TK.CHAIN, '|' len=2}
    11  :                                     BinOp(TK.GTR, '>')
-   12  :                                         Ref(TK.IDENT, 'close')
+   12  :                                         Get(TK.IDENT, 'close')
    13  :                                     FnCall('sma')
    14  :                                         Ref(TK.IDENT, 'sma')
    15  :                                         List(TK.LIST, [Int()])
    16  :                                             Int(TK.INT, 10)
    17  :                                 Flow{TK.CHAIN, '|' len=2}
    18  :                                     BinOp(TK.GTR, '>')
-   19  :                                         Ref(TK.IDENT, 'close')
+   19  :                                         Get(TK.IDENT, 'close')
    20  :                                     FnCall('sma')
    21  :                                         Ref(TK.IDENT, 'sma')
    22  :                                         List(TK.LIST, [Int()])
@@ -132,27 +132,27 @@ tree6:  rules => {
    55  :                 Ref(TK.IDENT, 'sell')
 
 tree7:  rules2 := {
-    1  : DefineVar(TK.DEFINE: rules2 := Block(TK.BLOCK, ''))
+    1  : DefineVar(TK.DEFINE: rules2 := Generate(TK.GEN, ''))
     2  :     Ref(TK.IDENT, 'rules2')
-    3  :     Block{TK.BLOCK, len=2}
+    3  :     Generate(TK.SET, len=2)
     4  :         Flow{TK.CHAIN, '|' len=2}
     5  :             Flow{TK.APPLY, '>>' len=2}
     6  :                 Flow{TK.CHAIN, '|' len=2}
     7  :                     Combine(TK.COMBINE: buy None UnaryOp(TK.ANY, 'any:'))
     8  :                         Ref(TK.IDENT, 'buy')
     9  :                         UnaryOp(TK.ANY, 'any:')
-   10  :                             Combine(TK.COMBINE:  None Define(TK.DEFINE, '='))
-   11  :                                 Block{TK.BLOCK, len=2}
+   10  :                             Combine(TK.COMBINE: [count=1]:set None Define(TK.DEFINE, '='))
+   11  :                                 Generate(TK.SET, len=2)
    12  :                                     Flow{TK.CHAIN, '|' len=2}
    13  :                                         BinOp(TK.GTR, '>')
-   14  :                                             Ref(TK.IDENT, 'close')
+   14  :                                             Get(TK.IDENT, 'close')
    15  :                                         FnCall('sma')
    16  :                                             Ref(TK.IDENT, 'sma')
    17  :                                             List(TK.LIST, [Int()])
    18  :                                                 Int(TK.INT, 10)
    19  :                                     Flow{TK.CHAIN, '|' len=2}
    20  :                                         BinOp(TK.GTR, '>')
-   21  :                                             Ref(TK.IDENT, 'close')
+   21  :                                             Get(TK.IDENT, 'close')
    22  :                                         FnCall('sma')
    23  :                                             Ref(TK.IDENT, 'sma')
    24  :                                             List(TK.LIST, [Int()])
@@ -189,25 +189,25 @@ tree7:  rules2 := {
    55  :                 Ref(TK.IDENT, 'atr')
 
 tree8:  rules3 := {
-    1  : DefineVar(TK.DEFINE: rules3 := Block(TK.BLOCK, ''))
+    1  : DefineVar(TK.DEFINE: rules3 := Generate(TK.GEN, ''))
     2  :     Ref(TK.IDENT, 'rules3')
-    3  :     Block{TK.BLOCK, len=2}
+    3  :     Generate(TK.SET, len=2)
     4  :         UnaryOp(TK.ANY, 'any')
     5  :             Flow{TK.CHAIN, '|' len=2}
     6  :                 Flow{TK.APPLY, '>>' len=2}
     7  :                     Flow{TK.CHAIN, '|' len=2}
-    8  :                         Combine(TK.COMBINE:  None Define(TK.DEFINE, '='))
-    9  :                             Block{TK.BLOCK, len=2}
+    8  :                         Combine(TK.COMBINE: [count=1]:set None Define(TK.DEFINE, '='))
+    9  :                             Generate(TK.SET, len=2)
    10  :                                 Flow{TK.CHAIN, '|' len=2}
    11  :                                     BinOp(TK.GTR, '>')
-   12  :                                         Ref(TK.IDENT, 'close')
+   12  :                                         Get(TK.IDENT, 'close')
    13  :                                     FnCall('sma')
    14  :                                         Ref(TK.IDENT, 'sma')
    15  :                                         List(TK.LIST, [Int()])
    16  :                                             Int(TK.INT, 10)
    17  :                                 Flow{TK.CHAIN, '|' len=2}
    18  :                                     BinOp(TK.GTR, '>')
-   19  :                                         Ref(TK.IDENT, 'close')
+   19  :                                         Get(TK.IDENT, 'close')
    20  :                                     FnCall('sma')
    21  :                                         Ref(TK.IDENT, 'sma')
    22  :                                         List(TK.LIST, [Int()])
@@ -246,25 +246,25 @@ tree8:  rules3 := {
    55  :                 Ref(TK.IDENT, 'sell')
 
 tree9:  rules4 = {
-    1  : Define(TK.DEFINE: rules4 = Block(TK.BLOCK, ''))
+    1  : Define(TK.DEFINE: rules4 = Generate(TK.GEN, ''))
     2  :     Ref(TK.IDENT, 'rules4')
-    3  :     Block{TK.BLOCK, len=2}
+    3  :     Generate(TK.SET, len=2)
     4  :         UnaryOp(TK.ANY, 'any')
     5  :             Flow{TK.CHAIN, '|' len=2}
     6  :                 Flow{TK.APPLY, '>>' len=2}
     7  :                     Flow{TK.CHAIN, '|' len=2}
-    8  :                         Combine(TK.COMBINE:  None Define(TK.DEFINE, '='))
-    9  :                             Block{TK.BLOCK, len=2}
+    8  :                         Combine(TK.COMBINE: [count=1]:set None Define(TK.DEFINE, '='))
+    9  :                             Generate(TK.SET, len=2)
    10  :                                 Flow{TK.CHAIN, '|' len=2}
    11  :                                     BinOp(TK.GTR, '>')
-   12  :                                         Ref(TK.IDENT, 'close')
+   12  :                                         Get(TK.IDENT, 'close')
    13  :                                     FnCall('sma')
    14  :                                         Ref(TK.IDENT, 'sma')
    15  :                                         List(TK.LIST, [Int()])
    16  :                                             Int(TK.INT, 10)
    17  :                                 Flow{TK.CHAIN, '|' len=2}
    18  :                                     BinOp(TK.GTR, '>')
-   19  :                                         Ref(TK.IDENT, 'close')
+   19  :                                         Get(TK.IDENT, 'close')
    20  :                                     FnCall('sma')
    21  :                                         Ref(TK.IDENT, 'sma')
    22  :                                         List(TK.LIST, [Int()])
@@ -303,25 +303,25 @@ tree9:  rules4 = {
    55  :                 Ref(TK.IDENT, 'sell')
 
 tree10:  def rules5 = {
-    1  : Define(TK.DEFINE: rules5 = Block(TK.BLOCK, ''))
+    1  : Define(TK.DEFINE: rules5 = Generate(TK.GEN, ''))
     2  :     Ref(TK.IDENT, 'rules5')
-    3  :     Block{TK.BLOCK, len=2}
+    3  :     Generate(TK.SET, len=2)
     4  :         UnaryOp(TK.ANY, 'any')
     5  :             Flow{TK.CHAIN, '|' len=2}
     6  :                 Flow{TK.APPLY, '>>' len=2}
     7  :                     Flow{TK.CHAIN, '|' len=2}
-    8  :                         Combine(TK.COMBINE:  None Define(TK.DEFINE, '='))
-    9  :                             Block{TK.BLOCK, len=2}
+    8  :                         Combine(TK.COMBINE: [count=1]:set None Define(TK.DEFINE, '='))
+    9  :                             Generate(TK.SET, len=2)
    10  :                                 Flow{TK.CHAIN, '|' len=2}
    11  :                                     BinOp(TK.GTR, '>')
-   12  :                                         Ref(TK.IDENT, 'close')
+   12  :                                         Get(TK.IDENT, 'close')
    13  :                                     FnCall('sma')
    14  :                                         Ref(TK.IDENT, 'sma')
    15  :                                         List(TK.LIST, [Int()])
    16  :                                             Int(TK.INT, 10)
    17  :                                 Flow{TK.CHAIN, '|' len=2}
    18  :                                     BinOp(TK.GTR, '>')
-   19  :                                         Ref(TK.IDENT, 'close')
+   19  :                                         Get(TK.IDENT, 'close')
    20  :                                     FnCall('sma')
    21  :                                         Ref(TK.IDENT, 'sma')
    22  :                                         List(TK.LIST, [Int()])
@@ -331,7 +331,7 @@ tree10:  def rules5 = {
    26  :                                 Float(TK.FLOT, 0.01)
    27  :                         ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'signal'))
    28  :                             Ref(TK.IDENT, 'signal')
-   29  :                     FnRef(TK.FUNCTION, 'delay')
+   29  :                     FnCall('delay')
    30  :                         Ref(TK.IDENT, 'delay')
    31  :                         List(TK.LIST, [Duration()])
    32  :                             Duration(TK.DUR, 1 day, 0:00:00)
@@ -343,14 +343,14 @@ tree10:  def rules5 = {
    38  :                 Flow{TK.APPLY, '>>' len=2}
    39  :                     Flow{TK.CHAIN, '|' len=2}
    40  :                         BinOp(TK.FALL_BELOW, '<|')
-   41  :                             Ref(TK.IDENT, 'close')
-   42  :                             FnRef(TK.FUNCTION, 'sma')
-   43  :                                 Ref(TK.IDENT, 'sma')
+   41  :                             Get(TK.IDENT, 'close')
+   42  :                             FnCall('sma')
+   43  :                                 Get(TK.IDENT, 'sma')
    44  :                                 List(TK.LIST, [Int()])
    45  :                                     Int(TK.INT, 10)
    46  :                         ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'signal'))
    47  :                             Ref(TK.IDENT, 'signal')
-   48  :                     FnRef(TK.FUNCTION, 'delay')
+   48  :                     FnCall('delay')
    49  :                         Ref(TK.IDENT, 'delay')
    50  :                         List(TK.LIST, [Duration()])
    51  :                             Duration(TK.DUR, 1 day, 0:00:00)
@@ -360,9 +360,9 @@ tree10:  def rules5 = {
    55  :                 Ref(TK.IDENT, 'sell')
 
 tree11:  report := { trades | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price') }
-    1  : DefineVar(TK.DEFINE: report := Block(TK.BLOCK, ''))
+    1  : DefineVar(TK.DEFINE: report := Generate(TK.GEN, ''))
     2  :     Ref(TK.IDENT, 'report')
-    3  :     Block{TK.BLOCK, len=1}
+    3  :     Generate(TK.SET, len=1)
     4  :         Flow{TK.CHAIN, '|' len=2}
     5  :             Get(TK.IDENT, 'trades')
     6  :             FnCall('select')
@@ -416,25 +416,25 @@ tree5:(post)  def sell = { position -= trade_size }
     6  :             Ref(TK.IDENT, 'trade_size')
 
 tree6:(post)  rules => {
-    1  : DefineFn(TK.PRODUCE: rules => Block(TK.BLOCK, ''))
+    1  : DefineFn(TK.PRODUCE: rules => Generate(TK.GEN, ''))
     2  :     Ref(TK.IDENT, 'rules')
-    3  :     Block{TK.BLOCK, len=2}
+    3  :     Generate(TK.SET, len=2)
     4  :         UnaryOp(TK.ANY, 'any')
     5  :             Flow{TK.CHAIN, '|' len=2}
     6  :                 Flow{TK.APPLY, '>>' len=2}
     7  :                     Flow{TK.CHAIN, '|' len=2}
-    8  :                         Combine(TK.COMBINE:  None Define(TK.DEFINE, '='))
-    9  :                             Block{TK.BLOCK, len=2}
+    8  :                         Combine(TK.COMBINE: [count=1]:set None Define(TK.DEFINE, '='))
+    9  :                             Generate(TK.SET, len=2)
    10  :                                 Flow{TK.CHAIN, '|' len=2}
    11  :                                     BinOp(TK.GTR, '>')
-   12  :                                         Ref(TK.IDENT, 'close')
+   12  :                                         Get(TK.IDENT, 'close')
    13  :                                     FnCall('sma')
    14  :                                         Ref(TK.IDENT, 'sma')
    15  :                                         List(TK.LIST, [Int()])
    16  :                                             Int(TK.INT, 10)
    17  :                                 Flow{TK.CHAIN, '|' len=2}
    18  :                                     BinOp(TK.GTR, '>')
-   19  :                                         Ref(TK.IDENT, 'close')
+   19  :                                         Get(TK.IDENT, 'close')
    20  :                                     FnCall('sma')
    21  :                                         Ref(TK.IDENT, 'sma')
    22  :                                         List(TK.LIST, [Int()])
@@ -473,27 +473,27 @@ tree6:(post)  rules => {
    55  :                 Ref(TK.IDENT, 'sell')
 
 tree7:(post)  rules2 := {
-    1  : DefineVar(TK.DEFINE: rules2 := Block(TK.BLOCK, ''))
+    1  : DefineVar(TK.DEFINE: rules2 := Generate(TK.GEN, ''))
     2  :     Ref(TK.IDENT, 'rules2')
-    3  :     Block{TK.BLOCK, len=2}
+    3  :     Generate(TK.SET, len=2)
     4  :         Flow{TK.CHAIN, '|' len=2}
     5  :             Flow{TK.APPLY, '>>' len=2}
     6  :                 Flow{TK.CHAIN, '|' len=2}
     7  :                     Combine(TK.COMBINE: buy None UnaryOp(TK.ANY, 'any:'))
     8  :                         Ref(TK.IDENT, 'buy')
     9  :                         UnaryOp(TK.ANY, 'any:')
-   10  :                             Combine(TK.COMBINE:  None Define(TK.DEFINE, '='))
-   11  :                                 Block{TK.BLOCK, len=2}
+   10  :                             Combine(TK.COMBINE: [count=1]:set None Define(TK.DEFINE, '='))
+   11  :                                 Generate(TK.SET, len=2)
    12  :                                     Flow{TK.CHAIN, '|' len=2}
    13  :                                         BinOp(TK.GTR, '>')
-   14  :                                             Ref(TK.IDENT, 'close')
+   14  :                                             Get(TK.IDENT, 'close')
    15  :                                         FnCall('sma')
    16  :                                             Ref(TK.IDENT, 'sma')
    17  :                                             List(TK.LIST, [Int()])
    18  :                                                 Int(TK.INT, 10)
    19  :                                     Flow{TK.CHAIN, '|' len=2}
    20  :                                         BinOp(TK.GTR, '>')
-   21  :                                             Ref(TK.IDENT, 'close')
+   21  :                                             Get(TK.IDENT, 'close')
    22  :                                         FnCall('sma')
    23  :                                             Ref(TK.IDENT, 'sma')
    24  :                                             List(TK.LIST, [Int()])
@@ -530,25 +530,25 @@ tree7:(post)  rules2 := {
    55  :                 Ref(TK.IDENT, 'atr')
 
 tree8:(post)  rules3 := {
-    1  : DefineVar(TK.DEFINE: rules3 := Block(TK.BLOCK, ''))
+    1  : DefineVar(TK.DEFINE: rules3 := Generate(TK.GEN, ''))
     2  :     Ref(TK.IDENT, 'rules3')
-    3  :     Block{TK.BLOCK, len=2}
+    3  :     Generate(TK.SET, len=2)
     4  :         UnaryOp(TK.ANY, 'any')
     5  :             Flow{TK.CHAIN, '|' len=2}
     6  :                 Flow{TK.APPLY, '>>' len=2}
     7  :                     Flow{TK.CHAIN, '|' len=2}
-    8  :                         Combine(TK.COMBINE:  None Define(TK.DEFINE, '='))
-    9  :                             Block{TK.BLOCK, len=2}
+    8  :                         Combine(TK.COMBINE: [count=1]:set None Define(TK.DEFINE, '='))
+    9  :                             Generate(TK.SET, len=2)
    10  :                                 Flow{TK.CHAIN, '|' len=2}
    11  :                                     BinOp(TK.GTR, '>')
-   12  :                                         Ref(TK.IDENT, 'close')
+   12  :                                         Get(TK.IDENT, 'close')
    13  :                                     FnCall('sma')
    14  :                                         Ref(TK.IDENT, 'sma')
    15  :                                         List(TK.LIST, [Int()])
    16  :                                             Int(TK.INT, 10)
    17  :                                 Flow{TK.CHAIN, '|' len=2}
    18  :                                     BinOp(TK.GTR, '>')
-   19  :                                         Ref(TK.IDENT, 'close')
+   19  :                                         Get(TK.IDENT, 'close')
    20  :                                     FnCall('sma')
    21  :                                         Ref(TK.IDENT, 'sma')
    22  :                                         List(TK.LIST, [Int()])
@@ -587,25 +587,25 @@ tree8:(post)  rules3 := {
    55  :                 Ref(TK.IDENT, 'sell')
 
 tree9:(post)  rules4 = {
-    1  : Define(TK.DEFINE: rules4 = Block(TK.BLOCK, ''))
+    1  : Define(TK.DEFINE: rules4 = Generate(TK.GEN, ''))
     2  :     Ref(TK.IDENT, 'rules4')
-    3  :     Block{TK.BLOCK, len=2}
+    3  :     Generate(TK.SET, len=2)
     4  :         UnaryOp(TK.ANY, 'any')
     5  :             Flow{TK.CHAIN, '|' len=2}
     6  :                 Flow{TK.APPLY, '>>' len=2}
     7  :                     Flow{TK.CHAIN, '|' len=2}
-    8  :                         Combine(TK.COMBINE:  None Define(TK.DEFINE, '='))
-    9  :                             Block{TK.BLOCK, len=2}
+    8  :                         Combine(TK.COMBINE: [count=1]:set None Define(TK.DEFINE, '='))
+    9  :                             Generate(TK.SET, len=2)
    10  :                                 Flow{TK.CHAIN, '|' len=2}
    11  :                                     BinOp(TK.GTR, '>')
-   12  :                                         Ref(TK.IDENT, 'close')
+   12  :                                         Get(TK.IDENT, 'close')
    13  :                                     FnCall('sma')
    14  :                                         Ref(TK.IDENT, 'sma')
    15  :                                         List(TK.LIST, [Int()])
    16  :                                             Int(TK.INT, 10)
    17  :                                 Flow{TK.CHAIN, '|' len=2}
    18  :                                     BinOp(TK.GTR, '>')
-   19  :                                         Ref(TK.IDENT, 'close')
+   19  :                                         Get(TK.IDENT, 'close')
    20  :                                     FnCall('sma')
    21  :                                         Ref(TK.IDENT, 'sma')
    22  :                                         List(TK.LIST, [Int()])
@@ -644,25 +644,25 @@ tree9:(post)  rules4 = {
    55  :                 Ref(TK.IDENT, 'sell')
 
 tree10:(post)  def rules5 = {
-    1  : Define(TK.DEFINE: rules5 = Block(TK.BLOCK, ''))
+    1  : Define(TK.DEFINE: rules5 = Generate(TK.GEN, ''))
     2  :     Ref(TK.IDENT, 'rules5')
-    3  :     Block{TK.BLOCK, len=2}
+    3  :     Generate(TK.SET, len=2)
     4  :         UnaryOp(TK.ANY, 'any')
     5  :             Flow{TK.CHAIN, '|' len=2}
     6  :                 Flow{TK.APPLY, '>>' len=2}
     7  :                     Flow{TK.CHAIN, '|' len=2}
-    8  :                         Combine(TK.COMBINE:  None Define(TK.DEFINE, '='))
-    9  :                             Block{TK.BLOCK, len=2}
+    8  :                         Combine(TK.COMBINE: [count=1]:set None Define(TK.DEFINE, '='))
+    9  :                             Generate(TK.SET, len=2)
    10  :                                 Flow{TK.CHAIN, '|' len=2}
    11  :                                     BinOp(TK.GTR, '>')
-   12  :                                         Ref(TK.IDENT, 'close')
+   12  :                                         Get(TK.IDENT, 'close')
    13  :                                     FnCall('sma')
    14  :                                         Ref(TK.IDENT, 'sma')
    15  :                                         List(TK.LIST, [Int()])
    16  :                                             Int(TK.INT, 10)
    17  :                                 Flow{TK.CHAIN, '|' len=2}
    18  :                                     BinOp(TK.GTR, '>')
-   19  :                                         Ref(TK.IDENT, 'close')
+   19  :                                         Get(TK.IDENT, 'close')
    20  :                                     FnCall('sma')
    21  :                                         Ref(TK.IDENT, 'sma')
    22  :                                         List(TK.LIST, [Int()])
@@ -672,7 +672,7 @@ tree10:(post)  def rules5 = {
    26  :                                 Float(TK.FLOT, 0.01)
    27  :                         ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'signal'))
    28  :                             Ref(TK.IDENT, 'signal')
-   29  :                     FnRef(TK.FUNCTION, 'delay')
+   29  :                     FnCall('delay')
    30  :                         Ref(TK.IDENT, 'delay')
    31  :                         List(TK.LIST, [Duration()])
    32  :                             Duration(TK.DUR, 1 day, 0:00:00)
@@ -684,14 +684,14 @@ tree10:(post)  def rules5 = {
    38  :                 Flow{TK.APPLY, '>>' len=2}
    39  :                     Flow{TK.CHAIN, '|' len=2}
    40  :                         BinOp(TK.FALL_BELOW, '<|')
-   41  :                             Ref(TK.IDENT, 'close')
-   42  :                             FnRef(TK.FUNCTION, 'sma')
-   43  :                                 Ref(TK.IDENT, 'sma')
+   41  :                             Get(TK.IDENT, 'close')
+   42  :                             FnCall('sma')
+   43  :                                 Get(TK.IDENT, 'sma')
    44  :                                 List(TK.LIST, [Int()])
    45  :                                     Int(TK.INT, 10)
    46  :                         ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'signal'))
    47  :                             Ref(TK.IDENT, 'signal')
-   48  :                     FnRef(TK.FUNCTION, 'delay')
+   48  :                     FnCall('delay')
    49  :                         Ref(TK.IDENT, 'delay')
    50  :                         List(TK.LIST, [Duration()])
    51  :                             Duration(TK.DUR, 1 day, 0:00:00)
@@ -701,9 +701,9 @@ tree10:(post)  def rules5 = {
    55  :                 Ref(TK.IDENT, 'sell')
 
 tree11:(post)  report := { trades | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price') }
-    1  : DefineVar(TK.DEFINE: report := Block(TK.BLOCK, ''))
+    1  : DefineVar(TK.DEFINE: report := Generate(TK.GEN, ''))
     2  :     Ref(TK.IDENT, 'report')
-    3  :     Block{TK.BLOCK, len=1}
+    3  :     Generate(TK.SET, len=1)
     4  :         Flow{TK.CHAIN, '|' len=2}
     5  :             Get(TK.IDENT, 'trades')
     6  :             FnCall('select')

@@ -1,6 +1,6 @@
 from runtime.literals import Literal, Str
 from runtime.scope import Block, Flow
-from runtime.tree import Ref, UnaryOp, PropRef, BinOp, FnCall, Generate, Assign, DefineFn, ApplyChainProd
+from runtime.tree import Ref, UnaryOp, PropRef, BinOp, FnCall, Generate, Assign, DefineFn, ApplyChainProd, Slice
 
 from interpreter.notation import FunctionalNotationPrinter
 from interpreter.visitor import NodeVisitor, BINARY_NODE, UNARY_NODE, SEQUENCE_NODE, DEFAULT_NODE, VALUE_NODE, NATIVE_VALUE, \
@@ -49,6 +49,7 @@ _nodeTypeMappings = {
     'Return': UNARY_NODE,
     'Series': SEQUENCE_NODE,
     'Set': SEQUENCE_NODE,
+    'Slice': TRINARY_NODE,
     'Str': VALUE_NODE,
     'Time': VALUE_NODE,
     'Tuple': SEQUENCE_NODE,
@@ -263,6 +264,8 @@ def _format_node(node, print_location=False):
         return f'{ty}{lbc}TK.{tk.name}, \'{lex}\' len={len(node)}{rbc}{loc}'
     elif isinstance(node, Block):
         return f'{ty}{lbc}TK.{tk.name}, len={len(node)}{rbc}{loc}'
+    elif isinstance(node, Slice):
+        return f'{_format_slice(node)}{loc}'
     elif isinstance(node, FnCall):
         return f'{ty}(\'{node.left.token.lexeme}\'){loc}'
     elif isinstance(node, Generate):
@@ -286,6 +289,41 @@ def _format_node(node, print_location=False):
         return f'{ty}(TK.{op.name}, TK.{tk.name}, \'{lex}\'){loc}'
     else:
         return f'{ty}(TK.{tk.name}, v={node.value}, \'{lex}\'){loc}'
+
+
+def _format_slice(node):
+    ty = type(node).__name__
+    start = node.start
+    end = node.end
+    step = node.step
+    lval = "None"
+    rval = "None"
+    sval = "1"
+    if start is None:
+        lval = ''
+    elif isinstance(start, Literal):
+        lval = f'{start}'
+    else:
+        lty = type(start).__name__
+        ltk = start.token
+        lval = f'{lty}(TK.{ltk.id.name}, \'{start.lexeme}\')'
+    if end is None:
+        rval = ''
+    elif isinstance(end, Literal):
+        rval = f'{end}'
+    else:
+        rty = type(start).__name__
+        rtk = end.token
+        rval = f'{rty}(TK.{rtk.id.name}, \'{end.lexeme}\')'
+    if step is None:
+        sval = ''
+    elif isinstance(step, Literal):
+        sval = f'{step}'
+    else:
+        sty = type(start).__name__
+        stk = step.token
+        sval = f'{sty}(TK.{stk.id.name}, \'{step.lexeme}\')'
+    return f'Slice({lval} : {rval} :: {sval})'
 
 
 def _format_binary_node(node, left, right, lex):

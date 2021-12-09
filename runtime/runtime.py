@@ -36,9 +36,12 @@ def find_file(name, search_paths=None, extensions=None):
 
 
 def load_file(fname, search_paths=None):
+    options = getOptions('focal')
     fname = find_file(fname, search_paths=search_paths)
     name = os.path.splitext(os.path.basename(fname))[0]
     ext = os.path.splitext(fname)[1]
+    if ext == '.t':
+        options['step_wise'] = True
     idx = 0
     with open(fname, 'r') as file:
         text = file.read()

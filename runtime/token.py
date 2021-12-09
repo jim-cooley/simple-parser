@@ -411,6 +411,10 @@ class Token:
         return Token(tid=TK.SET, tcl=TCL.LITERAL, lex='', val=value, loc=loc)
 
     @staticmethod
+    def SLICE(value=None, loc=None):
+        return Token(tid=TK.SLICE, tcl=TCL.BINOP, lex='', val=value, loc=loc)
+
+    @staticmethod
     def STR(value=None, loc=None):
         return Token(tid=TK.STR, tcl=TCL.LITERAL, lex='', val=value, loc=loc)
 

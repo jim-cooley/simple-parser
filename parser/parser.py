@@ -13,7 +13,7 @@ from runtime.token_class import TCL
 from runtime.token import Token
 from runtime.token_ids import TK
 from runtime.tree import UnaryOp, BinOp, Assign, Get, FnCall, Index, PropRef, Define, DefineFn, DefineVar, \
-    DefineVarFn, ApplyChainProd, Ref, FnRef, Return, IfThenElse, Generate, Combine, GenerateRange
+    DefineVarFn, ApplyChainProd, Ref, FnRef, Return, IfThenElse, Generate, Combine, GenerateRange, Slice
 from runtime.scope import Block, Flow
 from runtime.function import Function
 from runtime.literals import Float, Int, Percent, Str, Bool, Literal
@@ -392,17 +392,17 @@ class Parser(object):
             op = self.peek()
         return l_node
 
-    def unary(self):
+    def unary(self, no_time=False):
         op = self.peek()
         if self.match(UNARY_TOKENS):
             node = UnaryOp(op.remap2unop(), self.unary())
             return node
-        node = self.prime()
+        node = self.prime(no_time=no_time)
         if node is not None and node.token.id in [TK.ANY, TK.ALL, TK.NONEOF]:
             node = UnaryOp(node.token, self.unary())
         return node
 
-    def prime(self):
+    def prime(self, no_time=False):
         node = None
         token = self.peek()
         if token.id == TK.EOL:
@@ -420,7 +420,10 @@ class Parser(object):
         elif token.id == TK.DUR:
             node = Duration(token=token)
         elif token.id == TK.TIME:
-            node = Time(token=token)
+            if no_time:
+                node = Str(token=token)
+            else:
+                node = Time(token=token)
         elif token.id == TK.QUOT:
             node = Str(token=token)
         elif token.id == TK.EMPTY:
@@ -459,36 +462,25 @@ class Parser(object):
         seq = []
         tk = self.peek()
         loc = tk.location
-        is_lvalue_strict = is_lvalue    # no assignment or operators on rhs of included exprs
         cid = TK.SET
         while self.peek().id != TK.EOF and self.peek().id != TK.RBRC:
             decl = self.declaration()
             seq.append(decl)
             if isinstance(decl, Combine):
-                cid = TK.SERIES
+                if cid == TK.SET:
+                    cid = TK.DATAFRAME
+                if isinstance(decl.right, Assign):  # combine with an assign is an expression
+                    cid = TK.BLOCK
             elif isinstance(decl, Assign):
                 if cid == TK.SET:
                     cid = TK.BLOCK
-                    is_lvalue_strict = False
-            if is_lvalue:
-                if hasattr(decl, 'is_lvalue'):
-                    is_lvalue = decl.is_lvalue
-                elif not isinstance(decl, Literal) and not isinstance(decl, Get):
-                    if decl.token.id not in [TK.COLN, TK.EQLS]:
-                        is_lvalue_strict = is_lvalue = False
-                if is_lvalue_strict:
-                    if decl.token.id not in VALUE_TOKENS:
-                        if decl.token.id not in [TK.COLN, TK.GEN]:
-                            is_lvalue_strict = False
-                            if hasattr(decl, 'right'):
-                                if decl.right is not None:
-                                    if decl.right.token.id in VALUE_TOKENS:
-                                        is_lvalue_strict = True
-                                else:
-                                    is_lvalue_strict = False
+            # else:
+            #    cid = TK.BLOCK
+            if self.peek(-1).id in [TK.COLN]:  # declaration() eats the separator
+                cid = TK.DATAFRAME
         if len(seq) == 0:
             return Set(seq, Token.EMPTY(loc=loc))
-        elif is_lvalue and is_lvalue_strict:
+        elif cid != TK.BLOCK:
             return build_collection(cid, items=seq, loc=loc)
         else:
             return Block(items=seq, loc=loc)
@@ -519,15 +511,61 @@ class Parser(object):
                 node = Ref(tk) if is_lval else Get(tk)
         return node
 
-    def idx_list(self, node=None):
+    def idx_list(self):
         """( EXPR ',' ... )"""
-        seq = [] if node is None else [node]
         self.match([TK.LBRK])
-        token = copy(self.peek())
+        token = self.peek()
+        seq = None
         if token.id != TK.RBRK:
-            seq = self.sequence(node)
+            seq = self.idx_slice()
         self.consume(TK.RBRK)
-        return List(seq, Token.TUPLE(loc=token.location))
+        if seq is None:
+            return List(None, Token.TUPLE(loc=token.location))
+        else:
+            return seq
+
+    def idx_slice(self, node=None):
+        """( from ':' to '::' step | term [, term] )"""
+        seq = []
+        start = end = step = None
+        tid = TK.INDEX
+        while True:
+            token = self.peek()
+            if token.id in [TK.COLN, TK.COMN]:
+                tid = TK.SLICE
+                self.advance()
+                end = self.unary(no_time=True)
+                if token.id == TK.COMN:
+                    end = UnaryOp(Token.NEG(loc=token.location), end)
+                if end is not None:
+                    if end.tid == TK.TIME:
+                        tid = TK.SLICE
+                        seq = str2slice(end)
+                        del seq[2]
+                        seq.insert(0, None)
+            elif token.id == TK.CLN2:
+                tid = TK.SLICE
+                self.advance()
+                step = self.unary(no_time=True)
+            else:
+                start = self.unary(no_time=True)
+                if start is not None:
+                    if start.tid == TK.TIME:
+                        tid = TK.SLICE
+                        seq = str2slice(start)
+                    else:
+                        seq.append(start)
+                token = self.peek()
+                if token.id not in [TK.COMA, TK.COLN, TK.COMN, TK.CLN2]:
+                    break
+                if token.id == TK.COMA:
+                    self.advance()
+        if tid == TK.INDEX:
+            return List(seq, Token.TUPLE(loc=token.location))
+        else:
+            if len(seq) == 0:
+                seq = [start, end, step]
+            return Slice(start=seq[0], end=seq[1], step=seq[2], loc=token.location)
 
     def plist(self, node=None):
         """( EXPR ',' ... )"""
@@ -555,6 +593,15 @@ class Parser(object):
         else:
             return List(items=seq, loc=token.location)
 
+    def sequence(self, node=None):
+        """EXPR <sep> EX1PR <sep> ..."""
+        seq = [] if node is None else [node]
+        while True:
+            seq.append(self.expression())
+            if not self.match1(TK.COMA):
+                break
+        return seq
+
     def series(self):
         """
         Parse a potential Series() object.  If not determined to be a Series, it is returned as a List.
@@ -579,15 +626,6 @@ class Parser(object):
                 break
         node = Generate(target=(TK.SERIES if is_series else TK.LIST), items=seq, loc=loc)
         return node
-
-    def sequence(self, node=None):
-        """EXPR <sep> EX1PR <sep> ..."""
-        seq = [] if node is None else [node]
-        while True:
-            seq.append(self.expression())
-            if not self.match1(TK.COMA):
-                break
-        return seq
 
     # return current token with provision for fetching if there are none.
     # after the first token, self.token works fine for peek.
@@ -650,9 +688,6 @@ class Parser(object):
             return True
         return False
 
-    def print_symbol_table(self):
-        self._symbol_table.printall()
-
 
 def _rewriteGets(node):
     rewriter = RewriteGets2Refs()
@@ -680,3 +715,19 @@ def _is_valid_l_value(l_expr):
         return _is_valid_l_value(l_expr.left)
     else:
         return False
+
+
+def str2slice(s):
+    if s.tid == TK.TIME:
+        seq = s.lexeme.split(':')
+        if len(seq) > 3:
+            seq[2] = seq[3]
+            del seq[3]
+        elif len(seq) == 2:
+            seq.append(1)
+        elif len(seq) == 1:
+            seq[2] = ''
+            seq[3] = 1
+        seq = [Int(x) if x is not '' else Literal.NONE() for x in seq]
+        return seq
+    return [None, None, None]

@@ -9,4 +9,4 @@ tree1:  false or true
     3  :     Bool(TK.BOOL, True)
 
 tree1:(post)  false or true
-    1  : Bool(TK.BOOL, False)
+    1  : Bool(TK.BOOL, True)

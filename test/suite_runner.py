@@ -17,7 +17,10 @@ _SCRIPT_SEARCH_PATH = [
 ]
 
 _option_defaults = {
-    'strict': False,    # option_strict forces variables to be defined before they are used
+    'auto_listback': True,  # automatically show source after load
+    'auto_parse': True,     # automatically parse upon load
+    'auto_run': True,       # automatically run after parsing
+    'strict': False,        # option_strict forces variables to be defined before they are used
     'force_errors': False,  # option_force_errors forces warnings into errors
     'throw_errors': True,
     'print_tokens': False,
@@ -135,7 +138,8 @@ def _log_exception(e, log, name):
         print(f'{trace}')
 
 
-def _dump_environment(env, label=None, print_results=False, print_tokens=True, print_trees=True, print_symbols=False,
+def _dump_environment(env, label=None, print_results=False, print_tokens=True, print_trees=True,
+                      print_symbols=False, print_keywords=False,
                       print_notation=True):
     logger = env.logger
     if print_tokens:
@@ -147,7 +151,8 @@ def _dump_environment(env, label=None, print_results=False, print_tokens=True, p
         logger.flush()
     if print_symbols:
         _print_banner("symbols")
-        _dump_keywords(logger, env.keywords)
+        if print_keywords:
+            _dump_keywords(logger, env.keywords)
         _dump_symbols(logger, env.scope)
         logger.flush()
 
@@ -172,7 +177,7 @@ def _dump_tokens(env):
     env.tokens.printall()
 
 
-def _dump_symbols(logger, scope):
+def _dump_symbols(logger, scope, print_keywords=False):
     logger.print("\n\nsymbols: ")
     idx = 0
     q = SimpleQueue()

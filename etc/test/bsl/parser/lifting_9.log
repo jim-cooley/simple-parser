@@ -4,6 +4,6 @@ test: 9:
 {-1}
 
 tree1:  {-1}
-    1  : Block{TK.BLOCK, len=1}
+    1  : Generate(TK.SET, len=1)
     2  :     UnaryOp(TK.NEG, '-')
     3  :         Int(TK.INT, 1)

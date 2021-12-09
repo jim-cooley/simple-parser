@@ -4,9 +4,9 @@ test: 22:
 def f(x) = { a.b(x):x*x }
 
 tree1:  def f(x) = { a.b(x):x*x }
-    1  : DefineFn(TK.DEFINE: f = Block(TK.BLOCK, ''))
+    1  : DefineFn(TK.DEFINE: f = Generate(TK.GEN, ''))
     2  :     Ref(TK.IDENT, 'f')
-    3  :     Block{TK.BLOCK, len=1}
+    3  :     Generate(TK.DATAFRAME, len=1)
     4  :         Combine(TK.COMBINE: PropRef(TK.REF, '.') None BinOp(TK.MUL, '*'))
     5  :             PropRef(TK.REF: a . FnCall(TK.FUNCTION, 'b'))
     6  :                 Ref(TK.IDENT, 'a')

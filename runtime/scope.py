@@ -253,7 +253,7 @@ class Flow(Block):
 
 @dataclass
 class FunctionBase(Block):
-    def __init__(self, name=None, members=None, arity=None, defaults=None, parameters=None, other=None, tid=None, loc=None, is_lvalue=True):
+    def __init__(self, name=None, members=None, arity=None, opt=None, defaults=None, parameters=None, other=None, tid=None, loc=None, is_lvalue=True):
         if other is not None:
             name = other.name
             members = other._members
@@ -262,16 +262,20 @@ class FunctionBase(Block):
                 defaults = other.defaults
         super().__init__(name=name, members=members, loc=loc)
         self.arity = arity or 0
+        self.opt = opt or 0
         self.set_token(tid=tid or TK.IDENT, tcl=TCL.FUNCTION, loc=loc, lex=name)
         self._value = self._items
         self.is_lvalue = is_lvalue
         self.code = None
         self.parameters = parameters
-        self.defaults = defaults
         if defaults is not None:
             if not isinstance(defaults, IndexedDict):
                 defaults = IndexedDict(items=defaults)
-            self.defaults = defaults
+        self.defaults = defaults
+
+    def format(self, brief=True):
+        v = f'{self._value}' if self._value is not None else 'None'
+        return f'{self.name} = {v}'
 
 
 def _dump_symbols(scope):

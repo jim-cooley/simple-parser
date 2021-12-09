@@ -6,7 +6,7 @@ any:{ cross(close, sma(20), delay=1, threshold=0.01) } | buy
 tree1:  any:{ cross(close, sma(20), delay=1, threshold=0.01) } | buy
     1  : UnaryOp(TK.ANY, 'any')
     2  :     Flow{TK.CHAIN, '|' len=2}
-    3  :         Block{TK.BLOCK, len=1}
+    3  :         Generate(TK.SET, len=1)
     4  :             FnCall('cross')
     5  :                 Get(TK.IDENT, 'cross')
     6  :                 Generate(TK.NAMEDTUPLE, len=4)

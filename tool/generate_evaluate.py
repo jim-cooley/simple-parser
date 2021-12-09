@@ -7,9 +7,9 @@ from tool.codewriter import CodeWriter, TY
 from runtime.logwriter import LogWriter
 from tool.tables import _assign_obj_fn, _evaluate_boolops_fn, _evaluate_binops_fn
 
-_COLUMNS = ['any', 'none', 'int', 'float', 'bool', 'str', 'datetime', 'timedelta', 'Object', 'Block', 'DataFrame', 'Range', 'Series', 'Set', 'list', 'ndarray']
+_COLUMNS = ['any', 'none', 'int', 'float', 'bool', 'str', 'datetime', 'timedelta', 'Object', 'Block', 'DataFrame', 'Range', 'Series', 'Set', 'list', 'ndarray', 'function']
 
-_rc2tok = [TK.OBJECT, TK.NONE, TK.INT, TK.FLOT, TK.BOOL, TK.STR, TK.TIME, TK.DUR, TK.OBJECT, TK.BLOCK, TK.DATAFRAME, TK.RANGE, TK.SERIES, TK.SET, TK.LIST, TK.LIST]
+_rc2tok = [TK.OBJECT, TK.NONE, TK.INT, TK.FLOT, TK.BOOL, TK.STR, TK.TIME, TK.DUR, TK.OBJECT, TK.BLOCK, TK.DATAFRAME, TK.RANGE, TK.SERIES, TK.SET, TK.LIST, TK.LIST, TK.FUNCTION]
 
 # this is used primarily to create the Fn names, so parforms type translation and to_lower()
 _type2native = {
@@ -17,13 +17,17 @@ _type2native = {
     'Bool': 'bool',
     'bool': 'bool',
     'DataFrame': 'dataframe',
+    'datafrane': 'dataframe',
     'DateTime': 'datetime',
     'datetime': 'datetime',
     'Duration': 'timedelta',
     'Float': 'float',
     'float': 'float',
+    'Function': 'function',
+    'function': 'function',
     'Ident': 'object',
     'Int': 'int',
+    'IntrinsicFunction': 'function',
     'int': 'int',
     'List': 'list',
     'list': 'list',
@@ -146,8 +150,8 @@ class GenerateEvalDispatch:
         self.o.define_fn(f'eval_{name}_dispatch', 'node, left, right')
         self.o.l_print(0, "    l_value = left\n")
         if self.is_assign_style:
-            self.o.l_print(0,
-                           "    if l_ty != 'Object':    # for assignment, left is a ref not a value")
+            self.o.l_print(0, "    l_ty = _type2native[type(l_value).__name__]\n")
+            self.o.l_print(0, "    if l_ty != 'Object':    # for assignment, left is a ref not a value")
             indent = 1
         else:
             indent = 0

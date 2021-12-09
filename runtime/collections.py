@@ -140,7 +140,9 @@ class List(Literal):
         self._items[index] = value
 
     def __len__(self):
-        return len(self._items)
+        if self._items is not None:
+            return len(self._items)
+        return 0
 
     @staticmethod
     def EMPTY(loc=None):

@@ -47,14 +47,14 @@ _map2freq = {
 
 
 def init_yahoo(name):
-    return IndexedDict({'symbols': None,
-                        'first': None,
-                        'last': get_t_now(),
-                        'span': Duration(DEFAULT_SPAN_YRS),
-                        'frequency': DAILY,
-                        'dropna': True,
-                        'offline': False
-                        })
+    return {'symbols': None,
+            'first': None,
+            'last': get_t_now(),
+            'span': Duration(DEFAULT_SPAN_YRS),
+            'frequency': DAILY,
+            'dropna': True,
+            'offline': False
+            }
 
 
 def do_yahoo(env, args):

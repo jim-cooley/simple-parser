@@ -30,7 +30,7 @@ case "$prefx" in
   f | fi | fixups)
       prefx="fixups"
       ;;
-  i | s | semtex | focal)
+  i | fo | s | semtex | focal)
       prefx="focal"
       ;;
   *)

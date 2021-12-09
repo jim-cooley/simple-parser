@@ -4,7 +4,7 @@ test: 3:
 { 'train': (today-2y)..today }
 
 tree1:  { 'train': (today-2y)..today }
-    1  : Block{TK.BLOCK, len=1}
+    1  : Generate(TK.DATAFRAME, len=1)
     2  :     Combine(TK.COMBINE: train None GenerateRange(TK.GEN, ''))
     3  :         Str(TK.STR, 'train')
     4  :         GenerateRange(TK.RANGE, len=3)

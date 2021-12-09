@@ -3,9 +3,10 @@ from datetime import timedelta
 from enum import IntEnum, unique, auto
 
 import numpy
+import pandas as pd
 
 from runtime.conversion import c_unbox, c_sign, c_type
-from runtime.time import get_dt_now
+from runtime.time import get_dt_now, _parse_date_value, _parse_time_value
 from runtime.series import Series
 from runtime.token_ids import TK
 
@@ -28,6 +29,18 @@ _DEFAULT_DATAFRAME_ITEMS = {
 # gives a common super-type to all instances: isinstance(generator, FocalGenerator) == True
 class FocalGenerator:
     pass
+
+
+class DataframeGenerator(FocalGenerator):
+    def __init__(self, name=None, selector=None, values=None, columns=None, index=None):
+        self.name = name
+        self.values = values
+        self.columns = columns
+        self.index = index
+        self.series = selector  # special series designator
+
+    def getall(self):
+        return pd.DataFrame(data=self.values, columns=self.columns, index=self.index)
 
 
 class RangeGenerator(FocalGenerator):
@@ -100,7 +113,6 @@ class RangeGenerator(FocalGenerator):
         return list(self)
 
 
-# later this will hold more complex construction logic and support iteration
 class SeriesGenerator(FocalGenerator):
     def __init__(self, name=None, selector=None, values=None, index=None):
         self.name = name
@@ -113,7 +125,28 @@ class SeriesGenerator(FocalGenerator):
 
 
 def generate_dataframe(env, args):
-    return None
+    name = None
+    index = None
+    columns = None
+    if hasattr(args, NAME_PROPERTY):
+        name = copy(c_unbox(args.name))
+    if hasattr(args, INDEX_PROPERTY):
+        index = deepcopy(c_unbox(args.index))
+    if hasattr(args, COLUMNS_PROPERTY):
+        columns = deepcopy(c_unbox(args.columns))
+    args.remove([NAME_PROPERTY, INDEX_PROPERTY, COLUMNS_PROPERTY])
+    values = args.values()
+    if isinstance(values, list):
+        if len(values) == 1:
+            values = values[0]
+    keys = args.keys()
+    if None not in keys:
+        if columns is None:
+            if len(keys) == len(values):
+                values = args.dict()
+    gen = DataframeGenerator(name=name, values=values, columns=columns, index=index)
+    dframe = gen.getall()
+    return dframe
 
 
 def generate_dict(env, args):
@@ -121,6 +154,14 @@ def generate_dict(env, args):
 
 
 def generate_list(env, args):
+    return args.values()
+
+
+def generate_set(env, args):
+    return args.values()
+
+
+def generate_tuple(env, args):
     return args.values()
 
 
@@ -132,36 +173,53 @@ def generate_named_tuple(env, args):
 # UNDONE: just need to make sure that works in all cases.
 def generate_range(env, args):
     start = end = _zero = 0
+    step = 1
     args = list(filter(None.__ne__, args))
     ty = c_type(args[0])
-    if ty == TK.DUR:
-        step = timedelta(days=1)
-        _zero = timedelta(days=0)
-        start = end = _zero
-    elif ty not in [TK.INT, TK.FLOT]:
-        raise TypeError(f"Unsupported range type TK.{TK(ty).name}")
+    if ty == TK.STR:
+        start = _parse_datetime(args[0])
+        ty = TK.TIME
+        if len(args) > 1:
+            _e = args[1]
+            if isinstance(_e, int):
+                end = start + timedelta(args[1])
+            else:
+                end = _parse_datetime(_e)
+        if len(args) > 2:
+            step = timedelta(args[2])
+        else:
+            step = timedelta(1)
     else:
-        step = 1
-    if hasattr(args, 'end'):
-        end = args.end
-    elif len(args) == 1:
-        end = args[0]
-        if c_sign(end) < 0:
+        if ty == TK.DUR:
+            step = timedelta(days=1)
+            _zero = timedelta(days=0)
+            start = end = _zero
+        elif ty not in [TK.INT, TK.FLOT]:
+            raise TypeError(f"Unsupported range type TK.{TK(ty).name}")
+        else:
+            step = 1
+        if len(args) == 1:
+            end = args[0]
+            if c_sign(end) < 0:
+                start = args[0]
+                end = _zero
+        if len(args) > 1:
             start = args[0]
-            end = _zero
-    if hasattr(args, 'width'):
-        width = args.width
-    if hasattr(args, 'start'):
-        start = args.start
-    elif len(args) > 1:
-        start = args[0]
-        end = args[1]
-    if hasattr(args, 'step'):
-        step = args.step
-    elif len(args) > 2:
-        step = args[2]
+            end = args[1]
+        if len(args) > 2:
+            step = args[2]
     r = RangeGenerator(start=start, end=end, step=step)
     return r.getall()
+
+
+def _parse_datetime(v):
+    val = c_unbox(v)
+    start = _parse_date_value(val, expect=False)
+    if start is None:
+        start = _parse_time_value(val, expect=False)
+        if start is None:
+            raise TypeError(f"{val} Does not represent a supported range type")
+    return start
 
 
 def generate_series(env, args):
@@ -175,13 +233,3 @@ def generate_series(env, args):
     gen = SeriesGenerator(name=name, values=args.dict(), index=index)
     series = gen.getall()
     return series
-
-
-def generate_set(env, args):
-    return None
-
-
-def generate_tuple(env, args):
-    return None
-
-

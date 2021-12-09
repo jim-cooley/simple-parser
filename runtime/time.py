@@ -1,6 +1,6 @@
 import re
 from dataclasses import dataclass
-from datetime import time, datetime, timedelta
+import datetime as dt
 
 from runtime.literals import Literal
 from runtime.collections import DUR
@@ -59,42 +59,46 @@ class Time(Literal):
         return self._value.strftime(fmt) if self._value is not None else 'None'
 
 
-def _parse_time_value(lex):
+def _parse_time_value(lex, expect=True):
     lex = lex.lower().replace('am', ' AM').replace('a', ' AM').replace('pm', ' PM').replace('p', ' PM')
     try:
-        return time.fromisoformat(lex)
+        return dt.time.fromisoformat(lex)
     except ValueError as e:
         pass
     for format in ("%-H:%M:%S", "%H:%M:%S", "%-I:%M:%S %p", "%I:%M:%S %p", "%-H:%M", "%H:%M",
                    "%-I:%M %p", "%I:%M %p", "%H:%M:%S.%f", "%I:%M:%S.%f %p"):
         try:
-            return datetime.strptime(lex, format).time()
+            return dt.datetime.strptime(lex, format).time()
         except ValueError as e:
             continue
-    raise Exception(f'Format Error: {lex} not a date/time value.')
+    if expect:
+        raise Exception(f'Format Error: {lex} not a date/time value.')
+    return None
 
 
-def _parse_date_value(lex):
+def _parse_date_value(lex, expect=True):
     lex = lex.lower().replace('am', ' AM').replace('a', ' AM').replace('pm', ' PM').replace('p', ' PM')
 
     try:
-        return datetime.fromisoformat(lex)
-    except ValueError as e:
+        return dt.datetime.fromisoformat(lex)
+    except (TypeError, ValueError) as e:
         pass
     try:
-        return datetime.fromtimestamp(lex)
-    except ValueError as e:
+        return dt.datetime.fromtimestamp(lex)
+    except (TypeError, ValueError) as e:
         pass
 
     for format in ("%-H:%M:%S", "%H:%M:%S", "%-I:%M:%S %p", "%I:%M:%S %p",
                    "%-H:%M", "%H:%M", "%-I:%M %p", "%I:%M %p", "%H:%M:%S.%f",
                    "%I:%M:%S.%f %p",
-                   "%d/%m/%y %H:%M", "%a %d/%m/%y %H:%M", "%x", "%X", "%x %X"):
+                   "%d/%m/%y %H:%M", "%a %d/%m/%y %H:%M", "%d/%m/%y", "%d/%m/%Y", "%x", "%X", "%x %X"):
         try:
-            return datetime.strptime(lex, format).time()
-        except ValueError as e:
+            return dt.datetime.strptime(lex, format)
+        except (TypeError, ValueError) as e:
             continue
-    raise Exception(f'Format Error: {lex} not a date/time value.')
+    if expect:
+        raise Exception(f'Format Error: {lex} not a date/time value.')
+    return None
 
 
 def _parse_duration(lex):
@@ -104,19 +108,19 @@ def _parse_duration(lex):
     n = float(digits)
     dur = None
     if units == DUR.DAY:
-        dur = timedelta(days=n)
+        dur = dt.timedelta(days=n)
     elif units == DUR.WEEK:
-        dur = timedelta(days=7*n)
+        dur = dt.timedelta(days=7*n)
     elif units == DUR.MONTH:
-        dur = timedelta(days=28*n)
+        dur = dt.timedelta(days=28*n)
     elif units == DUR.YEAR:
-        dur = timedelta(days=365*n)
+        dur = dt.timedelta(days=365*n)
     elif units == DUR.HOUR:
-        dur = timedelta(hours=n)
+        dur = dt.timedelta(hours=n)
     elif units == DUR.MINUTE:
-        dur = timedelta(minutes=n)
+        dur = dt.timedelta(minutes=n)
     elif units == DUR.SECOND:
-        dur = timedelta(seconds=n)
+        dur = dt.timedelta(seconds=n)
     return dur, units
 
 
@@ -140,11 +144,11 @@ def _parse_duration_units(units):
 
 
 def get_t_now():
-    return Time(datetime.now())
+    return Time(dt.datetime.now())
 
 
 def get_dt_now():
-    return datetime.now()
+    return dt.datetime.now()
 
 
 def do_now(env=None):

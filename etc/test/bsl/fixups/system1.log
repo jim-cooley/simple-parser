@@ -29,9 +29,9 @@ rules: {
 
 
 tree1:  periods = {
-    1  : Define(TK.DEFINE: periods = Block(TK.BLOCK, ''))
+    1  : Define(TK.DEFINE: periods = Generate(TK.GEN, ''))
     2  :     Ref(TK.IDENT, 'periods')
-    3  :     Block{TK.BLOCK, len=1}
+    3  :     Generate(TK.DATAFRAME, len=1)
     4  :         Combine(TK.COMBINE: train None GenerateRange(TK.GEN, ''))
     5  :             Ref(TK.IDENT, 'train')
     6  :             GenerateRange(TK.RANGE, len=3)
@@ -84,9 +84,9 @@ tree6:  # sample rules file for pyser / qtradr
     2  :     Time(TK.TIME, 10:00:00)
 
 tree7:  report := { trades | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price') }
-    1  : DefineVar(TK.DEFINE: report := Block(TK.BLOCK, ''))
+    1  : DefineVar(TK.DEFINE: report := Generate(TK.GEN, ''))
     2  :     Ref(TK.IDENT, 'report')
-    3  :     Block{TK.BLOCK, len=1}
+    3  :     Generate(TK.SET, len=1)
     4  :         Flow{TK.CHAIN, '|' len=2}
     5  :             Get(TK.IDENT, 'trades')
     6  :             FnCall('select')
@@ -102,27 +102,27 @@ tree8:  rules: {
     1  : Combine(TK.COMBINE: rules None Block(TK.BLOCK, ''))
     2  :     Ref(TK.IDENT, 'rules')
     3  :     Block{TK.BLOCK, len=2}
-    4  :         Define(TK.DEFINE: baseline = Block(TK.BLOCK, ''))
+    4  :         Define(TK.DEFINE: baseline = Generate(TK.GEN, ''))
     5  :             Ref(TK.IDENT, 'baseline')
-    6  :             Block{TK.BLOCK, len=2}
+    6  :             Generate(TK.SET, len=2)
     7  :                 Flow{TK.CHAIN, '|' len=2}
     8  :                     Flow{TK.APPLY, '>>' len=2}
     9  :                         Flow{TK.CHAIN, '|' len=2}
    10  :                             Combine(TK.COMBINE: buy None UnaryOp(TK.ANY, 'any:'))
    11  :                                 Ref(TK.IDENT, 'buy')
    12  :                                 UnaryOp(TK.ANY, 'any:')
-   13  :                                     Combine(TK.COMBINE:  None Define(TK.DEFINE, '='))
-   14  :                                         Block{TK.BLOCK, len=3}
+   13  :                                     Combine(TK.COMBINE: [count=2]:set None Define(TK.DEFINE, '='))
+   14  :                                         Generate(TK.SET, len=3)
    15  :                                             Flow{TK.CHAIN, '|' len=2}
    16  :                                                 BinOp(TK.GTR, '>')
-   17  :                                                     Ref(TK.IDENT, 'close')
+   17  :                                                     Get(TK.IDENT, 'close')
    18  :                                                 FnCall('sma')
    19  :                                                     Ref(TK.IDENT, 'sma')
    20  :                                                     List(TK.LIST, [Int()])
    21  :                                                         Int(TK.INT, 10)
    22  :                                             Flow{TK.CHAIN, '|' len=2}
    23  :                                                 BinOp(TK.GTR, '>')
-   24  :                                                     Ref(TK.IDENT, 'close')
+   24  :                                                     Get(TK.IDENT, 'close')
    25  :                                                 FnCall('sma')
    26  :                                                     Ref(TK.IDENT, 'sma')
    27  :                                                     List(TK.LIST, [Int()])
@@ -130,7 +130,7 @@ tree8:  rules: {
    29  :                                             Flow{TK.CHAIN, '|' len=2}
    30  :                                                 BinOp(TK.GTR, '>')
    31  :                                                     FnCall('sma')
-   32  :                                                         Ref(TK.IDENT, 'sma')
+   32  :                                                         Get(TK.IDENT, 'sma')
    33  :                                                         List(TK.LIST, [Int()])
    34  :                                                             Int(TK.INT, 10)
    35  :                                                 FnCall('sma')
@@ -167,14 +167,14 @@ tree8:  rules: {
    66  :                                 Duration(TK.DUR, 1 day, 0:00:00)
    67  :                     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'atr'))
    68  :                         Ref(TK.IDENT, 'atr')
-   69  :         Define(TK.DEFINE: scenario = Block(TK.BLOCK, ''))
+   69  :         Define(TK.DEFINE: scenario = Generate(TK.GEN, ''))
    70  :             Ref(TK.IDENT, 'scenario')
-   71  :             Block{TK.BLOCK, len=2}
+   71  :             Generate(TK.SET, len=2)
    72  :                 Flow{TK.APPLY, '>>' len=2}
    73  :                     Flow{TK.CHAIN, '|' len=2}
-   74  :                         Combine(TK.COMBINE: buy None Block(TK.BLOCK, ''))
+   74  :                         Combine(TK.COMBINE: buy None Generate(TK.GEN, ''))
    75  :                             Ref(TK.IDENT, 'buy')
-   76  :                             Block{TK.BLOCK, len=1}
+   76  :                             Generate(TK.SET, len=1)
    77  :                                 Flow{TK.CHAIN, '|' len=2}
    78  :                                     BinOp(TK.GTR, '>')
    79  :                                         Get(TK.IDENT, 'close')
@@ -210,9 +210,9 @@ tree8:  rules: {
   109  :                                 Duration(TK.DUR, 1 day, 0:00:00)
 
 tree1:(post)  periods = {
-    1  : Define(TK.DEFINE: periods = Block(TK.BLOCK, ''))
+    1  : Define(TK.DEFINE: periods = Generate(TK.GEN, ''))
     2  :     Ref(TK.IDENT, 'periods')
-    3  :     Block{TK.BLOCK, len=1}
+    3  :     Generate(TK.DATAFRAME, len=1)
     4  :         Combine(TK.COMBINE: train None GenerateRange(TK.GEN, ''))
     5  :             Ref(TK.IDENT, 'train')
     6  :             GenerateRange(TK.RANGE, len=3)
@@ -265,9 +265,9 @@ tree6:(post)  # sample rules file for pyser / qtradr
     2  :     Time(TK.TIME, 10:00:00)
 
 tree7:(post)  report := { trades | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price') }
-    1  : DefineVar(TK.DEFINE: report := Block(TK.BLOCK, ''))
+    1  : DefineVar(TK.DEFINE: report := Generate(TK.GEN, ''))
     2  :     Ref(TK.IDENT, 'report')
-    3  :     Block{TK.BLOCK, len=1}
+    3  :     Generate(TK.SET, len=1)
     4  :         Flow{TK.CHAIN, '|' len=2}
     5  :             Get(TK.IDENT, 'trades')
     6  :             FnCall('select')
@@ -283,27 +283,27 @@ tree8:(post)  rules: {
     1  : Combine(TK.COMBINE: rules None Block(TK.BLOCK, ''))
     2  :     Ref(TK.IDENT, 'rules')
     3  :     Block{TK.BLOCK, len=2}
-    4  :         Define(TK.DEFINE: baseline = Block(TK.BLOCK, ''))
+    4  :         Define(TK.DEFINE: baseline = Generate(TK.GEN, ''))
     5  :             Ref(TK.IDENT, 'baseline')
-    6  :             Block{TK.BLOCK, len=2}
+    6  :             Generate(TK.SET, len=2)
     7  :                 Flow{TK.CHAIN, '|' len=2}
     8  :                     Flow{TK.APPLY, '>>' len=2}
     9  :                         Flow{TK.CHAIN, '|' len=2}
    10  :                             Combine(TK.COMBINE: buy None UnaryOp(TK.ANY, 'any:'))
    11  :                                 Ref(TK.IDENT, 'buy')
    12  :                                 UnaryOp(TK.ANY, 'any:')
-   13  :                                     Combine(TK.COMBINE:  None Define(TK.DEFINE, '='))
-   14  :                                         Block{TK.BLOCK, len=3}
+   13  :                                     Combine(TK.COMBINE: [count=2]:set None Define(TK.DEFINE, '='))
+   14  :                                         Generate(TK.SET, len=3)
    15  :                                             Flow{TK.CHAIN, '|' len=2}
    16  :                                                 BinOp(TK.GTR, '>')
-   17  :                                                     Ref(TK.IDENT, 'close')
+   17  :                                                     Get(TK.IDENT, 'close')
    18  :                                                 FnCall('sma')
    19  :                                                     Ref(TK.IDENT, 'sma')
    20  :                                                     List(TK.LIST, [Int()])
    21  :                                                         Int(TK.INT, 10)
    22  :                                             Flow{TK.CHAIN, '|' len=2}
    23  :                                                 BinOp(TK.GTR, '>')
-   24  :                                                     Ref(TK.IDENT, 'close')
+   24  :                                                     Get(TK.IDENT, 'close')
    25  :                                                 FnCall('sma')
    26  :                                                     Ref(TK.IDENT, 'sma')
    27  :                                                     List(TK.LIST, [Int()])
@@ -311,7 +311,7 @@ tree8:(post)  rules: {
    29  :                                             Flow{TK.CHAIN, '|' len=2}
    30  :                                                 BinOp(TK.GTR, '>')
    31  :                                                     FnCall('sma')
-   32  :                                                         Ref(TK.IDENT, 'sma')
+   32  :                                                         Get(TK.IDENT, 'sma')
    33  :                                                         List(TK.LIST, [Int()])
    34  :                                                             Int(TK.INT, 10)
    35  :                                                 FnCall('sma')
@@ -348,14 +348,14 @@ tree8:(post)  rules: {
    66  :                                 Duration(TK.DUR, 1 day, 0:00:00)
    67  :                     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'atr'))
    68  :                         Ref(TK.IDENT, 'atr')
-   69  :         Define(TK.DEFINE: scenario = Block(TK.BLOCK, ''))
+   69  :         Define(TK.DEFINE: scenario = Generate(TK.GEN, ''))
    70  :             Ref(TK.IDENT, 'scenario')
-   71  :             Block{TK.BLOCK, len=2}
+   71  :             Generate(TK.SET, len=2)
    72  :                 Flow{TK.APPLY, '>>' len=2}
    73  :                     Flow{TK.CHAIN, '|' len=2}
-   74  :                         Combine(TK.COMBINE: buy None Block(TK.BLOCK, ''))
+   74  :                         Combine(TK.COMBINE: buy None Generate(TK.GEN, ''))
    75  :                             Ref(TK.IDENT, 'buy')
-   76  :                             Block{TK.BLOCK, len=1}
+   76  :                             Generate(TK.SET, len=1)
    77  :                                 Flow{TK.CHAIN, '|' len=2}
    78  :                                     BinOp(TK.GTR, '>')
    79  :                                         Get(TK.IDENT, 'close')

@@ -1,6 +1,6 @@
 from runtime.environment import Environment
 from runtime.stack import RuntimeStack
-from runtime.conversion import c_unbox, c_box
+from runtime.conversion import c_unbox, c_box, c_type
 from runtime.exceptions import runtime_error, runtime_strict_warning, getLogFacility
 from runtime.literals import Literal
 from runtime.token_ids import TK
@@ -21,6 +21,38 @@ _unary2binop = {
 }
 
 
+_type2native = {
+    'Block': 'block',
+    'Bool': 'bool',
+    'bool': 'bool',
+    'DataFrame': 'dataframe',
+    'DateTime': 'datetime',
+    'datetime': 'datetime',
+    'Duration': 'timedelta',
+    'Float': 'float',
+    'float': 'float',
+    'Function': 'function',
+    'Ident': 'object',
+    'Int': 'int',
+    'IntrinsicFunction': 'function',
+    'int': 'int',
+    'List': 'list',
+    'list': 'list',
+    'ndarray': 'ndarray',
+    'NoneType': 'none',
+    'Object': 'object',
+    'object': 'object',
+    'Percent': 'float',
+    'Range': 'range',
+    'Series': 'series',
+    'Set': 'set',
+    'Str': 'str',
+    'str': 'str',
+    'Time': 'datetime',
+    'timedelta': 'timedelta',
+}
+
+
 def get_logger():
     return getLogFacility('focal')
 
@@ -38,15 +70,18 @@ def reduce_ref(scope=None, ref=None, value=None, update=False):
 
 def reduce_get(scope=None, get=None):
     scope = Environment.current.scope if scope is None else scope
-    symbol = scope.find(name=get.name)
-    if symbol is None:
-        runtime_strict_warning(f'Symbol `{get.token.lexeme}` referenced before initialized', loc=get.token.location)
+    if get.tid == TK.ANON:
+        symbol = Environment.current.stack.pop()
+    else:
+        symbol = scope.find(name=get.name)
+        if symbol is None:
+            runtime_strict_warning(f'Symbol `{get.token.lexeme}` referenced before initialized', loc=get.token.location)
     return symbol
 
 
 def reduce_propref(left=None, right=None):
     scope = Environment.current.scope
-    symbol = scope.find(token=left.token)
+    symbol = scope.find(name=left.name)
     if symbol is None:
         runtime_strict_warning(f'Symbol `{left.token.lexeme}` referenced before initialized', loc=left.token.location)
     prop = symbol.define(right.token.lexeme, local=True)
@@ -117,13 +152,10 @@ def evaluate_set(node, visitor=None):
     return node
 
 
-def evaluate_unary_operation(node, left):
+def evaluate_unary_operation(node, l_value):
     opid = node.op
-    l_tid = TK.NATIVE
-    if hasattr(left, 'token'):
-        l_tid = left.token.id
-    l_value = c_unbox(left)
-
+    l_tid = c_type(l_value)
+    l_value = c_unbox(l_value)
     if l_value is None:
         return None
 
@@ -131,17 +163,14 @@ def evaluate_unary_operation(node, left):
         return not_literal(l_value, l_tid)
     elif opid == TK.INCREMENT:
         l_value = increment_literal(l_value, l_tid)
-    #        eval_assign_dispatch(left, r_value),
     elif opid == TK.DECREMENT:
         l_value = decrement_literal(l_value, l_tid)
-    #        eval_assign_dispatch(left, r_value),
     elif opid == TK.NEG:
         l_value = negate_literal(l_value, l_tid)
-    #        eval_assign_dispatch(left, r_value),
     elif opid == TK.POS:
         pass
     else:
         runtime_error(f'Invalid operation {opid.name}', loc=None)
 
-    left = c_box(left, l_value)
-    return left
+    l_value = c_box(l_value, l_value)
+    return l_value

@@ -74,9 +74,21 @@ class FocalConsole:
             print_results(target, self.logger)
             _print_symbols(target.scope)
 
+    def run_script_file(self, fname):
+        load_script(self, fname)
+        parse_script(self)
+        do_run(self)
+
+    def run_script(self, source):
+        self.environment.set_source(source)
+        if self.option.auto_listback:
+            show_sourcelines(self)
+        parse_script(self)
+        do_run(self)
+
     def go(self):
         if self.option.file is not None:
-            self.load(self.option.file)
+            self.run_script_file(self.option.file)
         _stop = False
         while not _stop:
             lines = []
@@ -171,15 +183,17 @@ def do_load_script(console, args):
 
 def do_parse(console, args=None):
     source = console.environment.source
-    console.environment = console.parser.parse(environment=console.environment, source=source)
+    focal = console.focal
+    console.environment = focal.parser.parse(environment=console.environment, source=source)
     if console.option.verbose:
         show_tree(console)
     if console.option.auto_run:
         do_run(console)
 
 
-def do_run(focal, args=None):
-    focal.environment = focal.interpreter.apply(environment=focal.environment)  # execute script
+def do_run(console, args=None):
+    focal = console.focal
+    console.environment = focal.interpreter.apply(environment=console.environment)  # execute script
 
 
 # ---------------------
@@ -316,13 +330,25 @@ def show_sourcelines(console, args=None):
 # Internal Commands
 # ---------------------
 # Internal Commands are commands that do not use 'args' but take regular parameters
-def load_parse_script(console, fname):
+def load_script(console, fname):
     source = load_file(fname)
     console.environment.set_source(source)
     if console.option.auto_listback:
         show_sourcelines(console)
+
+
+def parse_script(console):
+    source = console.environment.source
+    focal = console.focal
+    console.environment = focal.parser.parse(environment=console.environment, source=source)
+    if console.option.verbose:
+        show_tree(console)
+
+
+def load_parse_script(console, fname):
+    load_script(console, fname)
     if console.option.auto_parse:
-        do_parse(console)
+        parse_script(console)
 
 
 # ---------------------
@@ -474,6 +500,7 @@ _command_funcdesc = {
     'break': (do_break, 0, 'break into the debugger'),
     'help': (do_help, 0, 'print help info on commands'),
     'load': (do_load_script, 1, 'load script file'),
+    'list': (show_sourcelines, 0, 'list current source'),
     'options': (show_options, 1, 'show options'),
     'parse': (do_parse, 0, 'parse loaded script'),
     'print': (do_print, 1, 'print'),

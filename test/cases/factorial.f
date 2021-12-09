@@ -1,11 +1,8 @@
-def factorial(x) := {
-    print('in factorial')
+factorial(x) := {
     if x == 1 then
         return 1
     else
         return x * factorial(x - 1)
 }
 
-result = factorial(5)
-print(result)
-
+print(factorial(10))

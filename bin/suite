@@ -6,6 +6,7 @@ results=./etc/log/results.log
 
 declare -i ignore_baselines=0
 declare -i quiet=0
+declare -i display_help=0
 
 read -r -d '' help_text <<'EOF'
 suite - run test suites

@@ -1,109 +1,534 @@
 
 
 test:
+x = 5
+print(x)
+
+dates = range('1/1/2020', 5)
+df = {reshape(1..24, 6,4), index=dates}
+print(df)
+
+df = {random(6, 4), columns=['A','B','C','D'], index=dates}
+print(df)
+
 # datasets:
+x = range('1/1/2000', periods=1000)
+print(series(x))
+
 pd = dataset()
 
+d = {'col1': [1, 2], 'col2': [3, 4]}
+print(d)
+
 df = {
-    "one": Series( rand(3) ) : { index=["a", "b", "c"] },
-
-    "two": Series( rand(4) ) : index=["a", "b", "c", "d"],
-
-    "three": Series( rand(3), index=["b", "c", "d"] ),
+    one: integers(1..10, 4), index=["a", "b", "c", "d"],
+    two: integers(1..10, 4), index=["a", "b", "c", "d"],
+    three: integers(1..10, 4), index=["a", "b", "c", "d"],
+    four: integers(1..10, 4), index=["a", "b", "c", "d"],
 }
+print(df)
 
-# would be nice if df was already a dataframe from the decl above.
-pd = dataset(df)
+df = {
+    'one': 1..4,
+    'two': 2..5,
+    'three': 3..6,
+    index=["a", "b", "c", "d"],
+}
+print(df)
+
+# from pandas docs:
+df = {
+    "one": random(4),
+    "two": random(4),
+    "three": random(4),
+}
+print(df)
 
 # future definition with generators?
-df = {
-    "one": { rand(3) => _ } : index=['a', 'b', 'c']
+#df = {
+#    "one": { random(3) => _ },
+#     index=['a', 'b', 'c']
+#}
+
+sugar(x) = { x + 1 }
+
+def simple(x) := {
+    x + 1
 }
 
+def simple(x) := {
+    x = 1
+}
 
-tree1:  pd = dataset()
+def factorial(x) := {
+    if x == 1 then
+        return 1
+    else
+        return x * factorial(x - 1)
+}
+
+dates = range('1/1/2020', 5)
+df = {random(6, 4), columns=['A','B','C','D'], index=dates}
+print(df)
+
+df = {reshape(1..24, 6,4), index=dates}
+print(df)
+
+df = {
+    one: 1..4,
+    two: 2..5,
+    three: 3..6,
+    four: 4..7,
+    index=["a", "b", "c", "d"],
+}
+print(df[-1])
+
+print(factorial(10))
+
+1..24 | reshape(_, 6,4) | dataframe >> Z | print
+
+print(type(Z))
+
+
+
+tree1:  x = 5
+    1  : Define(TK.DEFINE: x = 5)
+    2  :     Ref(TK.IDENT, 'x')
+    3  :     Int(TK.INT, 5)
+
+tree2:  x = 5
+    1  : FnCall('print')
+    2  :     Get(TK.IDENT, 'print')
+    3  :     List(TK.LIST, [Get()])
+    4  :         Get(TK.IDENT, 'x')
+
+tree3:  dates = range('1/1/2020', 5)
+    1  : Define(TK.DEFINE: dates = FnCall(TK.FUNCTION, 'range'))
+    2  :     Ref(TK.IDENT, 'dates')
+    3  :     FnCall('range')
+    4  :         Get(TK.IDENT, 'range')
+    5  :         List(TK.LIST, [Str(), Int()])
+    6  :             Str(TK.STR, '1/1/2020')
+    7  :             Int(TK.INT, 5)
+
+tree4:  df = {reshape(1..24, 6,4), index=dates}
+    1  : Define(TK.DEFINE: df = Block(TK.BLOCK, ''))
+    2  :     Ref(TK.IDENT, 'df')
+    3  :     Block{TK.BLOCK, len=2}
+    4  :         FnCall('reshape')
+    5  :             Get(TK.IDENT, 'reshape')
+    6  :             Generate(TK.LIST, len=3)
+    7  :                 GenerateRange(TK.RANGE, len=3)
+    8  :                     Int(TK.INT, 1)
+    9  :                     Int(TK.INT, 24)
+   10  :                 Int(TK.INT, 6)
+   11  :                 Int(TK.INT, 4)
+   12  :         Define(TK.DEFINE: index = Get(TK.IDENT, 'dates'))
+   13  :             Ref(TK.IDENT, 'index')
+   14  :             Get(TK.IDENT, 'dates')
+
+tree5:  x = 5
+    1  : FnCall('print')
+    2  :     Get(TK.IDENT, 'print')
+    3  :     List(TK.LIST, [Get()])
+    4  :         Get(TK.IDENT, 'df')
+
+tree6:  df = {random(6, 4), columns=['A','B','C','D'], index=dates}
+    1  : Define(TK.DEFINE: df = Block(TK.BLOCK, ''))
+    2  :     Ref(TK.IDENT, 'df')
+    3  :     Block{TK.BLOCK, len=3}
+    4  :         FnCall('random')
+    5  :             Get(TK.IDENT, 'random')
+    6  :             List(TK.LIST, [Int(), Int()])
+    7  :                 Int(TK.INT, 6)
+    8  :                 Int(TK.INT, 4)
+    9  :         Define(TK.DEFINE: columns = Generate(TK.GEN, ''))
+   10  :             Ref(TK.IDENT, 'columns')
+   11  :             Generate(TK.LIST, len=4)
+   12  :                 Str(TK.STR, 'A')
+   13  :                 Str(TK.STR, 'B')
+   14  :                 Str(TK.STR, 'C')
+   15  :                 Str(TK.STR, 'D')
+   16  :         Define(TK.DEFINE: index = Get(TK.IDENT, 'dates'))
+   17  :             Ref(TK.IDENT, 'index')
+   18  :             Get(TK.IDENT, 'dates')
+
+tree7:  x = 5
+    1  : FnCall('print')
+    2  :     Get(TK.IDENT, 'print')
+    3  :     List(TK.LIST, [Get()])
+    4  :         Get(TK.IDENT, 'df')
+
+tree8:  x = range('1/1/2000', periods=1000)
+    1  : Define(TK.DEFINE: x = FnCall(TK.FUNCTION, 'range'))
+    2  :     Ref(TK.IDENT, 'x')
+    3  :     FnCall('range')
+    4  :         Get(TK.IDENT, 'range')
+    5  :         Generate(TK.NAMEDTUPLE, len=2)
+    6  :             Str(TK.STR, '1/1/2000')
+    7  :             Define(TK.DEFINE: periods = 1000)
+    8  :                 Ref(TK.IDENT, 'periods')
+    9  :                 Int(TK.INT, 1000)
+
+tree9:  x = 5
+    1  : FnCall('print')
+    2  :     Get(TK.IDENT, 'print')
+    3  :     List(TK.LIST, [FnCall()])
+    4  :         FnCall('series')
+    5  :             Get(TK.IDENT, 'series')
+    6  :             List(TK.LIST, [Get()])
+    7  :                 Get(TK.IDENT, 'x')
+
+tree10:  pd = dataset()
     1  : Define(TK.DEFINE: pd = FnCall(TK.FUNCTION, 'dataset'))
     2  :     Ref(TK.IDENT, 'pd')
     3  :     FnCall('dataset')
     4  :         Get(TK.IDENT, 'dataset')
     5  :         List(TK.LIST, [])
 
-tree2:  df = {
+tree11:  d = {'col1': [1, 2], 'col2': [3, 4]}
+    1  : Define(TK.DEFINE: d = Generate(TK.GEN, ''))
+    2  :     Ref(TK.IDENT, 'd')
+    3  :     Generate(TK.DATAFRAME, len=2)
+    4  :         Combine(TK.COMBINE: col1 None Generate(TK.GEN, ''))
+    5  :             Str(TK.STR, 'col1')
+    6  :             Generate(TK.LIST, len=2)
+    7  :                 Int(TK.INT, 1)
+    8  :                 Int(TK.INT, 2)
+    9  :         Combine(TK.COMBINE: col2 None Generate(TK.GEN, ''))
+   10  :             Str(TK.STR, 'col2')
+   11  :             Generate(TK.LIST, len=2)
+   12  :                 Int(TK.INT, 3)
+   13  :                 Int(TK.INT, 4)
+
+tree12:  x = 5
+    1  : FnCall('print')
+    2  :     Get(TK.IDENT, 'print')
+    3  :     List(TK.LIST, [Get()])
+    4  :         Get(TK.IDENT, 'd')
+
+tree13:  df = {
+    1  : Define(TK.DEFINE: df = Generate(TK.GEN, ''))
+    2  :     Ref(TK.IDENT, 'df')
+    3  :     Generate(TK.DATAFRAME, len=8)
+    4  :         Combine(TK.COMBINE: one None FnCall(TK.FUNCTION, 'integers'))
+    5  :             Ref(TK.IDENT, 'one')
+    6  :             FnCall('integers')
+    7  :                 Get(TK.IDENT, 'integers')
+    8  :                 Generate(TK.LIST, len=2)
+    9  :                     GenerateRange(TK.RANGE, len=3)
+   10  :                         Int(TK.INT, 1)
+   11  :                         Int(TK.INT, 10)
+   12  :                     Int(TK.INT, 4)
+   13  :         Define(TK.DEFINE: index = Generate(TK.GEN, ''))
+   14  :             Ref(TK.IDENT, 'index')
+   15  :             Generate(TK.LIST, len=4)
+   16  :                 Str(TK.STR, 'a')
+   17  :                 Str(TK.STR, 'b')
+   18  :                 Str(TK.STR, 'c')
+   19  :                 Str(TK.STR, 'd')
+   20  :         Combine(TK.COMBINE: two None FnCall(TK.FUNCTION, 'integers'))
+   21  :             Ref(TK.IDENT, 'two')
+   22  :             FnCall('integers')
+   23  :                 Get(TK.IDENT, 'integers')
+   24  :                 Generate(TK.LIST, len=2)
+   25  :                     GenerateRange(TK.RANGE, len=3)
+   26  :                         Int(TK.INT, 1)
+   27  :                         Int(TK.INT, 10)
+   28  :                     Int(TK.INT, 4)
+   29  :         Define(TK.DEFINE: index = Generate(TK.GEN, ''))
+   30  :             Ref(TK.IDENT, 'index')
+   31  :             Generate(TK.LIST, len=4)
+   32  :                 Str(TK.STR, 'a')
+   33  :                 Str(TK.STR, 'b')
+   34  :                 Str(TK.STR, 'c')
+   35  :                 Str(TK.STR, 'd')
+   36  :         Combine(TK.COMBINE: three None FnCall(TK.FUNCTION, 'integers'))
+   37  :             Ref(TK.IDENT, 'three')
+   38  :             FnCall('integers')
+   39  :                 Get(TK.IDENT, 'integers')
+   40  :                 Generate(TK.LIST, len=2)
+   41  :                     GenerateRange(TK.RANGE, len=3)
+   42  :                         Int(TK.INT, 1)
+   43  :                         Int(TK.INT, 10)
+   44  :                     Int(TK.INT, 4)
+   45  :         Define(TK.DEFINE: index = Generate(TK.GEN, ''))
+   46  :             Ref(TK.IDENT, 'index')
+   47  :             Generate(TK.LIST, len=4)
+   48  :                 Str(TK.STR, 'a')
+   49  :                 Str(TK.STR, 'b')
+   50  :                 Str(TK.STR, 'c')
+   51  :                 Str(TK.STR, 'd')
+   52  :         Combine(TK.COMBINE: four None FnCall(TK.FUNCTION, 'integers'))
+   53  :             Ref(TK.IDENT, 'four')
+   54  :             FnCall('integers')
+   55  :                 Get(TK.IDENT, 'integers')
+   56  :                 Generate(TK.LIST, len=2)
+   57  :                     GenerateRange(TK.RANGE, len=3)
+   58  :                         Int(TK.INT, 1)
+   59  :                         Int(TK.INT, 10)
+   60  :                     Int(TK.INT, 4)
+   61  :         Define(TK.DEFINE: index = Generate(TK.GEN, ''))
+   62  :             Ref(TK.IDENT, 'index')
+   63  :             Generate(TK.LIST, len=4)
+   64  :                 Str(TK.STR, 'a')
+   65  :                 Str(TK.STR, 'b')
+   66  :                 Str(TK.STR, 'c')
+   67  :                 Str(TK.STR, 'd')
+
+tree14:  x = 5
+    1  : FnCall('print')
+    2  :     Get(TK.IDENT, 'print')
+    3  :     List(TK.LIST, [Get()])
+    4  :         Get(TK.IDENT, 'df')
+
+tree15:  df = {
+    1  : Define(TK.DEFINE: df = Generate(TK.GEN, ''))
+    2  :     Ref(TK.IDENT, 'df')
+    3  :     Generate(TK.DATAFRAME, len=4)
+    4  :         Combine(TK.COMBINE: one None GenerateRange(TK.GEN, ''))
+    5  :             Str(TK.STR, 'one')
+    6  :             GenerateRange(TK.RANGE, len=3)
+    7  :                 Int(TK.INT, 1)
+    8  :                 Int(TK.INT, 4)
+    9  :         Combine(TK.COMBINE: two None GenerateRange(TK.GEN, ''))
+   10  :             Str(TK.STR, 'two')
+   11  :             GenerateRange(TK.RANGE, len=3)
+   12  :                 Int(TK.INT, 2)
+   13  :                 Int(TK.INT, 5)
+   14  :         Combine(TK.COMBINE: three None GenerateRange(TK.GEN, ''))
+   15  :             Str(TK.STR, 'three')
+   16  :             GenerateRange(TK.RANGE, len=3)
+   17  :                 Int(TK.INT, 3)
+   18  :                 Int(TK.INT, 6)
+   19  :         Define(TK.DEFINE: index = Generate(TK.GEN, ''))
+   20  :             Ref(TK.IDENT, 'index')
+   21  :             Generate(TK.LIST, len=4)
+   22  :                 Str(TK.STR, 'a')
+   23  :                 Str(TK.STR, 'b')
+   24  :                 Str(TK.STR, 'c')
+   25  :                 Str(TK.STR, 'd')
+
+tree16:  x = 5
+    1  : FnCall('print')
+    2  :     Get(TK.IDENT, 'print')
+    3  :     List(TK.LIST, [Get()])
+    4  :         Get(TK.IDENT, 'df')
+
+tree17:  df = {
+    1  : Define(TK.DEFINE: df = Generate(TK.GEN, ''))
+    2  :     Ref(TK.IDENT, 'df')
+    3  :     Generate(TK.DATAFRAME, len=3)
+    4  :         Combine(TK.COMBINE: one None FnCall(TK.FUNCTION, 'random'))
+    5  :             Str(TK.STR, 'one')
+    6  :             FnCall('random')
+    7  :                 Get(TK.IDENT, 'random')
+    8  :                 List(TK.LIST, [Int()])
+    9  :                     Int(TK.INT, 4)
+   10  :         Combine(TK.COMBINE: two None FnCall(TK.FUNCTION, 'random'))
+   11  :             Str(TK.STR, 'two')
+   12  :             FnCall('random')
+   13  :                 Get(TK.IDENT, 'random')
+   14  :                 List(TK.LIST, [Int()])
+   15  :                     Int(TK.INT, 4)
+   16  :         Combine(TK.COMBINE: three None FnCall(TK.FUNCTION, 'random'))
+   17  :             Str(TK.STR, 'three')
+   18  :             FnCall('random')
+   19  :                 Get(TK.IDENT, 'random')
+   20  :                 List(TK.LIST, [Int()])
+   21  :                     Int(TK.INT, 4)
+
+tree18:  x = 5
+    1  : FnCall('print')
+    2  :     Get(TK.IDENT, 'print')
+    3  :     List(TK.LIST, [Get()])
+    4  :         Get(TK.IDENT, 'df')
+
+tree19:  sugar(x) = { x + 1 }
+    1  : DefineFn(TK.DEFINE: sugar = Generate(TK.GEN, ''))
+    2  :     Ref(TK.IDENT, 'sugar')
+    3  :     Generate(TK.SET, len=1)
+    4  :         BinOp(TK.ADD, '+')
+    5  :             Get(TK.IDENT, 'x')
+    6  :             Int(TK.INT, 1)
+    7  :     List(TK.LIST, [Ref()])
+    8  :         Ref(TK.IDENT, 'x')
+
+tree20:  def simple(x) := {
+    1  : DefineVarFn(TK.DEFINE: simple := Generate(TK.GEN, ''))
+    2  :     Ref(TK.IDENT, 'simple')
+    3  :     Generate(TK.SET, len=1)
+    4  :         BinOp(TK.ADD, '+')
+    5  :             Get(TK.IDENT, 'x')
+    6  :             Int(TK.INT, 1)
+    7  :     List(TK.LIST, [Ref()])
+    8  :         Ref(TK.IDENT, 'x')
+
+tree21:  def simple(x) := {
+    1  : DefineVarFn(TK.DEFINE: simple := Block(TK.BLOCK, ''))
+    2  :     Ref(TK.IDENT, 'simple')
+    3  :     Block{TK.BLOCK, len=1}
+    4  :         Define(TK.DEFINE: x = 1)
+    5  :             Ref(TK.IDENT, 'x')
+    6  :             Int(TK.INT, 1)
+    7  :     List(TK.LIST, [Ref()])
+    8  :         Ref(TK.IDENT, 'x')
+
+tree22:  def factorial(x) := {
+    1  : DefineVarFn(TK.DEFINE: factorial := Generate(TK.GEN, ''))
+    2  :     Ref(TK.IDENT, 'factorial')
+    3  :     Generate(TK.SET, len=1)
+    4  :         IfThenElse(TK.IF, 'if')
+    5  :             BinOp(TK.ISEQ, '==')
+    6  :                 Get(TK.IDENT, 'x')
+    7  :                 Int(TK.INT, 1)
+    8  :             Return(TK.RETURN, 'return')
+    9  :                 Int(TK.INT, 1)
+   10  :             Return(TK.RETURN, 'return')
+   11  :                 BinOp(TK.MUL, '*')
+   12  :                     Get(TK.IDENT, 'x')
+   13  :                     FnCall('factorial')
+   14  :                         Get(TK.IDENT, 'factorial')
+   15  :                         List(TK.LIST, [BinOp()])
+   16  :                             BinOp(TK.SUB, '-')
+   17  :                                 Get(TK.IDENT, 'x')
+   18  :                                 Int(TK.INT, 1)
+   19  :     List(TK.LIST, [Ref()])
+   20  :         Ref(TK.IDENT, 'x')
+
+tree23:  dates = range('1/1/2020', 5)
+    1  : Define(TK.DEFINE: dates = FnCall(TK.FUNCTION, 'range'))
+    2  :     Ref(TK.IDENT, 'dates')
+    3  :     FnCall('range')
+    4  :         Get(TK.IDENT, 'range')
+    5  :         List(TK.LIST, [Str(), Int()])
+    6  :             Str(TK.STR, '1/1/2020')
+    7  :             Int(TK.INT, 5)
+
+tree24:  df = {random(6, 4), columns=['A','B','C','D'], index=dates}
     1  : Define(TK.DEFINE: df = Block(TK.BLOCK, ''))
     2  :     Ref(TK.IDENT, 'df')
     3  :     Block{TK.BLOCK, len=3}
-    4  :         Combine(TK.COMBINE: one None DefineFn(TK.COMBINE, ':'))
-    5  :             Str(TK.STR, 'one')
-    6  :             DefineFn(TK.COMBINE: Series : Block(TK.BLOCK, ''))
-    7  :                 Ref(TK.IDENT, 'Series')
-    8  :                 Block{TK.BLOCK, len=1}
-    9  :                     Define(TK.DEFINE: index = Generate(TK.GEN, ''))
-   10  :                         Ref(TK.IDENT, 'index')
-   11  :                         Generate(TK.LIST, len=3)
-   12  :                             Str(TK.STR, 'a')
-   13  :                             Str(TK.STR, 'b')
-   14  :                             Str(TK.STR, 'c')
-   15  :                 List(TK.LIST, [FnCall()])
-   16  :                     FnCall('rand')
-   17  :                         Ref(TK.IDENT, 'rand')
-   18  :                         List(TK.LIST, [Int()])
-   19  :                             Int(TK.INT, 3)
-   20  :         Combine(TK.COMBINE: two None DefineFn(TK.COMBINE, ':'))
-   21  :             Str(TK.STR, 'two')
-   22  :             DefineFn(TK.COMBINE: Series : Define(TK.DEFINE, '='))
-   23  :                 Ref(TK.IDENT, 'Series')
-   24  :                 Define(TK.DEFINE: index = Generate(TK.GEN, ''))
-   25  :                     Ref(TK.IDENT, 'index')
-   26  :                     Generate(TK.LIST, len=4)
-   27  :                         Str(TK.STR, 'a')
-   28  :                         Str(TK.STR, 'b')
-   29  :                         Str(TK.STR, 'c')
-   30  :                         Str(TK.STR, 'd')
-   31  :                 List(TK.LIST, [FnCall()])
-   32  :                     FnCall('rand')
-   33  :                         Ref(TK.IDENT, 'rand')
-   34  :                         List(TK.LIST, [Int()])
-   35  :                             Int(TK.INT, 4)
-   36  :         Combine(TK.COMBINE: three None FnCall(TK.FUNCTION, 'Series'))
-   37  :             Str(TK.STR, 'three')
-   38  :             FnCall('Series')
-   39  :                 Get(TK.IDENT, 'Series')
-   40  :                 Generate(TK.NAMEDTUPLE, len=2)
-   41  :                     FnCall('rand')
-   42  :                         Get(TK.IDENT, 'rand')
-   43  :                         List(TK.LIST, [Int()])
-   44  :                             Int(TK.INT, 3)
-   45  :                     Define(TK.DEFINE: index = Generate(TK.GEN, ''))
-   46  :                         Ref(TK.IDENT, 'index')
-   47  :                         Generate(TK.LIST, len=3)
-   48  :                             Str(TK.STR, 'b')
-   49  :                             Str(TK.STR, 'c')
-   50  :                             Str(TK.STR, 'd')
+    4  :         FnCall('random')
+    5  :             Get(TK.IDENT, 'random')
+    6  :             List(TK.LIST, [Int(), Int()])
+    7  :                 Int(TK.INT, 6)
+    8  :                 Int(TK.INT, 4)
+    9  :         Define(TK.DEFINE: columns = Generate(TK.GEN, ''))
+   10  :             Ref(TK.IDENT, 'columns')
+   11  :             Generate(TK.LIST, len=4)
+   12  :                 Str(TK.STR, 'A')
+   13  :                 Str(TK.STR, 'B')
+   14  :                 Str(TK.STR, 'C')
+   15  :                 Str(TK.STR, 'D')
+   16  :         Define(TK.DEFINE: index = Get(TK.IDENT, 'dates'))
+   17  :             Ref(TK.IDENT, 'index')
+   18  :             Get(TK.IDENT, 'dates')
 
-tree3:  pd = dataset(df)
-    1  : Define(TK.DEFINE: pd = FnCall(TK.FUNCTION, 'dataset'))
-    2  :     Ref(TK.IDENT, 'pd')
-    3  :     FnCall('dataset')
-    4  :         Get(TK.IDENT, 'dataset')
-    5  :         List(TK.LIST, [Get()])
-    6  :             Get(TK.IDENT, 'df')
+tree25:  x = 5
+    1  : FnCall('print')
+    2  :     Get(TK.IDENT, 'print')
+    3  :     List(TK.LIST, [Get()])
+    4  :         Get(TK.IDENT, 'df')
 
-tree4:  df = {
+tree26:  df = {reshape(1..24, 6,4), index=dates}
     1  : Define(TK.DEFINE: df = Block(TK.BLOCK, ''))
     2  :     Ref(TK.IDENT, 'df')
-    3  :     Block{TK.BLOCK, len=1}
-    4  :         Combine(TK.COMBINE: one None Combine(TK.DEFINE, 'None'))
-    5  :             Str(TK.STR, 'one')
-    6  :             Combine(TK.COMBINE:  None Define(TK.DEFINE, '='))
-    7  :                 Block{TK.BLOCK, len=1}
-    8  :                     DefineFn(TK.PRODUCE: rand => Ref(TK.ANON, '_'))
-    9  :                         Ref(TK.IDENT, 'rand')
-   10  :                         Ref(TK.ANON, '_')
-   11  :                         List(TK.LIST, [Int()])
-   12  :                             Int(TK.INT, 3)
-   13  :                 Define(TK.DEFINE: index = Generate(TK.GEN, ''))
-   14  :                     Ref(TK.IDENT, 'index')
-   15  :                     Generate(TK.LIST, len=3)
-   16  :                         Str(TK.STR, 'a')
-   17  :                         Str(TK.STR, 'b')
-   18  :                         Str(TK.STR, 'c')
+    3  :     Block{TK.BLOCK, len=2}
+    4  :         FnCall('reshape')
+    5  :             Get(TK.IDENT, 'reshape')
+    6  :             Generate(TK.LIST, len=3)
+    7  :                 GenerateRange(TK.RANGE, len=3)
+    8  :                     Int(TK.INT, 1)
+    9  :                     Int(TK.INT, 24)
+   10  :                 Int(TK.INT, 6)
+   11  :                 Int(TK.INT, 4)
+   12  :         Define(TK.DEFINE: index = Get(TK.IDENT, 'dates'))
+   13  :             Ref(TK.IDENT, 'index')
+   14  :             Get(TK.IDENT, 'dates')
+
+tree27:  x = 5
+    1  : FnCall('print')
+    2  :     Get(TK.IDENT, 'print')
+    3  :     List(TK.LIST, [Get()])
+    4  :         Get(TK.IDENT, 'df')
+
+tree28:  df = {
+    1  : Define(TK.DEFINE: df = Generate(TK.GEN, ''))
+    2  :     Ref(TK.IDENT, 'df')
+    3  :     Generate(TK.DATAFRAME, len=5)
+    4  :         Combine(TK.COMBINE: one None GenerateRange(TK.GEN, ''))
+    5  :             Ref(TK.IDENT, 'one')
+    6  :             GenerateRange(TK.RANGE, len=3)
+    7  :                 Int(TK.INT, 1)
+    8  :                 Int(TK.INT, 4)
+    9  :         Combine(TK.COMBINE: two None GenerateRange(TK.GEN, ''))
+   10  :             Ref(TK.IDENT, 'two')
+   11  :             GenerateRange(TK.RANGE, len=3)
+   12  :                 Int(TK.INT, 2)
+   13  :                 Int(TK.INT, 5)
+   14  :         Combine(TK.COMBINE: three None GenerateRange(TK.GEN, ''))
+   15  :             Ref(TK.IDENT, 'three')
+   16  :             GenerateRange(TK.RANGE, len=3)
+   17  :                 Int(TK.INT, 3)
+   18  :                 Int(TK.INT, 6)
+   19  :         Combine(TK.COMBINE: four None GenerateRange(TK.GEN, ''))
+   20  :             Ref(TK.IDENT, 'four')
+   21  :             GenerateRange(TK.RANGE, len=3)
+   22  :                 Int(TK.INT, 4)
+   23  :                 Int(TK.INT, 7)
+   24  :         Define(TK.DEFINE: index = Generate(TK.GEN, ''))
+   25  :             Ref(TK.IDENT, 'index')
+   26  :             Generate(TK.LIST, len=4)
+   27  :                 Str(TK.STR, 'a')
+   28  :                 Str(TK.STR, 'b')
+   29  :                 Str(TK.STR, 'c')
+   30  :                 Str(TK.STR, 'd')
+
+tree29:  x = 5
+    1  : FnCall('print')
+    2  :     Get(TK.IDENT, 'print')
+    3  :     List(TK.LIST, [Index()])
+    4  :         Index('df')
+    5  :             Get(TK.IDENT, 'df')
+    6  :             List(TK.TUPLE, [UnaryOp()])
+    7  :                 UnaryOp(TK.NEG, '-')
+    8  :                     Int(TK.INT, 1)
+
+tree30:  x = 5
+    1  : FnCall('print')
+    2  :     Get(TK.IDENT, 'print')
+    3  :     List(TK.LIST, [FnCall()])
+    4  :         FnCall('factorial')
+    5  :             Get(TK.IDENT, 'factorial')
+    6  :             List(TK.LIST, [Int()])
+    7  :                 Int(TK.INT, 10)
+
+tree31:  1..24 | reshape(_, 6,4) | dataframe >> Z | print
+    1  : Flow{TK.CHAIN, '|' len=2}
+    2  :     Flow{TK.APPLY, '>>' len=2}
+    3  :         Flow{TK.CHAIN, '|' len=3}
+    4  :             GenerateRange(TK.RANGE, len=3)
+    5  :                 Int(TK.INT, 1)
+    6  :                 Int(TK.INT, 24)
+    7  :             FnCall('reshape')
+    8  :                 Ref(TK.IDENT, 'reshape')
+    9  :                 Generate(TK.LIST, len=3)
+   10  :                     Get(TK.ANON, '_')
+   11  :                     Int(TK.INT, 6)
+   12  :                     Int(TK.INT, 4)
+   13  :             ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'dataframe'))
+   14  :                 Ref(TK.IDENT, 'dataframe')
+   15  :         ApplyChainProd(TK.APPLY: None >> Ref(TK.IDENT, 'Z'))
+   16  :             Ref(TK.IDENT, 'Z')
+   17  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'print'))
+   18  :         Ref(TK.IDENT, 'print')
+
+tree32:  x = 5
+    1  : FnCall('print')
+    2  :     Get(TK.IDENT, 'print')
+    3  :     List(TK.LIST, [FnCall()])
+    4  :         FnCall('type')
+    5  :             Get(TK.IDENT, 'type')
+    6  :             List(TK.LIST, [Get()])
+    7  :                 Get(TK.IDENT, 'Z')
