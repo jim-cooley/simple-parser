@@ -43,15 +43,14 @@ tree5:  s.a
     3  :     Get(TK.IDENT, 'a')
 
 tree6:  s.b = s.a * a
-    1  : Define(TK.DEFINE: PropRef(TK.REF, '.') = BinOp(TK.MUL, '*'))
-    2  :     PropRef(TK.REF: s . Ref(TK.IDENT, 'b'))
-    3  :         Ref(TK.IDENT, 's')
-    4  :         Ref(TK.IDENT, 'b')
-    5  :     BinOp(TK.MUL, '*')
-    6  :         PropRef(TK.REF: s . Get(TK.IDENT, 'a'))
-    7  :             Get(TK.IDENT, 's')
-    8  :             Get(TK.IDENT, 'a')
-    9  :         Get(TK.IDENT, 'a')
+    1  : PropSet(TK.PUT, 'put')
+    2  :     Ref(TK.IDENT, 's')
+    3  :     Ref(TK.IDENT, 'b')
+    4  :     BinOp(TK.MUL, '*')
+    5  :         PropRef(TK.REF: s . Get(TK.IDENT, 'a'))
+    6  :             Get(TK.IDENT, 's')
+    7  :             Get(TK.IDENT, 'a')
+    8  :         Get(TK.IDENT, 'a')
 
 tree7:  s.b
     1  : PropRef(TK.REF: s . Get(TK.IDENT, 'b'))
@@ -107,15 +106,15 @@ tree5:(post)  s.a
     3  :     Get(TK.IDENT, 'a')
 
 tree6:(post)  s.b = s.a * a
-    1  : Define(TK.DEFINE: PropRef(TK.REF, '.') = BinOp(TK.MUL, '*'))
-    2  :     PropRef(TK.REF: s . Ref(TK.IDENT, 'b'))
-    3  :         Ref(TK.IDENT, 's')
-    4  :         Ref(TK.IDENT, 'b')
-    5  :     BinOp(TK.MUL, '*')
-    6  :         PropRef(TK.REF: s . Get(TK.IDENT, 'a'))
-    7  :             Get(TK.IDENT, 's')
-    8  :             Get(TK.IDENT, 'a')
-    9  :         Get(TK.IDENT, 'a')
+result: Lit(None)
+    1  : PropSet(TK.PUT, 'put')
+    2  :     Ref(TK.IDENT, 's')
+    3  :     Ref(TK.IDENT, 'b')
+    4  :     BinOp(TK.MUL, '*')
+    5  :         PropRef(TK.REF: s . Get(TK.IDENT, 'a'))
+    6  :             Get(TK.IDENT, 's')
+    7  :             Get(TK.IDENT, 'a')
+    8  :         Get(TK.IDENT, 'a')
 
 tree7:(post)  s.b
     1  : PropRef(TK.REF: s . Get(TK.IDENT, 'b'))

@@ -151,5 +151,5 @@ def get_dt_now():
     return dt.datetime.now()
 
 
-def do_now(env=None):
+def do_now(args=None):
     return get_t_now()

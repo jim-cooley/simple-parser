@@ -78,15 +78,13 @@ tree1:  var f = 5
     2  :     Ref(TK.IDENT, 'f')
     3  :     Int(TK.INT, 5)
 
-tree2:  var f.a = 5
-    1  : DefineVar(TK.DEFINE: PropRef(TK.REF, '.') = 5)
-    2  :     PropRef(TK.REF: f . Ref(TK.IDENT, 'a'))
-    3  :         Ref(TK.IDENT, 'f')
-    4  :         Ref(TK.IDENT, 'a')
-    5  :     Int(TK.INT, 5)
+tree2:  # var declarations
+    1  : DefineVar(TK.VAR: f var Ref(TK.IDENT, 'a'))
+    2  :     Ref(TK.IDENT, 'f')
+    3  :     Ref(TK.IDENT, 'a')
 
 tree3:  var f = { a=5 }
-    1  : DefineVar(TK.DEFINE: f = Block(TK.BLOCK, ''))
+    1  : Define(TK.DEFINE: f = Block(TK.BLOCK, ''))
     2  :     Ref(TK.IDENT, 'f')
     3  :     Block{TK.BLOCK, len=1}
     4  :         Define(TK.DEFINE: a = 5)

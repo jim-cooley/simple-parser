@@ -115,14 +115,12 @@ tree6:  median_price = mean(open, close)
     7  :             Get(TK.IDENT, 'close')
 
 tree7:  price10a := _.delay(1d)[10:00]
-    1  : DefineVar(TK.DEFINE: price10a := PropRef(TK.REF, '.'))
+    1  : DefineVar(TK.DEFINE: price10a := PropCall(TK.PROPCALL, '_'))
     2  :     Ref(TK.IDENT, 'price10a')
-    3  :     PropRef(TK.REF: _ . FnCall(TK.FUNCTION, 'delay'))
+    3  :     PropCall(TK.PROPCALL, '_')
     4  :         Get(TK.ANON, '_')
-    5  :         FnCall('delay')
-    6  :             Get(TK.IDENT, 'delay')
-    7  :             List(TK.LIST, [Duration()])
-    8  :                 Duration(TK.DUR, 1 day, 0:00:00)
+    5  :         List(TK.LIST, [Duration()])
+    6  :             Duration(TK.DUR, 1 day, 0:00:00)
 
 tree8:  periods = {
     1  : Generate(TK.LIST, len=1)
@@ -469,14 +467,12 @@ tree6:(post)  median_price = mean(open, close)
     7  :             Get(TK.IDENT, 'close')
 
 tree7:(post)  price10a := _.delay(1d)[10:00]
-    1  : DefineVar(TK.DEFINE: price10a := PropRef(TK.REF, '.'))
+    1  : DefineVar(TK.DEFINE: price10a := PropCall(TK.PROPCALL, '_'))
     2  :     Ref(TK.IDENT, 'price10a')
-    3  :     PropRef(TK.REF: _ . FnCall(TK.FUNCTION, 'delay'))
+    3  :     PropCall(TK.PROPCALL, '_')
     4  :         Get(TK.ANON, '_')
-    5  :         FnCall('delay')
-    6  :             Get(TK.IDENT, 'delay')
-    7  :             List(TK.LIST, [Duration()])
-    8  :                 Duration(TK.DUR, 1 day, 0:00:00)
+    5  :         List(TK.LIST, [Duration()])
+    6  :             Duration(TK.DUR, 1 day, 0:00:00)
 
 tree8:(post)  periods = {
     1  : Generate(TK.LIST, len=1)

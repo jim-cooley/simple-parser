@@ -383,6 +383,18 @@ class Token:
         return Token(tid=TK.PRODUCE, tcl=TCL.BINOP, lex='=>', loc=loc)
 
     @staticmethod
+    def PROPCALL(name=None, loc=None):
+        return Token(tid=TK.PROPCALL, tcl=TCL.BINOP, lex=name, loc=loc)
+
+    @staticmethod
+    def PUT(loc=None):
+        return Token(tid=TK.PUT, tcl=TCL.BINOP, lex='put', loc=loc)
+
+    @staticmethod
+    def PUTIDX(loc=None):
+        return Token(tid=TK.PUTINDEX, tcl=TCL.BINOP, lex='iput', loc=loc)
+
+    @staticmethod
     def RAISE(loc=None, lex=None):
         return Token(tid=TK.RAISE, tcl=TCL.UNARY, lex=lex or '->', loc=loc)
 

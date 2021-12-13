@@ -4,15 +4,14 @@ test: 40:
 f.a = 5
 
 tree1:  f.a = 5
-    1  : Define(TK.DEFINE: PropRef(TK.REF, '.') = 5)
-    2  :     PropRef(TK.REF: f . Ref(TK.IDENT, 'a'))
-    3  :         Ref(TK.IDENT, 'f')
-    4  :         Ref(TK.IDENT, 'a')
-    5  :     Int(TK.INT, 5)
+    1  : PropSet(TK.PUT, 'put')
+    2  :     Ref(TK.IDENT, 'f')
+    3  :     Ref(TK.IDENT, 'a')
+    4  :     Int(TK.INT, 5)
 
 tree1:(post)  f.a = 5
-    1  : Define(TK.DEFINE: PropRef(TK.REF, '.') = 5)
-    2  :     PropRef(TK.REF: f . Ref(TK.IDENT, 'a'))
-    3  :         Ref(TK.IDENT, 'f')
-    4  :         Ref(TK.IDENT, 'a')
-    5  :     Int(TK.INT, 5)
+result: int(5)
+    1  : PropSet(TK.PUT, 'put')
+    2  :     Ref(TK.IDENT, 'f')
+    3  :     Ref(TK.IDENT, 'a')
+    4  :     Int(TK.INT, 5)

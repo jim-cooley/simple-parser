@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 
 
 from runtime.conversion import c_unbox
+from runtime.indexdict import IndexedDict
 from runtime.series import Series
 
 
@@ -50,15 +51,75 @@ def print_series(_s, label=None):
         print(_s)
 
 
-def create_dataset(env=None, args=None):
+def create_dataset(args=None):
     if len(args) > 0:
         return pd.DataFrame(args[0])
     return pd.DataFrame()
 
 
-def create_series(env=None, args=None):
+def create_series(args=None):
     r = Series()
     return r
+
+
+# -----------------------------------
+# DataFrame methods
+# -----------------------------------
+def df_set_at(df, index, value):
+    if isinstance(index, list):
+        index = index[0]
+    df[index] = value
+
+
+def df_axes(df=None):
+    return df.axes
+
+
+def df_columns(a, columns=None):
+    if columns:
+        if isinstance(columns, IndexedDict):
+            columns = columns.values()
+        return a[columns]
+    return a.columns.values
+
+
+def df_set_columns(a, columns):
+    if columns:
+        a.columns = columns
+
+
+def df_set_idx_columns(a, index, value):
+    if value:
+        a.columns[index] = value
+
+
+# is_empty
+def df_empty(df=None):
+    return df.empty
+
+
+def df_set_flags(args=None):
+    pass
+
+
+def df_head(df, args):
+    return df.head(args[0])
+
+
+def df_index(df=None):
+    return df.index.values
+
+
+def df_info(df=None):
+    return df.info
+
+
+def df_shape(df=None):
+    return df.shape
+
+
+def df_values(df=None):
+    return df.values
 
 
 # -----------------------------------
@@ -119,7 +180,26 @@ def pd_lte_df(a, b):
 # -----------------------------------
 # Pandas Functions
 # -----------------------------------
-def pd_boxplot(env=None, args=None):
+def pd_axes(args=None):
+    a = args[0]
+    if not isinstance(a, pd.DataFrame):
+        a = pd.DataFrame(a)
+    return df_axes(a)
+
+
+def pd_index(args=None):
+    return df_index(args[0])
+
+
+def pd_info(args=None):
+    return df_info(args[0])
+
+
+def pd_values(args=None):
+    return df_values(args[0])
+
+
+def pd_boxplot(args=None):
     a = args[0]
     if not isinstance(a, pd.DataFrame):
         a = pd.DataFrame(a)
@@ -132,7 +212,7 @@ def pdi_boxplot(a):
     return boxplot
 
 
-def pd_columns(env=None, args=None):
+def pd_columns(args=None):
     a = args[0]
     if not isinstance(a, pd.DataFrame):
         a = pd.DataFrame(a)
@@ -140,16 +220,10 @@ def pd_columns(env=None, args=None):
         columns = args.values()[1:]
     else:
         columns = None
-    return pdi_columns(a, columns)
+    return df_columns(a, columns)
 
 
-def pdi_columns(a, columns):
-    if columns:
-        return a[columns]
-    return a
-
-
-def pd_delta(env=None, args=None):
+def pd_delta(args=None):
     a = args[0]
     if len(args) > 1:
         delay = args[1]
@@ -166,7 +240,7 @@ def pdi_delta(a, delay):
     return a - a.shift(delay)
 
 
-def pd_head(env=None, args=None):
+def pd_head(args=None):
     a = args[0]
     if len(args) > 1:
         count = args[1]
@@ -179,7 +253,14 @@ def pdi_head(a, count):
     return a.head(count)
 
 
-def pd_shift(env=None, args=None):
+def pd_shape(args=None):
+    a = args[0]
+    if not isinstance(a, pd.DataFrame):
+        raise TypeError('Object is not a DataFrame')
+    return a.shape
+
+
+def pd_shift(args=None):
     a = args[0]
     delay = args[1]
     if not isinstance(a, pd.DataFrame):
@@ -191,7 +272,7 @@ def pdi_shift(a, delay):
     return a.shift(delay)
 
 
-def do_signal(env=None, args=None):
+def do_signal(args=None):
     a = args[0]
     if not isinstance(a, pd.DataFrame):
         a = pd.DataFrame(a)
@@ -206,7 +287,7 @@ def di_signal(a):
     return signal
 
 
-def pd_sma(env=None, args=None):
+def pd_sma(args=None):
     a = args[0]
     window = args[1]
     if not isinstance(a, pd.DataFrame):
@@ -218,7 +299,7 @@ def pdi_sma(a, window):
     return a.rolling(window).mean()
 
 
-def pd_tail(env=None, args=None):
+def pd_tail(args=None):
     a = args[0]
     if len(args) > 1:
         count = args[1]

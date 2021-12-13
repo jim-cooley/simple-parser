@@ -80,7 +80,10 @@ _tk2pfx = {
     TK.PLEQ: 'addeq',
     TK.POS: 'pos',  # unary +
     TK.POW: 'pow',  # ^
+    TK.PUT: 'put',
+    TK.PUTIDX: 'iput',
     TK.PRODUCE: 'produce',  # =>
+    TK.PROPCALL: 'pcall',
     TK.RAISE: 'raise',  # ->
     TK.RANGE: 'range',
     TK.REF: 'ref',
@@ -153,6 +156,7 @@ _postfixNodeTypeMappings = {
     'Ident': _IDENT_NODE,
     'IfThenElse': TRINARY_NODE,
     'Index': BINARY_NODE,
+    'IndexSet': TRINARY_NODE,
     'Int': VALUE_NODE,
     'List': SEQUENCE_NODE,
     'Literal': VALUE_NODE,
@@ -161,6 +165,7 @@ _postfixNodeTypeMappings = {
     'Percent': VALUE_NODE,
     'PropCall': BINARY_NODE,
     'PropRef': BINARY_NODE,
+    'PropSet': TRINARY_NODE,
     'Ref': VALUE_NODE,
     'Return': UNARY_NODE,
     'Series': SEQUENCE_NODE,

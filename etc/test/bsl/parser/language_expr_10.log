@@ -5,13 +5,11 @@ start: open.delay(1d) | buy
 
 tree1:  start: open.delay(1d) | buy
     1  : Flow{TK.CHAIN, '|' len=2}
-    2  :     Combine(TK.COMBINE: start None PropRef(TK.REF, '.'))
+    2  :     Combine(TK.COMBINE: start None PropCall(TK.PROPCALL, 'open'))
     3  :         Ref(TK.IDENT, 'start')
-    4  :         PropRef(TK.REF: open . FnCall(TK.FUNCTION, 'delay'))
+    4  :         PropCall(TK.PROPCALL, 'open')
     5  :             Get(TK.IDENT, 'open')
-    6  :             FnCall('delay')
-    7  :                 Get(TK.IDENT, 'delay')
-    8  :                 List(TK.LIST, [Duration()])
-    9  :                     Duration(TK.DUR, 1 day, 0:00:00)
-   10  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'buy'))
-   11  :         Ref(TK.IDENT, 'buy')
+    6  :             List(TK.LIST, [Duration()])
+    7  :                 Duration(TK.DUR, 1 day, 0:00:00)
+    8  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'buy'))
+    9  :         Ref(TK.IDENT, 'buy')

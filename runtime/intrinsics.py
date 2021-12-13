@@ -1,18 +1,18 @@
 from dataclasses import dataclass
 from enum import unique, IntEnum
 
+import numpy as np
 import pandas as pd
 import json as js
 
 from runtime.conversion import c_unbox
-from runtime.exceptions import runtime_error
 from runtime.generators import generate_range, generate_dataframe, generate_dict, generate_list, generate_named_tuple, \
     generate_series, generate_set, generate_tuple
-from runtime.numpy import np_identity, np_ones, np_zeros, np_reshape, np_shape, np_flatten, np_transpose, np_random, \
+from runtime.numpy import np_identity, np_ones, np_zeros, np_reshape, np_flatten, np_transpose, np_random, \
     np_integers, np_fill
 from runtime.pandas import create_dataset, create_series, pd_sma, pd_columns, pd_shift, pd_delta, do_signal, pd_head, \
-    pd_tail, pd_boxplot
-from runtime.print import do_print, init_print
+    pd_tail, pd_boxplot, pd_values, pd_index, pd_info, pd_axes
+from runtime.print import do_print
 from runtime.scope import FunctionBase
 from runtime.time import do_now
 from runtime.token_ids import TK
@@ -29,15 +29,14 @@ class SLOT(IntEnum):
 
 @dataclass
 class IntrinsicFunction(FunctionBase):
-    def __init__(self, name=None, members=None, arity=None, opt=None, invoke=None,
-                 defaults=None, tid=None, loc=None, is_lvalue=False):
-        super().__init__(name=name, members=members, arity=arity, opt=opt,
+    def __init__(self, name=None, members=None, closure=None, arity=None, opt=None, invoke=None, defaults=None, tid=None, loc=None, is_lvalue=False):
+        super().__init__(name=name, members=members, closure=closure, arity=arity, opt=opt,
                          defaults=defaults, tid=tid, loc=loc, is_lvalue=is_lvalue)
         self.token.is_reserved = True
         self._invoke_fn = invoke
 
     def invoke(self, interpreter, args=None):
-        return self._invoke_fn(env=interpreter.environment, args=args)
+        return self._invoke_fn(args=args)
 
 
 @dataclass
@@ -46,7 +45,7 @@ class GeneratorFunction(IntrinsicFunction):
         super().__init__(**kwargs)
 
     def invoke(self, interpreter, args=None):
-        return self._invoke_fn(env=interpreter.environment, args=args)
+        return self._invoke_fn(args=args)
 
 
 @dataclass
@@ -64,11 +63,11 @@ def is_intrinsic(name):
     return name in _intrinsic_aliases
 
 
-def invoke_generator(env, name, args):
-    return invoke_intrinsic_internal(env, name, args, locator='generator')
+def invoke_generator(name, args):
+    return invoke_intrinsic_internal(name, args, locator='generator')
 
 
-def invoke_intrinsic_internal(env, name, args, locator=None):
+def invoke_intrinsic_internal(name, args, locator=None):
     locator = locator or 'intrinsics'
     disptab = _funcdesc_locator[locator][0]
     aliases = _funcdesc_locator[locator][1]
@@ -80,14 +79,14 @@ def invoke_intrinsic_internal(env, name, args, locator=None):
         arity = disptab[name][SLOT.ARITY]
         cmax = disptab[name][SLOT.MAX]
         if cmax == 0:
-            return fn(env)
+            return fn()
         else:
             if arity and not args:
                 raise ValueError("Argument expected.")
             if cmax > 0:
                 if len(args) > cmax:
                     raise ValueError("Argument count mismatch.")
-            return fn(env, args)
+            return fn(args)
     else:
         raise ValueError(f"Unknown function: {name}")
 
@@ -131,7 +130,12 @@ def init_intrinsic(name):
 # -----------------------------------
 # Intrinsic Functions
 # -----------------------------------
-def to_json(env=None, args=None):
+def do_len(args=None):
+    o = args[0]
+    return len(o)
+
+
+def to_json(args=None):
     fname = json = None
     o = args[0]
     if len(args) > 1:
@@ -151,7 +155,7 @@ def to_json(env=None, args=None):
     return json
 
 
-def do_read(env=None, args=None):
+def do_read(args=None):
     format = 'csv'
     dframe = None
     fname = args[0]
@@ -176,12 +180,21 @@ def do_read(env=None, args=None):
     return dframe
 
 
-def do_typeof(env=None, args=None):
+def do_shape(args=None):
+    o = args[0]
+    if isinstance(o, np.ndarray):
+        np.shape(o)
+    if isinstance(o, pd.DataFrame):
+        return o.shape
+    return len(o)
+
+
+def do_typeof(args=None):
     o = args[0]
     return type(o).__name__
 
 
-def do_write(env=None, args=None):
+def do_write(args=None):
     format = 'csv'
     o = c_unbox(args[0])
     fname = args[1]
@@ -219,6 +232,7 @@ _intrinsic_fundesc = {
     'dataframe': (create_dataset, 0, 1, None),
     'delay': (pd_shift, 2, 2, None),    # alias for pandas 'shift'
     'delta': (pd_delta, 1, 2, None),    # focal
+    'len': (do_len, 1, 1, None),
     'json': (to_json, 1, 2, None),   # obj [, filename]
     'now': (do_now, 0, 0, None),
     'print': (do_print, 1, -1, None),  # varargs
@@ -240,16 +254,20 @@ _intrinsic_fundesc = {
     'ones': (np_ones, 1, 3, None),
     'random': (np_random, 1, 4, None),
     'reshape': (np_reshape, 2, 3, None),
-    'shape': (np_shape, 1, 1, None),
+    'shape': (do_shape, 1, 1, None),
     'transpose': (np_transpose, 1, 1, None),
     'zeros': (np_zeros, 1, 3, None),
 
     # pandas:
+    'axes': (pd_axes, 1, 1, None),
     'boxplot': (pd_boxplot, 1, 4, None),
     'head': (pd_head, 1, 2, None),
+    'info': (pd_info, 1, 1, None),
+    'index': (pd_index, 1, 1, None),
     'shift': (pd_shift, 2, 2, None),
     'sma': (pd_sma, 2, 2, None),
     'tail': (pd_tail, 1, 2, None),
+    'values': (pd_values, 1, 2, None),
     # timedelta_range
 }
 

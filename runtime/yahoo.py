@@ -57,7 +57,7 @@ def init_yahoo(name):
             }
 
 
-def do_yahoo(env, args):
+def do_yahoo(args):
     """
     fetch yahoo financial stock quotes as a Pandas dataframe.  Parameters passed via 'args'
     :param env:

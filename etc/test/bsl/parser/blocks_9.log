@@ -4,15 +4,14 @@ test: 9:
 node => { b : b.left = b.right}
 
 tree1:  node => { b : b.left = b.right}
-    1  : DefineFn(TK.PRODUCE: node => Block(TK.BLOCK, ''))
+    1  : DefineFn(TK.PRODUCE: node => Generate(TK.GEN, ''))
     2  :     Ref(TK.IDENT, 'node')
-    3  :     Block{TK.BLOCK, len=1}
-    4  :         Combine(TK.COMBINE: b None Define(TK.DEFINE, '='))
+    3  :     Generate(TK.DATAFRAME, len=1)
+    4  :         Combine(TK.COMBINE: b None PropSet(TK.PUT, 'put'))
     5  :             Ref(TK.IDENT, 'b')
-    6  :             Define(TK.DEFINE: PropRef(TK.REF, '.') = PropRef(TK.REF, '.'))
-    7  :                 PropRef(TK.REF: b . Ref(TK.IDENT, 'left'))
-    8  :                     Ref(TK.IDENT, 'b')
-    9  :                     Ref(TK.IDENT, 'left')
-   10  :                 PropRef(TK.REF: b . Get(TK.IDENT, 'right'))
-   11  :                     Get(TK.IDENT, 'b')
-   12  :                     Get(TK.IDENT, 'right')
+    6  :             PropSet(TK.PUT, 'put')
+    7  :                 Ref(TK.IDENT, 'b')
+    8  :                 Ref(TK.IDENT, 'left')
+    9  :                 PropRef(TK.REF: b . Get(TK.IDENT, 'right'))
+   10  :                     Get(TK.IDENT, 'b')
+   11  :                     Get(TK.IDENT, 'right')

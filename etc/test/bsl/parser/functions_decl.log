@@ -98,9 +98,9 @@ tree5:  def simple(x) := {
     8  :         Ref(TK.IDENT, 'x')
 
 tree6:  def factorial(x) := {
-    1  : DefineVarFn(TK.DEFINE: factorial := Generate(TK.GEN, ''))
+    1  : DefineVarFn(TK.DEFINE: factorial := Block(TK.BLOCK, ''))
     2  :     Ref(TK.IDENT, 'factorial')
-    3  :     Generate(TK.SET, len=1)
+    3  :     Block{TK.BLOCK, len=1}
     4  :         IfThenElse(TK.IF, 'if')
     5  :             BinOp(TK.ISEQ, '==')
     6  :                 Get(TK.IDENT, 'x')

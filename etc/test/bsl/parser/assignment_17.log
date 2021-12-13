@@ -4,8 +4,7 @@ test: 17:
 s.a = 5
 
 tree1:  s.a = 5
-    1  : Define(TK.DEFINE: PropRef(TK.REF, '.') = 5)
-    2  :     PropRef(TK.REF: s . Ref(TK.IDENT, 'a'))
-    3  :         Ref(TK.IDENT, 's')
-    4  :         Ref(TK.IDENT, 'a')
-    5  :     Int(TK.INT, 5)
+    1  : PropSet(TK.PUT, 'put')
+    2  :     Ref(TK.IDENT, 's')
+    3  :     Ref(TK.IDENT, 'a')
+    4  :     Int(TK.INT, 5)

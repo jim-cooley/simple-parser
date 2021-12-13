@@ -21,7 +21,7 @@ def init_print(name):
     return {'message': ''}
 
 
-def do_print(env, args):
+def do_print(args=None):
     logger = getLogFacility('focal')
     line = []
     options = _default_options

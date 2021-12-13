@@ -13,7 +13,8 @@ from runtime.token_class import TCL
 from runtime.token import Token
 from runtime.token_ids import TK
 from runtime.tree import UnaryOp, BinOp, Assign, Get, FnCall, Index, PropRef, Define, DefineFn, DefineVar, \
-    DefineVarFn, ApplyChainProd, Ref, FnRef, Return, IfThenElse, Generate, Combine, GenerateRange, Slice
+    DefineVarFn, ApplyChainProd, Ref, FnRef, Return, IfThenElse, Generate, Combine, GenerateRange, Slice, PropCall, \
+    PropSet, IndexSet
 from runtime.scope import Block, Flow
 from runtime.function import Function
 from runtime.literals import Float, Int, Percent, Str, Bool, Literal
@@ -314,8 +315,14 @@ class Parser(object):
             if op.id in ASSIGNMENT_TOKENS_REF:
                 l_expr = _rewriteFnCall2Definition(l_expr)
             if op.id == TK.EQLS:
-                if isinstance(l_expr, FnCall) or isinstance(l_expr, FnRef) or isinstance(l_expr, DefineFn):
+                if isinstance(l_expr, Index):
+                    return IndexSet(ref=l_expr.ref, index=l_expr.right, value=r_expr)  # common DEFINE '=' Assignment
+                elif isinstance(l_expr, PropCall):
+                    return IndexSet(ref=l_expr.ref, index=l_expr.right, member=l_expr.member, value=r_expr)
+                elif isinstance(l_expr, FnCall) or isinstance(l_expr, FnRef) or isinstance(l_expr, DefineFn):
                     return DefineFn(left=l_expr.left, op=op.remap2binop(), right=r_expr, args=l_expr.right)
+                elif isinstance(l_expr, PropRef):
+                    return PropSet(ref=l_expr.left, member=l_expr.right, value=r_expr)
                 else:
                     return Define(left=l_expr, op=op.remap2binop(), right=r_expr)  # common DEFINE '=' Assignment
             elif op.id == TK.COEQ:
@@ -474,8 +481,8 @@ class Parser(object):
             elif isinstance(decl, Assign):
                 if cid == TK.SET:
                     cid = TK.BLOCK
-            # else:
-            #    cid = TK.BLOCK
+            elif type(decl).__name__ in ['IfThenElse', 'Return', 'DefineFn', 'DefineVarFn', 'PropSet', 'Block']:
+                cid = TK.BLOCK
             if self.peek(-1).id in [TK.COLN]:  # declaration() eats the separator
                 cid = TK.DATAFRAME
         if len(seq) == 0:
@@ -494,7 +501,11 @@ class Parser(object):
         token = self.peek()
         if token.id == TK.DOT:
             token = self.consume_next(TK.IDENT)
-            node = PropRef(ref=Get(tk), member=self.identifier())
+            prop = self.identifier()
+            if isinstance(prop, FnCall):
+                node = PropCall(ref=Get(tk), member=prop.left, parameters=prop.paramters)
+            else:
+                node = PropRef(ref=Get(tk), member=prop)
         elif token.id == TK.DOT2:
             self.advance()
             node = BinOp(left=Ref(tk), op=token.remap2binop(), right=self.expression())

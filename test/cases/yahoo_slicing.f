@@ -13,20 +13,15 @@ sma10 > sma20 | signal | x
 x > 0 | buys | tail | print
 x < 0 | sells | head | print
 
-buys | columns | print
-buys | index | transpose | print
-
-
-buys.head(5)
-buys.columns = ['A', 'B', 'C', 'D']
-print(buys.columns('A'))
 
 print('buys =', buys)
 print('sells =', sells)
 
-print(type(buys))
+print(close[-1])
+print(close[:-1])
+print(close[3:])
+print(close[1:10])
+print(close[::2])
+print(close[:10:2])
+print(close[1:10:2])
 
-print(buys.columns)
-print(range(0,len(buys.index)))
-# buys.columns['E'] = range(0,len(buys.index))  # not mutable
-buys['E'] = range(0,len(buys.index))

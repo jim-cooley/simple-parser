@@ -20,6 +20,7 @@ class Environment:
     current = None
 
     def __init__(self, keywords=None, source=None):
+        Environment.current = self
         self.keywords = keywords if keywords is not None else Keywords()
         self.globals = Scope(name='global', parent_scope=self.keywords, hidden=True)
         self.scope = self.globals
@@ -30,7 +31,6 @@ class Environment:
         self.logger = getLogFacility('focal')
         self.stack = RuntimeStack()
         self.version = VERSION
-        Environment.current = self
         if source:
             self.lines = source.splitlines()
 

@@ -69,7 +69,9 @@ _tk2type = {
     TK.PLEQ: TCL.BINOP,
     TK.POS: TCL.UNARY,
     TK.POW: TCL.BINOP,
+    TK.PUT: TCL.BINOP,
     TK.PRODUCE: TCL.BINOP,
+    TK.PROPCALL: TCL.BINOP,
     TK.RAISE: TCL.UNARY,
     TK.RANGE: TCL.BINOP,
     TK.REF: TCL.BINOP,
@@ -149,7 +151,10 @@ _tk2glyph = {
     TK.PLEQ: '+=',
     TK.POS: '+',
     TK.POW: '^',
+    TK.PUT: 'put',
+    TK.PUTIDX: 'iput',
     TK.PRODUCE: '=>',
+    TK.PROPCALL: 'pcall',
     TK.RANGE: 'range',
     TK.RBRC: '}',
     TK.REF: 'ref',
@@ -283,7 +288,8 @@ IDENTIFIER_TOKENS = [TK.IDENT, TK.ANON, TK.REF, TK.DOT, TK.COMBINE, TK.FUNCTION]
 
 # used in assignment (k=v, k:v)
 IDENTIFIER_TOKENS_EX = [TK.ANON, TK.BLOCK, TK.CHAIN, TK.COLN, TK.COMBINE, TK.DOT,
-                        TK.FUNCTION, TK.GEN, TK.IDENT, TK.RANGE, TK.REF, TK.TUPLE, TK.STR]
+                        TK.FUNCTION, TK.GEN, TK.IDENT, TK.RANGE, TK.REF, TK.TUPLE, TK.STR, TK.INDEX,
+                        TK.PROPCALL]
 VALUE_TOKENS = [TK.BOOL, TK.DUR, TK.EMPTY, TK.FLOT, TK.IDENT, TK.INT, TK.LIST, TK.NONE, TK.OBJECT, TK.SET, TK.STR]
 
 ADDITION_TOKENS = [TK.PLUS, TK.MNUS, TK.SUB, TK.ADD]

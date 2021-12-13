@@ -143,56 +143,46 @@ tree14:  a(x,y) | b
 
 tree15:  a.b(x) | c
     1  : Flow{TK.CHAIN, '|' len=2}
-    2  :     PropRef(TK.REF: a . FnCall(TK.FUNCTION, 'b'))
+    2  :     PropCall(TK.PROPCALL, 'a')
     3  :         Get(TK.IDENT, 'a')
-    4  :         FnCall('b')
-    5  :             Get(TK.IDENT, 'b')
-    6  :             List(TK.LIST, [Get()])
-    7  :                 Get(TK.IDENT, 'x')
-    8  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'c'))
-    9  :         Ref(TK.IDENT, 'c')
+    4  :         List(TK.LIST, [Get()])
+    5  :             Get(TK.IDENT, 'x')
+    6  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'c'))
+    7  :         Ref(TK.IDENT, 'c')
 
 tree16:  a.b(x,y) | c
     1  : Flow{TK.CHAIN, '|' len=2}
-    2  :     PropRef(TK.REF: a . FnCall(TK.FUNCTION, 'b'))
+    2  :     PropCall(TK.PROPCALL, 'a')
     3  :         Get(TK.IDENT, 'a')
-    4  :         FnCall('b')
-    5  :             Get(TK.IDENT, 'b')
-    6  :             Generate(TK.LIST, len=2)
-    7  :                 Get(TK.IDENT, 'x')
-    8  :                 Get(TK.IDENT, 'y')
-    9  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'c'))
-   10  :         Ref(TK.IDENT, 'c')
+    4  :         Generate(TK.LIST, len=2)
+    5  :             Get(TK.IDENT, 'x')
+    6  :             Get(TK.IDENT, 'y')
+    7  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'c'))
+    8  :         Ref(TK.IDENT, 'c')
 
 tree17:  a.b(1) | c
     1  : Flow{TK.CHAIN, '|' len=2}
-    2  :     PropRef(TK.REF: a . FnCall(TK.FUNCTION, 'b'))
+    2  :     PropCall(TK.PROPCALL, 'a')
     3  :         Get(TK.IDENT, 'a')
-    4  :         FnCall('b')
-    5  :             Get(TK.IDENT, 'b')
-    6  :             List(TK.LIST, [Int()])
-    7  :                 Int(TK.INT, 1)
-    8  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'c'))
-    9  :         Ref(TK.IDENT, 'c')
+    4  :         List(TK.LIST, [Int()])
+    5  :             Int(TK.INT, 1)
+    6  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'c'))
+    7  :         Ref(TK.IDENT, 'c')
 
 tree18:  a.b(1d) | c
     1  : Flow{TK.CHAIN, '|' len=2}
-    2  :     PropRef(TK.REF: a . FnCall(TK.FUNCTION, 'b'))
+    2  :     PropCall(TK.PROPCALL, 'a')
     3  :         Get(TK.IDENT, 'a')
-    4  :         FnCall('b')
-    5  :             Get(TK.IDENT, 'b')
-    6  :             List(TK.LIST, [Duration()])
-    7  :                 Duration(TK.DUR, 1 day, 0:00:00)
-    8  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'c'))
-    9  :         Ref(TK.IDENT, 'c')
+    4  :         List(TK.LIST, [Duration()])
+    5  :             Duration(TK.DUR, 1 day, 0:00:00)
+    6  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'c'))
+    7  :         Ref(TK.IDENT, 'c')
 
 tree19:  open.b(1d) | c
     1  : Flow{TK.CHAIN, '|' len=2}
-    2  :     PropRef(TK.REF: open . FnCall(TK.FUNCTION, 'b'))
+    2  :     PropCall(TK.PROPCALL, 'open')
     3  :         Get(TK.IDENT, 'open')
-    4  :         FnCall('b')
-    5  :             Get(TK.IDENT, 'b')
-    6  :             List(TK.LIST, [Duration()])
-    7  :                 Duration(TK.DUR, 1 day, 0:00:00)
-    8  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'c'))
-    9  :         Ref(TK.IDENT, 'c')
+    4  :         List(TK.LIST, [Duration()])
+    5  :             Duration(TK.DUR, 1 day, 0:00:00)
+    6  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'c'))
+    7  :         Ref(TK.IDENT, 'c')

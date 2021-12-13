@@ -4,8 +4,6 @@ test: 1:
 a.b()
 
 tree1:  a.b()
-    1  : PropRef(TK.REF: a . FnCall(TK.FUNCTION, 'b'))
+    1  : PropCall(TK.PROPCALL, 'a')
     2  :     Get(TK.IDENT, 'a')
-    3  :     FnCall('b')
-    4  :         Get(TK.IDENT, 'b')
-    5  :         List(TK.LIST, [])
+    3  :     List(TK.LIST, [])

@@ -2,6 +2,7 @@ from copy import deepcopy
 
 from interpreter.version import VERSION
 from runtime.conversion import c_unbox
+from runtime.descriptors import ty2descriptor
 from runtime.environment import Environment
 from runtime.indexdict import IndexedDict
 from runtime.literals import Literal
@@ -40,9 +41,11 @@ _PROCESS_GENERATOR = 'process_generator'
 _PROCESS_GET = 'process_get'
 _PROCESS_CONDITIONAL = 'process_conditional'
 _PROCESS_INDEX = 'process_index'
+_PROCESS_INDEX_SET = 'process_index_set'
 _PROCESS_LIST = 'process_list_object'
 _PROCESS_PROPCALL = 'process_propcall'
 _PROCESS_PROPREF = 'process_propref'
+_PROCESS_PROPSET = 'process_propset'
 _PROCESS_REF = 'process_ref'
 _PROCESS_SET = 'process_set_object'
 _PROCESS_SLICE = 'process_slice'
@@ -82,6 +85,7 @@ _interpreterVisitNodeMappings = {
     'Ident': _VISIT_IDENT,
     'IfThenElse': _PROCESS_CONDITIONAL,
     'Index': _PROCESS_INDEX,
+    'IndexSet': _PROCESS_INDEX_SET,
     'Int': _VISIT_LITERAL,
     'List': _PROCESS_LIST,
     'Literal': _VISIT_LITERAL,
@@ -90,6 +94,7 @@ _interpreterVisitNodeMappings = {
     'Percent': _VISIT_LITERAL,
     'PropCall': _PROCESS_PROPCALL,
     'PropRef': _PROCESS_PROPREF,
+    'PropSet': _PROCESS_PROPSET,
     'Ref': _PROCESS_REF,
     'Return': _UNBOX_EXPR,
     'Set': _PROCESS_SET,
@@ -254,7 +259,7 @@ class Interpreter(TreeFilter):
         self.dedent()
         fn = self.stack.pop()
         if not isinstance(fn, Function):
-            fn = Function(other=fn)
+            fn = Function(other=fn, closure=Environment.current.scope)
             if isinstance(right, Scope):
                 fn.from_block(right, copy=False)
             else:
@@ -309,7 +314,7 @@ class Interpreter(TreeFilter):
         self.indent()
         args = self.reduce_parameters(scope=None, args=node.items())  # process & return them as an IndexedDict
         fname = tk2generator[node.target]
-        result = invoke_generator(env=self.environment, name=fname, args=args)
+        result = invoke_generator(name=fname, args=args)
         self.dedent()
         self.stack.push(result)
 
@@ -320,6 +325,30 @@ class Interpreter(TreeFilter):
 
     def process_index(self, node, label=None):
         self.process_binop(node, label)
+
+    def process_index_set(self, node, label=None):
+        self._print_node(node)
+        self.visit(node.left)
+        left = self.stack.pop()
+        if hasattr(left, 'value'):
+            left = left.value
+        self.visit(node.value)
+        value = self.stack.pop()
+        self.visit(node.index)
+        index = self.stack.pop()
+        if hasattr(index, 'value'):
+            index = index.value
+        desc = ty2descriptor(left)
+        if desc is not None:
+            if node.right is None:
+                desc.setAt(left, None, index, value)
+            elif isinstance(node.right, Ref):
+                desc.setAt(left, node.right.name, index, value)
+            return
+        # invalid?
+        Environment.enter(left)
+        self.visit(node.right)
+        Environment.leave()
 
     # encountered if 'tree' is actually a 'forest'
     def process_native_list(self, list, label=None):
@@ -339,13 +368,53 @@ class Interpreter(TreeFilter):
 
     # PropCall
     def process_propcall(self, node, label=None):
-        self.process_binop(node, label)
+        self._print_node(node)
+        self.indent()
+        self.visit(node.left)
+        obj = self.stack.pop()
+        args = node.right
+        if hasattr(obj, 'value'):
+            obj = obj.value
+        desc = ty2descriptor(obj)
+        if desc is not None:
+            method = node.member.name
+            args = self.reduce_parameters(fn=None, scope=None, args=args)
+            result = desc.invoke(obj, method, args)
+            self.stack.push(result)
+            return
 
     # PropRef
     def process_propref(self, node, label=None):
         self._print_node(node)
         self.visit(node.left)
         left = self.stack.pop()
+        if hasattr(left, 'value'):
+            left = left.value
+        desc = ty2descriptor(left)
+        if desc is not None:
+            if isinstance(node.right, Ref):
+                result = desc.get(left, node.right.name)
+                self.stack.push(result)
+                return
+        Environment.enter(left)
+        self.visit(node.right)
+        Environment.leave()
+
+    # PropSet
+    def process_propset(self, node, label=None):
+        self._print_node(node)
+        self.visit(node.left)
+        left = self.stack.pop()
+        self.visit(node.value)
+        value = self.stack.pop()
+        if hasattr(left, 'value'):
+            left = left.value
+        desc = ty2descriptor(left)
+        if desc is not None:
+            if isinstance(node.right, Ref):
+                desc.set(left, node.right.name, value)
+                return
+        # invalid?
         Environment.enter(left)
         self.visit(node.right)
         Environment.leave()

@@ -73,7 +73,7 @@ class RangeGenerator(FocalGenerator):
         return self
 
     def __next__(self):
-        if self.current > self.end:
+        if self.current >= self.end:
             raise StopIteration
         if self.tid != TK.DUR:
             if self.selector is None:
@@ -124,7 +124,7 @@ class SeriesGenerator(FocalGenerator):
         return Series(name=self.name, index=self.index, values=self.values)
 
 
-def generate_dataframe(env, args):
+def generate_dataframe(args=None):
     name = None
     index = None
     columns = None
@@ -149,29 +149,29 @@ def generate_dataframe(env, args):
     return dframe
 
 
-def generate_dict(env, args):
+def generate_dict(args=None):
     return None
 
 
-def generate_list(env, args):
+def generate_list(args=None):
     return args.values()
 
 
-def generate_set(env, args):
+def generate_set(args=None):
     return args.values()
 
 
-def generate_tuple(env, args):
+def generate_tuple(args=None):
     return args.values()
 
 
-def generate_named_tuple(env, args):
+def generate_named_tuple(args=None):
     return None
 
 
 # UNDONE: right now we are materializing the generator product, but we could pass the generator back.
 # UNDONE: just need to make sure that works in all cases.
-def generate_range(env, args):
+def generate_range(args=None):
     start = end = _zero = 0
     step = 1
     args = list(filter(None.__ne__, args))
@@ -222,7 +222,7 @@ def _parse_datetime(v):
     return start
 
 
-def generate_series(env, args):
+def generate_series(args=None):
     name = None
     index = None
     if hasattr(args, NAME_PROPERTY):

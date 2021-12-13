@@ -13,7 +13,7 @@ def _slice_ndarray(l_value, r_value):
     return l_value[slice(start, stop, step)]
 
 
-def np_fill(env, args):
+def np_fill(args=None):
     a = args[0]
     if isinstance(a, np.ndarray):
         val = args[1]
@@ -25,19 +25,19 @@ def np_fill(env, args):
     return a.fill(val)
 
 
-def np_flatten(env, args):
+def np_flatten(args=None):
     a = args[0]
     if not isinstance(a, np.ndarray):
         a = np.ndarray(a)
     return a.flatten(order='C')
 
 
-def np_identity(env, args):
+def np_identity(args=None):
     npargs = c_array_unbox(args)
     return np.eye(*npargs)
 
 
-def np_integers(env, args):
+def np_integers(args=None):
     argc = len(args)
     rng = np.random.default_rng()
     if isinstance(args[0], list):
@@ -84,14 +84,14 @@ def np_integers(env, args):
         return rng.integers(low, high, size=(x, y, z))
 
 
-def np_ones(env, args):
+def np_ones(args=None):
     npargs = c_array_unbox(args)
     if len(npargs) > 1:
         return np.ones(tuple(npargs))
     return np.ones(*npargs)
 
 
-def np_random(env, args):
+def np_random(args=None):
     argc = len(args)
     rng = np.random.default_rng()
     if argc == 0:
@@ -110,7 +110,7 @@ def np_random(env, args):
         return rng.random((x, y, z))
 
 
-def np_reshape(env, args):
+def np_reshape(args=None):
     a = args[0]
     x = args[1]
     if len(args) > 2:
@@ -121,19 +121,19 @@ def np_reshape(env, args):
         return np.reshape(a, x, 'A')    # x == -1 is flatten.
 
 
-def np_shape(env, args):
+def np_shape(args=None):
     a = args[0]
     return np.shape(a)
 
 
-def np_transpose(env, args):
+def np_transpose(args=None):
     a = args[0]
     if not isinstance(a, np.ndarray):
         a = np.ndarray(a)
     return np.transpose(a)
 
 
-def np_zeros(env, args):
+def np_zeros(args=None):
     npargs = c_array_unbox(args)
     if len(npargs) > 1:
         return np.zeros(tuple(npargs))

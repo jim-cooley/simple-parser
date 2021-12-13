@@ -469,7 +469,9 @@ class FnRef(BinOp):
         assert ref is not None, "Ref not passed to FnRef constructor"
         op = Token.FUNCTION(name=ref.name or "", loc=ref.location) if op is None else op
         super().__init__(left=ref, op=op, right=parameters, is_lvalue=is_lvalue)
+        self.ref = self.left
         self.name = ref.name
+        self.paramters = self.right
         if parameters is not None:
             self.count = len(parameters)
         else:
@@ -482,7 +484,6 @@ class FnCall(FnRef):
         assert ref is not None, "no Ref passed to FnCall constructor"
         op = Token.FNCALL(name=ref.name, loc=ref.location) if op is None else op
         super().__init__(ref=ref, op=op, parameters=parameters, is_lvalue=is_lvalue)
-        self.ref = ref  # for convenience
 
 
 @dataclass
@@ -554,6 +555,17 @@ class Index(FnCall):
 
 
 @dataclass
+class IndexSet(TernaryOp):
+    def __init__(self, ref=None, member=None, index=None, value=None, is_lvalue=True):
+        assert ref is not None, "no Ref passed to PropRef constructor"
+        op = Token.PUT(loc=ref.location)
+        super().__init__(op=op, left=ref, right=member, mid=value, is_lvalue=is_lvalue)
+        self.member = self.right
+        self.value = self.middle
+        self.index = index
+
+
+@dataclass
 class Slice(TernaryOp):
     def __init__(self, start=None, end=None, step=None, loc=None, is_lvalue=True):
         slice = Token.SLICE()
@@ -583,11 +595,30 @@ class Slice(TernaryOp):
 
 
 @dataclass
+class PropCall(FnRef):
+    def __init__(self, ref=None, member=None, parameters=None, op=None, is_lvalue=True):
+        assert ref is not None, "no Ref passed to FnCall constructor"
+        op = Token.PROPCALL(name=ref.name, loc=ref.location) if op is None else op
+        super().__init__(ref=ref, op=op, parameters=parameters, is_lvalue=is_lvalue)
+        self.member = member
+
+
+@dataclass
 class PropRef(BinOp):
     def __init__(self, ref=None, member=None, op=None, is_lvalue=True):
         assert ref is not None, "no Ref passed to PropRef constructor"
         op = Token.REF(loc=ref.location) if op is None else op
         super().__init__(left=ref, op=op, right=member, is_lvalue=is_lvalue)
+
+
+@dataclass
+class PropSet(TernaryOp):
+    def __init__(self, ref=None, member=None, value=None, is_lvalue=True):
+        assert ref is not None, "no Ref passed to PropRef constructor"
+        op = Token.PUT(loc=ref.location)
+        super().__init__(op=op, left=ref, right=member, mid=value, is_lvalue=is_lvalue)
+        self.member = self.right
+        self.value = self.middle
 
 
 @dataclass

@@ -5,23 +5,19 @@ open.b(1d) | buy
 
 tree1:  open.b(1d) | buy
     1  : Flow{TK.CHAIN, '|' len=2}
-    2  :     PropRef(TK.REF: open . FnCall(TK.FUNCTION, 'b'))
+    2  :     PropCall(TK.PROPCALL, 'open')
     3  :         Get(TK.IDENT, 'open')
-    4  :         FnCall('b')
-    5  :             Get(TK.IDENT, 'b')
-    6  :             List(TK.LIST, [Duration()])
-    7  :                 Duration(TK.DUR, 1 day, 0:00:00)
-    8  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'buy'))
-    9  :         Ref(TK.IDENT, 'buy')
+    4  :         List(TK.LIST, [Duration()])
+    5  :             Duration(TK.DUR, 1 day, 0:00:00)
+    6  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'buy'))
+    7  :         Ref(TK.IDENT, 'buy')
 
 tree1:(post)  open.b(1d) | buy
-result: list([PropRef(), ApplyChainProd()])
+result: list([PropCall(), ApplyChainProd()])
     1  : Flow{TK.CHAIN, '|' len=2}
-    2  :     PropRef(TK.REF: open . FnCall(TK.FUNCTION, 'b'))
+    2  :     PropCall(TK.PROPCALL, 'open')
     3  :         Get(TK.IDENT, 'open')
-    4  :         FnCall('b')
-    5  :             Get(TK.IDENT, 'b')
-    6  :             List(TK.LIST, [Duration()])
-    7  :                 Duration(TK.DUR, 1 day, 0:00:00)
-    8  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'buy'))
-    9  :         Ref(TK.IDENT, 'buy')
+    4  :         List(TK.LIST, [Duration()])
+    5  :             Duration(TK.DUR, 1 day, 0:00:00)
+    6  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'buy'))
+    7  :         Ref(TK.IDENT, 'buy')

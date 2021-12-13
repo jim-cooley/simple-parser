@@ -211,7 +211,7 @@ class Object(AST, Scope):
                 return f'{self.name}({self.parameters}) = {self.code}'
             else:
                 v = f'{self._value}' if self._value is not None else 'None'
-        return f'{self.name}({v})'
+        return f'object: {self.name} = {v}'
 
 
 # -----------------------------------
@@ -253,7 +253,7 @@ class Flow(Block):
 
 @dataclass
 class FunctionBase(Block):
-    def __init__(self, name=None, members=None, arity=None, opt=None, defaults=None, parameters=None, other=None, tid=None, loc=None, is_lvalue=True):
+    def __init__(self, name=None, members=None, closure=None, arity=None, opt=None, defaults=None, parameters=None, other=None, tid=None, loc=None, is_lvalue=True):
         if other is not None:
             name = other.name
             members = other._members
@@ -262,6 +262,7 @@ class FunctionBase(Block):
                 defaults = other.defaults
         super().__init__(name=name, members=members, loc=loc)
         self.arity = arity or 0
+        self.closure = closure
         self.opt = opt or 0
         self.set_token(tid=tid or TK.IDENT, tcl=TCL.FUNCTION, loc=loc, lex=name)
         self._value = self._items
@@ -272,6 +273,9 @@ class FunctionBase(Block):
             if not isinstance(defaults, IndexedDict):
                 defaults = IndexedDict(items=defaults)
         self.defaults = defaults
+
+    def invoke(self, interpreter, args=None):
+        assert False, f'Function {self.name} is not implemented'
 
     def format(self, brief=True):
         v = f'{self._value}' if self._value is not None else 'None'

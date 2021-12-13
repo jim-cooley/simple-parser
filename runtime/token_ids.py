@@ -130,6 +130,9 @@ class TK(IntEnum):
     POS = auto()  # unary +
     POW = auto()  # ^
     PRODUCE = auto()  # => signal
+    PROPCALL = auto()
+    PUT = auto()  # propput
+    PUTIDX = auto()  # indexed propput
     RAISE = auto()  # ->
     REF = auto()
     RISE_ABOVE = auto()  # >|
