@@ -481,7 +481,7 @@ class Parser(object):
             elif isinstance(decl, Assign):
                 if cid == TK.SET:
                     cid = TK.BLOCK
-            elif type(decl).__name__ in ['IfThenElse', 'Return', 'DefineFn', 'DefineVarFn', 'PropSet', 'Block']:
+            elif type(decl).__name__ in ['IfThenElse', 'Return', 'DefineFn', 'DefineVarFn', 'PropSet', 'Block', 'Flow', 'ApplyChainProd', 'Apply']:
                 cid = TK.BLOCK
             if self.peek(-1).id in [TK.COLN]:  # declaration() eats the separator
                 cid = TK.DATAFRAME

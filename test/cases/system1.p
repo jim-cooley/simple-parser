@@ -5,12 +5,11 @@ periods = {
 }
 sma_period = [3,5,10..20,28]
 
-# productions: new datasets
-atr := (high + low) / 2
-median_price := (open + close) / 2
-price10a := price.delay(1d)[10:00]
+read('quotes.csv', format='csv') | close
 
-report := { trades | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price') }
+
+# productions: new datasets
+report := { trades | columns('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price') | print }
 
 
 rules: {

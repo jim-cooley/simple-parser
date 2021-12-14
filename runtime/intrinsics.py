@@ -11,7 +11,7 @@ from runtime.generators import generate_range, generate_dataframe, generate_dict
 from runtime.numpy import np_identity, np_ones, np_zeros, np_reshape, np_flatten, np_transpose, np_random, \
     np_integers, np_fill
 from runtime.pandas import create_dataset, create_series, pd_sma, pd_columns, pd_shift, pd_delta, do_signal, pd_head, \
-    pd_tail, pd_boxplot, pd_values, pd_index, pd_info, pd_axes
+    pd_tail, pd_boxplot, pd_values, pd_index, pd_info, pd_axes, pd_sum, pd_cumsum
 from runtime.print import do_print
 from runtime.scope import FunctionBase
 from runtime.time import do_now
@@ -261,11 +261,13 @@ _intrinsic_fundesc = {
     # pandas:
     'axes': (pd_axes, 1, 1, None),
     'boxplot': (pd_boxplot, 1, 4, None),
+    'cumsum': (pd_cumsum, 1, 2, None),
     'head': (pd_head, 1, 2, None),
     'info': (pd_info, 1, 1, None),
     'index': (pd_index, 1, 1, None),
     'shift': (pd_shift, 2, 2, None),
     'sma': (pd_sma, 2, 2, None),
+    'sum': (pd_sum, 1, 2, None),
     'tail': (pd_tail, 1, 2, None),
     'values': (pd_values, 1, 2, None),
     # timedelta_range

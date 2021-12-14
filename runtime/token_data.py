@@ -251,6 +251,7 @@ type2tid = {
     'Dataset': TK.DATAFRAME,
     'DataFrame': TK.DATAFRAME,
     'dataframe': TK.DATAFRAME,
+    'datetime': TK.TIME,
     'Dict': TK.DICT,
     'Enumeration': TK.ENUM,
     'List': TK.LIST,

@@ -127,9 +127,9 @@ tree8:  periods = {
     2  :     Time(TK.TIME, 10:00:00)
 
 tree9:  report := { trades(buy, sell) | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price') }
-    1  : DefineVar(TK.DEFINE: report := Generate(TK.GEN, ''))
+    1  : DefineVar(TK.DEFINE: report := Block(TK.BLOCK, ''))
     2  :     Ref(TK.IDENT, 'report')
-    3  :     Generate(TK.SET, len=1)
+    3  :     Block{TK.BLOCK, len=1}
     4  :         Flow{TK.CHAIN, '|' len=2}
     5  :             FnCall('trades')
     6  :                 Get(TK.IDENT, 'trades')
@@ -149,9 +149,9 @@ tree10:  rules := {
     1  : DefineVar(TK.DEFINE: rules := Block(TK.BLOCK, ''))
     2  :     Ref(TK.IDENT, 'rules')
     3  :     Block{TK.BLOCK, len=5}
-    4  :         Define(TK.DEFINE: baseline = Generate(TK.GEN, ''))
+    4  :         Define(TK.DEFINE: baseline = Block(TK.BLOCK, ''))
     5  :             Ref(TK.IDENT, 'baseline')
-    6  :             Generate(TK.SET, len=2)
+    6  :             Block{TK.BLOCK, len=2}
     7  :                 UnaryOp(TK.ANY, 'any')
     8  :                     Flow{TK.RAISE, '->' len=2}
     9  :                         Flow{TK.APPLY, '>>' len=2}
@@ -212,9 +212,9 @@ tree10:  rules := {
    64  :                                 Ref(TK.IDENT, 'close')
    65  :                     ApplyChainProd(TK.RAISE: None -> Ref(TK.IDENT, 'sell'))
    66  :                         Ref(TK.IDENT, 'sell')
-   67  :         Define(TK.DEFINE: scenario1 = Generate(TK.GEN, ''))
+   67  :         Define(TK.DEFINE: scenario1 = Block(TK.BLOCK, ''))
    68  :             Ref(TK.IDENT, 'scenario1')
-   69  :             Generate(TK.SET, len=2)
+   69  :             Block{TK.BLOCK, len=2}
    70  :                 Flow{TK.RAISE, '->' len=2}
    71  :                     Flow{TK.CHAIN, '|' len=3}
    72  :                         Generate(TK.SET, len=1)
@@ -252,9 +252,9 @@ tree10:  rules := {
   104  :                                 Ref(TK.IDENT, 'atr')
   105  :                     ApplyChainProd(TK.RAISE: None -> Ref(TK.IDENT, 'sell'))
   106  :                         Ref(TK.IDENT, 'sell')
-  107  :         Define(TK.DEFINE: scenario2 = Generate(TK.GEN, ''))
+  107  :         Define(TK.DEFINE: scenario2 = Block(TK.BLOCK, ''))
   108  :             Ref(TK.IDENT, 'scenario2')
-  109  :             Generate(TK.SET, len=2)
+  109  :             Block{TK.BLOCK, len=2}
   110  :                 Flow{TK.RAISE, '->' len=2}
   111  :                     Flow{TK.CHAIN, '|' len=3}
   112  :                         Combine(TK.COMBINE: [count=0]:set None Define(TK.DEFINE, '='))
@@ -292,9 +292,9 @@ tree10:  rules := {
   144  :                             Ref(TK.IDENT, 'signal')
   145  :                     ApplyChainProd(TK.RAISE: None -> Ref(TK.IDENT, 'sell'))
   146  :                         Ref(TK.IDENT, 'sell')
-  147  :         Define(TK.DEFINE: scenario3 = Generate(TK.GEN, ''))
+  147  :         Define(TK.DEFINE: scenario3 = Block(TK.BLOCK, ''))
   148  :             Ref(TK.IDENT, 'scenario3')
-  149  :             Generate(TK.SET, len=2)
+  149  :             Block{TK.BLOCK, len=2}
   150  :                 Flow{TK.RAISE, '->' len=2}
   151  :                     Flow{TK.CHAIN, '|' len=3}
   152  :                         Generate(TK.SET, len=1)
@@ -331,7 +331,7 @@ tree10:  rules := {
   183  :                             Ref(TK.IDENT, 'signal')
   184  :                     ApplyChainProd(TK.RAISE: None -> Ref(TK.IDENT, 'sell'))
   185  :                         Ref(TK.IDENT, 'sell')
-  186  :         Generate(TK.SET, len=2)
+  186  :         Block{TK.BLOCK, len=2}
   187  :             Flow{TK.RAISE, '->' len=2}
   188  :                 Flow{TK.CHAIN, '|' len=3}
   189  :                     Generate(TK.SET, len=1)
@@ -479,9 +479,9 @@ tree8:(post)  periods = {
     2  :     Time(TK.TIME, 10:00:00)
 
 tree9:(post)  report := { trades(buy, sell) | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price') }
-    1  : DefineVar(TK.DEFINE: report := Generate(TK.GEN, ''))
+    1  : DefineVar(TK.DEFINE: report := Block(TK.BLOCK, ''))
     2  :     Ref(TK.IDENT, 'report')
-    3  :     Generate(TK.SET, len=1)
+    3  :     Block{TK.BLOCK, len=1}
     4  :         Flow{TK.CHAIN, '|' len=2}
     5  :             FnCall('trades')
     6  :                 Get(TK.IDENT, 'trades')
@@ -501,9 +501,9 @@ tree10:(post)  rules := {
     1  : DefineVar(TK.DEFINE: rules := Block(TK.BLOCK, ''))
     2  :     Ref(TK.IDENT, 'rules')
     3  :     Block{TK.BLOCK, len=5}
-    4  :         Define(TK.DEFINE: baseline = Generate(TK.GEN, ''))
+    4  :         Define(TK.DEFINE: baseline = Block(TK.BLOCK, ''))
     5  :             Ref(TK.IDENT, 'baseline')
-    6  :             Generate(TK.SET, len=2)
+    6  :             Block{TK.BLOCK, len=2}
     7  :                 UnaryOp(TK.ANY, 'any')
     8  :                     Flow{TK.RAISE, '->' len=2}
     9  :                         Flow{TK.APPLY, '>>' len=2}
@@ -564,9 +564,9 @@ tree10:(post)  rules := {
    64  :                                 Ref(TK.IDENT, 'close')
    65  :                     ApplyChainProd(TK.RAISE: None -> Ref(TK.IDENT, 'sell'))
    66  :                         Ref(TK.IDENT, 'sell')
-   67  :         Define(TK.DEFINE: scenario1 = Generate(TK.GEN, ''))
+   67  :         Define(TK.DEFINE: scenario1 = Block(TK.BLOCK, ''))
    68  :             Ref(TK.IDENT, 'scenario1')
-   69  :             Generate(TK.SET, len=2)
+   69  :             Block{TK.BLOCK, len=2}
    70  :                 Flow{TK.RAISE, '->' len=2}
    71  :                     Flow{TK.CHAIN, '|' len=3}
    72  :                         Generate(TK.SET, len=1)
@@ -604,9 +604,9 @@ tree10:(post)  rules := {
   104  :                                 Ref(TK.IDENT, 'atr')
   105  :                     ApplyChainProd(TK.RAISE: None -> Ref(TK.IDENT, 'sell'))
   106  :                         Ref(TK.IDENT, 'sell')
-  107  :         Define(TK.DEFINE: scenario2 = Generate(TK.GEN, ''))
+  107  :         Define(TK.DEFINE: scenario2 = Block(TK.BLOCK, ''))
   108  :             Ref(TK.IDENT, 'scenario2')
-  109  :             Generate(TK.SET, len=2)
+  109  :             Block{TK.BLOCK, len=2}
   110  :                 Flow{TK.RAISE, '->' len=2}
   111  :                     Flow{TK.CHAIN, '|' len=3}
   112  :                         Combine(TK.COMBINE: [count=0]:set None Define(TK.DEFINE, '='))
@@ -644,9 +644,9 @@ tree10:(post)  rules := {
   144  :                             Ref(TK.IDENT, 'signal')
   145  :                     ApplyChainProd(TK.RAISE: None -> Ref(TK.IDENT, 'sell'))
   146  :                         Ref(TK.IDENT, 'sell')
-  147  :         Define(TK.DEFINE: scenario3 = Generate(TK.GEN, ''))
+  147  :         Define(TK.DEFINE: scenario3 = Block(TK.BLOCK, ''))
   148  :             Ref(TK.IDENT, 'scenario3')
-  149  :             Generate(TK.SET, len=2)
+  149  :             Block{TK.BLOCK, len=2}
   150  :                 Flow{TK.RAISE, '->' len=2}
   151  :                     Flow{TK.CHAIN, '|' len=3}
   152  :                         Generate(TK.SET, len=1)
@@ -683,7 +683,7 @@ tree10:(post)  rules := {
   183  :                             Ref(TK.IDENT, 'signal')
   184  :                     ApplyChainProd(TK.RAISE: None -> Ref(TK.IDENT, 'sell'))
   185  :                         Ref(TK.IDENT, 'sell')
-  186  :         Generate(TK.SET, len=2)
+  186  :         Block{TK.BLOCK, len=2}
   187  :             Flow{TK.RAISE, '->' len=2}
   188  :                 Flow{TK.CHAIN, '|' len=3}
   189  :                     Generate(TK.SET, len=1)

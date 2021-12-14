@@ -8,19 +8,19 @@ tree1:  any:{ close >| sma(10), close <| sma(20) }:(threshold=0.01) | signal >> 
     2  :     Flow{TK.CHAIN, '|' len=3}
     3  :         Flow{TK.APPLY, '>>' len=2}
     4  :             Flow{TK.CHAIN, '|' len=2}
-    5  :                 Combine(TK.COMBINE: [count=1]:set None Define(TK.DEFINE, '='))
-    6  :                     Generate(TK.SET, len=2)
+    5  :                 Combine(TK.COMBINE:  None Define(TK.DEFINE, '='))
+    6  :                     Block{TK.BLOCK, len=2}
     7  :                         Flow{TK.CHAIN, '|' len=2}
     8  :                             BinOp(TK.GTR, '>')
-    9  :                                 Get(TK.IDENT, 'close')
+    9  :                                 Ref(TK.IDENT, 'close')
    10  :                             FnCall('sma')
    11  :                                 Ref(TK.IDENT, 'sma')
    12  :                                 List(TK.LIST, [Int()])
    13  :                                     Int(TK.INT, 10)
    14  :                         BinOp(TK.FALL_BELOW, '<|')
-   15  :                             Get(TK.IDENT, 'close')
+   15  :                             Ref(TK.IDENT, 'close')
    16  :                             FnCall('sma')
-   17  :                                 Get(TK.IDENT, 'sma')
+   17  :                                 Ref(TK.IDENT, 'sma')
    18  :                                 List(TK.LIST, [Int()])
    19  :                                     Int(TK.INT, 20)
    20  :                     Define(TK.DEFINE: threshold = 0.01)

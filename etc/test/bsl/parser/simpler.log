@@ -32,9 +32,9 @@ def rules5 = {
 
 
 tree1:  rules0 := {
-    1  : DefineVar(TK.DEFINE: rules0 := Generate(TK.GEN, ''))
+    1  : DefineVar(TK.DEFINE: rules0 := Block(TK.BLOCK, ''))
     2  :     Ref(TK.IDENT, 'rules0')
-    3  :     Generate(TK.SET, len=2)
+    3  :     Block{TK.BLOCK, len=2}
     4  :         Flow{TK.CHAIN, '|' len=5}
     5  :             BinOp(TK.RISE_ABOVE, '|>')
     6  :                 Get(TK.IDENT, 'close')
@@ -67,9 +67,9 @@ tree1:  rules0 := {
    33  :                 Ref(TK.IDENT, 'sell')
 
 tree2:  rules1 => {
-    1  : DefineFn(TK.PRODUCE: rules1 => Generate(TK.GEN, ''))
+    1  : DefineFn(TK.PRODUCE: rules1 => Block(TK.BLOCK, ''))
     2  :     Ref(TK.IDENT, 'rules1')
-    3  :     Generate(TK.SET, len=2)
+    3  :     Block{TK.BLOCK, len=2}
     4  :         UnaryOp(TK.ANY, 'any')
     5  :             Flow{TK.CHAIN, '|' len=2}
     6  :                 Flow{TK.APPLY, '>>' len=2}
@@ -122,9 +122,9 @@ tree2:  rules1 => {
    53  :                 Ref(TK.IDENT, 'sell')
 
 tree3:  rules2 := {
-    1  : DefineVar(TK.DEFINE: rules2 := Generate(TK.GEN, ''))
+    1  : DefineVar(TK.DEFINE: rules2 := Block(TK.BLOCK, ''))
     2  :     Ref(TK.IDENT, 'rules2')
-    3  :     Generate(TK.SET, len=2)
+    3  :     Block{TK.BLOCK, len=2}
     4  :         Flow{TK.CHAIN, '|' len=2}
     5  :             Flow{TK.APPLY, '>>' len=2}
     6  :                 Flow{TK.CHAIN, '|' len=2}
@@ -177,9 +177,9 @@ tree3:  rules2 := {
    53  :                 Ref(TK.IDENT, 'atr')
 
 tree4:  rules3 := {
-    1  : DefineVar(TK.DEFINE: rules3 := Generate(TK.GEN, ''))
+    1  : DefineVar(TK.DEFINE: rules3 := Block(TK.BLOCK, ''))
     2  :     Ref(TK.IDENT, 'rules3')
-    3  :     Generate(TK.SET, len=2)
+    3  :     Block{TK.BLOCK, len=2}
     4  :         UnaryOp(TK.ANY, 'any')
     5  :             Flow{TK.CHAIN, '|' len=2}
     6  :                 Flow{TK.APPLY, '>>' len=2}
@@ -232,9 +232,9 @@ tree4:  rules3 := {
    53  :                 Ref(TK.IDENT, 'sell')
 
 tree5:  rules4 = {
-    1  : Define(TK.DEFINE: rules4 = Generate(TK.GEN, ''))
+    1  : Define(TK.DEFINE: rules4 = Block(TK.BLOCK, ''))
     2  :     Ref(TK.IDENT, 'rules4')
-    3  :     Generate(TK.SET, len=2)
+    3  :     Block{TK.BLOCK, len=2}
     4  :         UnaryOp(TK.ANY, 'any')
     5  :             Flow{TK.CHAIN, '|' len=2}
     6  :                 Flow{TK.APPLY, '>>' len=2}
@@ -287,9 +287,9 @@ tree5:  rules4 = {
    53  :                 Ref(TK.IDENT, 'sell')
 
 tree6:  def rules5 = {
-    1  : Define(TK.DEFINE: rules5 = Generate(TK.GEN, ''))
+    1  : Define(TK.DEFINE: rules5 = Block(TK.BLOCK, ''))
     2  :     Ref(TK.IDENT, 'rules5')
-    3  :     Generate(TK.SET, len=2)
+    3  :     Block{TK.BLOCK, len=2}
     4  :         UnaryOp(TK.ANY, 'any')
     5  :             Flow{TK.CHAIN, '|' len=2}
     6  :                 Flow{TK.APPLY, '>>' len=2}
@@ -313,7 +313,7 @@ tree6:  def rules5 = {
    24  :                                 Float(TK.FLOT, 0.01)
    25  :                         ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'signal'))
    26  :                             Ref(TK.IDENT, 'signal')
-   27  :                     FnCall('delay')
+   27  :                     FnRef(TK.FUNCTION, 'delay')
    28  :                         Ref(TK.IDENT, 'delay')
    29  :                         List(TK.LIST, [Duration()])
    30  :                             Duration(TK.DUR, 1 day, 0:00:00)
@@ -325,14 +325,14 @@ tree6:  def rules5 = {
    36  :                 Flow{TK.APPLY, '>>' len=2}
    37  :                     Flow{TK.CHAIN, '|' len=2}
    38  :                         BinOp(TK.FALL_BELOW, '<|')
-   39  :                             Get(TK.IDENT, 'close')
-   40  :                             FnCall('sma')
-   41  :                                 Get(TK.IDENT, 'sma')
+   39  :                             Ref(TK.IDENT, 'close')
+   40  :                             FnRef(TK.FUNCTION, 'sma')
+   41  :                                 Ref(TK.IDENT, 'sma')
    42  :                                 List(TK.LIST, [Int()])
    43  :                                     Int(TK.INT, 10)
    44  :                         ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'signal'))
    45  :                             Ref(TK.IDENT, 'signal')
-   46  :                     FnCall('delay')
+   46  :                     FnRef(TK.FUNCTION, 'delay')
    47  :                         Ref(TK.IDENT, 'delay')
    48  :                         List(TK.LIST, [Duration()])
    49  :                             Duration(TK.DUR, 1 day, 0:00:00)

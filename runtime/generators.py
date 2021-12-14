@@ -1,12 +1,12 @@
 from copy import copy, deepcopy
-from datetime import timedelta
+import datetime as dt
 from enum import IntEnum, unique, auto
 
 import numpy
 import pandas as pd
 
 from runtime.conversion import c_unbox, c_sign, c_type
-from runtime.time import get_dt_now, _parse_date_value, _parse_time_value
+from runtime.time import get_dt_now, _parse_date_value, _parse_time_value, Time
 from runtime.series import Series
 from runtime.token_ids import TK
 
@@ -101,7 +101,7 @@ class RangeGenerator(FocalGenerator):
                 if self.selector == self.SELECTOR.ZEROS:
                     return _now
                 elif self.selector == self.SELECTOR.ONES:
-                    return timedelta(days=1)
+                    return dt.timedelta(days=1)
                 elif self.selector == self.SELECTOR.NAN:
                     return numpy.NaN
                 elif self.selector == self.SELECTOR.NONE:
@@ -182,17 +182,21 @@ def generate_range(args=None):
         if len(args) > 1:
             _e = args[1]
             if isinstance(_e, int):
-                end = start + timedelta(args[1])
+                end = start + dt.timedelta(args[1])
             else:
                 end = _parse_datetime(_e)
         if len(args) > 2:
-            step = timedelta(args[2])
+            step = dt.timedelta(args[2])
         else:
-            step = timedelta(1)
+            step = dt.timedelta(1)
     else:
         if ty == TK.DUR:
-            step = timedelta(days=1)
-            _zero = timedelta(days=0)
+            step = dt.timedelta(days=1)
+            _zero = dt.timedelta(days=0)
+            start = end = _zero
+        elif ty == TK.TIME:
+            step = dt.timedelta(days=1)
+            _zero = Time(dt.datetime.now())
             start = end = _zero
         elif ty not in [TK.INT, TK.FLOT]:
             raise TypeError(f"Unsupported range type TK.{TK(ty).name}")

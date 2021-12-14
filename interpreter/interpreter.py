@@ -321,7 +321,12 @@ class Interpreter(TreeFilter):
     # Get
     def process_get(self, node, label=None):
         self._print_node(node)
-        self.stack.push(reduce_get(get=node))
+        result = reduce_get(get=node)
+        if isinstance(result, FunctionBase):    # can get parameterless function
+            fn = result
+            if fn.arity == 0:
+                result = fn.invoke(self)        # we reduce parameterless functions (like 'today'), pass others on.
+        self.stack.push(result)
 
     def process_index(self, node, label=None):
         self.process_binop(node, label)

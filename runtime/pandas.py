@@ -1,5 +1,4 @@
 import pandas as pd
-import matplotlib.pyplot as plt
 
 
 from runtime.conversion import c_unbox
@@ -223,6 +222,18 @@ def pd_columns(args=None):
     return df_columns(a, columns)
 
 
+def pd_cumsum(args=None):
+    a = args[0]
+    if not isinstance(a, pd.DataFrame):
+        a = pd.DataFrame(a)
+    if len(args > 1):
+        axis = args[1]
+    else:
+        axis = 'c'
+    axis = axis[0].lower()
+    return a.cumsum(axis=0 if axis == 'r' else 1)
+
+
 def pd_delta(args=None):
     a = args[0]
     if len(args) > 1:
@@ -297,6 +308,18 @@ def pd_sma(args=None):
 
 def pdi_sma(a, window):
     return a.rolling(window).mean()
+
+
+def pd_sum(args=None):
+    a = args[0]
+    if not isinstance(a, pd.DataFrame):
+        a = pd.DataFrame(a)
+    if len(args > 1):
+        axis = args[1]
+    else:
+        axis = 'c'
+    axis = axis[0].lower()
+    return a.sum(axis=0 if axis == 'r' else 1)
 
 
 def pd_tail(args=None):
