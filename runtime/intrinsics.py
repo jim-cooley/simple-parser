@@ -6,6 +6,7 @@ import pandas as pd
 import json as js
 
 from runtime.conversion import c_unbox
+from runtime.eval_binops import eval_binops_dispatch2, type2native
 from runtime.generators import generate_range, generate_dataframe, generate_dict, generate_list, generate_named_tuple, \
     generate_series, generate_set, generate_tuple
 from runtime.numpy import np_identity, np_ones, np_zeros, np_reshape, np_flatten, np_transpose, np_random, \
@@ -155,6 +156,18 @@ def to_json(args=None):
     return json
 
 
+def do_mul(args=None):
+    left = args[0]
+    if hasattr(left, 'value'):
+        left = left.value
+    l_ty = type2native[type(left).__name__]
+    right = args[1]
+    if hasattr(right, 'value'):
+        right = right.value
+    r_ty = type2native[type(right).__name__]
+    return eval_binops_dispatch2(TK.MUL, left, right, l_ty, r_ty)
+
+
 def do_read(args=None):
     format = 'csv'
     dframe = None
@@ -234,6 +247,7 @@ _intrinsic_fundesc = {
     'delta': (pd_delta, 1, 2, None),    # focal
     'len': (do_len, 1, 1, None),
     'json': (to_json, 1, 2, None),   # obj [, filename]
+    'mul': (do_mul, 2, 2, None),
     'now': (do_now, 0, 0, None),
     'print': (do_print, 1, -1, None),  # varargs
     'range': (generate_range, 1, 3, {'start': None, 'end': None, 'step': 1}),
@@ -288,7 +302,6 @@ _intrinsic_not_impl = {
     'arrange': (None, 0, 1, None),     # create array of evenly spaced values
     'corrcoef': (None, 0, 1, None),    # correlation coefficient
     'cos': (None, 0, 1, None),
-    'cumsum': (None, 0, 1, None),      # cummulative sum
     'dot': (None, 0, 1, None),         # CONSIDER: turn this into operator ?
     'exp': (None, 0, 1, None),
     'log': (None, 0, 1, None),
@@ -301,7 +314,6 @@ _intrinsic_not_impl = {
     'std': (None, 0, 1, None),         # standard deviation
     'sqrt': (None, 0, 1, None),
     'sin': (None, 0, 1, None),
-    'sum': (None, 0, 1, None),
 
     # Pandas
     'rank': (None, 0, 1, None),        # assign ranks to entries

@@ -1,6 +1,6 @@
 #!/Users/jim/venv/jimc/bin/python
 
-from copy import deepcopy
+from copy import deepcopy, copy
 
 
 class IndexedDict(object):
@@ -23,28 +23,21 @@ class IndexedDict(object):
 
     def __init__(self, items=None, fields=None, values=None, defaults=None):
         super().__init__()
-        self._fields = None
-        self._values = None
-        _items = defaults or {}
+        self._fields = []
+        self._values = []
+        _items = defaults if defaults is not None else {}
         if items is not None:
             _items.update(items)
             self._fields = list(_items.keys())
             self._values = list(_items.values())
-            self.__dict__.update(_items)
-        else:
-            if not values:
-                self._fields = list(_items.keys())
-                self._values = list(_items.values())
-                self.__dict__.update(_items)
-            else:
-                for k in _items:
-                    if k not in fields:
-                        fields.append(k)
-                        values.append(_items[k])
-                self._fields = fields
-                self._values = values
-                if fields:
-                    self.__dict__.update(_rzip(fields, values))
+        elif fields is not None:
+            self._fields = copy(fields)
+            self._values = copy(values)
+            _items = dict(zip(self._fields, self._values))
+        self.__dict__.update(_items)
+
+    def __contains__(self, key):
+        return key in self._fields
 
     def __getitem__(self, key):
         if isinstance(key, int):
@@ -63,14 +56,13 @@ class IndexedDict(object):
             self._values[key] = value
             key = self._fields[key]
         else:
-            idx = self._fields.index(key)
-            if idx < 0:
+            if key in self._fields:
+                idx = self._fields.index(key)
+                self._values[idx] = value
+            else:
                 self._fields.append(key)
                 self._values.append(value)
-            else:
-                self._values[idx] = value
-        if key in self.__dict__:
-            self.__dict__[key] = value
+        self.__dict__[key] = value
 
     def __str__(self):
         return self.format()
@@ -135,8 +127,8 @@ class IndexedDict(object):
     def update(self, items):
         self.__dict__.update(items)
         for k in items:
-            idx = self._fields.index(k)
-            if idx >= 0:
+            if k in self._fields:
+                idx = self._fields.index(k)
                 self._values[idx] = items[k]
             else:
                 self._fields.append(k)

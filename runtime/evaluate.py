@@ -61,11 +61,10 @@ def reduce_value(stack: RuntimeStack, node):
     stack.push(node.value)
 
 
-def reduce_ref(scope=None, ref=None, value=None, update=False):
+def reduce_ref(scope=None, ref=None, value=None, idx=None, update=False):
     scope = Environment.current.scope if scope is None else scope
     symbol = scope.define(name=ref.name, value=value, update=update)
-    # UNDONE: need to update definitions if symbol exists.  need to call assignment, not update_ref
-    return symbol  # should be Object type
+    return symbol
 
 
 def reduce_get(scope=None, get=None):
@@ -102,7 +101,7 @@ def reduce_propget(left=None, right=None):
 def update_ref(scope=None, name=None, value=None):
     scope = Environment.current.scope if scope is None else scope
     symbol = scope.redefine(name=name, value=value, local=True)
-    return symbol  # should be Object type
+    return symbol
 
 
 def evaluate_binary_operation(node, left, right):

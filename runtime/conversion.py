@@ -38,9 +38,10 @@ def c_array_unbox(a):
 
 def c_type(u):
     tid = TK.NONE
-    if hasattr(u, 'token'):
-        tid = u.token.id
-        return tid
+    if hasattr(u, 'tid'):
+        tid = u.tid
+        if tid is not None:
+            return tid
     v = c_unbox(u)
     ty = type(v).__name__
     if ty in type2tid:

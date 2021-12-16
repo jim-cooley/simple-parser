@@ -11,7 +11,8 @@ from runtime.collections import List
 from runtime.token import Token
 from runtime.token_ids import TK
 
-from runtime.eval_binops import eval_binops_dispatch_fixup, is_supported_binop
+from runtime.eval_boolean import _boolean_dispatch_table, eval_boolean_dispatch
+from runtime.eval_binops import _binops_dispatch_table, eval_binops_dispatch
 from runtime.eval_unary import decrement_literal, increment_literal, negate_literal, not_literal
 from runtime.evaluate import _INTRINSIC_VALUE_TYPES
 
@@ -270,3 +271,17 @@ def _fixup_binary_operation(node):
 
     node.value = eval_binops_dispatch_fixup(node)
     return node
+
+
+def is_supported_binop(op):
+    return op in _binops_dispatch_table or op in _boolean_dispatch_table
+
+
+def eval_binops_dispatch_fixup(node):
+    if node is None:
+        return None
+    if node.op in _binops_dispatch_table:
+        return eval_binops_dispatch(node, node.left, node.right)
+    if node.op in _boolean_dispatch_table:
+        return eval_boolean_dispatch(node, node.left, node.right)
+    return node.value

@@ -1,5 +1,5 @@
 import pandas as pd
-
+import datetime as dt
 
 from runtime.conversion import c_unbox
 from runtime.indexdict import IndexedDict
@@ -144,6 +144,10 @@ def _slice_series(l_value, r_value):
     return l_value[slice(start, stop, step)]
 
 
+def df_negate(df):
+    return df * -1
+
+
 def pd_and_df(a, b):
     return a and b
 
@@ -176,6 +180,10 @@ def pd_lte_df(a, b):
     return a <= b
 
 
+def pd_mul_df(a, b):
+    return a * b
+
+
 # -----------------------------------
 # Pandas Functions
 # -----------------------------------
@@ -206,7 +214,7 @@ def pd_boxplot(args=None):
 
 
 def pdi_boxplot(a):
-    plt.figure()
+    # plt.figure()
     boxplot = a.boxplot()
     return boxplot
 
@@ -226,12 +234,12 @@ def pd_cumsum(args=None):
     a = args[0]
     if not isinstance(a, pd.DataFrame):
         a = pd.DataFrame(a)
-    if len(args > 1):
+    if len(args) > 1:
         axis = args[1]
     else:
         axis = 'c'
     axis = axis[0].lower()
-    return a.cumsum(axis=0 if axis == 'r' else 1)
+    return a.cumsum(axis=1 if axis == 'r' else 0)
 
 
 def pd_delta(args=None):
@@ -276,11 +284,13 @@ def pd_shift(args=None):
     delay = args[1]
     if not isinstance(a, pd.DataFrame):
         a = pd.DataFrame(a)
+    if isinstance(delay, dt.timedelta):
+        delay = delay // dt.timedelta(days=1)
     return pdi_shift(a, delay)
 
 
 def pdi_shift(a, delay):
-    return a.shift(delay)
+    return a.shift(delay).fillna(0)
 
 
 def do_signal(args=None):
@@ -294,7 +304,7 @@ def di_signal(a):
     series = a.fillna(0)
     series[series > 0] = 1
     series[series < 1] = 0
-    signal = series.diff().fillna(0)
+    signal = series.diff()
     return signal
 
 
@@ -314,12 +324,12 @@ def pd_sum(args=None):
     a = args[0]
     if not isinstance(a, pd.DataFrame):
         a = pd.DataFrame(a)
-    if len(args > 1):
+    if len(args) > 1:
         axis = args[1]
     else:
         axis = 'c'
     axis = axis[0].lower()
-    return a.sum(axis=0 if axis == 'r' else 1)
+    return a.sum(axis=1 if axis == 'r' else 0)
 
 
 def pd_tail(args=None):

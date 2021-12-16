@@ -1,29 +1,31 @@
+# trades[trades > 0] | buys | tail | print
 
 quotes = yahoo( symbols='portfolio.csv', span=-5y )
-close = quotes.close
+(open, close, high, low, atr, volume, first, last) = quotes
 
-close | sma(_, 10) | sma10 | print
-close | sma(_, 20) | sma20 | print
+atr | delay(_, 1d) | atr.plus1 | print
+
+
+close | sma(_, 10) | close.sma10 | print
+close | sma(_, 20) | close.sma20 | print
 
 close | columns(_, 'AAPL') | delta(_, 1) | signal | print
 
 close | delta | signal | print
 
-sma10 > sma20 | signal | x
-x > 0 | buys | tail | print
-x < 0 | sells | head | print
+close.sma10 > close.sma20 | signal | mul(_, -atr.plus1) | trades | print
+
+print("trading")
+trades > 0 | buys | tail | print
+trades < 0 | sells | head | print
+
+
+trades | cumsum | results | print
+
+results | tail(_, 20) | print
 
 
 print('buys =', buys)
 print('sells =', sells)
-
-print(close[-1])
-print(close[:-1])
-print(close[3:])
-print(close[1:10])
-print(close[::2])
-print(close[:10:2])
-print(close[1:10:2])
-
 
 close | write(_, 'quotes.json', format='json')

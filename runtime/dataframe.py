@@ -16,7 +16,7 @@ class Dataset(Object):
         super().__init__(name=name, value=value, parent=parent, token=Token.DATAFRAME(loc=loc))
         self._dataframe = value if value is not None else pd.DataFrame()
         if isinstance(value, dict) or isinstance(value, IndexedDict):
-            self._dataframe = pd.DataFrame(value, columns=list(value.keys()), index=[''])
+            self._dataframe = pd.DataFrame(value, columns=list(value.keys()), index=[name])
         elif type(self._dataframe).__name__ != 'DataFrame':
             raise ValueError("object is not DataFrame")
         self._value = self._dataframe

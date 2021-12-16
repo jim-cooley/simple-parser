@@ -1,14 +1,10 @@
 import numpy as np
 
-from runtime.conversion import c_box, c_to_bool, c_to_float, c_to_int, c_unbox
+from runtime.conversion import c_unbox
 from runtime.exceptions import runtime_error
 from runtime.numpy import _slice_ndarray
-from runtime.pandas import _slice_dataframe, _slice_series
+from runtime.pandas import _slice_dataframe, _slice_series, pd_mul_df
 from runtime.token_ids import TK
-
-
-from runtime.eval_boolean import _boolean_dispatch_table, eval_boolean_dispatch
-
 
 # --------------------------------------------------------------------------------------------------
 # NOTE: This is a generated file.  Please port any manual changes to tool/generate_evaluate.py
@@ -28,7 +24,7 @@ _SUPPORTED_BINOPS_TOKENS = [
 
 _INTRINSIC_VALUE_TYPES = ['any', 'none', 'int', 'float', 'bool', 'str', 'datetime', 'timedelta', 'Object', 'Block', 'DataFrame', 'Range', 'Series', 'Set', 'list', 'ndarray', 'function']
 
-_type2native = {
+type2native = {
     'Block': 'block',
     'Bool': 'bool',
     'bool': 'bool',
@@ -98,19 +94,9 @@ _type2idx = {
 # --------------------------------------------------
 #            M A N U A L   C H A N G E S 
 # --------------------------------------------------
-def is_supported_binop(op):
-    return op in _binops_dispatch_table or op in _boolean_dispatch_table
 
 
 # used by fixups
-def eval_binops_dispatch_fixup(node):
-    if node is None:
-        return None
-    if node.op in _binops_dispatch_table:
-        return eval_binops_dispatch(node, node.left, node.right)
-    if node.op in _boolean_dispatch_table:
-        return eval_boolean_dispatch(node, node.left, node.right)
-    return node.value
 
 
 # --------------------------------------------------
@@ -120,11 +106,11 @@ def eval_binops_dispatch(node, left, right):
     l_value = left
     if hasattr(left, 'value'):
         l_value = left.value
-    l_ty = _type2native[type(l_value).__name__]
+    l_ty = type2native[type(l_value).__name__]
     r_value = right
     if hasattr(right, 'value'):
         r_value = right.value
-    r_ty = _type2native[type(r_value).__name__]
+    r_ty = type2native[type(r_value).__name__]
     return eval_binops_dispatch2(node.op, l_value, r_value, l_ty, r_ty)
 
 
@@ -484,7 +470,7 @@ def _mul__series_block(l_value, r_value):
 
 
 def _mul__dataframe_dataframe(l_value, r_value):
-    return mul_dfdf
+    return pd_mul_df(l_value, r_value)
 
 
 def _mul__series_dataframe(l_value, r_value):

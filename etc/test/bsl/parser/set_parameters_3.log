@@ -6,7 +6,7 @@ test: 3:
 tree1:  {a}:(threshold=0.05, how='any')
     1  : Combine(TK.COMBINE: [count=0]:set None Generate(TK.GEN, ''))
     2  :     Generate(TK.SET, len=1)
-    3  :         Get(TK.IDENT, 'a')
+    3  :         Ref(TK.IDENT, 'a')
     4  :     Generate(TK.NAMEDTUPLE, len=2)
     5  :         Define(TK.DEFINE: threshold = 0.05)
     6  :             Ref(TK.IDENT, 'threshold')

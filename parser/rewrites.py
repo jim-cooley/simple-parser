@@ -5,14 +5,15 @@ from abc import ABC
 
 from runtime.tree import FnRef, Ref
 from interpreter.modifytree import TreeModifier
-from interpreter.visitor import BINARY_NODE, UNARY_NODE, SEQUENCE_NODE
+from interpreter.visitor import BINARY_NODE, UNARY_NODE, SEQUENCE_NODE, TRINARY_NODE
 
 _rewriteBaseNodeTypeMapping = {
     'ApplyChainProd': BINARY_NODE,
     'Assign': BINARY_NODE,
     'BinOp': BINARY_NODE,
     'Block': SEQUENCE_NODE,
-    'Command': UNARY_NODE,
+    'Dataset': SEQUENCE_NODE,
+    'Dict': SEQUENCE_NODE,
     'Define': BINARY_NODE,
     'DefineChainProd': BINARY_NODE,
     'DefineFn': BINARY_NODE,
@@ -21,12 +22,22 @@ _rewriteBaseNodeTypeMapping = {
     'DefineValFn': BINARY_NODE,
     'DefineVarFn': BINARY_NODE,
     'FnCall': BINARY_NODE,
+    'FnRef': BINARY_NODE,
     'Flow': SEQUENCE_NODE,
+    'Generate': SEQUENCE_NODE,
+    'GenerateRange': SEQUENCE_NODE,
     'Index': BINARY_NODE,
+    'IndexSet': TRINARY_NODE,
+    'IfThenElse': TRINARY_NODE,
     'List': SEQUENCE_NODE,
+    'NamedTuple': SEQUENCE_NODE,
     'PropCall': BINARY_NODE,
     'PropRef': BINARY_NODE,
+    'PropSet': TRINARY_NODE,
+    'Series': SEQUENCE_NODE,
     'Set': SEQUENCE_NODE,
+    'Slice': TRINARY_NODE,
+    'Tuple': SEQUENCE_NODE,
     'UnaryOp': UNARY_NODE,
 }
 

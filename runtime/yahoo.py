@@ -77,7 +77,9 @@ def do_yahoo(args):
 
     for key in ds.keys():
         val = ds[key]
-        if type(val).__name__ == 'DataFrame' or isinstance(val, dict) or isinstance(val, IndexedDict):
+        if isinstance(val, pd.DataFrame):
+            continue
+        elif isinstance(val, dict) or isinstance(val, IndexedDict):
             ds[key] = Dataset(name=key, value=val)
         else:
             ds[key] = to_lit(val=val)

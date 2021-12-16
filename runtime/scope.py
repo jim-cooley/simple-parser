@@ -22,12 +22,12 @@ class Scope:
             self.code = copy(other.code)
             self._name = copy(other.name)
             self._fqname = other._fqname
-            self._members = copy(other._members)
+            members = copy(other._members)
         else:
             self.code = None
             self._name = name
             self._fqname = None
-            self._members = members or {}
+        self._members = IndexedDict() if members is None else members
 
     def __len__(self):
         return len(self._members.keys())
@@ -41,6 +41,9 @@ class Scope:
         if self._fqname is None:
             self._fqname = self._calc_fqname()
         return self._fqname
+
+    def members(self):
+        return self._members
 
     def link(self, scope):
         self.parent_scope = scope
@@ -109,7 +112,6 @@ class Scope:
                 else:
                     symbol._value = deepcopy(value)
             symbol.parent_scope = self
-#           symbol._calc_fqname()
             self._members[name] = symbol
         return symbol
 
@@ -222,7 +224,7 @@ class Block(Expression, Object):
     def __init__(self, name=None, items=None, members=None, loc=None, **kwargs):
         super().__init__(name=name, token=Token.BLOCK(loc), members=members, **kwargs)
         self._items = items if items is not None else []
-        self._members = members
+        self._members = members if members is not None else {}
         self.code = self._items
         self._value = self._items   # UNDONE: ??
         self.is_lvalue = False

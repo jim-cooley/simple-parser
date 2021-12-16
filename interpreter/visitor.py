@@ -16,7 +16,6 @@ _defaultNodeTypeMappings = {
     'BinOp': BINARY_NODE,
     'Block': SEQUENCE_NODE,
     'Combine': BINARY_NODE,
-    'Command': UNARY_NODE,
     'Dataset': SEQUENCE_NODE,
     'Dict': SEQUENCE_NODE,
     'Define': BINARY_NODE,

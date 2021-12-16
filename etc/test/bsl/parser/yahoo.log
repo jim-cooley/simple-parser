@@ -1,88 +1,40 @@
 
 
 test:
-close[-1]
-close[:-1]
-close[3:]
-close[1:10]
-close[::2]
-close[:10::2]
-close[1:10::2]
-
+# trades[trades > 0] | buys | tail | print
 
 quotes = yahoo( symbols='portfolio.csv', span=-5y )
-close = quotes.close
+(open, close, high, low, atr, volume, first, last) = quotes
 
-close | sma(_, 10) | sma10 | print
-close | sma(_, 20) | sma20 | print
+atr | delay(_, 1d) | atr.plus1 | print
+
+
+close | sma(_, 10) | close.sma10 | print
+close | sma(_, 20) | close.sma20 | print
 
 close | columns(_, 'AAPL') | delta(_, 1) | signal | print
 
 close | delta | signal | print
 
-sma10 > sma20 | signal | x
-x > 0 | buys | print
-x < 0 | sells | print
+close.sma10 > close.sma20 | signal | mul(_, -atr.plus1) | trades | print
+
+print("trading")
+trades > 0 | buys | tail | print
+trades < 0 | sells | head | print
+
+
+trades | cumsum | results | print
+
+results | tail(_, 20) | print
 
 
 print('buys =', buys)
 print('sells =', sells)
 
+close | write(_, 'quotes.json', format='json')
 
 
-
-tree1:  close[-1]
-    1  : Index('close')
-    2  :     Get(TK.IDENT, 'close')
-    3  :     List(TK.TUPLE, [UnaryOp()])
-    4  :         UnaryOp(TK.NEG, '-')
-    5  :             Int(TK.INT, 1)
-
-tree2:  close[:-1]
-    1  : Index('close')
-    2  :     Get(TK.IDENT, 'close')
-    3  :     Slice( : NoneType(TK.NEG, '-') :: )
-    4  :         UnaryOp(TK.NEG, '-')
-    5  :             Int(TK.INT, 1)
-
-tree3:  close[3:]
-    1  : Index('close')
-    2  :     Get(TK.IDENT, 'close')
-    3  :     Slice(3 : (None) :: 1)
-    4  :         Int(TK.INT, 3)
-    5  :         Literal(TK.NONE, None)
-    6  :         Int(TK.INT, 1)
-
-tree4:  close[1:10]
-    1  : Index('close')
-    2  :     Get(TK.IDENT, 'close')
-    3  :     Slice(1 : 10 :: 1)
-    4  :         Int(TK.INT, 1)
-    5  :         Int(TK.INT, 10)
-    6  :         Int(TK.INT, 1)
-
-tree5:  close[::2]
-    1  : Index('close')
-    2  :     Get(TK.IDENT, 'close')
-    3  :     Slice( :  :: 2)
-    4  :         Int(TK.INT, 2)
-
-tree6:  close[:10::2]
-    1  : Index('close')
-    2  :     Get(TK.IDENT, 'close')
-    3  :     Slice( : 10 :: 2)
-    4  :         Int(TK.INT, 10)
-    5  :         Int(TK.INT, 2)
-
-tree7:  close[1:10::2]
-    1  : Index('close')
-    2  :     Get(TK.IDENT, 'close')
-    3  :     Slice(1 : 10 :: 2)
-    4  :         Int(TK.INT, 1)
-    5  :         Int(TK.INT, 10)
-    6  :         Int(TK.INT, 2)
-
-tree8:  quotes = yahoo( symbols='portfolio.csv', span=-5y )
+tree1:  quotes = yahoo( symbols='portfolio.csv', span=-5y )
     1  : Define(TK.DEFINE: quotes = FnCall(TK.FUNCTION, 'yahoo'))
     2  :     Ref(TK.IDENT, 'quotes')
     3  :     FnCall('yahoo')
@@ -96,55 +48,79 @@ tree8:  quotes = yahoo( symbols='portfolio.csv', span=-5y )
    11  :                 UnaryOp(TK.NEG, '-')
    12  :                     Duration(TK.DUR, 1825 days, 0:00:00)
 
-tree9:  close = quotes.close
-    1  : Define(TK.DEFINE: close = PropRef(TK.REF, '.'))
-    2  :     Ref(TK.IDENT, 'close')
-    3  :     PropRef(TK.REF: quotes . Get(TK.IDENT, 'close'))
-    4  :         Get(TK.IDENT, 'quotes')
-    5  :         Get(TK.IDENT, 'close')
+tree2:  (open, close, high, low, atr, volume, first, last) = quotes
+    1  : Define(TK.DEFINE: [count=7]:tup = Get(TK.IDENT, 'quotes'))
+    2  :     Generate(TK.TUPLE, len=8)
+    3  :         Ref(TK.IDENT, 'open')
+    4  :         Ref(TK.IDENT, 'close')
+    5  :         Ref(TK.IDENT, 'high')
+    6  :         Ref(TK.IDENT, 'low')
+    7  :         Ref(TK.IDENT, 'atr')
+    8  :         Ref(TK.IDENT, 'volume')
+    9  :         Ref(TK.IDENT, 'first')
+   10  :         Ref(TK.IDENT, 'last')
+   11  :     Get(TK.IDENT, 'quotes')
 
-tree10:  close | sma(_, 10) | sma10 | print
+tree3:  atr | delay(_, 1d) | atr.plus1 | print
+    1  : Flow{TK.CHAIN, '|' len=4}
+    2  :     Get(TK.IDENT, 'atr')
+    3  :     FnCall('delay')
+    4  :         Ref(TK.IDENT, 'delay')
+    5  :         Generate(TK.LIST, len=2)
+    6  :             Ref(TK.ANON, '_')
+    7  :             Duration(TK.DUR, 1 day, 0:00:00)
+    8  :     PropRef(TK.REF: atr . Ref(TK.IDENT, 'plus1'))
+    9  :         Ref(TK.IDENT, 'atr')
+   10  :         Ref(TK.IDENT, 'plus1')
+   11  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'print'))
+   12  :         Ref(TK.IDENT, 'print')
+
+tree4:  close | sma(_, 10) | close.sma10 | print
     1  : Flow{TK.CHAIN, '|' len=4}
     2  :     Get(TK.IDENT, 'close')
     3  :     FnCall('sma')
     4  :         Ref(TK.IDENT, 'sma')
     5  :         Generate(TK.LIST, len=2)
-    6  :             Get(TK.ANON, '_')
+    6  :             Ref(TK.ANON, '_')
     7  :             Int(TK.INT, 10)
-    8  :     Ref(TK.IDENT, 'sma10')
-    9  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'print'))
-   10  :         Ref(TK.IDENT, 'print')
+    8  :     PropRef(TK.REF: close . Ref(TK.IDENT, 'sma10'))
+    9  :         Ref(TK.IDENT, 'close')
+   10  :         Ref(TK.IDENT, 'sma10')
+   11  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'print'))
+   12  :         Ref(TK.IDENT, 'print')
 
-tree11:  close | sma(_, 20) | sma20 | print
+tree5:  close | sma(_, 20) | close.sma20 | print
     1  : Flow{TK.CHAIN, '|' len=4}
     2  :     Get(TK.IDENT, 'close')
     3  :     FnCall('sma')
     4  :         Ref(TK.IDENT, 'sma')
     5  :         Generate(TK.LIST, len=2)
-    6  :             Get(TK.ANON, '_')
+    6  :             Ref(TK.ANON, '_')
     7  :             Int(TK.INT, 20)
-    8  :     Ref(TK.IDENT, 'sma20')
-    9  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'print'))
-   10  :         Ref(TK.IDENT, 'print')
+    8  :     PropRef(TK.REF: close . Ref(TK.IDENT, 'sma20'))
+    9  :         Ref(TK.IDENT, 'close')
+   10  :         Ref(TK.IDENT, 'sma20')
+   11  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'print'))
+   12  :         Ref(TK.IDENT, 'print')
 
-tree12:  close | columns(_, 'AAPL') | delta(_, 1) | signal | print
+tree6:  close | columns(_, 'AAPL') | delta(_, 1) | signal | print
     1  : Flow{TK.CHAIN, '|' len=5}
     2  :     Get(TK.IDENT, 'close')
     3  :     FnCall('columns')
     4  :         Ref(TK.IDENT, 'columns')
     5  :         Generate(TK.LIST, len=2)
-    6  :             Get(TK.ANON, '_')
+    6  :             Ref(TK.ANON, '_')
     7  :             Str(TK.STR, 'AAPL')
     8  :     FnCall('delta')
     9  :         Ref(TK.IDENT, 'delta')
    10  :         Generate(TK.LIST, len=2)
-   11  :             Get(TK.ANON, '_')
+   11  :             Ref(TK.ANON, '_')
    12  :             Int(TK.INT, 1)
    13  :     Ref(TK.IDENT, 'signal')
    14  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'print'))
    15  :         Ref(TK.IDENT, 'print')
 
-tree13:  close | delta | signal | print
+tree7:  close | delta | signal | print
     1  : Flow{TK.CHAIN, '|' len=4}
     2  :     Get(TK.IDENT, 'close')
     3  :     Ref(TK.IDENT, 'delta')
@@ -152,43 +128,95 @@ tree13:  close | delta | signal | print
     5  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'print'))
     6  :         Ref(TK.IDENT, 'print')
 
-tree14:  sma10 > sma20 | signal | x
-    1  : Flow{TK.CHAIN, '|' len=3}
+tree8:  close.sma10 > close.sma20 | signal | mul(_, -atr.plus1) | trades | print
+    1  : Flow{TK.CHAIN, '|' len=5}
     2  :     BinOp(TK.GTR, '>')
-    3  :         Get(TK.IDENT, 'sma10')
-    4  :         Get(TK.IDENT, 'sma20')
-    5  :     Ref(TK.IDENT, 'signal')
-    6  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'x'))
-    7  :         Ref(TK.IDENT, 'x')
+    3  :         PropRef(TK.REF: close . Get(TK.IDENT, 'sma10'))
+    4  :             Get(TK.IDENT, 'close')
+    5  :             Get(TK.IDENT, 'sma10')
+    6  :         PropRef(TK.REF: close . Get(TK.IDENT, 'sma20'))
+    7  :             Get(TK.IDENT, 'close')
+    8  :             Get(TK.IDENT, 'sma20')
+    9  :     Ref(TK.IDENT, 'signal')
+   10  :     FnCall('mul')
+   11  :         Ref(TK.IDENT, 'mul')
+   12  :         Generate(TK.LIST, len=2)
+   13  :             Ref(TK.ANON, '_')
+   14  :             UnaryOp(TK.NEG, '-')
+   15  :                 PropRef(TK.REF: atr . Ref(TK.IDENT, 'plus1'))
+   16  :                     Ref(TK.IDENT, 'atr')
+   17  :                     Ref(TK.IDENT, 'plus1')
+   18  :     Ref(TK.IDENT, 'trades')
+   19  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'print'))
+   20  :         Ref(TK.IDENT, 'print')
 
-tree15:  x > 0 | buys | print
-    1  : Flow{TK.CHAIN, '|' len=3}
+tree9:  # trades[trades > 0] | buys | tail | print
+    1  : FnCall('print')
+    2  :     Get(TK.IDENT, 'print')
+    3  :     List(TK.LIST, [Str()])
+    4  :         Str(TK.STR, 'trading')
+
+tree10:  trades > 0 | buys | tail | print
+    1  : Flow{TK.CHAIN, '|' len=4}
     2  :     BinOp(TK.GTR, '>')
-    3  :         Get(TK.IDENT, 'x')
+    3  :         Get(TK.IDENT, 'trades')
     4  :         Int(TK.INT, 0)
     5  :     Ref(TK.IDENT, 'buys')
-    6  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'print'))
-    7  :         Ref(TK.IDENT, 'print')
+    6  :     Ref(TK.IDENT, 'tail')
+    7  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'print'))
+    8  :         Ref(TK.IDENT, 'print')
 
-tree16:  x < 0 | sells | print
-    1  : Flow{TK.CHAIN, '|' len=3}
+tree11:  trades < 0 | sells | head | print
+    1  : Flow{TK.CHAIN, '|' len=4}
     2  :     BinOp(TK.LESS, '<')
-    3  :         Get(TK.IDENT, 'x')
+    3  :         Get(TK.IDENT, 'trades')
     4  :         Int(TK.INT, 0)
     5  :     Ref(TK.IDENT, 'sells')
-    6  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'print'))
-    7  :         Ref(TK.IDENT, 'print')
+    6  :     Ref(TK.IDENT, 'head')
+    7  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'print'))
+    8  :         Ref(TK.IDENT, 'print')
 
-tree17:  close[-1]
+tree12:  trades | cumsum | results | print
+    1  : Flow{TK.CHAIN, '|' len=4}
+    2  :     Get(TK.IDENT, 'trades')
+    3  :     Ref(TK.IDENT, 'cumsum')
+    4  :     Ref(TK.IDENT, 'results')
+    5  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'print'))
+    6  :         Ref(TK.IDENT, 'print')
+
+tree13:  results | tail(_, 20) | print
+    1  : Flow{TK.CHAIN, '|' len=3}
+    2  :     Get(TK.IDENT, 'results')
+    3  :     FnCall('tail')
+    4  :         Ref(TK.IDENT, 'tail')
+    5  :         Generate(TK.LIST, len=2)
+    6  :             Ref(TK.ANON, '_')
+    7  :             Int(TK.INT, 20)
+    8  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'print'))
+    9  :         Ref(TK.IDENT, 'print')
+
+tree14:  # trades[trades > 0] | buys | tail | print
     1  : FnCall('print')
     2  :     Get(TK.IDENT, 'print')
     3  :     Generate(TK.LIST, len=2)
     4  :         Str(TK.STR, 'buys =')
     5  :         Get(TK.IDENT, 'buys')
 
-tree18:  close[-1]
+tree15:  # trades[trades > 0] | buys | tail | print
     1  : FnCall('print')
     2  :     Get(TK.IDENT, 'print')
     3  :     Generate(TK.LIST, len=2)
     4  :         Str(TK.STR, 'sells =')
     5  :         Get(TK.IDENT, 'sells')
+
+tree16:  close | write(_, 'quotes.json', format='json')
+    1  : Flow{TK.CHAIN, '|' len=2}
+    2  :     Get(TK.IDENT, 'close')
+    3  :     FnCall('write')
+    4  :         Ref(TK.IDENT, 'write')
+    5  :         Generate(TK.NAMEDTUPLE, len=3)
+    6  :             Ref(TK.ANON, '_')
+    7  :             Str(TK.STR, 'quotes.json')
+    8  :             Define(TK.DEFINE: format = json)
+    9  :                 Ref(TK.IDENT, 'format')
+   10  :                 Str(TK.STR, 'json')

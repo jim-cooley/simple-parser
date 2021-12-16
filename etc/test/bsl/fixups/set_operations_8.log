@@ -8,7 +8,7 @@ tree1:  {a} >> {b}
     2  :     Generate(TK.SET, len=1)
     3  :         Get(TK.IDENT, 'a')
     4  :     Generate(TK.SET, len=1)
-    5  :         Get(TK.IDENT, 'b')
+    5  :         Ref(TK.IDENT, 'b')
 
 tree1:(post)  {a} >> {b}
 result: list([Generate(), Generate()])
@@ -16,4 +16,4 @@ result: list([Generate(), Generate()])
     2  :     Generate(TK.SET, len=1)
     3  :         Get(TK.IDENT, 'a')
     4  :     Generate(TK.SET, len=1)
-    5  :         Get(TK.IDENT, 'b')
+    5  :         Ref(TK.IDENT, 'b')

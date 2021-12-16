@@ -1,5 +1,6 @@
 from runtime.conversion import c_to_int, c_to_float, c_to_bool
 from runtime.exceptions import runtime_error
+from runtime.pandas import df_negate
 from runtime.token_ids import TK
 
 
@@ -34,6 +35,8 @@ def negate_literal(val, tid):
     elif tid in [TK.BOOL]:
         val = not val
         return val
+    elif tid == TK.DATAFRAME:
+        return df_negate(val)
     elif tid == TK.STR:
         try:
             v = - int(val)

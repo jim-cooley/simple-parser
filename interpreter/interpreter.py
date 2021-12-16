@@ -1,16 +1,20 @@
 from copy import deepcopy
+from logging import getLogger
 
 from interpreter.version import VERSION
 from runtime.conversion import c_unbox
+from runtime.dataframe import Dataset
 from runtime.descriptors import ty2descriptor
 from runtime.environment import Environment
+from runtime.exceptions import getLogFacility
 from runtime.indexdict import IndexedDict
 from runtime.literals import Literal
 from runtime.options import getOptions
 from runtime.scope import Block, Scope, Object, FunctionBase
 from runtime.function import Function
 from runtime.token import Token
-from runtime.tree import Ref, Assign
+from runtime.token_ids import TK
+from runtime.tree import Ref, Assign, Define, Generate, PropRef
 
 from runtime.eval_unary import is_true
 from runtime.evaluate import reduce_value, evaluate_binary_operation, evaluate_unary_operation, evaluate_identifier, \
@@ -117,6 +121,7 @@ class Interpreter(TreeFilter):
         super().__init__(mapping=m, apply_parent_fixups=True)
         self.stack = None
         self.option = getOptions('focal')
+        self.logger = getLogFacility('focal')
         self.version = VERSION
 
     def apply(self, environment=None):
@@ -236,15 +241,37 @@ class Interpreter(TreeFilter):
         right = node.right
         self.indent()
         self.visit(left)
+        if isinstance(left, Generate):
+            left = left.values()
         if not isinstance(right, Block):
             self.visit(right)
             result = self.stack.pop()
+            if isinstance(left, list):
+                if hasattr(result, 'members'):
+                    result = result.members()
+                if hasattr(result, 'values'):
+                    result = result.values()
+                if len(left) != len(result):
+                    self.logger.runtime_error("Length mismatch for tuple assignment")
+                for idx in range(0, len(left)):
+                    ref = left[idx]
+                    var = reduce_ref(ref=ref, value=result[idx], idx=idx, update=True)
+                    self.stack.push(var)
+            else:
+                var = reduce_ref(ref=left, value=result, update=True)
+                self.stack.push(var)
         else:
             self._print_node(right)
             result = right
+            block = reduce_ref(ref=left, value=result, update=True)
+            for ref in block.value:
+                if isinstance(ref, Define):
+                    Environment.enter(block)
+                    self.visit(ref)
+                    Environment.leave()
+                    ref = self.stack.pop()
+            self.stack.push(block)
         self.dedent()
-        var = reduce_ref(ref=left, value=result, update=True)
-        self.stack.push(var)
 
     # DefineFn, DefineVarFn
     def process_define_fn(self, node, label=None):
@@ -291,6 +318,12 @@ class Interpreter(TreeFilter):
                         result = self.stack.pop()
                         var = reduce_ref(ref=n, value=result, update=True)
                         self.stack.push(var)
+                elif isinstance(n, PropRef):
+                    self.visit(n)
+                    var = self.stack.pop()
+                    result = self.stack.pop()
+                    var.value = result
+                    self.stack.push(var)
                 else:
                     self.visit(n)
         self.dedent()
@@ -391,19 +424,22 @@ class Interpreter(TreeFilter):
     # PropRef
     def process_propref(self, node, label=None):
         self._print_node(node)
+        self.indent()
         self.visit(node.left)
         left = self.stack.pop()
-        if hasattr(left, 'value'):
-            left = left.value
-        desc = ty2descriptor(left)
-        if desc is not None:
-            if isinstance(node.right, Ref):
-                result = desc.get(left, node.right.name)
-                self.stack.push(result)
-                return
-        Environment.enter(left)
-        self.visit(node.right)
-        Environment.leave()
+        if isinstance(left, Dataset) or not isinstance(left, Scope):  # Scope, Object, Block, ...
+            if hasattr(left, 'value'):
+                left = left.value
+            desc = ty2descriptor(left)
+            if desc is not None:
+                if isinstance(node.right, Ref):
+                    result = desc.get(left, node.right.name)
+                    self.stack.push(result)
+        else:
+            Environment.enter(left)
+            self.visit(node.right)
+            Environment.leave()
+        self.dedent()
 
     # PropSet
     def process_propset(self, node, label=None):
@@ -489,6 +525,8 @@ class Interpreter(TreeFilter):
                 _fields = list(_defaults.keys())
                 _values = list(_defaults.values())
         if args is not None:
+            if isinstance(args, Generate):
+                args = args.values()
             for idx in range(0, len(args)):
                 ref = args[idx]
                 if isinstance(ref, Assign):
@@ -508,10 +546,12 @@ class Interpreter(TreeFilter):
                     else:
                         self.visit(ref)
                         val = self.stack.pop()
+                        name = None
                         if isinstance(ref, Ref):
-                            name = ref.name
-                        else:
-                            name = None
+                            if ref.tid == TK.ANON:
+                                val = self.stack.pop()
+                            else:
+                                name = ref.name
                         self._resolve(idx, name, c_unbox(val), _fields, _values)
         else:
             for idx in range(0, fn.arity):

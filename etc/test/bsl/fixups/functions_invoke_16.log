@@ -15,9 +15,9 @@ tree1:  f(a, b, c):{a=5, b='c', d}
     9  :             Str(TK.STR, 'c')
    10  :         Get(TK.IDENT, 'd')
    11  :     Generate(TK.LIST, len=3)
-   12  :         Get(TK.IDENT, 'a')
-   13  :         Get(TK.IDENT, 'b')
-   14  :         Get(TK.IDENT, 'c')
+   12  :         Ref(TK.IDENT, 'a')
+   13  :         Ref(TK.IDENT, 'b')
+   14  :         Ref(TK.IDENT, 'c')
 
 tree1:(post)  f(a, b, c):{a=5, b='c', d}
     1  : DefineFn(TK.COMBINE: f : Block(TK.BLOCK, ''))
@@ -31,6 +31,6 @@ tree1:(post)  f(a, b, c):{a=5, b='c', d}
     9  :             Str(TK.STR, 'c')
    10  :         Get(TK.IDENT, 'd')
    11  :     Generate(TK.LIST, len=3)
-   12  :         Get(TK.IDENT, 'a')
-   13  :         Get(TK.IDENT, 'b')
-   14  :         Get(TK.IDENT, 'c')
+   12  :         Ref(TK.IDENT, 'a')
+   13  :         Ref(TK.IDENT, 'b')
+   14  :         Ref(TK.IDENT, 'c')

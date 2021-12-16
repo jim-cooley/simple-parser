@@ -120,7 +120,7 @@ tree10:  1..10 | reshape(_, 2, 5) | flatten | a
     5  :     FnCall('reshape')
     6  :         Ref(TK.IDENT, 'reshape')
     7  :         Generate(TK.LIST, len=3)
-    8  :             Get(TK.ANON, '_')
+    8  :             Ref(TK.ANON, '_')
     9  :             Int(TK.INT, 2)
    10  :             Int(TK.INT, 5)
    11  :     Ref(TK.IDENT, 'flatten')
