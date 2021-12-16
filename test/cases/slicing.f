@@ -1,4 +1,6 @@
 # list
+a[1, 2, 3] = 4
+
 a = 1..10
 print("slicing list")
 print(a[-1])

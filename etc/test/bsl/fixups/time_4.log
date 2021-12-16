@@ -4,8 +4,15 @@ test: 4:
 11:00:30
 
 tree1:  11:00:30
-    1  : Time(TK.TIME, 11:00:30)
+    1  : Combine(TK.COMBINE: 11 None Combine(TK.DEFINE, 'None'))
+    2  :     Int(TK.INT, 11)
+    3  :     Combine(TK.COMBINE: 00 None 30)
+    4  :         Int(TK.INT, 0)
+    5  :         Int(TK.INT, 30)
 
 tree1:(post)  11:00:30
-result: time(11:00:30)
-    1  : Time(TK.TIME, 11:00:30)
+    1  : Combine(TK.COMBINE: 11 None Combine(TK.DEFINE, 'None'))
+    2  :     Int(TK.INT, 11)
+    3  :     Combine(TK.COMBINE: 00 None 30)
+    4  :         Int(TK.INT, 0)
+    5  :         Int(TK.INT, 30)

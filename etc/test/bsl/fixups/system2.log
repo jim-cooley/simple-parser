@@ -123,8 +123,10 @@ tree7:  price10a := _.delay(1d)[10:00]
     6  :             Duration(TK.DUR, 1 day, 0:00:00)
 
 tree8:  periods = {
-    1  : Generate(TK.LIST, len=1)
-    2  :     Time(TK.TIME, 10:00:00)
+    1  : Generate(TK.SERIES, len=1)
+    2  :     Combine(TK.COMBINE: 10 None 0)
+    3  :         Int(TK.INT, 10)
+    4  :         Int(TK.INT, 0)
 
 tree9:  report := { trades(buy, sell) | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price') }
     1  : DefineVar(TK.DEFINE: report := Block(TK.BLOCK, ''))
@@ -475,8 +477,10 @@ tree7:(post)  price10a := _.delay(1d)[10:00]
     6  :             Duration(TK.DUR, 1 day, 0:00:00)
 
 tree8:(post)  periods = {
-    1  : Generate(TK.LIST, len=1)
-    2  :     Time(TK.TIME, 10:00:00)
+    1  : Generate(TK.SERIES, len=1)
+    2  :     Combine(TK.COMBINE: 10 None 0)
+    3  :         Int(TK.INT, 10)
+    4  :         Int(TK.INT, 0)
 
 tree9:(post)  report := { trades(buy, sell) | select('symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price') }
     1  : DefineVar(TK.DEFINE: report := Block(TK.BLOCK, ''))

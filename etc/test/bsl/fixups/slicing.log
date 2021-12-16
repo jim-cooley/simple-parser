@@ -2,6 +2,8 @@
 
 test:
 # list
+a[1, 2, 3] = 4
+
 a = 1..10
 print("slicing list")
 print(a[-1])
@@ -27,20 +29,25 @@ d = { 'col1': [1, 2], 'col2': [3, 4] }
 print(d)
 
 
-tree1:  a = 1..10
+tree1:  a[1, 2, 3] = 4
+    1  : IndexSet(TK.PUT, 'put')
+    2  :     Get(TK.IDENT, 'a')
+    3  :     Int(TK.INT, 4)
+
+tree2:  a = 1..10
     1  : Define(TK.DEFINE: a = GenerateRange(TK.GEN, ''))
     2  :     Ref(TK.IDENT, 'a')
     3  :     GenerateRange(TK.RANGE, len=3)
     4  :         Int(TK.INT, 1)
     5  :         Int(TK.INT, 10)
 
-tree2:  # list
+tree3:  # list
     1  : FnCall('print')
     2  :     Get(TK.IDENT, 'print')
     3  :     List(TK.LIST, [Str()])
     4  :         Str(TK.STR, 'slicing list')
 
-tree3:  # list
+tree4:  # list
     1  : FnCall('print')
     2  :     Get(TK.IDENT, 'print')
     3  :     List(TK.LIST, [Index()])
@@ -50,7 +57,7 @@ tree3:  # list
     7  :                 UnaryOp(TK.NEG, '-')
     8  :                     Int(TK.INT, 1)
 
-tree4:  # list
+tree5:  # list
     1  : FnCall('print')
     2  :     Get(TK.IDENT, 'print')
     3  :     List(TK.LIST, [Index()])
@@ -58,18 +65,6 @@ tree4:  # list
     5  :             Get(TK.IDENT, 'a')
     6  :             Slice( : NoneType(TK.NEG, '-') :: )
     7  :                 UnaryOp(TK.NEG, '-')
-    8  :                     Int(TK.INT, 1)
-
-tree5:  # list
-    1  : FnCall('print')
-    2  :     Get(TK.IDENT, 'print')
-    3  :     List(TK.LIST, [Index()])
-    4  :         Index('a')
-    5  :             Get(TK.IDENT, 'a')
-    6  :             Slice(3 : object:  = None :: 1)
-    7  :                 Int(TK.INT, 3)
-    8  :                 Literal(TK.NONE, None)
-    9  :                 Int(TK.INT, 1)
 
 tree6:  # list
     1  : FnCall('print')
@@ -77,12 +72,20 @@ tree6:  # list
     3  :     List(TK.LIST, [Index()])
     4  :         Index('a')
     5  :             Get(TK.IDENT, 'a')
-    6  :             Slice(1 : 10 :: 1)
-    7  :                 Int(TK.INT, 1)
-    8  :                 Int(TK.INT, 10)
-    9  :                 Int(TK.INT, 1)
+    6  :             Slice(3 :  :: )
+    7  :                 Int(TK.INT, 3)
 
 tree7:  # list
+    1  : FnCall('print')
+    2  :     Get(TK.IDENT, 'print')
+    3  :     List(TK.LIST, [Index()])
+    4  :         Index('a')
+    5  :             Get(TK.IDENT, 'a')
+    6  :             Slice(1 : 10 :: )
+    7  :                 Int(TK.INT, 1)
+    8  :                 Int(TK.INT, 10)
+
+tree8:  # list
     1  : FnCall('print')
     2  :     Get(TK.IDENT, 'print')
     3  :     List(TK.LIST, [Index()])
@@ -91,7 +94,7 @@ tree7:  # list
     6  :             Slice( :  :: 2)
     7  :                 Int(TK.INT, 2)
 
-tree8:  # list
+tree9:  # list
     1  : FnCall('print')
     2  :     Get(TK.IDENT, 'print')
     3  :     List(TK.LIST, [Index()])
@@ -101,7 +104,7 @@ tree8:  # list
     7  :                 Int(TK.INT, 10)
     8  :                 Int(TK.INT, 2)
 
-tree9:  # list
+tree10:  # list
     1  : FnCall('print')
     2  :     Get(TK.IDENT, 'print')
     3  :     List(TK.LIST, [Index()])
@@ -112,7 +115,7 @@ tree9:  # list
     8  :                 Int(TK.INT, 10)
     9  :                 Int(TK.INT, 2)
 
-tree10:  1..10 | reshape(_, 2, 5) | flatten | a
+tree11:  1..10 | reshape(_, 2, 5) | flatten | a
     1  : Flow{TK.CHAIN, '|' len=4}
     2  :     GenerateRange(TK.RANGE, len=3)
     3  :         Int(TK.INT, 1)
@@ -127,13 +130,13 @@ tree10:  1..10 | reshape(_, 2, 5) | flatten | a
    12  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'a'))
    13  :         Ref(TK.IDENT, 'a')
 
-tree11:  # list
+tree12:  # list
     1  : FnCall('print')
     2  :     Get(TK.IDENT, 'print')
     3  :     List(TK.LIST, [Str()])
     4  :         Str(TK.STR, 'slicing nd.array')
 
-tree12:  # list
+tree13:  # list
     1  : FnCall('print')
     2  :     Get(TK.IDENT, 'print')
     3  :     List(TK.LIST, [Index()])
@@ -143,7 +146,7 @@ tree12:  # list
     7  :                 UnaryOp(TK.NEG, '-')
     8  :                     Int(TK.INT, 1)
 
-tree13:  # list
+tree14:  # list
     1  : FnCall('print')
     2  :     Get(TK.IDENT, 'print')
     3  :     List(TK.LIST, [Index()])
@@ -151,18 +154,6 @@ tree13:  # list
     5  :             Get(TK.IDENT, 'a')
     6  :             Slice( : NoneType(TK.NEG, '-') :: )
     7  :                 UnaryOp(TK.NEG, '-')
-    8  :                     Int(TK.INT, 1)
-
-tree14:  # list
-    1  : FnCall('print')
-    2  :     Get(TK.IDENT, 'print')
-    3  :     List(TK.LIST, [Index()])
-    4  :         Index('a')
-    5  :             Get(TK.IDENT, 'a')
-    6  :             Slice(3 : object:  = None :: 1)
-    7  :                 Int(TK.INT, 3)
-    8  :                 Literal(TK.NONE, None)
-    9  :                 Int(TK.INT, 1)
 
 tree15:  # list
     1  : FnCall('print')
@@ -170,12 +161,20 @@ tree15:  # list
     3  :     List(TK.LIST, [Index()])
     4  :         Index('a')
     5  :             Get(TK.IDENT, 'a')
-    6  :             Slice(1 : 10 :: 1)
-    7  :                 Int(TK.INT, 1)
-    8  :                 Int(TK.INT, 10)
-    9  :                 Int(TK.INT, 1)
+    6  :             Slice(3 :  :: )
+    7  :                 Int(TK.INT, 3)
 
 tree16:  # list
+    1  : FnCall('print')
+    2  :     Get(TK.IDENT, 'print')
+    3  :     List(TK.LIST, [Index()])
+    4  :         Index('a')
+    5  :             Get(TK.IDENT, 'a')
+    6  :             Slice(1 : 10 :: )
+    7  :                 Int(TK.INT, 1)
+    8  :                 Int(TK.INT, 10)
+
+tree17:  # list
     1  : FnCall('print')
     2  :     Get(TK.IDENT, 'print')
     3  :     List(TK.LIST, [Index()])
@@ -184,7 +183,7 @@ tree16:  # list
     6  :             Slice( :  :: 2)
     7  :                 Int(TK.INT, 2)
 
-tree17:  # list
+tree18:  # list
     1  : FnCall('print')
     2  :     Get(TK.IDENT, 'print')
     3  :     List(TK.LIST, [Index()])
@@ -194,7 +193,7 @@ tree17:  # list
     7  :                 Int(TK.INT, 10)
     8  :                 Int(TK.INT, 2)
 
-tree18:  # list
+tree19:  # list
     1  : FnCall('print')
     2  :     Get(TK.IDENT, 'print')
     3  :     List(TK.LIST, [Index()])
@@ -205,7 +204,7 @@ tree18:  # list
     8  :                 Int(TK.INT, 10)
     9  :                 Int(TK.INT, 2)
 
-tree19:  d = { 'col1': [1, 2], 'col2': [3, 4] }
+tree20:  d = { 'col1': [1, 2], 'col2': [3, 4] }
     1  : Define(TK.DEFINE: d = Generate(TK.GEN, ''))
     2  :     Ref(TK.IDENT, 'd')
     3  :     Generate(TK.DATAFRAME, len=2)
@@ -220,26 +219,32 @@ tree19:  d = { 'col1': [1, 2], 'col2': [3, 4] }
    12  :                 Int(TK.INT, 3)
    13  :                 Int(TK.INT, 4)
 
-tree20:  # list
+tree21:  # list
     1  : FnCall('print')
     2  :     Get(TK.IDENT, 'print')
     3  :     List(TK.LIST, [Get()])
     4  :         Get(TK.IDENT, 'd')
 
-tree1:(post)  a = 1..10
+tree1:(post)  a[1, 2, 3] = 4
+result: int(4)
+    1  : IndexSet(TK.PUT, 'put')
+    2  :     Get(TK.IDENT, 'a')
+    3  :     Int(TK.INT, 4)
+
+tree2:(post)  a = 1..10
     1  : Define(TK.DEFINE: a = GenerateRange(TK.GEN, ''))
     2  :     Ref(TK.IDENT, 'a')
     3  :     GenerateRange(TK.RANGE, len=3)
     4  :         Int(TK.INT, 1)
     5  :         Int(TK.INT, 10)
 
-tree2:(post)  # list
+tree3:(post)  # list
     1  : FnCall('print')
     2  :     Get(TK.IDENT, 'print')
     3  :     List(TK.LIST, [Str()])
     4  :         Str(TK.STR, 'slicing list')
 
-tree3:(post)  # list
+tree4:(post)  # list
     1  : FnCall('print')
     2  :     Get(TK.IDENT, 'print')
     3  :     List(TK.LIST, [Index()])
@@ -248,7 +253,7 @@ tree3:(post)  # list
     6  :             List(TK.TUPLE, [Int()])
     7  :                 Int(TK.INT, -1)
 
-tree4:(post)  # list
+tree5:(post)  # list
     1  : FnCall('print')
     2  :     Get(TK.IDENT, 'print')
     3  :     List(TK.LIST, [Index()])
@@ -256,18 +261,6 @@ tree4:(post)  # list
     5  :             Get(TK.IDENT, 'a')
     6  :             Slice( : NoneType(TK.NEG, '-') :: )
     7  :                 UnaryOp(TK.NEG, '-')
-    8  :                     Int(TK.INT, 1)
-
-tree5:(post)  # list
-    1  : FnCall('print')
-    2  :     Get(TK.IDENT, 'print')
-    3  :     List(TK.LIST, [Index()])
-    4  :         Index('a')
-    5  :             Get(TK.IDENT, 'a')
-    6  :             Slice(3 : object:  = None :: 1)
-    7  :                 Int(TK.INT, 3)
-    8  :                 Literal(TK.NONE, None)
-    9  :                 Int(TK.INT, 1)
 
 tree6:(post)  # list
     1  : FnCall('print')
@@ -275,12 +268,20 @@ tree6:(post)  # list
     3  :     List(TK.LIST, [Index()])
     4  :         Index('a')
     5  :             Get(TK.IDENT, 'a')
-    6  :             Slice(1 : 10 :: 1)
-    7  :                 Int(TK.INT, 1)
-    8  :                 Int(TK.INT, 10)
-    9  :                 Int(TK.INT, 1)
+    6  :             Slice(3 :  :: )
+    7  :                 Int(TK.INT, 3)
 
 tree7:(post)  # list
+    1  : FnCall('print')
+    2  :     Get(TK.IDENT, 'print')
+    3  :     List(TK.LIST, [Index()])
+    4  :         Index('a')
+    5  :             Get(TK.IDENT, 'a')
+    6  :             Slice(1 : 10 :: )
+    7  :                 Int(TK.INT, 1)
+    8  :                 Int(TK.INT, 10)
+
+tree8:(post)  # list
     1  : FnCall('print')
     2  :     Get(TK.IDENT, 'print')
     3  :     List(TK.LIST, [Index()])
@@ -289,7 +290,7 @@ tree7:(post)  # list
     6  :             Slice( :  :: 2)
     7  :                 Int(TK.INT, 2)
 
-tree8:(post)  # list
+tree9:(post)  # list
     1  : FnCall('print')
     2  :     Get(TK.IDENT, 'print')
     3  :     List(TK.LIST, [Index()])
@@ -299,7 +300,7 @@ tree8:(post)  # list
     7  :                 Int(TK.INT, 10)
     8  :                 Int(TK.INT, 2)
 
-tree9:(post)  # list
+tree10:(post)  # list
     1  : FnCall('print')
     2  :     Get(TK.IDENT, 'print')
     3  :     List(TK.LIST, [Index()])
@@ -310,7 +311,7 @@ tree9:(post)  # list
     8  :                 Int(TK.INT, 10)
     9  :                 Int(TK.INT, 2)
 
-tree10:(post)  1..10 | reshape(_, 2, 5) | flatten | a
+tree11:(post)  1..10 | reshape(_, 2, 5) | flatten | a
 result: list([GenerateRange(), FnCall(), Ref(), ApplyChainProd()])
     1  : Flow{TK.CHAIN, '|' len=4}
     2  :     GenerateRange(TK.RANGE, len=3)
@@ -326,13 +327,13 @@ result: list([GenerateRange(), FnCall(), Ref(), ApplyChainProd()])
    12  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'a'))
    13  :         Ref(TK.IDENT, 'a')
 
-tree11:(post)  # list
+tree12:(post)  # list
     1  : FnCall('print')
     2  :     Get(TK.IDENT, 'print')
     3  :     List(TK.LIST, [Str()])
     4  :         Str(TK.STR, 'slicing nd.array')
 
-tree12:(post)  # list
+tree13:(post)  # list
     1  : FnCall('print')
     2  :     Get(TK.IDENT, 'print')
     3  :     List(TK.LIST, [Index()])
@@ -341,7 +342,7 @@ tree12:(post)  # list
     6  :             List(TK.TUPLE, [Int()])
     7  :                 Int(TK.INT, -1)
 
-tree13:(post)  # list
+tree14:(post)  # list
     1  : FnCall('print')
     2  :     Get(TK.IDENT, 'print')
     3  :     List(TK.LIST, [Index()])
@@ -349,18 +350,6 @@ tree13:(post)  # list
     5  :             Get(TK.IDENT, 'a')
     6  :             Slice( : NoneType(TK.NEG, '-') :: )
     7  :                 UnaryOp(TK.NEG, '-')
-    8  :                     Int(TK.INT, 1)
-
-tree14:(post)  # list
-    1  : FnCall('print')
-    2  :     Get(TK.IDENT, 'print')
-    3  :     List(TK.LIST, [Index()])
-    4  :         Index('a')
-    5  :             Get(TK.IDENT, 'a')
-    6  :             Slice(3 : object:  = None :: 1)
-    7  :                 Int(TK.INT, 3)
-    8  :                 Literal(TK.NONE, None)
-    9  :                 Int(TK.INT, 1)
 
 tree15:(post)  # list
     1  : FnCall('print')
@@ -368,12 +357,20 @@ tree15:(post)  # list
     3  :     List(TK.LIST, [Index()])
     4  :         Index('a')
     5  :             Get(TK.IDENT, 'a')
-    6  :             Slice(1 : 10 :: 1)
-    7  :                 Int(TK.INT, 1)
-    8  :                 Int(TK.INT, 10)
-    9  :                 Int(TK.INT, 1)
+    6  :             Slice(3 :  :: )
+    7  :                 Int(TK.INT, 3)
 
 tree16:(post)  # list
+    1  : FnCall('print')
+    2  :     Get(TK.IDENT, 'print')
+    3  :     List(TK.LIST, [Index()])
+    4  :         Index('a')
+    5  :             Get(TK.IDENT, 'a')
+    6  :             Slice(1 : 10 :: )
+    7  :                 Int(TK.INT, 1)
+    8  :                 Int(TK.INT, 10)
+
+tree17:(post)  # list
     1  : FnCall('print')
     2  :     Get(TK.IDENT, 'print')
     3  :     List(TK.LIST, [Index()])
@@ -382,7 +379,7 @@ tree16:(post)  # list
     6  :             Slice( :  :: 2)
     7  :                 Int(TK.INT, 2)
 
-tree17:(post)  # list
+tree18:(post)  # list
     1  : FnCall('print')
     2  :     Get(TK.IDENT, 'print')
     3  :     List(TK.LIST, [Index()])
@@ -392,7 +389,7 @@ tree17:(post)  # list
     7  :                 Int(TK.INT, 10)
     8  :                 Int(TK.INT, 2)
 
-tree18:(post)  # list
+tree19:(post)  # list
     1  : FnCall('print')
     2  :     Get(TK.IDENT, 'print')
     3  :     List(TK.LIST, [Index()])
@@ -403,7 +400,7 @@ tree18:(post)  # list
     8  :                 Int(TK.INT, 10)
     9  :                 Int(TK.INT, 2)
 
-tree19:(post)  d = { 'col1': [1, 2], 'col2': [3, 4] }
+tree20:(post)  d = { 'col1': [1, 2], 'col2': [3, 4] }
     1  : Define(TK.DEFINE: d = Generate(TK.GEN, ''))
     2  :     Ref(TK.IDENT, 'd')
     3  :     Generate(TK.DATAFRAME, len=2)
@@ -418,7 +415,7 @@ tree19:(post)  d = { 'col1': [1, 2], 'col2': [3, 4] }
    12  :                 Int(TK.INT, 3)
    13  :                 Int(TK.INT, 4)
 
-tree20:(post)  # list
+tree21:(post)  # list
     1  : FnCall('print')
     2  :     Get(TK.IDENT, 'print')
     3  :     List(TK.LIST, [Get()])

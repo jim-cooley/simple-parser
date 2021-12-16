@@ -399,17 +399,17 @@ class Parser(object):
             op = self.peek()
         return l_node
 
-    def unary(self, no_time=False):
+    def unary(self):
         op = self.peek()
         if self.match(UNARY_TOKENS):
             node = UnaryOp(op.remap2unop(), self.unary())
             return node
-        node = self.prime(no_time=no_time)
+        node = self.prime()
         if node is not None and node.token.id in [TK.ANY, TK.ALL, TK.NONEOF]:
             node = UnaryOp(node.token, self.unary())
         return node
 
-    def prime(self, no_time=False):
+    def prime(self):
         node = None
         token = self.peek()
         if token.id == TK.EOL:
@@ -427,10 +427,7 @@ class Parser(object):
         elif token.id == TK.DUR:
             node = Duration(token=token)
         elif token.id == TK.TIME:
-            if no_time:
-                node = Str(token=token)
-            else:
-                node = Time(token=token)
+            node = Str(token=token)
         elif token.id == TK.QUOT:
             node = Str(token=token)
         elif token.id == TK.EMPTY:
@@ -542,30 +539,27 @@ class Parser(object):
         tid = TK.INDEX
         while True:
             token = self.peek()
+            if token.id == TK.RBRK:
+                break
             if token.id in [TK.COLN, TK.COMN]:
                 tid = TK.SLICE
                 self.advance()
-                end = self.unary(no_time=True)
-                if token.id == TK.COMN:
-                    end = UnaryOp(Token.NEG(loc=token.location), end)
-                if end is not None:
-                    if end.tid == TK.TIME:
-                        tid = TK.SLICE
-                        seq = str2slice(end)
-                        del seq[2]
-                        seq.insert(0, None)
+                u = self.unary()
+                if u is not None:
+                    if token.id == TK.COMN:
+                        u = UnaryOp(Token.NEG(loc=token.location), end)
+                    if end is not None:
+                        step = u
+                    else:
+                        end = u
             elif token.id == TK.CLN2:
                 tid = TK.SLICE
                 self.advance()
-                step = self.unary(no_time=True)
+                step = self.unary()
             else:
-                start = self.unary(no_time=True)
+                start = self.boolean_expr()
                 if start is not None:
-                    if start.tid == TK.TIME:
-                        tid = TK.SLICE
-                        seq = str2slice(start)
-                    else:
-                        seq.append(start)
+                    seq.append(start)
                 token = self.peek()
                 if token.id not in [TK.COMA, TK.COLN, TK.COMN, TK.CLN2]:
                     break
@@ -576,6 +570,10 @@ class Parser(object):
         else:
             if len(seq) == 0:
                 seq = [start, end, step]
+            if len(seq) == 1:
+                seq.append(end)
+            if len(seq) == 2:
+                seq.append(step)
             return Slice(start=seq[0], end=seq[1], step=seq[2], loc=token.location)
 
     def plist(self, node=None):

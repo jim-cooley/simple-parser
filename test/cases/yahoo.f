@@ -1,4 +1,4 @@
-# trades[trades > 0] | buys | tail | print
+trades[> 0] | buys | tail | print
 
 quotes = yahoo( symbols='portfolio.csv', span=-5y )
 (open, close, high, low, atr, volume, first, last) = quotes

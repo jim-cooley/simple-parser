@@ -4,8 +4,11 @@ test: 2:
 09:00
 
 tree1:  09:00
-    1  : Time(TK.TIME, 09:00:00)
+    1  : Combine(TK.COMBINE: 09 None 0)
+    2  :     Int(TK.INT, 9)
+    3  :     Int(TK.INT, 0)
 
 tree1:(post)  09:00
-result: time(09:00:00)
-    1  : Time(TK.TIME, 09:00:00)
+    1  : Combine(TK.COMBINE: 09 None 0)
+    2  :     Int(TK.INT, 9)
+    3  :     Int(TK.INT, 0)
