@@ -10,6 +10,38 @@ from runtime.token_data import type2tid
 from runtime.token_ids import TK
 
 
+_type2native = {
+    'Block': 'block',
+    'Bool': 'bool',
+    'bool': 'bool',
+    'DataFrame': 'dataframe',
+    'DateTime': 'datetime',
+    'datetime': 'datetime',
+    'Duration': 'timedelta',
+    'Float': 'float',
+    'float': 'float',
+    'Function': 'function',
+    'Ident': 'object',
+    'Int': 'int',
+    'IntrinsicFunction': 'function',
+    'int': 'int',
+    'List': 'list',
+    'list': 'list',
+    'ndarray': 'ndarray',
+    'NoneType': 'none',
+    'Object': 'object',
+    'object': 'object',
+    'Percent': 'float',
+    'Range': 'range',
+    'Series': 'series',
+    'Set': 'set',
+    'Str': 'str',
+    'str': 'str',
+    'Time': 'datetime',
+    'timedelta': 'timedelta',
+}
+
+
 # --------------------------------
 # "Box" / "Unbox" Helpers
 # --------------------------------
@@ -44,6 +76,8 @@ def c_type(u):
             return tid
     v = c_unbox(u)
     ty = type(v).__name__
+    if ty in _type2native:
+        ty = _type2native[ty]
     if ty in type2tid:
         tid = type2tid[ty]
     return tid

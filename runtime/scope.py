@@ -274,6 +274,8 @@ class FunctionBase(Block):
         if defaults is not None:
             if not isinstance(defaults, IndexedDict):
                 defaults = IndexedDict(items=defaults)
+            if self.arity is None:
+                self.arity = len(defaults)
         self.defaults = defaults
 
     def invoke(self, interpreter, args=None):

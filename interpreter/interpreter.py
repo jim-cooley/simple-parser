@@ -14,7 +14,7 @@ from runtime.scope import Block, Scope, Object, FunctionBase
 from runtime.function import Function
 from runtime.token import Token
 from runtime.token_ids import TK
-from runtime.tree import Ref, Assign, Define, Generate, PropRef
+from runtime.tree import Ref, Assign, Define, Generate, PropRef, ApplyChainProd
 
 from runtime.eval_unary import is_true
 from runtime.evaluate import reduce_value, evaluate_binary_operation, evaluate_unary_operation, evaluate_identifier, \
@@ -263,14 +263,19 @@ class Interpreter(TreeFilter):
         else:
             self._print_node(right)
             result = right
-            block = reduce_ref(ref=left, value=result, update=True)
-            for ref in block.value:
-                if isinstance(ref, Define):
-                    Environment.enter(block)
-                    self.visit(ref)
-                    Environment.leave()
-                    ref = self.stack.pop()
-            self.stack.push(block)
+            if isinstance(left, PropRef):
+                var = self.stack.pop()
+                var.value = result
+                self.stack.push(var)
+            else:
+                block = reduce_ref(ref=left, value=result, update=True)
+                for ref in block.value:
+                    if isinstance(ref, Define):
+                        Environment.enter(block)
+                        self.visit(ref)
+                        Environment.leave()
+                        ref = self.stack.pop()
+                self.stack.push(block)
         self.dedent()
 
     # DefineFn, DefineVarFn
@@ -292,6 +297,7 @@ class Interpreter(TreeFilter):
             else:
                 fn.code = right
             fn.defaults = fn.parameters = self.reduce_parameters(scope=fn, args=args)
+            fn.arity = len(fn.defaults)
             update_ref(name=fn.name, value=fn)
         self.stack.push(fn)
 
@@ -307,6 +313,8 @@ class Interpreter(TreeFilter):
                 n = values[idx]
                 if n is None:
                     continue
+                if isinstance(n, ApplyChainProd):
+                    n = n.left
                 if isinstance(n, Ref):
                     symbol = Environment.current.scope.find(name=n.name)
                     if symbol is not None:
@@ -444,21 +452,25 @@ class Interpreter(TreeFilter):
     # PropSet
     def process_propset(self, node, label=None):
         self._print_node(node)
+        self.indent()
         self.visit(node.left)
         left = self.stack.pop()
         self.visit(node.value)
         value = self.stack.pop()
-        if hasattr(left, 'value'):
-            left = left.value
-        desc = ty2descriptor(left)
-        if desc is not None:
-            if isinstance(node.right, Ref):
-                desc.set(left, node.right.name, value)
-                return
-        # invalid?
-        Environment.enter(left)
-        self.visit(node.right)
-        Environment.leave()
+        if isinstance(left, Object):
+            Environment.enter(left)
+            self.visit(node.right)
+            Environment.leave()
+            prop = self.stack.pop()
+            prop.value = value
+        else:
+            if hasattr(left, 'value'):
+                left = left.value
+            desc = ty2descriptor(left)
+            if desc is not None:
+                if isinstance(node.right, Ref):
+                    desc.set(left, node.right.name, value)
+        self.dedent()
 
     # Ref
     def process_ref(self, node, label=None):

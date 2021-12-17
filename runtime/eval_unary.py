@@ -1,6 +1,6 @@
-from runtime.conversion import c_to_int, c_to_float, c_to_bool
+from runtime.conversion import c_to_int, c_to_float, c_to_bool, c_type
 from runtime.exceptions import runtime_error
-from runtime.pandas import df_negate
+from runtime.pandas import df_negate, pdi_union
 from runtime.token_ids import TK
 
 
@@ -46,6 +46,18 @@ def negate_literal(val, tid):
     elif tid == TK.EMPTY:
         return val
     runtime_error("Unsupported type for Unary minus", loc=None)
+
+
+def union_literal(val, tid):
+    if tid in [TK.INT, TK.FLOT, TK.PCT, TK.DUR, TK.BOOL, TK.STR, TK.EMPTY]:
+        return val
+    if tid in [TK.DATAFRAME, TK.SERIES]:
+        return val.any()
+    if tid == TK.LIST:
+        tid = c_type(val[0])
+    if tid in [TK.DATAFRAME, TK.SERIES]:
+        return pdi_union(val[0], val[1])
+    return val
 
 
 def is_true(val, tid):

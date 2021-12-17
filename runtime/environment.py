@@ -74,6 +74,8 @@ class Environment:
     def leave():
         scope = Environment.current.scope
         parent = scope.parent_scope
+        if parent is None:
+            parent = Environment.current.globals
         Environment.current.scope = parent
         return scope
 

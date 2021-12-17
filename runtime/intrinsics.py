@@ -2,10 +2,11 @@ from dataclasses import dataclass
 from enum import unique, IntEnum
 
 import numpy as np
+import numpy_financial as npf
 import pandas as pd
 import json as js
 
-from runtime.conversion import c_unbox
+from runtime.conversion import c_unbox, c_type
 from runtime.eval_binops import eval_binops_dispatch2, type2native
 from runtime.generators import generate_range, generate_dataframe, generate_dict, generate_list, generate_named_tuple, \
     generate_series, generate_set, generate_tuple
@@ -13,7 +14,7 @@ from runtime.numpy import np_identity, np_ones, np_zeros, np_reshape, np_flatten
     np_integers, np_fill, npi_trim
 from runtime.pandas import create_dataset, create_series, pd_sma, pd_columns, pd_shift, pd_delta, do_signal, pd_head, \
     pd_tail, pd_boxplot, pd_values, pd_index, pd_info, pd_axes, pd_sum, pd_cumsum, pd_describe, pdi_trim, pd_clip, \
-    pd_clipbefore, pd_combine
+    pd_clipbefore, pd_combine, pd_count, pdi_irr, pdi_ret
 from runtime.print import do_print
 from runtime.scope import FunctionBase
 from runtime.time import do_now
@@ -132,6 +133,16 @@ def init_intrinsic(name):
 # -----------------------------------
 # Intrinsic Functions
 # -----------------------------------
+def do_irr(args=None):
+    a = args[0]
+    tid = c_type(a)
+    if tid in [TK.DATAFRAME, TK.SERIES]:
+        return pdi_irr(a)
+    elif tid == TK.LIST:
+        return npf.irr(a)
+    return None
+
+
 def do_len(args=None):
     o = args[0]
     return len(o)
@@ -192,6 +203,27 @@ def do_read(args=None):
             elif format == 'xml':
                 dframe = pd.read_xml(file)
     return dframe
+
+
+# ret - gross return
+def do_ret(args=None):
+    a = args[0]
+    tid = c_type(a)
+    if tid in [TK.DATAFRAME, TK.SERIES]:
+        return pdi_ret(a)
+    elif tid == TK.LIST:
+        first = last = None
+        for ele in a:
+            if a is None:
+                continue
+            if a == 0:
+                continue
+            if first is None:
+                first = ele
+            last = ele
+        if first is not None:
+            return (last - first) / first
+    return None
 
 
 def do_shape(args=None):
@@ -280,6 +312,7 @@ def do_write(args=None):
 _intrinsic_fundesc = {
     # name     ( do_func, arity, opt, init_func )
     'columns': (pd_columns, 1, -1, None),
+    'count': (pd_count, 1, 3, None),
     'dataset': (create_dataset, 0, 1, None),
     'dataframe': (create_dataset, 0, 1, None),
     'delay': (pd_shift, 2, 2, None),    # alias for pandas 'shift'
@@ -291,6 +324,7 @@ _intrinsic_fundesc = {
     'now': (do_now, 0, 0, None),
     'print': (do_print, 1, -1, None),  # varargs
     'range': (generate_range, 1, 3, {'start': None, 'end': None, 'step': 1}),
+    'ret': (do_ret, 1, 1, None),
     'read': (do_read, 1, 2, None),
     'series': (create_series, 0, 1, None),
     'signal': (do_signal, 1, 1, None),
@@ -306,6 +340,7 @@ _intrinsic_fundesc = {
     'flatten': (np_flatten, 1, 1, None),
     'identity': (np_identity, 1, 1, None),
     'integers': (np_integers, 0, 4, None),
+    'irr': (do_irr, 1, 1, None),
     'ones': (np_ones, 1, 3, None),
     'random': (np_random, 1, 4, None),
     'reshape': (np_reshape, 2, 3, None),

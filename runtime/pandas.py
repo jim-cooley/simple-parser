@@ -1,12 +1,15 @@
 import math
 
 import numpy as np
+import numpy_financial as npf
 import pandas as pd
 import datetime as dt
 
-from runtime.conversion import c_unbox
+from runtime.conversion import c_unbox, c_type
 from runtime.indexdict import IndexedDict
+from runtime.scope import Object
 from runtime.series import Series
+from runtime.token_ids import TK
 
 
 def set_print_options(options=None):
@@ -54,8 +57,9 @@ def print_series(_s, label=None):
 
 
 def create_dataset(args=None):
-    if len(args) > 0:
-        return pd.DataFrame(args[0])
+    if args is not None:
+        if len(args) > 0:
+            return pd.DataFrame(args[0])
     return pd.DataFrame()
 
 
@@ -70,6 +74,8 @@ def create_series(args=None):
 def df_set_at(df, index, value):
     if isinstance(index, list):
         index = index[0]
+    if isinstance(value, Object):
+        value = value.value
     df[index] = value
 
 
@@ -144,6 +150,11 @@ def _slice_dataframe(l_value, r_value):
         stop = r_value[1]
     if len(r_value) > 2:
         step = r_value[2]
+    if isinstance(start, Object):
+        start = start.value
+    ty = c_type(start)
+    if ty == TK.DATAFRAME:
+        return l_value[start]
     return l_value[slice(start, stop, step)]
 
 
@@ -193,16 +204,39 @@ def pd_lte_df(a, b):
     return a <= b
 
 
+def pd_add_df(a, b):
+    return a.add(b)
+
+
+def pd_sub_df(a, b):
+    return a.sub(b)
+
+
 def pd_mul_df(a, b):
-    return a * b
+    return a.mul(b)
 
 
+def pd_div_df(a, b):
+    return a.div(b)
+
+
+# dataframe
 def pdi_union(df, other):
     return df.combine(other, s_union, fill_value=None, overwrite=False)
 
 
+# series
 def s_union(s1, s2):
-    return s1.combine(s2, lambda e1, e2: e2 if e1 is None else e1, fill_value=None)
+    return s1.combine(s2, union_compare, fill_value=None)
+
+
+# elementwise
+def union_compare(e1, e2):
+    if e1 is None:
+        return e2
+    if not e1:
+        return e2
+    return e1
 
 
 def pdi_intersection(df, other):
@@ -295,6 +329,40 @@ def pd_combine(args=None):
     return pdi_union(df, other)
 
 
+def pd_count(args=None):
+    axis = 'r'
+    columns = None
+    normalize = False
+    sort = True
+    df = args[0]
+    if hasattr(args, 'columns'):
+        columns = args.columns
+    if hasattr(args, 'axis'):
+        axis = args.axis[:1].lower()
+    if hasattr(args, 'normalize'):
+        normalize = args.normalize
+    args.remove(['axis', 'columns', 'normalize'])
+    if len(args) > 1:
+        columns = args[1]
+    if len(args) > 2:
+        axis = args[2][:1].lower()
+    if len(args) > 3:
+        normalize = args[3]
+        normalize = True if normalize else False
+    if columns is not None:
+        if not isinstance(columns, list):
+            columns = [columns]
+    if axis == 'r':
+        return df.value_counts(subset=columns, sort=sort, normalize=normalize)
+    columns = df.columns.values
+    counts = {}
+    for c in columns:
+        count = df.value_counts(subset=[c], sort=True, normalize=normalize)
+        # idx = list(map(lambda x: x[0], count.index.values.tolist()))
+        counts[c] = count
+    return pd.DataFrame(counts)
+
+
 def pd_cumsum(args=None):
     a = args[0]
     if not isinstance(a, pd.DataFrame):
@@ -355,6 +423,41 @@ def pd_index(args=None):
 
 def pd_info(args=None):
     return df_info(args[0])
+
+
+def pd_irr(args=None):
+    a = args[0]
+    return pdi_irr(a)
+
+
+def pdi_irr(a):
+    return a.aggregate(npf.irr)
+
+
+def pd_ret(args=None):
+    a = args[0]
+    return pdi_ret(a)
+
+
+def pdi_ret(a):
+    return a.aggregate(s_calcret)
+
+
+def s_calcret(s):
+    first = last = None
+    for ele in s:
+        if ele is None:
+            continue
+        if np.isnan(ele):
+            continue
+        if ele == 0:
+            continue
+        if first is None:
+            first = ele
+        last = ele
+    if first is not None:
+        return (last - first) / np.abs(first)
+    return None
 
 
 def pd_shape(args=None):

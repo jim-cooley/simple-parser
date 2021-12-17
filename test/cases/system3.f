@@ -1,24 +1,64 @@
+quotes = yahoo( symbols='portfolio.csv', span=-5y )
+(open, close, high, low, atr, volume, first, last) = quotes
 
-read('close.csv', format='csv') | close
+atr.plus1 = delay(atr, 1d)
+close.sma10 = sma(close, 10)
+close.sma20 = sma(close, 20)
+buyhold = ret(close)
 
+close_sma10_cross = close > close.sma10
+close_sma20_cross = close > close.sma20
+close_sma_10_20_cross = close.sma10 > close.sma20
 
+df = dataframe
+df["buyhold"] = buyhold
 
-# productions: new datasets
-report(trades) := { trades | columns(_, 'symbol', 'buy_date', 'buy_price', 'sell_date', 'sell_price') | print }
+analyze(rules) := {
+    rules | signal | clipbefore(_, 1, 0, 1, 0) >> signals
 
-rules = {
-    baseline = 5,
-    scenario = 6
+    print("signals")
+    signals | mul(_, -atr.plus1) >> trades | print
+
+    print("cummulative returns")
+    trades | cumsum >> results | print
+
+    print("trading results")
+    results | ret >> trading | print
+
+    print("num trades")
+    results > 0 | signal | count(_, axis='c') | x
+    x[-1] >> ntrades | print
+
+    print("avg per trade")
+    trading / ntrades | print
+
+    return trading
 }
 
-print(rules)
-
-baseline = {
-    buy: any:{ close >| sma(10), close >| sma(20), sma(10) >| sma(20) }:(threshold=0.01) | signal >> delay(1d) | atr,
-    sell: close <| sma(10) | signal >> delay(1d) | atr
+rules = any:{
+    close > close.sma10,
+    close > close.sma20,
+    close.sma10 > close.sma20
 }
 
-scenario = {
-    buy: { close >| sma(sma_period) } | signal >> atr.delay(1d),
-    sell: close <| sma(sma_period) | signal >> atr.delay(1d)
-}
+print(analyze(rules=close_sma10_cross))
+
+print("close_sma10_cross")
+df["close_sma10_cross"] = analyze(rules=close_sma10_cross)
+
+print("close_sma20_cross")
+df["close_sma20_cross"] = analyze(rules=close_sma20_cross)
+
+print("close_sma_10_20_cross")
+df["close_sma_10_20_cross"] = analyze(rules=close_sma_10_20_cross)
+
+print("test rules:")
+df["rules"] = analyze(rules)
+
+print("comparison")
+print(df)
+
+
+
+
+

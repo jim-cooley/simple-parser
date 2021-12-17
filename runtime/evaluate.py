@@ -9,7 +9,7 @@ from runtime.tree import Ref
 from runtime.eval_assignment import eval_assign_dispatch, _SUPPORTED_ASSIGNMENT_TOKENS
 from runtime.eval_binops import eval_binops_dispatch, _binops_dispatch_table
 from runtime.eval_boolean import eval_boolean_dispatch, _boolean_dispatch_table
-from runtime.eval_unary import not_literal, increment_literal, decrement_literal, negate_literal
+from runtime.eval_unary import not_literal, increment_literal, decrement_literal, negate_literal, union_literal
 
 _INTRINSIC_VALUE_TYPES = ['bool', 'float', 'int', 'str', 'timedelta']
 
@@ -18,38 +18,6 @@ _INPLACE_OPS = [TK.PLEQ, TK.MNEQ]
 _unary2binop = {
     TK.PLEQ: TK.ADD,
     TK.MNEQ: TK.SUB,
-}
-
-
-_type2native = {
-    'Block': 'block',
-    'Bool': 'bool',
-    'bool': 'bool',
-    'DataFrame': 'dataframe',
-    'DateTime': 'datetime',
-    'datetime': 'datetime',
-    'Duration': 'timedelta',
-    'Float': 'float',
-    'float': 'float',
-    'Function': 'function',
-    'Ident': 'object',
-    'Int': 'int',
-    'IntrinsicFunction': 'function',
-    'int': 'int',
-    'List': 'list',
-    'list': 'list',
-    'ndarray': 'ndarray',
-    'NoneType': 'none',
-    'Object': 'object',
-    'object': 'object',
-    'Percent': 'float',
-    'Range': 'range',
-    'Series': 'series',
-    'Set': 'set',
-    'Str': 'str',
-    'str': 'str',
-    'Time': 'datetime',
-    'timedelta': 'timedelta',
 }
 
 
@@ -168,8 +136,9 @@ def evaluate_unary_operation(node, l_value):
         l_value = negate_literal(l_value, l_tid)
     elif opid == TK.POS:
         pass
+    elif opid == TK.ANY:
+        l_value = union_literal(l_value, l_tid)
     else:
         runtime_error(f'Invalid operation {opid.name}', loc=None)
-
     l_value = c_box(l_value, l_value)
     return l_value

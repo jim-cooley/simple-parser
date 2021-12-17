@@ -3,7 +3,7 @@ import numpy as np
 from runtime.conversion import c_unbox
 from runtime.exceptions import runtime_error
 from runtime.numpy import _slice_ndarray
-from runtime.pandas import _slice_dataframe, _slice_series, pd_mul_df
+from runtime.pandas import _slice_dataframe, _slice_series, pd_mul_df, pd_div_df, pd_sub_df, pd_add_df
 from runtime.token_ids import TK
 
 # --------------------------------------------------------------------------------------------------
@@ -83,6 +83,7 @@ _type2idx = {
     'Percent': 3,
     'Range': 11,
     'Series': 12,
+    'series': 12,
     'Set': 13,
     'Str': 5,
     'str': 5,
@@ -266,11 +267,11 @@ def _sub__int_object(l_value, r_value):
 
 
 def _sub__dataframe_dataframe(l_value, r_value):
-    return sub_dfdf
+    return pd_sub_df(l_value, r_value)
 
 
 def _sub__series_dataframe(l_value, r_value):
-    return ssub(l_value,r_value)
+    return pd_sub_df(l_value, r_value)
 
 
 def _sub__range_range(l_value, r_value):
@@ -320,8 +321,12 @@ def _div__dataframe_dataframe(l_value, r_value):
     return div_dfdf
 
 
+def _div__dataframe_series(l_value, r_value):
+    return pd_div_df(l_value, r_value)
+
+
 def _div__series_dataframe(l_value, r_value):
-    return sdiv(l_value,r_value)
+    return pd_div_df(l_value, r_value)
 
 
 def _div__range_range(l_value, r_value):
@@ -663,7 +668,7 @@ _binops_dispatch_table = {
         [_invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div],   # Block  
         [_invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _div__dataframe_dataframe, _invalid_div,     _div__series_dataframe, _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div],   # DataFrame  
         [_invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _div__range_range, _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div],   # Range  
-        [_invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _div__series_series, _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div],   # Series  
+        [_invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _div__dataframe_series, _invalid_div,     _div__series_series, _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div],   # Series
         [_invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _div__set_set,    _invalid_div,     _invalid_div,     _invalid_div],   # Set  
         [_invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _div__list_list,  _div__list_list,  _invalid_div],   # list  
         [_invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _invalid_div,     _div__list_list,  _div__list_list,  _invalid_div],   # ndarray  

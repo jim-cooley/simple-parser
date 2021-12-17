@@ -19,7 +19,7 @@ class Function(FunctionBase):
         return len(self.defaults)
 
     def invoke(self, interpreter, args=None):
-        scope = Scope(other=self)
+        scope = Scope(other=self, parent_scope=self)
         scope.update_members(args)
         Environment.enter(scope)
         interpreter.visit(self.code)
