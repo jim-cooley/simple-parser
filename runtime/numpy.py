@@ -133,6 +133,14 @@ def np_transpose(args=None):
     return np.transpose(a)
 
 
+def np_trim(args=None):
+    pass
+
+
+def npi_trim(a):
+    pass
+
+
 def np_zeros(args=None):
     npargs = c_array_unbox(args)
     if len(npargs) > 1:

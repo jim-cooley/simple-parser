@@ -1,7 +1,7 @@
 from enum import unique, IntEnum
 
 from runtime.pandas import df_index, df_columns, df_axes, df_empty, df_info, df_set_flags, df_shape, df_values, \
-    df_set_columns, df_head, df_set_idx_columns, df_set_at
+    df_set_columns, df_head, df_set_idx_columns, df_set_at, pd_trim, df_clip
 from runtime.scope import Object
 
 # instead of using distinct types for each native type, we use a generic 'object' as a container
@@ -126,17 +126,19 @@ def init_type_proxies():
 
 
 _descriptors = {
-    #              prop     GET     PUT   GETIDX   PUTIDX   INVOKE
+    #              prop   INVOKE  GET  PUT   GETIDX   PUTIDX
     'dataframe': {'_': (None, None, None, None, df_set_at),
-                  'axes': (None, df_axes, None, None, None),
+                  'axes': (df_axes, None, None, None, None),
+                  'clip': (df_clip, None, None, None, None),
                   'columns': (df_columns, df_columns, df_set_columns, None, df_set_idx_columns),
-                  'empty': (None, df_empty, None, None, None),
-                  'flags': (None, df_set_flags, None, None, None),
+                  'empty': (df_empty, None, None, None, None),
+                  'flags': (df_set_flags, None, None, None, None),
                   'head': (df_head, None, None, None, None),
-                  'index': (None, df_index, None, None, None),
-                  'info': (None, df_info, None, None, None),
-                  'shape': (None, df_shape,  None, None, None),
-                  'values': (None, df_values,  None, None, None),
+                  'index': (df_index, None, None, None, None),
+                  'info': (df_info, None, None, None, None),
+                  'shape': (df_shape, None, None, None, None),
+                  'trim': (pd_trim, None,  None, None, None),
+                  'values': (df_values, None, None, None, None),
                   },
 }
 

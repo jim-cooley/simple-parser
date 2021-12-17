@@ -89,21 +89,21 @@ tree5:  rules: {
     7  :                 Flow{TK.CHAIN, '|' len=2}
     8  :                     Flow{TK.APPLY, '>>' len=2}
     9  :                         Flow{TK.CHAIN, '|' len=2}
-   10  :                             Combine(TK.COMBINE: buy None UnaryOp(TK.ANY, 'any:'))
+   10  :                             Combine(TK.COMBINE: buy None UnaryOp(TK.ANY, 'any'))
    11  :                                 Ref(TK.IDENT, 'buy')
-   12  :                                 UnaryOp(TK.ANY, 'any:')
+   12  :                                 UnaryOp(TK.ANY, 'any')
    13  :                                     Combine(TK.COMBINE:  None Define(TK.DEFINE, '='))
    14  :                                         Block{TK.BLOCK, len=3}
    15  :                                             Flow{TK.CHAIN, '|' len=2}
    16  :                                                 BinOp(TK.GTR, '>')
-   17  :                                                     Ref(TK.IDENT, 'close')
+   17  :                                                     Get(TK.IDENT, 'close')
    18  :                                                 FnCall('sma')
    19  :                                                     Ref(TK.IDENT, 'sma')
    20  :                                                     List(TK.LIST, [Int()])
    21  :                                                         Int(TK.INT, 10)
    22  :                                             Flow{TK.CHAIN, '|' len=2}
    23  :                                                 BinOp(TK.GTR, '>')
-   24  :                                                     Ref(TK.IDENT, 'close')
+   24  :                                                     Get(TK.IDENT, 'close')
    25  :                                                 FnCall('sma')
    26  :                                                     Ref(TK.IDENT, 'sma')
    27  :                                                     List(TK.LIST, [Int()])
@@ -111,7 +111,7 @@ tree5:  rules: {
    29  :                                             Flow{TK.CHAIN, '|' len=2}
    30  :                                                 BinOp(TK.GTR, '>')
    31  :                                                     FnCall('sma')
-   32  :                                                         Ref(TK.IDENT, 'sma')
+   32  :                                                         Get(TK.IDENT, 'sma')
    33  :                                                         List(TK.LIST, [Int()])
    34  :                                                             Int(TK.INT, 10)
    35  :                                                 FnCall('sma')
@@ -249,21 +249,21 @@ tree5:(post)  rules: {
     7  :                 Flow{TK.CHAIN, '|' len=2}
     8  :                     Flow{TK.APPLY, '>>' len=2}
     9  :                         Flow{TK.CHAIN, '|' len=2}
-   10  :                             Combine(TK.COMBINE: buy None UnaryOp(TK.ANY, 'any:'))
+   10  :                             Combine(TK.COMBINE: buy None UnaryOp(TK.ANY, 'any'))
    11  :                                 Ref(TK.IDENT, 'buy')
-   12  :                                 UnaryOp(TK.ANY, 'any:')
+   12  :                                 UnaryOp(TK.ANY, 'any')
    13  :                                     Combine(TK.COMBINE:  None Define(TK.DEFINE, '='))
    14  :                                         Block{TK.BLOCK, len=3}
    15  :                                             Flow{TK.CHAIN, '|' len=2}
    16  :                                                 BinOp(TK.GTR, '>')
-   17  :                                                     Ref(TK.IDENT, 'close')
+   17  :                                                     Get(TK.IDENT, 'close')
    18  :                                                 FnCall('sma')
    19  :                                                     Ref(TK.IDENT, 'sma')
    20  :                                                     List(TK.LIST, [Int()])
    21  :                                                         Int(TK.INT, 10)
    22  :                                             Flow{TK.CHAIN, '|' len=2}
    23  :                                                 BinOp(TK.GTR, '>')
-   24  :                                                     Ref(TK.IDENT, 'close')
+   24  :                                                     Get(TK.IDENT, 'close')
    25  :                                                 FnCall('sma')
    26  :                                                     Ref(TK.IDENT, 'sma')
    27  :                                                     List(TK.LIST, [Int()])
@@ -271,7 +271,7 @@ tree5:(post)  rules: {
    29  :                                             Flow{TK.CHAIN, '|' len=2}
    30  :                                                 BinOp(TK.GTR, '>')
    31  :                                                     FnCall('sma')
-   32  :                                                         Ref(TK.IDENT, 'sma')
+   32  :                                                         Get(TK.IDENT, 'sma')
    33  :                                                         List(TK.LIST, [Int()])
    34  :                                                             Int(TK.INT, 10)
    35  :                                                 FnCall('sma')

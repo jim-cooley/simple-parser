@@ -4,14 +4,14 @@ test: 4:
 none:{a, b, c}
 
 tree1:  none:{a, b, c}
-    1  : UnaryOp(TK.NONE, 'none')
+    1  : UnaryOp(TK.NONEOF, 'none')
     2  :     Generate(TK.SET, len=3)
     3  :         Get(TK.IDENT, 'a')
     4  :         Get(TK.IDENT, 'b')
     5  :         Get(TK.IDENT, 'c')
 
 tree1:(post)  none:{a, b, c}
-    1  : UnaryOp(TK.NONE, 'none')
+    1  : UnaryOp(TK.NONEOF, 'none')
     2  :     Generate(TK.SET, len=3)
     3  :         Get(TK.IDENT, 'a')
     4  :         Get(TK.IDENT, 'b')

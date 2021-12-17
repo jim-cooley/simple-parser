@@ -1,3 +1,6 @@
+import math
+
+import numpy as np
 import pandas as pd
 import datetime as dt
 
@@ -72,6 +75,16 @@ def df_set_at(df, index, value):
 
 def df_axes(df=None):
     return df.axes
+
+
+def df_clip(df, args=None):
+    lower = upper = None
+    if len(args) == 1:
+        upper = args[0]
+    if len(args) == 2:
+        lower = args[0]
+        upper = args[1]
+    return df.clip(lower=lower, upper=upper)
 
 
 def df_columns(a, columns=None):
@@ -149,11 +162,11 @@ def df_negate(df):
 
 
 def pd_and_df(a, b):
-    return a and b
+    return pdi_intersection(a, b)
 
 
 def pd_or_df(a, b):
-    return a or b
+    return pdi_union(a, b)
 
 
 def pd_eq_df(a, b):
@@ -184,6 +197,22 @@ def pd_mul_df(a, b):
     return a * b
 
 
+def pdi_union(df, other):
+    return df.combine(other, s_union, fill_value=None, overwrite=False)
+
+
+def s_union(s1, s2):
+    return s1.combine(s2, lambda e1, e2: e2 if e1 is None else e1, fill_value=None)
+
+
+def pdi_intersection(df, other):
+    return df.combine(other, s_intersection, fill_value=None, overwrite=False)
+
+
+def s_intersection(s1, s2):
+    return s1.combine(s2, lambda ele1, ele2: ele1 if ele1 == ele2 else None, fill_value=None)
+
+
 # -----------------------------------
 # Pandas Functions
 # -----------------------------------
@@ -192,18 +221,6 @@ def pd_axes(args=None):
     if not isinstance(a, pd.DataFrame):
         a = pd.DataFrame(a)
     return df_axes(a)
-
-
-def pd_index(args=None):
-    return df_index(args[0])
-
-
-def pd_info(args=None):
-    return df_info(args[0])
-
-
-def pd_values(args=None):
-    return df_values(args[0])
 
 
 def pd_boxplot(args=None):
@@ -228,6 +245,54 @@ def pd_columns(args=None):
     else:
         columns = None
     return df_columns(a, columns)
+
+
+def pd_clipbefore(args=None):
+    df = args[0]
+    before = args[1]
+    lower = upper = fillna = None
+    if len(args) == 3:
+        upper = args[2]
+    if len(args) >= 4:
+        lower = args[2]
+        upper = args[3]
+    if len(args) == 5:
+        fillna = args[4]
+    return df.transform(si_clipfunc, before=before, upper=upper, lower=lower, fillna=fillna)
+
+
+def si_clipfunc(series, before=None, upper=None, lower=None, fillna=None):
+    s = series.copy()
+    for idx in series.index:
+        item = series[idx]
+        if before is not None:
+            if item != before:
+                item = upper if item > upper else item
+                item = lower if item < lower else item
+            else:
+                before = None
+        if fillna is not None:
+            if np.isnan(item):
+                item = fillna
+        s[idx] = item
+    return s
+
+
+def pd_clip(args=None):
+    df = args[0]
+    lower = upper = None
+    if len(args) == 2:
+        upper = args[1]
+    if len(args) == 3:
+        lower = args[1]
+        upper = args[2]
+    return df.clip(lower=lower, upper=upper)
+
+
+def pd_combine(args=None):
+    df = args[0]
+    other = args[1]
+    return pdi_union(df, other)
 
 
 def pd_cumsum(args=None):
@@ -259,6 +324,18 @@ def pdi_delta(a, delay):
     return a - a.shift(delay)
 
 
+def pd_describe(args=None):
+    cols = pctile = None
+    a = args[0]
+    if len(args) > 1:
+        cols = args[1]
+    if len(args) > 2:
+        pctile = args[2]
+    if isinstance(a, pd.DataFrame) or isinstance(a, pd.Series):
+        return a.describe(include=cols, percentiles=pctile, datetime_is_numeric=True)
+    return None
+
+
 def pd_head(args=None):
     a = args[0]
     if len(args) > 1:
@@ -270,6 +347,14 @@ def pd_head(args=None):
 
 def pdi_head(a, count):
     return a.head(count)
+
+
+def pd_index(args=None):
+    return df_index(args[0])
+
+
+def pd_info(args=None):
+    return df_info(args[0])
 
 
 def pd_shape(args=None):
@@ -343,3 +428,27 @@ def pd_tail(args=None):
 
 def pdi_tail(a, count):
     return a.tail(count)
+
+
+def pd_trim(args=None):
+    axis = 'c'
+    uval = []
+    df = args[0]
+    if len(args) > 1:
+        uval = args[1]
+    values = [None, np.NaN].append(uval)
+    return pdi_trim(df, axis, values)
+
+
+def pdi_trim(df, axis, values):
+    first = df.first_valid_index()
+    last = df.last_valid_index()
+    if first is not None:
+        df = df.truncate(axis='index', before=first)
+    if last is not None:
+        df = df.truncate(axis='index', after=last)
+    return df
+
+
+def pd_values(args=None):
+    return df_values(args[0])

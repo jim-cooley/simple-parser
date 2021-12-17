@@ -10,9 +10,10 @@ from runtime.eval_binops import eval_binops_dispatch2, type2native
 from runtime.generators import generate_range, generate_dataframe, generate_dict, generate_list, generate_named_tuple, \
     generate_series, generate_set, generate_tuple
 from runtime.numpy import np_identity, np_ones, np_zeros, np_reshape, np_flatten, np_transpose, np_random, \
-    np_integers, np_fill
+    np_integers, np_fill, npi_trim
 from runtime.pandas import create_dataset, create_series, pd_sma, pd_columns, pd_shift, pd_delta, do_signal, pd_head, \
-    pd_tail, pd_boxplot, pd_values, pd_index, pd_info, pd_axes, pd_sum, pd_cumsum
+    pd_tail, pd_boxplot, pd_values, pd_index, pd_info, pd_axes, pd_sum, pd_cumsum, pd_describe, pdi_trim, pd_clip, \
+    pd_clipbefore, pd_combine
 from runtime.print import do_print
 from runtime.scope import FunctionBase
 from runtime.time import do_now
@@ -202,6 +203,44 @@ def do_shape(args=None):
     return len(o)
 
 
+# trim NaN, None, [zero values, designated values] from object
+def do_trim(args=None):
+    uval = []
+    o = args[0]
+    if len(args) > 1:
+        uval = args[1]
+    axis = 'c'
+    values = [None, np.NaN]
+    values.append(uval)  # uval could be a list or a value
+    if isinstance(o, list):
+        return trim_list(o, values)
+    elif isinstance(o, pd.DataFrame) or isinstance(o, pd.Series):
+        return pdi_trim(o, axis, values)
+    elif isinstance(o, np.ndarray):
+        return npi_trim(o)
+    else:
+        return o
+
+
+def trim_list(o, values):
+    idx = len(o) + 1
+    first = -1
+    for idx in range(0, len(o)):
+        if o[idx] not in values:
+            break
+        first = idx
+    if first > 0:
+        o = o[idx:]
+    last = len(o) + 1
+    for idx in range(len(o), 0, -1):
+        if o[idx] not in values:
+            break
+        last = idx
+    if last < len(o):
+        o = o[:idx]
+    return o
+
+
 def do_typeof(args=None):
     o = args[0]
     return type(o).__name__
@@ -245,6 +284,7 @@ _intrinsic_fundesc = {
     'dataframe': (create_dataset, 0, 1, None),
     'delay': (pd_shift, 2, 2, None),    # alias for pandas 'shift'
     'delta': (pd_delta, 1, 2, None),    # focal
+    'describe': (pd_describe, 1, 3, None),
     'len': (do_len, 1, 1, None),
     'json': (to_json, 1, 2, None),   # obj [, filename]
     'mul': (do_mul, 2, 2, None),
@@ -255,6 +295,7 @@ _intrinsic_fundesc = {
     'series': (create_series, 0, 1, None),
     'signal': (do_signal, 1, 1, None),
     'today': (do_now, 0, 0, None),
+    'trim': (do_trim, 1, 3, None),
     'type': (do_typeof, 1, 1, None),
     'write': (do_write, 1, 2, None),
     'yahoo': (do_yahoo, 1, 7, init_yahoo),
@@ -275,6 +316,9 @@ _intrinsic_fundesc = {
     # pandas:
     'axes': (pd_axes, 1, 1, None),
     'boxplot': (pd_boxplot, 1, 4, None),
+    'clip': (pd_clip, 1, 4, None),
+    'clipbefore': (pd_clipbefore, 2, 5, None),
+    'combine': (pd_combine, 1, 2, None),
     'cumsum': (pd_cumsum, 1, 2, None),
     'head': (pd_head, 1, 2, None),
     'info': (pd_info, 1, 1, None),
@@ -284,6 +328,7 @@ _intrinsic_fundesc = {
     'sum': (pd_sum, 1, 2, None),
     'tail': (pd_tail, 1, 2, None),
     'values': (pd_values, 1, 2, None),
+    'union': (pd_combine, 1, 2, None),
     # timedelta_range
 }
 

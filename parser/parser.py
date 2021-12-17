@@ -95,19 +95,19 @@ class Parser(object):
 
     def statement(self):
         if self.match1(TK.IF):
-            test = self.block_expr()
+            test = self.expression()
             self.consume(TK.THEN)
-            thn = self.block_expr()
+            thn = self.expression()
             els = None
             if self.match1(TK.ELSE):
-                els = self.block_expr()
+                els = self.expression()
             node = IfThenElse(test=test, then=thn, els=els)
         else:
-            node = self.block_expr()
+            node = self.expression()
             if node is None:
                 self.logger.warning(f'Unexpected token: {self.peek()}', self.peek().location)
                 self.advance()  # attempt to recover
-                node = self.block_expr()
+                node = self.expression()
             if self.peek().id == TK.EOF:
                 return node
             if self.match([TK.SEMI, TK.COMA]):
@@ -129,35 +129,6 @@ class Parser(object):
     # -----------------------------------
     # 'statement' parsing at top
     # -----------------------------------
-    def block_expr(self):
-        tk = self.peek()
-        if tk.id == TK.LBRC:
-            node = self.expression()    # UNDONE: self.definition(), or just parse the block() ?
-            if self.match1(TK.COLN):
-                op = self.peek(-1)
-                tid = self.peek().id
-                if tid == TK.LBRC:
-                    node = BinOp(left=node, op=op.set_id(TK.APPLY), right=self.statement())
-                elif tid == TK.LPRN:
-                    node = BinOp(left=node, op=op.set_id(TK.APPLY), right=self.tuple())
-                else:
-                    self.logger.error("Expected '{' or '(' after ':')"
-                                      f'{self.peek()}', self.peek().location)
-            if self.peek().id in FLOW_TOKENS:
-                return self.parse_flow(node)
-            else:
-                return node
-        elif self.check(SET_UNARY_TOKENS):
-            if self.peek(1).id != TK.COLN:
-                return self.expression()
-            self.consume(tk.id)
-            self.consume(TK.COLN)
-            if self.peek().id != TK.LBRC:
-                self.logger.expected(expected=f'TK.LRBC', found=self.peek())
-            return UnaryOp(tk, self.block_expr())
-        else:
-            return self.expression()
-
     def definition(self):
         l_expr = self.statement()  # l-value cannot include flows
         if isinstance(l_expr, Define):
@@ -203,7 +174,7 @@ class Parser(object):
     def flow(self):
         op = self.peek()
         if self.match1(TK.RETURN):
-            node = Return(token=op, expr=self.block_expr())
+            node = Return(token=op, expr=self.expression())
         else:
             node = self.tuple()
             if node is None:
@@ -271,7 +242,7 @@ class Parser(object):
                         self.logger.error(f'Invalid assignment target: {l_expr.left.token.lexeme} is reserved',
                                           op.location)
                 if l_expr.is_lvalue:
-                    r_expr = self.block_expr()
+                    r_expr = self.expression()
                     return self.process_assignment(op=op, l_expr=l_expr, r_expr=r_expr)
                 if isinstance(l_expr, BinOp):
                     self.logger.error(f'Invalid assignment target: {l_expr.left.token.lexeme}', op.location)
@@ -404,9 +375,19 @@ class Parser(object):
         if self.match(UNARY_TOKENS):
             node = UnaryOp(op.remap2unop(), self.unary())
             return node
+        if op.id == TK.NONE:
+            if self.peek(1).id == TK.COLN:
+                op.set_id(TK.NONEOF)
+        if self.match(SET_UNARY_TOKENS):
+            self.consume(TK.COLN)
+            expr = self.unary()
+            if self.match1(TK.COLN):
+                expr = Combine(left=expr, right=self.tuple(), loc=op.location)
+            node = UnaryOp(op.remap2unop(), expr)
+            return node
         node = self.prime()
-        if node is not None and node.token.id in [TK.ANY, TK.ALL, TK.NONEOF]:
-            node = UnaryOp(node.token, self.unary())
+#       if node is not None and node.token.id in [TK.ANY, TK.ALL, TK.NONEOF]:
+#           node = UnaryOp(node.token, self.unary())
         return node
 
     def prime(self):

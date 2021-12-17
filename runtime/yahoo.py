@@ -105,21 +105,21 @@ def get_yahoo(symbols, first, last, span, frequency, dropna, offline):
     close = zip_historic(historic, 'Adj Close')
     high = zip_historic(historic, 'High')
     low = zip_historic(historic, 'Low')
-    mean = zip_historic(historic, 'High', 'Low')
+    atr = zip_historic(historic, 'High', 'Low')
     volume = zip_historic(historic, 'Volume')
     if dropna:
         open.dropna(axis=0, how='any', inplace=True)
         close.dropna(axis=0, how='any', inplace=True)
         high.dropna(axis=0, how='any', inplace=True)
         low.dropna(axis=0, how='any', inplace=True)
-        mean.dropna(axis=0, how='any', inplace=True)
+        atr.dropna(axis=0, how='any', inplace=True)
         volume.dropna(axis=0, how='any', inplace=True)
 
     result['open'] = open
     result['close'] = close
     result['high'] = high
     result['low'] = low
-    result['mean'] = mean
+    result['atr'] = atr
     result['volume'] = volume
     result['first'] = start  # indicates how much data there is before zip/normalization of the datasets
     result['last'] = end

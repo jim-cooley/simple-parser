@@ -70,36 +70,36 @@ tree2:  rules1 => {
     1  : DefineFn(TK.PRODUCE: rules1 => Block(TK.BLOCK, ''))
     2  :     Ref(TK.IDENT, 'rules1')
     3  :     Block{TK.BLOCK, len=2}
-    4  :         UnaryOp(TK.ANY, 'any')
-    5  :             Flow{TK.CHAIN, '|' len=2}
-    6  :                 Flow{TK.APPLY, '>>' len=2}
-    7  :                     Flow{TK.CHAIN, '|' len=2}
+    4  :         Flow{TK.CHAIN, '|' len=2}
+    5  :             Flow{TK.APPLY, '>>' len=2}
+    6  :                 Flow{TK.CHAIN, '|' len=2}
+    7  :                     UnaryOp(TK.ANY, 'any')
     8  :                         Combine(TK.COMBINE: [count=1]:set None Define(TK.DEFINE, '='))
     9  :                             Generate(TK.SET, len=2)
    10  :                                 BinOp(TK.RISE_ABOVE, '|>')
-   11  :                                     Ref(TK.IDENT, 'close')
+   11  :                                     Get(TK.IDENT, 'close')
    12  :                                     FnCall('sma')
-   13  :                                         Ref(TK.IDENT, 'sma')
+   13  :                                         Get(TK.IDENT, 'sma')
    14  :                                         List(TK.LIST, [Int()])
    15  :                                             Int(TK.INT, 10)
    16  :                                 BinOp(TK.RISE_ABOVE, '|>')
-   17  :                                     Ref(TK.IDENT, 'close')
+   17  :                                     Get(TK.IDENT, 'close')
    18  :                                     FnCall('sma')
-   19  :                                         Ref(TK.IDENT, 'sma')
+   19  :                                         Get(TK.IDENT, 'sma')
    20  :                                         List(TK.LIST, [Int()])
    21  :                                             Int(TK.INT, 20)
    22  :                             Define(TK.DEFINE: threshold = 0.01)
    23  :                                 Ref(TK.IDENT, 'threshold')
    24  :                                 Float(TK.FLOT, 0.01)
-   25  :                         ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'signal'))
-   26  :                             Ref(TK.IDENT, 'signal')
-   27  :                     FnCall('delay')
-   28  :                         Ref(TK.IDENT, 'delay')
-   29  :                         List(TK.LIST, [Duration()])
-   30  :                             Duration(TK.DUR, 1 day, 0:00:00)
-   31  :                 DefineFn(TK.PRODUCE: atr => Ref(TK.IDENT, 'buy'))
-   32  :                     Ref(TK.IDENT, 'atr')
-   33  :                     Ref(TK.IDENT, 'buy')
+   25  :                     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'signal'))
+   26  :                         Ref(TK.IDENT, 'signal')
+   27  :                 FnCall('delay')
+   28  :                     Ref(TK.IDENT, 'delay')
+   29  :                     List(TK.LIST, [Duration()])
+   30  :                         Duration(TK.DUR, 1 day, 0:00:00)
+   31  :             DefineFn(TK.PRODUCE: atr => Ref(TK.IDENT, 'buy'))
+   32  :                 Ref(TK.IDENT, 'atr')
+   33  :                 Ref(TK.IDENT, 'buy')
    34  :         Flow{TK.RAISE, '->' len=2}
    35  :             Flow{TK.CHAIN, '|' len=2}
    36  :                 Flow{TK.APPLY, '>>' len=2}
@@ -128,21 +128,21 @@ tree3:  rules2 := {
     4  :         Flow{TK.CHAIN, '|' len=2}
     5  :             Flow{TK.APPLY, '>>' len=2}
     6  :                 Flow{TK.CHAIN, '|' len=2}
-    7  :                     Combine(TK.COMBINE: buy None UnaryOp(TK.ANY, 'any:'))
+    7  :                     Combine(TK.COMBINE: buy None UnaryOp(TK.ANY, 'any'))
     8  :                         Ref(TK.IDENT, 'buy')
-    9  :                         UnaryOp(TK.ANY, 'any:')
+    9  :                         UnaryOp(TK.ANY, 'any')
    10  :                             Combine(TK.COMBINE: [count=1]:set None Define(TK.DEFINE, '='))
    11  :                                 Generate(TK.SET, len=2)
    12  :                                     BinOp(TK.RISE_ABOVE, '|>')
-   13  :                                         Ref(TK.IDENT, 'close')
+   13  :                                         Get(TK.IDENT, 'close')
    14  :                                         FnCall('sma')
-   15  :                                             Ref(TK.IDENT, 'sma')
+   15  :                                             Get(TK.IDENT, 'sma')
    16  :                                             List(TK.LIST, [Int()])
    17  :                                                 Int(TK.INT, 10)
    18  :                                     BinOp(TK.RISE_ABOVE, '|>')
-   19  :                                         Ref(TK.IDENT, 'close')
+   19  :                                         Get(TK.IDENT, 'close')
    20  :                                         FnCall('sma')
-   21  :                                             Ref(TK.IDENT, 'sma')
+   21  :                                             Get(TK.IDENT, 'sma')
    22  :                                             List(TK.LIST, [Int()])
    23  :                                                 Int(TK.INT, 20)
    24  :                                 Define(TK.DEFINE: threshold = 0.01)
@@ -180,36 +180,36 @@ tree4:  rules3 := {
     1  : DefineVar(TK.DEFINE: rules3 := Block(TK.BLOCK, ''))
     2  :     Ref(TK.IDENT, 'rules3')
     3  :     Block{TK.BLOCK, len=2}
-    4  :         UnaryOp(TK.ANY, 'any')
-    5  :             Flow{TK.CHAIN, '|' len=2}
-    6  :                 Flow{TK.APPLY, '>>' len=2}
-    7  :                     Flow{TK.CHAIN, '|' len=2}
+    4  :         Flow{TK.CHAIN, '|' len=2}
+    5  :             Flow{TK.APPLY, '>>' len=2}
+    6  :                 Flow{TK.CHAIN, '|' len=2}
+    7  :                     UnaryOp(TK.ANY, 'any')
     8  :                         Combine(TK.COMBINE: [count=1]:set None Define(TK.DEFINE, '='))
     9  :                             Generate(TK.SET, len=2)
    10  :                                 BinOp(TK.RISE_ABOVE, '|>')
-   11  :                                     Ref(TK.IDENT, 'close')
+   11  :                                     Get(TK.IDENT, 'close')
    12  :                                     FnCall('sma')
-   13  :                                         Ref(TK.IDENT, 'sma')
+   13  :                                         Get(TK.IDENT, 'sma')
    14  :                                         List(TK.LIST, [Int()])
    15  :                                             Int(TK.INT, 10)
    16  :                                 BinOp(TK.RISE_ABOVE, '|>')
-   17  :                                     Ref(TK.IDENT, 'close')
+   17  :                                     Get(TK.IDENT, 'close')
    18  :                                     FnCall('sma')
-   19  :                                         Ref(TK.IDENT, 'sma')
+   19  :                                         Get(TK.IDENT, 'sma')
    20  :                                         List(TK.LIST, [Int()])
    21  :                                             Int(TK.INT, 20)
    22  :                             Define(TK.DEFINE: threshold = 0.01)
    23  :                                 Ref(TK.IDENT, 'threshold')
    24  :                                 Float(TK.FLOT, 0.01)
-   25  :                         ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'signal'))
-   26  :                             Ref(TK.IDENT, 'signal')
-   27  :                     FnCall('delay')
-   28  :                         Ref(TK.IDENT, 'delay')
-   29  :                         List(TK.LIST, [Duration()])
-   30  :                             Duration(TK.DUR, 1 day, 0:00:00)
-   31  :                 DefineFn(TK.PRODUCE: atr => Ref(TK.IDENT, 'buy'))
-   32  :                     Ref(TK.IDENT, 'atr')
-   33  :                     Ref(TK.IDENT, 'buy')
+   25  :                     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'signal'))
+   26  :                         Ref(TK.IDENT, 'signal')
+   27  :                 FnCall('delay')
+   28  :                     Ref(TK.IDENT, 'delay')
+   29  :                     List(TK.LIST, [Duration()])
+   30  :                         Duration(TK.DUR, 1 day, 0:00:00)
+   31  :             DefineFn(TK.PRODUCE: atr => Ref(TK.IDENT, 'buy'))
+   32  :                 Ref(TK.IDENT, 'atr')
+   33  :                 Ref(TK.IDENT, 'buy')
    34  :         Flow{TK.RAISE, '->' len=2}
    35  :             Flow{TK.CHAIN, '|' len=2}
    36  :                 Flow{TK.APPLY, '>>' len=2}
@@ -235,36 +235,36 @@ tree5:  rules4 = {
     1  : Define(TK.DEFINE: rules4 = Block(TK.BLOCK, ''))
     2  :     Ref(TK.IDENT, 'rules4')
     3  :     Block{TK.BLOCK, len=2}
-    4  :         UnaryOp(TK.ANY, 'any')
-    5  :             Flow{TK.CHAIN, '|' len=2}
-    6  :                 Flow{TK.APPLY, '>>' len=2}
-    7  :                     Flow{TK.CHAIN, '|' len=2}
+    4  :         Flow{TK.CHAIN, '|' len=2}
+    5  :             Flow{TK.APPLY, '>>' len=2}
+    6  :                 Flow{TK.CHAIN, '|' len=2}
+    7  :                     UnaryOp(TK.ANY, 'any')
     8  :                         Combine(TK.COMBINE: [count=1]:set None Define(TK.DEFINE, '='))
     9  :                             Generate(TK.SET, len=2)
    10  :                                 BinOp(TK.RISE_ABOVE, '|>')
-   11  :                                     Ref(TK.IDENT, 'close')
+   11  :                                     Get(TK.IDENT, 'close')
    12  :                                     FnCall('sma')
-   13  :                                         Ref(TK.IDENT, 'sma')
+   13  :                                         Get(TK.IDENT, 'sma')
    14  :                                         List(TK.LIST, [Int()])
    15  :                                             Int(TK.INT, 10)
    16  :                                 BinOp(TK.RISE_ABOVE, '|>')
-   17  :                                     Ref(TK.IDENT, 'close')
+   17  :                                     Get(TK.IDENT, 'close')
    18  :                                     FnCall('sma')
-   19  :                                         Ref(TK.IDENT, 'sma')
+   19  :                                         Get(TK.IDENT, 'sma')
    20  :                                         List(TK.LIST, [Int()])
    21  :                                             Int(TK.INT, 20)
    22  :                             Define(TK.DEFINE: threshold = 0.01)
    23  :                                 Ref(TK.IDENT, 'threshold')
    24  :                                 Float(TK.FLOT, 0.01)
-   25  :                         ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'signal'))
-   26  :                             Ref(TK.IDENT, 'signal')
-   27  :                     FnCall('delay')
-   28  :                         Ref(TK.IDENT, 'delay')
-   29  :                         List(TK.LIST, [Duration()])
-   30  :                             Duration(TK.DUR, 1 day, 0:00:00)
-   31  :                 DefineFn(TK.PRODUCE: atr => Ref(TK.IDENT, 'buy'))
-   32  :                     Ref(TK.IDENT, 'atr')
-   33  :                     Ref(TK.IDENT, 'buy')
+   25  :                     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'signal'))
+   26  :                         Ref(TK.IDENT, 'signal')
+   27  :                 FnCall('delay')
+   28  :                     Ref(TK.IDENT, 'delay')
+   29  :                     List(TK.LIST, [Duration()])
+   30  :                         Duration(TK.DUR, 1 day, 0:00:00)
+   31  :             DefineFn(TK.PRODUCE: atr => Ref(TK.IDENT, 'buy'))
+   32  :                 Ref(TK.IDENT, 'atr')
+   33  :                 Ref(TK.IDENT, 'buy')
    34  :         Flow{TK.RAISE, '->' len=2}
    35  :             Flow{TK.CHAIN, '|' len=2}
    36  :                 Flow{TK.APPLY, '>>' len=2}
@@ -290,36 +290,36 @@ tree6:  def rules5 = {
     1  : Define(TK.DEFINE: rules5 = Block(TK.BLOCK, ''))
     2  :     Ref(TK.IDENT, 'rules5')
     3  :     Block{TK.BLOCK, len=2}
-    4  :         UnaryOp(TK.ANY, 'any')
-    5  :             Flow{TK.CHAIN, '|' len=2}
-    6  :                 Flow{TK.APPLY, '>>' len=2}
-    7  :                     Flow{TK.CHAIN, '|' len=2}
+    4  :         Flow{TK.CHAIN, '|' len=2}
+    5  :             Flow{TK.APPLY, '>>' len=2}
+    6  :                 Flow{TK.CHAIN, '|' len=2}
+    7  :                     UnaryOp(TK.ANY, 'any')
     8  :                         Combine(TK.COMBINE: [count=1]:set None Define(TK.DEFINE, '='))
     9  :                             Generate(TK.SET, len=2)
    10  :                                 BinOp(TK.RISE_ABOVE, '|>')
-   11  :                                     Ref(TK.IDENT, 'close')
+   11  :                                     Get(TK.IDENT, 'close')
    12  :                                     FnCall('sma')
-   13  :                                         Ref(TK.IDENT, 'sma')
+   13  :                                         Get(TK.IDENT, 'sma')
    14  :                                         List(TK.LIST, [Int()])
    15  :                                             Int(TK.INT, 10)
    16  :                                 BinOp(TK.RISE_ABOVE, '|>')
-   17  :                                     Ref(TK.IDENT, 'close')
+   17  :                                     Get(TK.IDENT, 'close')
    18  :                                     FnCall('sma')
-   19  :                                         Ref(TK.IDENT, 'sma')
+   19  :                                         Get(TK.IDENT, 'sma')
    20  :                                         List(TK.LIST, [Int()])
    21  :                                             Int(TK.INT, 20)
    22  :                             Define(TK.DEFINE: threshold = 0.01)
    23  :                                 Ref(TK.IDENT, 'threshold')
    24  :                                 Float(TK.FLOT, 0.01)
-   25  :                         ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'signal'))
-   26  :                             Ref(TK.IDENT, 'signal')
-   27  :                     FnRef(TK.FUNCTION, 'delay')
-   28  :                         Ref(TK.IDENT, 'delay')
-   29  :                         List(TK.LIST, [Duration()])
-   30  :                             Duration(TK.DUR, 1 day, 0:00:00)
-   31  :                 DefineFn(TK.PRODUCE: atr => Ref(TK.IDENT, 'buy'))
-   32  :                     Ref(TK.IDENT, 'atr')
-   33  :                     Ref(TK.IDENT, 'buy')
+   25  :                     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'signal'))
+   26  :                         Ref(TK.IDENT, 'signal')
+   27  :                 FnRef(TK.FUNCTION, 'delay')
+   28  :                     Ref(TK.IDENT, 'delay')
+   29  :                     List(TK.LIST, [Duration()])
+   30  :                         Duration(TK.DUR, 1 day, 0:00:00)
+   31  :             DefineFn(TK.PRODUCE: atr => Ref(TK.IDENT, 'buy'))
+   32  :                 Ref(TK.IDENT, 'atr')
+   33  :                 Ref(TK.IDENT, 'buy')
    34  :         Flow{TK.RAISE, '->' len=2}
    35  :             Flow{TK.CHAIN, '|' len=2}
    36  :                 Flow{TK.APPLY, '>>' len=2}

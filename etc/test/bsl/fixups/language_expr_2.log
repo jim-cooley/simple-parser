@@ -4,69 +4,70 @@ test: 2:
 any:{ close >| sma(10), close <| sma(20) }:(threshold=0.01) | signal >> avg | delay(1d) | buy
 
 tree1:  any:{ close >| sma(10), close <| sma(20) }:(threshold=0.01) | signal >> avg | delay(1d) | buy
-    1  : UnaryOp(TK.ANY, 'any')
-    2  :     Flow{TK.CHAIN, '|' len=3}
-    3  :         Flow{TK.APPLY, '>>' len=2}
-    4  :             Flow{TK.CHAIN, '|' len=2}
+    1  : Flow{TK.CHAIN, '|' len=3}
+    2  :     Flow{TK.APPLY, '>>' len=2}
+    3  :         Flow{TK.CHAIN, '|' len=2}
+    4  :             UnaryOp(TK.ANY, 'any')
     5  :                 Combine(TK.COMBINE:  None Define(TK.DEFINE, '='))
     6  :                     Block{TK.BLOCK, len=2}
     7  :                         Flow{TK.CHAIN, '|' len=2}
     8  :                             BinOp(TK.GTR, '>')
-    9  :                                 Ref(TK.IDENT, 'close')
+    9  :                                 Get(TK.IDENT, 'close')
    10  :                             FnCall('sma')
    11  :                                 Ref(TK.IDENT, 'sma')
    12  :                                 List(TK.LIST, [Int()])
    13  :                                     Int(TK.INT, 10)
    14  :                         BinOp(TK.FALL_BELOW, '<|')
-   15  :                             Ref(TK.IDENT, 'close')
+   15  :                             Get(TK.IDENT, 'close')
    16  :                             FnCall('sma')
-   17  :                                 Ref(TK.IDENT, 'sma')
+   17  :                                 Get(TK.IDENT, 'sma')
    18  :                                 List(TK.LIST, [Int()])
    19  :                                     Int(TK.INT, 20)
    20  :                     Define(TK.DEFINE: threshold = 0.01)
    21  :                         Ref(TK.IDENT, 'threshold')
    22  :                         Float(TK.FLOT, 0.01)
-   23  :                 ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'signal'))
-   24  :                     Ref(TK.IDENT, 'signal')
-   25  :             ApplyChainProd(TK.APPLY: None >> Ref(TK.IDENT, 'avg'))
-   26  :                 Ref(TK.IDENT, 'avg')
-   27  :         FnCall('delay')
-   28  :             Ref(TK.IDENT, 'delay')
-   29  :             List(TK.LIST, [Duration()])
-   30  :                 Duration(TK.DUR, 1 day, 0:00:00)
-   31  :         ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'buy'))
-   32  :             Ref(TK.IDENT, 'buy')
+   23  :             ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'signal'))
+   24  :                 Ref(TK.IDENT, 'signal')
+   25  :         ApplyChainProd(TK.APPLY: None >> Ref(TK.IDENT, 'avg'))
+   26  :             Ref(TK.IDENT, 'avg')
+   27  :     FnCall('delay')
+   28  :         Ref(TK.IDENT, 'delay')
+   29  :         List(TK.LIST, [Duration()])
+   30  :             Duration(TK.DUR, 1 day, 0:00:00)
+   31  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'buy'))
+   32  :         Ref(TK.IDENT, 'buy')
 
 tree1:(post)  any:{ close >| sma(10), close <| sma(20) }:(threshold=0.01) | signal >> avg | delay(1d) | buy
-    1  : UnaryOp(TK.ANY, 'any')
-    2  :     Flow{TK.CHAIN, '|' len=3}
-    3  :         Flow{TK.APPLY, '>>' len=2}
-    4  :             Flow{TK.CHAIN, '|' len=2}
+result: list([Flow(), FnCall(), ApplyChainProd()])
+    1  : Flow{TK.CHAIN, '|' len=3}
+    2  :     Flow{TK.APPLY, '>>' len=2}
+    3  :         Flow{TK.CHAIN, '|' len=2}
+    4  :             UnaryOp(TK.ANY, 'any')
     5  :                 Combine(TK.COMBINE:  None Define(TK.DEFINE, '='))
     6  :                     Block{TK.BLOCK, len=2}
     7  :                         Flow{TK.CHAIN, '|' len=2}
     8  :                             BinOp(TK.GTR, '>')
-    9  :                                 Ref(TK.IDENT, 'close')
+    9  :                                 Get(TK.IDENT, 'close')
    10  :                             FnCall('sma')
    11  :                                 Ref(TK.IDENT, 'sma')
    12  :                                 List(TK.LIST, [Int()])
    13  :                                     Int(TK.INT, 10)
    14  :                         BinOp(TK.FALL_BELOW, '<|')
-   15  :                             Ref(TK.IDENT, 'close')
+   15  :                             Get(TK.IDENT, 'close')
    16  :                             FnCall('sma')
-   17  :                                 Ref(TK.IDENT, 'sma')
+   17  :                                 Get(TK.IDENT, 'sma')
    18  :                                 List(TK.LIST, [Int()])
    19  :                                     Int(TK.INT, 20)
    20  :                     Define(TK.DEFINE: threshold = 0.01)
    21  :                         Ref(TK.IDENT, 'threshold')
    22  :                         Float(TK.FLOT, 0.01)
-   23  :                 ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'signal'))
-   24  :                     Ref(TK.IDENT, 'signal')
-   25  :             ApplyChainProd(TK.APPLY: None >> Ref(TK.IDENT, 'avg'))
-   26  :                 Ref(TK.IDENT, 'avg')
-   27  :         FnCall('delay')
-   28  :             Ref(TK.IDENT, 'delay')
-   29  :             List(TK.LIST, [Duration()])
-   30  :                 Duration(TK.DUR, 1 day, 0:00:00)
-   31  :         ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'buy'))
-   32  :             Ref(TK.IDENT, 'buy')
+   23  :             ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'signal'))
+   24  :                 Ref(TK.IDENT, 'signal')
+   25  :         ApplyChainProd(TK.APPLY: None >> Ref(TK.IDENT, 'avg'))
+   26  :             Ref(TK.IDENT, 'avg')
+   27  :     FnCall('delay')
+   28  :         Ref(TK.IDENT, 'delay')
+   29  :         List(TK.LIST, [Duration()])
+   30  :             Duration(TK.DUR, 1 day, 0:00:00)
+   31  :     ApplyChainProd(TK.APPLY: None | Ref(TK.IDENT, 'buy'))
+   32  :         Ref(TK.IDENT, 'buy')
