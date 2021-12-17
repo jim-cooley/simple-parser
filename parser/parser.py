@@ -127,45 +127,6 @@ class Parser(object):
                 return
 
     # -----------------------------------
-    # 'statement' parsing at top
-    # -----------------------------------
-    def definition(self):
-        l_expr = self.statement()  # l-value cannot include flows
-        if isinstance(l_expr, Define):
-            op = l_expr.token
-        else:
-            op = self.advance()
-        if _is_valid_l_value(l_expr):
-            l_expr = _rewriteFnCall2Definition(l_expr)
-            if isinstance(l_expr, DefineFn) or isinstance(l_expr, DefineVarFn):
-                return l_expr
-            elif isinstance(l_expr, FnCall):  # keyword overrides other syntax
-                return DefineFn(left=l_expr.left, op=op, right=self.block_expr2(), args=l_expr.right)
-            else:
-                return Define(left=l_expr.left, op=op, right=l_expr.right)  # DEFINE var, def ?
-        self.logger.error(f"Invalid assignment target {l_expr}", op.location)
-        return l_expr
-
-    def var(self):
-        l_expr = self.statement()  # l-value cannot include flows
-        if isinstance(l_expr, Define):
-            op = l_expr.token
-        else:
-            op = self.advance()
-        if _is_valid_l_value(l_expr):
-            l_expr = _rewriteFnCall2Definition(l_expr)
-            if isinstance(l_expr, DefineVar):
-                return l_expr
-            elif isinstance(l_expr, FnCall):
-                return DefineVarFn(left=l_expr.left, op=op, right=self.block_expr2(), args=l_expr.right)
-            elif isinstance(l_expr, DefineFn):
-                return DefineVarFn(left=l_expr.left, op=op, right=l_expr.right, args=l_expr.args)
-            else:
-                return DefineVar(l_expr.left, op, l_expr.right)
-        self.logger.error("Invalid assignment target", op.location)
-        return l_expr
-
-    # -----------------------------------
     # Expression Entry
     # -----------------------------------
     def expression(self):
@@ -250,7 +211,7 @@ class Parser(object):
         elif self.match1(TK.EQGT):
             if l_expr.token.id not in IDENTIFIER_TOKENS_EX:
                 self.logger.error(f'Invalid assignment target: {l_expr.token}', op.location)
-            r_expr = self.block_expr2()
+            r_expr = self.block_expr()
             l_expr = _rewriteFnCall2FnDef(l_expr)
             if isinstance(l_expr, FnCall):
                 return DefineFn(left=l_expr.left, op=op.remap2binop(), right=r_expr, args=l_expr.right)
@@ -262,54 +223,6 @@ class Parser(object):
                                     args=List([r_expr.left], Token.TUPLE(loc=r_expr.token.location)))
             return DefineFn(left=l_expr, op=op.remap2binop(), right=r_expr, args=None)  # parameterless function
         return l_expr
-
-    def block_expr2(self):  # new block expression parsing for =>
-        tk = self.peek()
-        if self.match1(TK.LBRC):
-            node = self.block(is_lvalue=False)
-            self.consume(TK.RBRC)
-            if self.match1(TK.COLN):
-                op = self.peek(-1)
-                tid = self.peek().id
-                if tid == TK.LBRC:
-                    node = BinOp(left=node, op=op.set_id(TK.APPLY), right=self.statement())
-                elif tid == TK.LPRN:
-                    node = BinOp(left=node, op=op.set_id(TK.APPLY), right=self.tuple())
-                else:
-                    self.logger.error("Expected '{' or '(' after ':')"
-                                      f'{self.peek()}', self.peek().location)
-            return node
-        return self.expression()
-
-    def process_assignment(self, op, l_expr, r_expr):
-        if l_expr.token.id in IDENTIFIER_TOKENS_EX or l_expr.token.t_class is TCL.IDENTIFIER:
-            if op.id in ASSIGNMENT_TOKENS_REF:
-                l_expr = _rewriteFnCall2Definition(l_expr)
-            if op.id == TK.EQLS:
-                if isinstance(l_expr, Index):
-                    return IndexSet(ref=l_expr.ref, index=l_expr.right, value=r_expr)  # common DEFINE '=' Assignment
-                elif isinstance(l_expr, PropCall):
-                    return IndexSet(ref=l_expr.ref, index=l_expr.right, member=l_expr.member, value=r_expr)
-                elif isinstance(l_expr, FnCall) or isinstance(l_expr, FnRef) or isinstance(l_expr, DefineFn):
-                    return DefineFn(left=l_expr.left, op=op.remap2binop(), right=r_expr, args=l_expr.right)
-                elif isinstance(l_expr, PropRef):
-                    return PropSet(ref=l_expr.left, member=l_expr.right, value=r_expr)
-                else:
-                    return Define(left=l_expr, op=op.remap2binop(), right=r_expr)  # common DEFINE '=' Assignment
-            elif op.id == TK.COEQ:
-                if isinstance(l_expr, FnCall) or isinstance(l_expr, FnRef):
-                    return DefineVarFn(left=l_expr.left, op=op.remap2binop(), right=r_expr, args=l_expr.right)
-                else:
-                    return DefineVar(left=l_expr, op=op.remap2binop(), right=r_expr)
-            elif op.id == TK.EQGT:
-                if isinstance(l_expr, FnCall) or isinstance(l_expr, FnRef) or isinstance(l_expr, DefineFn):
-                    return DefineFn(left=l_expr.left, op=op.remap2binop(), right=r_expr, args=l_expr.right)
-                else:
-                    return Define(left=l_expr, op=op.remap2binop(), right=r_expr)
-            else:
-                return Assign(l_expr, op.remap2binop(), r_expr)
-        token = l_expr.token if not hasattr(l_expr, 'left') else l_expr.left.token
-        self.logger.error(f'Invalid assignment target: {token}', op.location)
 
     def boolean_expr(self):
         node = self.equality()
@@ -386,8 +299,6 @@ class Parser(object):
             node = UnaryOp(op.remap2unop(), expr)
             return node
         node = self.prime()
-#       if node is not None and node.token.id in [TK.ANY, TK.ALL, TK.NONEOF]:
-#           node = UnaryOp(node.token, self.unary())
         return node
 
     def prime(self):
@@ -443,6 +354,90 @@ class Parser(object):
     # -----------------------------------
     # leaf state helpers
     # -----------------------------------
+    def definition(self):
+        l_expr = self.statement()  # l-value cannot include flows
+        if isinstance(l_expr, Define):
+            op = l_expr.token
+        else:
+            op = self.advance()
+        if _is_valid_l_value(l_expr):
+            l_expr = _rewriteFnCall2Definition(l_expr)
+            if isinstance(l_expr, DefineFn) or isinstance(l_expr, DefineVarFn):
+                return l_expr
+            elif isinstance(l_expr, FnCall):  # keyword overrides other syntax
+                return DefineFn(left=l_expr.left, op=op, right=self.block_expr(), args=l_expr.right)
+            else:
+                return Define(left=l_expr.left, op=op, right=l_expr.right)  # DEFINE var, def ?
+        self.logger.error(f"Invalid assignment target {l_expr}", op.location)
+        return l_expr
+
+    def var(self):
+        l_expr = self.statement()  # l-value cannot include flows
+        if isinstance(l_expr, Define):
+            op = l_expr.token
+        else:
+            op = self.advance()
+        if _is_valid_l_value(l_expr):
+            l_expr = _rewriteFnCall2Definition(l_expr)
+            if isinstance(l_expr, DefineVar):
+                return l_expr
+            elif isinstance(l_expr, FnCall):
+                return DefineVarFn(left=l_expr.left, op=op, right=self.block_expr(), args=l_expr.right)
+            elif isinstance(l_expr, DefineFn):
+                return DefineVarFn(left=l_expr.left, op=op, right=l_expr.right, args=l_expr.args)
+            else:
+                return DefineVar(l_expr.left, op, l_expr.right)
+        self.logger.error("Invalid assignment target", op.location)
+        return l_expr
+
+    def process_assignment(self, op, l_expr, r_expr):
+        if l_expr.token.id in IDENTIFIER_TOKENS_EX or l_expr.token.t_class is TCL.IDENTIFIER:
+            if op.id in ASSIGNMENT_TOKENS_REF:
+                l_expr = _rewriteFnCall2Definition(l_expr)
+            if op.id == TK.EQLS:
+                if isinstance(l_expr, Index):
+                    return IndexSet(ref=l_expr.ref, index=l_expr.right, value=r_expr)  # common DEFINE '=' Assignment
+                elif isinstance(l_expr, PropCall):
+                    return IndexSet(ref=l_expr.ref, index=l_expr.right, member=l_expr.member, value=r_expr)
+                elif isinstance(l_expr, FnCall) or isinstance(l_expr, FnRef) or isinstance(l_expr, DefineFn):
+                    return DefineFn(left=l_expr.left, op=op.remap2binop(), right=r_expr, args=l_expr.right)
+                elif isinstance(l_expr, PropRef):
+                    return PropSet(ref=l_expr.left, member=l_expr.right, value=r_expr)
+                else:
+                    return Define(left=l_expr, op=op.remap2binop(), right=r_expr)  # common DEFINE '=' Assignment
+            elif op.id == TK.COEQ:
+                if isinstance(l_expr, FnCall) or isinstance(l_expr, FnRef):
+                    return DefineVarFn(left=l_expr.left, op=op.remap2binop(), right=r_expr, args=l_expr.right)
+                else:
+                    return DefineVar(left=l_expr, op=op.remap2binop(), right=r_expr)
+            elif op.id == TK.EQGT:
+                if isinstance(l_expr, FnCall) or isinstance(l_expr, FnRef) or isinstance(l_expr, DefineFn):
+                    return DefineFn(left=l_expr.left, op=op.remap2binop(), right=r_expr, args=l_expr.right)
+                else:
+                    return Define(left=l_expr, op=op.remap2binop(), right=r_expr)
+            else:
+                return Assign(l_expr, op.remap2binop(), r_expr)
+        token = l_expr.token if not hasattr(l_expr, 'left') else l_expr.left.token
+        self.logger.error(f'Invalid assignment target: {token}', op.location)
+
+    def block_expr(self):  # new block expression parsing for =>
+        tk = self.peek()
+        if self.match1(TK.LBRC):
+            node = self.block(is_lvalue=False)
+            self.consume(TK.RBRC)
+            if self.match1(TK.COLN):
+                op = self.peek(-1)
+                tid = self.peek().id
+                if tid == TK.LBRC:
+                    node = BinOp(left=node, op=op.set_id(TK.APPLY), right=self.statement())
+                elif tid == TK.LPRN:
+                    node = BinOp(left=node, op=op.set_id(TK.APPLY), right=self.tuple())
+                else:
+                    self.logger.error("Expected '{' or '(' after ':')"
+                                      f'{self.peek()}', self.peek().location)
+            return node
+        return self.expression()
+
     def block(self, is_lvalue=True):
         seq = []
         tk = self.peek()
