@@ -5,7 +5,6 @@ from enum import unique, IntEnum, auto
 class TCL(IntEnum):
     NONE = 0
     BINOP = auto()
-    DATASET = auto()  # dataset, panda
     FUNCTION = auto()
     KEYWORD = auto()
     LITERAL = auto()

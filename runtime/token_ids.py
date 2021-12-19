@@ -95,6 +95,7 @@ class TK(IntEnum):
     #
     ADD = auto()  # +
     APPLY = auto()  # >>
+    ARRAY = auto()  # ndarray
     ASSIGN = auto()  # =
     BLOCK = auto()
     BOOL = auto()

@@ -1,0 +1,102 @@
+# broad-etfs
+AGG     # US Barclay's Aggregate Bond Index ETF
+BIL     # SPDR 1-3mo T-Bill ETF
+BIV     # Vanguard Intermediate Bond Fund (5-10yr)
+BND     # Vanguard Total Bond Market ETF (incl fixed-income)
+DIA     # Dow Industrial ETF
+DGT	    # SPDR Global Dow Index ETF
+DTYL    # iPath US Treasury 10-yr
+FCNTX   # Fideility Contra Fund
+FEZ	    # SPDR Euro Stox
+FSMAX   # Fidelity Extended Stock Mkt
+FXAIX   # Fideility 500 Index Fundn (+20% diversification)
+GOVT    # iShares Gov't Bond / T-Bill ETF
+IEF     # iShares 7-10yr Treasury ETF
+IEI     # iShares 3-7 yr Treasury ETF
+IUSG    # iShares Core S&P 500
+IWM	    # iShres Russell 2000 ETF
+IWV	    # iShares Russell 3000 ETF
+IVV	    # iShores Core S&P 500
+MINT    # PIMCO Managed ST Bond ETF
+PSQ     # ProShares Short QQQ
+QQQ     # Invesco QQQ Trust (Nasdaq)
+RSP	    # Gugenheim Equal Weight S&P500
+SH      # ProShares Short S&P500
+SHY     # iShares 1-3 yr Treasury ETF
+SHV     # iShares 1-12 mo Treasury ETF
+SPGI    # S&P Global (Company)
+SPLV	# Invesco Low Volatility S&P500
+SPTM    # SP 1500 Composite Stk Market
+SPY     # SPDR S$P 500 ETF
+SWPPX   # Schwab S&P 500 Index Fund
+SWTSX	# Schwab Total Stock Market- DJ Total Stock Mkt Index
+TLH     # iShares 10-20yr Treasury ETF
+VCORX   # Vanguard Core Bond Fund (Investment Grade Bonds)
+VFINX	# Vanguard 500 Index Fund (0.14% fees)
+VOO     # Vanguard S&P 500 ETF
+VTI     # Vanguard Total Market
+VTSMX	# Vanguard Total Stock Market - Tracks CRSP US Total Market Index
+VTWO	# Vanguard Russell 2000 ETF
+WFIVX	# Whilshire 5000 Index ETF
+# leveraged-etfs
+SDS	    # ProShares 2x Short S&P
+SPXL    # Direxion Daily S&P 3x Bullish
+SPXS	# Direction S&P 3x Bearish
+SPXU    # ProShares Ultra S&P 500 Short (3x)
+SQQQ    # ProShares 3x Short Nasdaq
+TECL    # Direction 3x Tech Bullish ETF
+TNA	    # Direxion Daily Sm Cap 3x Bullish (R2K)
+TYD     # Direxion Daily 7-10 yr Treasury 3x Bullish
+TZA	    # Direxion Daily Sm Cap 3x Bearish (R2K)
+TQQQ    # ProShares 3x Bullish QQQ
+UPRO    # ProShares S&P 3x Bullish
+DUST	# 2x Gold Bear
+NUGT	# Gold Miners 3x Bullish
+SCO	    # 2x Short Crude
+UGL	    # ProShare Ultra Gold
+UCO     # ProShares Ultra Bloomberg Crude (2x)
+# Currency ETFs
+DLR.TO  # CAD / USD (Toronto Exchange)
+EUFX    # Short Euro (1x)
+FXC     # Invesco CAD $
+FXE     # Invesco EURO Bullish
+UDN     # US Dollar Bearish
+UUP     # US Dollar Bullish
+# sector-etf
+IBB     # Biotwch Sector ETF
+IGV	    # North America S/W
+IHE	    # Invesco Pharma
+IYH	    # iShares Healthcare
+VHT	    # Vanguard Health
+XLV	    # SPDR Healthcare
+XOP	    # Oil & Gas Exploration
+XPH	    # SPDR Pharma
+# SPDR SP Sector ETFs
+XLSR    # SP500 Sector Rotation Fund
+KRE     # SP500 Regional Banking
+SDY     # SP500 Dividends
+SPYD    # SP500 High Dividend
+SXLK.L  # SP500 Tech Select
+XBI     # SP500 Biotech
+XHB     # SP500 Regional Home Builder
+XLB     # Materials Sector
+XLC     # Consumer Services
+XLE     # SP500 Energy
+XLF     # Financial Sector
+XLI     # Industrial Sector
+XLK     # Tech Sector
+XLP     # Consumer Staples
+XLRE    # Real Estate Sector
+XLU     # Utilities
+XLV     # Healthcare Sector
+XLY     # Consumer Discretionary
+XNTK    # NYSE Tech Sector
+XOP     # SP500 Oil & Gas
+# Commodity & Bond ETFs
+GLD     # SPDR Gold Shares
+IAU     # iShares Gold
+ULST    # Ultra ST Bond ETF
+# Foreign / International Market ETFs
+SPEU    # Europe
+SPGM    # MSCI Global
+SXLV.L  # Europe

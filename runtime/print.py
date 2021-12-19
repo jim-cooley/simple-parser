@@ -9,7 +9,7 @@ from runtime.exceptions import getLogFacility
 
 _default_options = {
     'width': 16484,
-    'full': False,
+    'full': True,
     'max_rows': 20,
     'max_columns': 20,
 }

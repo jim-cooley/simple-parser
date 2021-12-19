@@ -1,0 +1,31 @@
+# indices
+^BTK    # NYSE Biotech Index
+^CMC200 # Crypto Currency Index
+^DJI    # DJ Industrials
+^FTSE   # FTSE 100
+^FVX    # 5yr T-Bill
+^GDOW   # Global Dow
+^GDOWE  # Euro Denominated Global Dow
+^GSPC   # S&P 500
+^HSI    # Hang Seng
+^IRX    # 13 week T-Bill
+^IXIC   # Nasdaq
+^N225   # Nikkei 225
+^NYA    # NYSE Composite Index
+^RUT    # Russel 2000
+^TNX    # *10-yr T-Bill* risk-free rate
+^VIX    # Volatility
+# futures-indices
+CD=F	# Dollar June
+CL=F    # Crude Oil Futures
+ES=F    # SP 500 Futures
+GC=F	# Gold Futures
+NQ=F    # Nasdaq 100 Futures
+RTY=F   # Russel 2K Futures
+YM=F    # Mini DJ Future
+# currency-indicies
+BTC-USD # Bitcoin
+DX=F    # US Dollar Future
+DX-Y.NYB # US Dollar Index (vs Basket of Foreign Currencies)
+EURUSD=X # Euro / USD Future (?)
+GE=F    # Euro Futures

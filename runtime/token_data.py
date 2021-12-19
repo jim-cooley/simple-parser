@@ -10,6 +10,7 @@ _tk2type = {
     TK.ANON: TCL.IDENTIFIER,
     TK.ANY: TCL.UNARY,
     TK.APPLY: TCL.UNARY,
+    TK.ARRAY: TCL.LITERAL,
     TK.ASSIGN: TCL.BINOP,
     TK.BLOCK: TCL.SCOPE,
     TK.BOOL: TCL.LITERAL,
@@ -98,6 +99,7 @@ _tk2glyph = {
     TK.AND: 'and',
     TK.ANY: 'any',  # any:
     TK.APPLY: 'apply',  # >>
+    TK.ARRAY: 'array',  # ndarray
     TK.ASSIGN: '=',  # =
     TK.CATEGORY: 'cat',
     TK.CHAIN: '|',
@@ -256,6 +258,7 @@ type2tid = {
     'Dict': TK.DICT,
     'Enumeration': TK.ENUM,
     'List': TK.LIST,
+    'ndarray': TK.ARRAY,
     'NoneType': TK.NONE,
     'Object': TK.OBJECT,
     'Range': TK.RANGE,
@@ -285,7 +288,7 @@ ASSIGNMENT_TOKENS_EX = [TK.COEQ, TK.EQLS, TK.ASSIGN, TK.MNEQ, TK.PLEQ, TK.COLN]
 ASSIGNMENT_TOKENS_REF = [TK.COEQ, TK.EQLS, TK.EQGT, TK.ASSIGN, TK.COLN]
 FLOW_TOKENS = [TK.BAR, TK.GTR2, TK.APPLY, TK.RARR]
 
-IDENTIFIER_TYPES = [TCL.KEYWORD, TCL.DATASET, TCL.IDENTIFIER, TCL.TUPLE, TCL.FUNCTION]
+IDENTIFIER_TYPES = [TCL.KEYWORD, TCL.IDENTIFIER, TCL.TUPLE, TCL.FUNCTION]
 IDENTIFIER_TOKENS = [TK.IDENT, TK.ANON, TK.REF, TK.DOT, TK.COMBINE, TK.FUNCTION]
 
 # used in assignment (k=v, k:v)

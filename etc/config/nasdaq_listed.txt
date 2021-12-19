@@ -1,0 +1,2968 @@
+Symbol	# Company_Name
+AAIT	# iShares MSCI All Country Asia Information Technology Index Fund
+AAL	# "American Airlines Group
+AAME	# Atlantic American Corporation
+AAOI	# "Applied Optoelectronics
+AAON	# "AAON
+AAPL	# Apple Inc.
+AAVL	# "Avalanche Biotechnologies
+AAWW	# Atlas Air Worldwide Holdings
+AAXJ	# iShares MSCI All Country Asia ex Japan Index Fund
+ABAC	# "Aoxin Tianli Group
+ABAX	# "ABAXIS
+ABCB	# Ameris Bancorp
+ABCD	# "Cambium Learning Group
+ABCO	# The Advisory Board Company
+ABCW	# Anchor BanCorp Wisconsin Inc.
+ABDC	# Alcentra Capital Corp.
+ABGB	# "Abengoa
+ABIO	# "ARCA biopharma
+ABMD	# "ABIOMED
+ABTL	# Autobytel Inc.
+ABY	# Abengoa Yield plc
+ACAD	# ACADIA Pharmaceuticals Inc.
+ACAS	# "American Capital
+ACAT	# Arctic Cat Inc.
+ACET	# Aceto Corporation
+ACFC	# Atlantic Coast Financial Corporation
+ACFN	# "Acorn Energy
+ACGL	# Arch Capital Group Ltd.
+ACHC	# "Acadia Healthcare Company
+ACHN	# "Achillion Pharmaceuticals
+ACIW	# "ACI Worldwide
+ACLS	# "Axcelis Technologies
+ACNB	# ACNB Corporation
+ACOR	# "Acorda Therapeutics
+ACPW	# "Active Power
+ACRX	# "AcelRx Pharmaceuticals
+ACSF	# "American Capital Senior Floating
+ACST	# "Acasti Pharma
+ACTA	# Actua Corporation
+ACTG	# Acacia Research Corporation
+ACTS	# "Actions Semiconductor Co.
+ACUR	# "Acura Pharmaceuticals
+ACWI	# iShares MSCI ACWI Index Fund
+ACWX	# iShares MSCI ACWI ex US Index Fund
+ACXM	# Acxiom Corporation
+ADAT	# Authentidate Holding Corp.
+ADBE	# Adobe Systems Incorporated
+ADEP	# "Adept Technology
+ADES	# "Advanced Emissions Solutions
+ADHD	# Alcobra Ltd.
+ADI	# "Analog Devices
+ADMA	# ADMA Biologics Inc
+ADMP	# Adamis Pharmaceuticals Corporation
+ADMS	# "Adamas Pharmaceuticals
+ADNC	# "Audience
+ADP	# "Automatic Data Processing
+ADRA	# BLDRS Asia 50 ADR Index Fund
+ADRD	# BLDRS Developed Markets 100 ADR Index Fund
+ADRE	# BLDRS Emerging Markets 50 ADR Index Fund
+ADRU	# BLDRS Europe 100 ADR Index Fund
+ADSK	# "Autodesk
+ADTN	# "ADTRAN
+ADUS	# Addus HomeCare Corporation
+ADVS	# "Advent Software
+ADXS	# "Advaxis
+ADXSW	# "Advaxis
+AEGN	# Aegion Corp
+AEGR	# "Aegerion Pharmaceuticals
+AEHR	# Aehr Test Systems
+AEIS	# "Advanced Energy Industries
+AEPI	# AEP Industries Inc.
+AERI	# "Aerie Pharmaceuticals
+AETI	# "American Electric Technologies
+AEY	# "ADDvantage Technologies Group
+AEZS	# AEterna Zentaris Inc.
+AFAM	# Almost Family Inc
+AFCB	# Athens Bancshares Corporation
+AFFX	# "Affymetrix
+AFH	# "Atlas Financial Holdings
+AFMD	# Affimed N.V.
+AFOP	# "Alliance Fiber Optic Products
+AFSI	# "AmTrust Financial Services
+AGEN	# Agenus Inc.
+AGII	# "Argo Group International Holdings
+AGIIL	# "Argo Group International Holdings
+AGIO	# "Agios Pharmaceuticals
+AGNC	# American Capital Agency Corp.
+AGNCB	# American Capital Agency Corp.
+AGNCP	# American Capital Agency Corp.
+AGND	# WisdomTree Barclays U.S. Aggregate Bond Negative Duration Fund
+AGRX	# "Agile Therapeutics
+AGTC	# Applied Genetic Technologies Corporation
+AGYS	# "Agilysys
+AGZD	# WisdomTree Barclays U.S. Aggregate Bond Zero Duration Fund
+AHGP	# "Alliance Holdings GP
+AHPI	# "Allied Healthcare Products
+AIMC	# Altra Industrial Motion Corp.
+AINV	# Apollo Investment Corporation
+AIQ	# "Alliance HealthCare Services
+AIRM	# Air Methods Corporation
+AIRR	# First Trust RBA American Industrial Renaissance ETF
+AIRT	# "Air T
+AIXG	# Aixtron SE
+AKAM	# "Akamai Technologies
+AKAO	# "Achaogen
+AKBA	# "Akebia Therapeutics
+AKER	# Akers Biosciences Inc
+AKRX	# "Akorn
+ALCO	# "Alico
+ALDR	# "Alder BioPharmaceuticals
+ALDX	# "Aldeyra Therapeutics
+ALGN	# "Align Technology
+ALGT	# Allegiant Travel Company
+ALIM	# "Alimera Sciences
+ALKS	# Alkermes plc
+ALLB	# "Alliance Bancorp
+ALLT	# Allot Communications Ltd.
+ALNY	# "Alnylam Pharmaceuticals
+ALOG	# Analogic Corporation
+ALOT	# Astro
+ALQA	# "Alliqua
+ALSK	# "Alaska Communications Systems Group
+ALTR	# Altera Corporation
+ALXA	# "Alexza Pharmaceuticals
+ALXN	# "Alexion Pharmaceuticals
+AMAG	# "AMAG Pharmaceuticals
+AMAT	# "Applied Materials
+AMBA	# "Ambarella
+AMBC	# "Ambac Financial Group
+AMBCW	# "Ambac Financial Group
+AMCC	# Applied Micro Circuits Corporation
+AMCF	# Andatee China Marine Fuel Services Corporation
+AMCN	# AirMedia Group Inc
+AMCX	# AMC Networks Inc.
+AMD	# "Advanced Micro Devices
+AMDA	# Amedica Corporation
+AMED	# Amedisys Inc
+AMGN	# Amgen Inc.
+AMIC	# American Independence Corp.
+AMKR	# "Amkor Technology
+AMNB	# "American National Bankshares
+AMOT	# "Allied Motion Technologies
+AMOV	# "America Movil
+AMPH	# "Amphastar Pharmaceuticals
+AMRB	# American River Bankshares
+AMRI	# "Albany Molecular Research
+AMRK	# "A-Mark Precious Metals
+AMRN	# Amarin Corporation plc
+AMRS	# "Amyris
+AMSC	# American Superconductor Corporation
+AMSF	# "AMERISAFE
+AMSG	# Amsurg Corp.
+AMSGP	# Amsurg Corp.
+AMSWA	# "American Software
+AMTX	# "Aemetis
+AMWD	# American Woodmark Corporation
+AMZN	# "Amazon.com
+ANAC	# "Anacor Pharmaceuticals
+ANAD	# "ANADIGICS
+ANAT	# American National Insurance Company
+ANCB	# Anchor Bancorp
+ANCI	# American Caresource Holdings Inc
+ANCX	# Access National Corporation
+ANDE	# "The Andersons
+ANGI	# "Angie's List
+ANGO	# "AngioDynamics
+ANIK	# Anika Therapeutics Inc.
+ANIP	# "ANI Pharmaceuticals
+ANSS	# "ANSYS
+ANTH	# "Anthera Pharmaceuticals
+ANY	# Sphere 3D Corp
+AOSL	# Alpha and Omega Semiconductor Limited
+APAGF	# Apco Oil and Gas International Inc.
+APDN	# Applied DNA Sciences Inc
+APDNW	# Applied DNA Sciences Inc
+APEI	# "American Public Education
+APOG	# "Apogee Enterprises
+APOL	# "Apollo Education Group
+APPY	# "Venaxis
+APRI	# "Apricus Biosciences
+APSA	# Alto Palermo S.A.
+APTO	# "Aptose Biosciences
+APWC	# Asia Pacific Wire & Cable Corporation Limited
+AQXP	# "Aquinox Pharmaceuticals
+ARAY	# Accuray Incorporated
+ARCB	# ArcBest Corporation
+ARCC	# Ares Capital Corporation
+ARCI	# "Appliance Recycling Centers of America
+ARCP	# "American Realty Capital Properties
+ARCPP	# "American Realty Capital Properties
+ARCW	# "ARC Group Worldwide
+ARDM	# Aradigm Corporation
+ARDX	# "Ardelyx
+AREX	# Approach Resources Inc.
+ARGS	# "Argos Therapeutics
+ARIA	# "ARIAD Pharmaceuticals
+ARII	# "American Railcar Industries
+ARIS	# "ARI Network Services
+ARKR	# Ark Restaurants Corp.
+ARLP	# "Alliance Resource Partners
+ARMH	# ARM Holdings plc
+ARNA	# "Arena Pharmaceuticals
+AROW	# Arrow Financial Corporation
+ARQL	# "ArQule
+ARRS	# "ARRIS Group
+ARRY	# Array BioPharma Inc.
+ARTNA	# Artesian Resources Corporation
+ARTW	# Art's
+ARTX	# Arotech Corporation
+ARUN	# "Aruba Networks
+ARWR	# Arrowhead Research Corporation
+ASBB	# "ASB Bancorp
+ASBI	# Ameriana Bancorp
+ASCMA	# "Ascent Capital Group
+ASEI	# "American Science and Engineering
+ASFI	# "Asta Funding
+ASMB	# "Assembly Biosciences
+ASMI	# ASM International N.V.
+ASML	# ASML Holding N.V.
+ASNA	# "Ascena Retail Group
+ASPS	# Altisource Portfolio Solutions S.A.
+ASPX	# "Auspex Pharmaceuticals
+ASRV	# AmeriServ Financial Inc.
+ASRVP	# AmeriServ Financial Inc.
+ASTC	# Astrotech Corporation
+ASTE	# "Astec Industries
+ASTI	# "Ascent Solar Technologies
+ASUR	# Asure Software Inc
+ASYS	# "Amtech Systems
+ATAI	# ATA Inc.
+ATAX	# "America First Multifamily Investors
+ATEA	# "Astea International
+ATEC	# "Alphatec Holdings
+ATHN	# "athenahealth
+ATHX	# "Athersys
+ATLC	# Atlanticus Holdings Corporation
+ATLO	# Ames National Corporation
+ATML	# Atmel Corporation
+ATNI	# Atlantic Tele
+ATNY	# API Technologies Corp.
+ATOS	# Atossa Genetics Inc.
+ATRA	# "Atara Biotherapeutics
+ATRC	# "AtriCure
+ATRI	# ATRION Corporation
+ATRM	# "ATRM Holdings
+ATRO	# Astronics Corporation
+ATRS	# "Antares Pharma
+ATSG	# "Air Transport Services Group
+ATTU	# Attunity Ltd.
+ATVI	# "Activision Blizzard
+AUBN	# "Auburn National Bancorporation
+AUDC	# AudioCodes Ltd.
+AUMA	# AR Capital Acquisition Corp.
+AUMAU	# AR Capital Acquisition Corp.
+AUMAW	# AR Capital Acquisition Corp.
+AUPH	# Aurinia Pharmaceuticals Inc
+AUXL	# "Auxilium Pharmaceuticals
+AVAV	# "AeroVironment
+AVEO	# "AVEO Pharmaceuticals
+AVGO	# Avago Technologies Limited
+AVHI	# "A V Homes
+AVID	# "Avid Technology
+AVNR	# "Avanir Pharmaceuticals
+AVNW	# "Aviat Networks
+AWAY	# "HomeAway
+AWRE	# "Aware
+AXAS	# Abraxas Petroleum Corporation
+AXDX	# "Accelerate Diagnostics
+AXGN	# "AxoGen
+AXJS	# iShares MSCI All Country Asia ex Japan Small Cap Index Fund
+AXPW	# "Axion Power International
+AXPWW	# "Axion Power International
+AXTI	# AXT Inc
+AZPN	# "Aspen Technology
+BABY	# Natus Medical Incorporated
+BAGR	# "Diversified Restaurant Holdings
+BAMM	# Books
+BANF	# BancFirst Corporation
+BANFP	# BancFirst Corporation
+BANR	# Banner Corporation
+BANX	# StoneCastle Financial Corp
+BASI	# "Bioanalytical Systems
+BBBY	# Bed Bath & Beyond Inc.
+BBC	# BioShares Biotechnology Clinical Trials Fund
+BBCN	# "BBCN Bancorp
+BBEP	# "BreitBurn Energy Partners
+BBEPP	# "BreitBurn Energy Partners
+BBGI	# "Beasley Broadcast Group
+BBLU	# "Blue Earth
+BBNK	# Bridge Capital Holdings
+BBOX	# Black Box Corporation
+BBP	# BioShares Biotechnology Products Fund
+BBRG	# "Bravo Brio Restaurant Group
+BBRY	# BlackBerry Limited
+BBSI	# "Barrett Business Services
+BCBP	# "BCB Bancorp
+BCLI	# Brainstorm Cell Therapeutics Inc.
+BCOM	# B Communications Ltd.
+BCOR	# "Blucora
+BCOV	# Brightcove Inc.
+BCPC	# Balchem Corporation
+BCRX	# "BioCryst Pharmaceuticals
+BDBD	# "Boulder Brands
+BDCV	# "BDCA Venture
+BDE	# "Black Diamond
+BDGE	# "Bridge Bancorp
+BDMS	# "Birner Dental Management Services
+BDSI	# "BioDelivery Sciences International
+BEAT	# "BioTelemetry
+BEAV	# "B/E Aerospace
+BEBE	# "bebe stores
+BECN	# "Beacon Roofing Supply
+BELFA	# Bel Fuse Inc.
+BELFB	# Bel Fuse Inc.
+BFIN	# BankFinancial Corporation
+BGCP	# "BGC Partners
+BGFV	# Big 5 Sporting Goods Corporation
+BGMD	# "BG Medicine
+BHBK	# "Blue Hills Bancorp
+BIB	# ProShares Ultra Nasdaq Biotechnology
+BICK	# First Trust BICK Index Fund
+BIDU	# "Baidu
+BIIB	# Biogen Idec Inc.
+BIND	# "BIND Therapeutics
+BIOC	# "Biocept
+BIOD	# Biodel Inc.
+BIOL	# "Biolase
+BIOS	# "BioScrip
+BIRT	# Actuate Corporation
+BIS	# ProShares UltraShort Nasdaq Biotechnology
+BJRI	# "BJ's Restaurants
+BKCC	# BlackRock Kelso Capital Corporation
+BKEP	# "Blueknight Energy Partners L.P.
+BKEPP	# "Blueknight Energy Partners L.P.
+BKMU	# Bank Mutual Corporation
+BKSC	# Bank of South Carolina Corp.
+BKYF	# The Bank of Kentucky Financial Corp.
+BLCM	# "Bellicum Pharmaceuticals
+BLDP	# "Ballard Power Systems
+BLDR	# "Builders FirstSource
+BLFS	# "BioLife Solutions
+BLIN	# "Bridgeline Digital
+BLKB	# "Blackbaud
+BLMN	# "Bloomin' Brands
+BLMT	# "BSB Bancorp
+BLRX	# BioLineRx Ltd.
+BLUE	# "bluebird bio
+BLVD	# Boulevard Acquisition Corp.
+BLVDU	# Boulevard Acquisition Corp.
+BLVDW	# Boulevard Acquisition Corp.
+BMRC	# Bank of Marin Bancorp
+BMRN	# BioMarin Pharmaceutical Inc.
+BMTC	# Bryn Mawr Bank Corporation
+BNCL	# "Beneficial Mutual Bancorp
+BNCN	# BNC Bancorp
+BNDX	# Vanguard Total International Bond ETF
+BNFT	# "Benefitfocus
+BNSO	# "Bonso Electronics International
+BOBE	# "Bob Evans Farms
+BOCH	# Bank of Commerce Holdings (CA)
+BOFI	# "BofI Holding
+BOKF	# BOK Financial Corporation
+BONA	# Bona Film Group Limited
+BONT	# The Bon
+BOOM	# Dynamic Materials Corporation
+BOSC	# B.O.S. Better Online Solutions
+BOTA	# "Biota Pharmaceuticals
+BOTJ	# "Bank of the James Financial Group
+BPFH	# "Boston Private Financial Holdings
+BPFHP	# "Boston Private Financial Holdings
+BPFHW	# "Boston Private Financial Holdings
+BPOP	# "Popular
+BPOPM	# "Popular
+BPOPN	# "Popular
+BPTH	# Bio
+BRCD	# "Brocade Communications Systems
+BRCM	# Broadcom Corporation
+BRDR	# "Borderfree
+BREW	# "Craft Brew Alliance
+BRID	# Bridgford Foods Corporation
+BRKL	# "Brookline Bancorp
+BRKR	# Bruker Corporation
+BRKS	# "Brooks Automation
+BRLI	# Bio
+BSDM	# BSD Medical Corporation
+BSET	# "Bassett Furniture Industries
+BSF	# "Bear State Financial
+BSFT	# "BroadSoft
+BSPM	# "Biostar Pharmaceuticals
+BSQR	# BSQUARE Corporation
+BSRR	# Sierra Bancorp
+BSTC	# BioSpecifics Technologies Corp
+BTUI	# "BTU International
+BUR	# Burcon NutraScience Corp
+BUSE	# First Busey Corporation
+BV	# "Bazaarvoice
+BVA	# Cordia Bancorp Inc.
+BVSN	# "BroadVision
+BWEN	# "Broadwind Energy
+BWFG	# "Bankwell Financial Group
+BWINA	# "Baldwin & Lyons
+BWINB	# "Baldwin & Lyons
+BWLD	# "Buffalo Wild Wings
+BYBK	# "Bay Bancorp
+BYFC	# Broadway Financial Corporation
+BYLK	# Baylake Corp
+CA	# CA Inc.
+CAAS	# "China Automotive Systems
+CAC	# Camden National Corporation
+CACB	# Cascade Bancorp
+CACC	# Credit Acceptance Corporation
+CACG	# Chart Acquisition Corp.
+CACGU	# Chart Acquisition Corp.
+CACGW	# Chart Acquisition Corp.
+CACH	# "Cache
+CACQ	# Caesars Acquisition Company
+CADC	# "China Advanced Construction Materials Group
+CADT	# DT Asia Investments Limited
+CADTR	# DT Asia Investments Limited
+CADTU	# DT Asia Investments Limited
+CADTW	# DT Asia Investments Limited
+CAKE	# The Cheesecake Factory Incorporated
+CALA	# "Calithera Biosciences
+CALD	# "Callidus Software
+CALI	# China Auto Logistics Inc.
+CALL	# magicJack VocalTec Ltd
+CALM	# Cal
+CAMB	# Cambridge Capital Acquisition Corporation
+CAMBU	# Cambridge Capital Acquisition Corporation
+CAMBW	# Cambridge Capital Acquisition Corporation
+CAMP	# CalAmp Corp.
+CAMT	# Camtek Ltd.
+CAPN	# "Capnia
+CAPNW	# "Capnia
+CAR	# "Avis Budget Group
+CARA	# "Cara Therapeutics
+CARB	# "Carbonite
+CARO	# Carolina Financial Corporation
+CART	# Carolina Trust Bank
+CARV	# "Carver Bancorp
+CARZ	# First Trust NASDAQ Global Auto Index Fund
+CASH	# "Meta Financial Group
+CASI	# "CASI Pharmaceuticals
+CASM	# "CAS Medical Systems
+CASS	# "Cass Information Systems
+CASY	# "Caseys General Stores
+CATM	# "Cardtronics
+CATY	# Cathay General Bancorp
+CATYW	# Cathay General Bancorp
+CAVM	# "Cavium
+CBAK	# "China BAK Battery
+CBAN	# "Colony Bankcorp
+CBAY	# CymaBay Therapeutics Inc.
+CBDE	# CBD Energy Limited
+CBF	# Capital Bank Financial Corp.
+CBFV	# "CB Financial Services
+CBIN	# "Community Bank Shares of Indiana
+CBLI	# "Cleveland BioLabs
+CBMG	# "Cellular Biomedicine Group
+CBMX	# CombiMatrix Corporation
+CBNJ	# "Cape Bancorp
+CBNK	# "Chicopee Bancorp
+CBOE	# "CBOE Holdings
+CBPO	# "China Biologic Products
+CBRL	# "Cracker Barrel Old Country Store
+CBRX	# "Columbia Laboratories
+CBSH	# "Commerce Bancshares
+CBSHP	# "Commerce Bancshares
+CBST	# "Cubist Pharmaceuticals
+CBSTZ	# "Cubist Pharmaceuticals
+CCBG	# Capital City Bank Group
+CCCL	# "China Ceramics Co.
+CCCR	# "China Commercial Credit
+CCIH	# ChinaCache International Holdings Ltd.
+CCLP	# CSI Compressco LP
+CCMP	# Cabot Microelectronics Corporation
+CCNE	# CNB Financial Corporation
+CCOI	# "Cogent Communications Holdings
+CCRN	# "Cross Country Healthcare
+CCUR	# Concurrent Computer Corporation
+CCXI	# "ChemoCentryx
+CDC	# Compass EMP U S EQ Income 100 Enhanced Volatility Weighted Fund
+CDK	# "CDK Global
+CDNA	# "CareDx
+CDNS	# "Cadence Design Systems
+CDTI	# "Clean Diesel Technologies
+CDW	# CDW Corporation
+CDXS	# "Codexis
+CDZI	# "Cadiz
+CECE	# CECO Environmental Corp.
+CECO	# Career Education Corporation
+CELG	# Celgene Corporation
+CELGZ	# Celgene Corporation
+CEMI	# "Chembio Diagnostics
+CEMP	# "Cempra
+CENT	# Central Garden & Pet Company
+CENTA	# Central Garden & Pet Company
+CENX	# Century Aluminum Company
+CERE	# "Ceres
+CERN	# Cerner Corporation
+CERS	# Cerus Corporation
+CERU	# Cerulean Pharma Inc.
+CETV	# Central European Media Enterprises Ltd.
+CEVA	# "CEVA
+CFA	# Compass EMP US 500 Volatility Weighted Index ETF
+CFBK	# Central Federal Corporation
+CFFI	# C&F Financial Corporation
+CFFN	# "Capitol Federal Financial
+CFGE	# Calamos Focus Growth ETF
+CFNB	# California First National Bancorp
+CFNL	# Cardinal Financial Corporation
+CFO	# Compass EMP US 500 Enhanced Volatility Weighted Index ETF
+CFRX	# ContraFect Corporation
+CFRXW	# ContraFect Corporation
+CFRXZ	# ContraFect Corporation
+CG	# The Carlyle Group L.P.
+CGEN	# Compugen Ltd.
+CGIX	# "Cancer Genetics
+CGNX	# Cognex Corporation
+CGO	# Calamos Global Total Return Fund
+CHCI	# "Comstock Holding Companies
+CHCO	# City Holding Company
+CHDN	# "Churchill Downs
+CHEF	# "The Chefs' Warehouse
+CHEV	# Cheviot Financial Corp
+CHFC	# Chemical Financial Corporation
+CHFN	# Charter Financial Corp.
+CHI	# Calamos Convertible Opportunities and Income Fund
+CHKE	# Cherokee Inc.
+CHKP	# Check Point Software Technologies Ltd.
+CHLN	# "China Housing & Land Development
+CHMG	# Chemung Financial Corp
+CHNR	# "China Natural Resources
+CHOP	# China Gerui Advanced Materials Group Limited
+CHRS	# "Coherus BioSciences
+CHRW	# "C.H. Robinson Worldwide
+CHSCM	# CHS Inc
+CHSCN	# CHS Inc
+CHSCO	# CHS Inc
+CHSCP	# CHS Inc
+CHTR	# "Charter Communications
+CHUY	# "Chuy's Holdings
+CHW	# Calamos Global Dynamic Income Fund
+CHXF	# WisdomTree China Dividend Ex
+CHY	# Calamos Convertible and High Income Fund
+CHYR	# ChyronHego Corporation
+CIDM	# Cinedigm Corp
+CIFC	# CIFC Corp.
+CIMT	# "Cimatron
+CINF	# Cincinnati Financial Corporation
+CISAW	# CIS Acquisition Ltd.
+CISG	# CNinsure Inc.
+CIZ	# Compass EMP Developed 500 Enhanced Volatility Weighted Index ETF
+CIZN	# Citizens Holding Company
+CJJD	# China Jo
+CKEC	# "Carmike Cinemas
+CKSW	# ClickSoftware Technologies Ltd.
+CLAC	# Capitol Acquisition Corp. II
+CLACU	# Capitol Acquisition Corp. II
+CLACW	# Capitol Acquisition Corp. II
+CLBH	# Carolina Bank Holdings Inc.
+CLCT	# "Collectors Universe
+CLDN	# Celladon Corporation
+CLDX	# "Celldex Therapeutics
+CLFD	# "Clearfield
+CLIR	# ClearSign Combustion Corporation
+CLMS	# "Calamos Asset Management
+CLMT	# "Calumet Specialty Products Partners
+CLNE	# Clean Energy Fuels Corp.
+CLNT	# "Cleantech Solutions International
+CLRB	# "Cellectar Biosciences
+CLRBW	# "Cellectar Biosciences
+CLRO	# "ClearOne
+CLRX	# "CollabRx
+CLSN	# Celsion Corporation
+CLTX	# Celsus Therapeutics Plc
+CLUB	# "Town Sports International Holdings
+CLVS	# "Clovis Oncology
+CLWT	# Euro Tech Holdings Company Limited
+CMCO	# Columbus McKinnon Corporation
+CMCSA	# Comcast Corporation
+CMCSK	# Comcast Corporation
+CMCT	# CIM Commercial Trust Corporation
+CME	# CME Group Inc.
+CMFN	# CM Finance Inc
+CMGE	# China Mobile Games and Entertainment Group Limited
+CMLS	# Cumulus Media Inc.
+CMPR	# Cimpress N.V
+CMRX	# "Chimerix
+CMSB	# "CMS Bancorp
+CMTL	# Comtech Telecommunications Corp.
+CNAT	# Conatus Pharmaceuticals Inc.
+CNBKA	# "Century Bancorp
+CNCE	# "Concert Pharmaceuticals
+CNDO	# "Coronado Biosciences
+CNET	# "ChinaNet Online Holdings
+CNIT	# "China Information Technology
+CNLM	# CB Pharma Acquisition Corp.
+CNLMR	# CB Pharma Acquisition Corp.
+CNLMU	# CB Pharma Acquisition Corp.
+CNLMW	# CB Pharma Acquisition Corp.
+CNMD	# CONMED Corporation
+CNOB	# "ConnectOne Bancorp
+CNSI	# Comverse Inc.
+CNSL	# "Consolidated Communications Holdings
+CNTF	# China TechFaith Wireless Communication Technology Limited
+CNTY	# "Century Casinos
+CNV	# Cnova N.V.
+CNXR	# "Connecture
+CNYD	# "China Yida Holding
+COB	# CommunityOne Bancorp
+COBK	# "Colonial Financial Services
+COBZ	# CoBiz Financial Inc.
+COCO	# "Corinthian Colleges
+COHR	# "Coherent
+COHU	# "Cohu
+COKE	# Coca
+COLB	# "Columbia Banking System
+COLM	# Columbia Sportswear Company
+COMM	# "CommScope Holding Company
+COMT	# iShares Commodities Select Strategy ETF
+CONE	# CyrusOne Inc
+CONN	# "Conn's
+COOL	# Majesco Entertainment Company
+CORE	# Core
+CORI	# "Corium International
+CORT	# Corcept Therapeutics Incorporated
+COSI	# "Cosi
+COST	# Costco Wholesale Corporation
+COVS	# Covisint Corporation
+COWN	# "Cowen Group
+COWNL	# "Cowen Group
+CPAH	# CounterPath Corporation
+CPGI	# "China Shengda Packaging Group
+CPHC	# Canterbury Park Holding Corporation
+CPHD	# CEPHEID
+CPHR	# Cipher Pharmaceuticals Inc.
+CPIX	# Cumberland Pharmaceuticals Inc.
+CPLA	# Capella Education Company
+CPLP	# Capital Product Partners L.P.
+CPRT	# "Copart
+CPRX	# "Catalyst Pharmaceutical Partners
+CPSI	# "Computer Programs and Systems
+CPSS	# "Consumer Portfolio Services
+CPST	# Capstone Turbine Corporation
+CPTA	# Capitala Finance Corp.
+CPXX	# Celator Pharmaceuticals Inc.
+CRAI	# "CRA International
+CRAY	# Cray Inc
+CRDC	# "Cardica
+CRDS	# "Crossroads Systems
+CRDT	# WisdomTree Strategic Corporate Bond Fund
+CREE	# "Cree
+CREG	# China Recycling Energy Corporation
+CRESW	# Cresud S.A.C.I.F. y A.
+CRESY	# Cresud S.A.C.I.F. y A.
+CRIS	# "Curis
+CRME	# Cardiome Pharma Corporation
+CRMT	# America's Car
+CRNT	# Ceragon Networks Ltd.
+CROX	# "Crocs
+CRRC	# Courier Corporation
+CRRS	# "Corporate Resource Services
+CRTN	# "Cartesian
+CRTO	# Criteo S.A.
+CRUS	# "Cirrus Logic
+CRVL	# CorVel Corp.
+CRWN	# "Crown Media Holdings
+CRWS	# "Crown Crafts
+CRZO	# "Carrizo Oil & Gas
+CSBK	# Clifton Bancorp Inc.
+CSCD	# "Cascade Microtech
+CSCO	# "Cisco Systems
+CSF	# Compass EMP U.S. Discovery 500 Enhanced Volatility Weighted Fund
+CSFL	# "CenterState Banks
+CSGP	# "CoStar Group
+CSGS	# "CSG Systems International
+CSII	# "Cardiovascular Systems
+CSIQ	# Canadian Solar Inc.
+CSOD	# "Cornerstone OnDemand
+CSPI	# CSP Inc.
+CSQ	# Calamos Strategic Total Return Fund
+CSRE	# CSR plc
+CSTE	# CaesarStone Sdot
+CSUN	# "China Sunergy Co.
+CSWC	# Capital Southwest Corporation
+CTAS	# Cintas Corporation
+CTBI	# "Community Trust Bancorp
+CTCM	# "CTC Media
+CTCT	# "Constant Contact
+CTG	# "Computer Task Group
+CTHR	# Charles & Colvard Ltd
+CTIB	# CTI Industries Corporation
+CTIC	# CTI BioPharma Corp.
+CTRE	# "CareTrust REIT
+CTRL	# Control4 Corporation
+CTRN	# "Citi Trends
+CTRP	# "Ctrip.com International
+CTRX	# Catamaran Corporation
+CTSH	# Cognizant Technology Solutions Corporation
+CTSO	# Cytosorbents Corporation
+CTWS	# "Connecticut Water Service
+CTXS	# "Citrix Systems
+CU	# First Trust ISE Global Copper Index Fund
+CUBA	# "The Herzfeld Caribbean Basin Fund
+CUI	# "CUI Global
+CUNB	# CU Bancorp (CA)
+CUTR	# "Cutera
+CVBF	# CVB Financial Corporation
+CVCO	# "Cavco Industries
+CVCY	# Central Valley Community Bancorp
+CVGI	# "Commercial Vehicle Group
+CVGW	# "Calavo Growers
+CVLT	# "CommVault Systems
+CVLY	# "Codorus Valley Bancorp
+CVTI	# "Covenant Transportation Group
+CVV	# CVD Equipment Corporation
+CWAY	# "Coastway Bancorp
+CWBC	# Community West Bancshares
+CWCO	# Consolidated Water Co. Ltd.
+CWST	# "Casella Waste Systems
+CXDC	# China XD Plastics Company Limited
+CY	# Cypress Semiconductor Corporation
+CYAN	# Cyanotech Corporation
+CYBE	# CyberOptics Corporation
+CYBR	# CyberArk Software Ltd.
+CYBX	# "Cyberonics
+CYCC	# "Cyclacel Pharmaceuticals
+CYCCP	# "Cyclacel Pharmaceuticals
+CYHHZ	# "Community Health Systems
+CYNO	# "Cynosure
+CYOU	# Changyou.com Limited
+CYRN	# CYREN Ltd.
+CYTK	# "Cytokinetics
+CYTR	# CytRx Corporation
+CYTX	# Cytori Therapeutics Inc
+CZFC	# Citizens First Corporation
+CZNC	# Citizens & Northern Corp
+CZR	# Caesars Entertainment Corporation
+CZWI	# "Citizens Community Bancorp
+DAEG	# Daegis Inc
+DAIO	# Data I/O Corporation
+DAKT	# "Daktronics
+DARA	# "DARA Biosciences
+DATE	# Jiayuan.com International Ltd.
+DAVE	# "Famous Dave's of America
+DAX	# Recon Capital DAX Germany ETF
+DBVT	# DBV Technologies S.A.
+DCIX	# Diana Containerships Inc.
+DCOM	# "Dime Community Bancshares
+DCTH	# "Delcath Systems
+DENN	# Denny's Corporation
+DEPO	# "Depomed
+DERM	# "Dermira
+DEST	# Destination Maternity Corporation
+DFRG	# "Del Frisco's Restaurant Group
+DFVL	# Barclays PLC
+DFVS	# Barclays PLC
+DGAS	# "Delta Natural Gas Company
+DGICA	# "Donegal Group
+DGICB	# "Donegal Group
+DGII	# Digi International Inc.
+DGLD	# Credit Suisse AG
+DGLY	# "Digital Ally
+DGRE	# WisdomTree Emerging Markets Dividend Growth Fund
+DGRS	# WisdomTree U.S. SmallCap Dividend Growth Fund
+DGRW	# WisdomTree U.S. Dividend Growth Fund
+DHIL	# "Diamond Hill Investment Group
+DHRM	# Dehaier Medical Systems Limited
+DIOD	# Diodes Incorporated
+DISCA	# "Discovery Communications
+DISCB	# "Discovery Communications
+DISCK	# "Discovery Communications
+DISH	# DISH Network Corporation
+DJCO	# Daily Journal Corp. (S.C.)
+DLBL	# Barclays PLC
+DLBS	# Barclays PLC
+DLHC	# DLH Holdings Corp.
+DLTR	# "Dollar Tree
+DMLP	# "Dorchester Minerals
+DMND	# "Diamond Foods
+DMRC	# Digimarc Corporation
+DNBF	# DNB Financial Corp
+DNKN	# "Dunkin' Brands Group
+DORM	# "Dorman Products
+DOVR	# "Dover Saddlery
+DOX	# Amdocs Limited
+DPRX	# "Dipexium Pharmaceuticals
+DRAD	# Digirad Corporation
+DRAM	# Dataram Corporation
+DRIV	# "Digital River
+DRNA	# "Dicerna Pharmaceuticals
+DRRX	# DURECT Corporation
+DRWI	# DragonWave Inc
+DRWIW	# DragonWave Inc
+DRYS	# DryShips Inc.
+DSCI	# "Derma Sciences
+DSCO	# "Discovery Laboratories
+DSGX	# The Descartes Systems Group Inc.
+DSKX	# "DS Healthcare Group
+DSKY	# iDreamSky Technology Limited
+DSLV	# Credit Suisse AG
+DSPG	# "DSP Group
+DSWL	# "Deswell Industries
+DTLK	# Datalink Corporation
+DTSI	# "DTS
+DTUL	# Barclays PLC
+DTUS	# Barclays PLC
+DTV	# DIRECTV
+DTYL	# Barclays PLC
+DTYS	# Barclays PLC
+DVAX	# Dynavax Technologies Corporation
+DVCR	# Diversicare Healthcare Services Inc.
+DWA	# "Dreamworks Animation SKG
+DWAT	# Arrow DWA Tactical ETF
+DWCH	# Datawatch Corporation
+DWSN	# Dawson Geophysical Company
+DXCM	# "DexCom
+DXGE	# WisdomTree Germany Hedged Equity Fund
+DXJS	# WisdomTree Japan Hedged SmallCap Equity Fund
+DXKW	# WisdomTree Korea Hedged Equity Fund
+DXLG	# "Destination XL Group
+DXM	# "Dex Media
+DXPE	# "DXP Enterprises
+DXPS	# WisdomTree United Kingdom Hedged Equity Fund
+DXYN	# "The Dixie Group
+DYAX	# Dyax Corp.
+DYNT	# Dynatronics Corporation
+DYSL	# Dynasil Corporation of America
+EA	# Electronic Arts Inc.
+EAC	# Erickson Incorporated
+EARS	# Auris Medical Holding AG
+EBAY	# eBay Inc.
+EBIO	# "Eleven Biotherapeutics
+EBIX	# "Ebix
+EBMT	# "Eagle Bancorp Montana
+EBSB	# "Meridian Bancorp
+EBTC	# Enterprise Bancorp Inc
+ECHO	# "Echo Global Logistics
+ECOL	# "US Ecology
+ECPG	# Encore Capital Group Inc
+ECTE	# "Echo Therapeutics
+ECYT	# "Endocyte
+EDAP	# EDAP TMS S.A.
+EDGW	# "Edgewater Technology
+EDS	# Exceed Company Ltd.
+EDUC	# Educational Development Corporation
+EEFT	# "Euronet Worldwide
+EEI	# "Ecology and Environment
+EEMA	# iShares MSCI Emerging Markets Asia Index Fund
+EEME	# iShares MSCI Emerging Markets EMEA Index Fund
+EEML	# iShares MSCI Emerging Markets Latin America Index Fund
+EFII	# "Electronics for Imaging
+EFOI	# "Energy Focus
+EFSC	# Enterprise Financial Services Corporation
+EFUT	# eFuture Information Technology Inc.
+EGAN	# eGain Corporation
+EGBN	# "Eagle Bancorp
+EGHT	# 8x8 Inc
+EGLE	# Eagle Bulk Shipping Inc.
+EGLT	# Egalet Corporation
+EGOV	# NIC Inc.
+EGRW	# iShares MSCI Emerging Markets Growth Index Fund
+EGRX	# "Eagle Pharmaceuticals
+EGT	# Entertainment Gaming Asia Incorporated
+EHTH	# "eHealth
+EIGI	# "Endurance International Group Holdings
+ELGX	# "Endologix
+ELNK	# EarthLink Holdings Corp.
+ELON	# Echelon Corporation
+ELOS	# Syneron Medical Ltd.
+ELRC	# Electro Rent Corporation
+ELSE	# Electro
+ELTK	# Eltek Ltd.
+EMCB	# WisdomTree Emerging Markets Corporate Bond Fund
+EMCF	# Emclaire Financial Corp
+EMCG	# WisdomTree Emerging Markets Consumer Growth Fund
+EMCI	# EMC Insurance Group Inc.
+EMDI	# iShares MSCI Emerging Markets Consumer Discrectionary Sector Index Fund
+EMEY	# iShares MSCI Emerging Markets Energy Sector Capped Index Fund
+EMIF	# iShares S&P Emerging Markets Infrastructure Index Fund
+EMITF	# Elbit Imaging Ltd.
+EMKR	# EMCORE Corporation
+EML	# Eastern Company (The)
+EMMS	# Emmis Communications Corporation
+EMMSP	# Emmis Communications Corporation
+ENDP	# Endo International plc
+ENFC	# Entegra Financial Corp.
+ENG	# ENGlobal Corporation
+ENOC	# "EnerNOC
+ENPH	# "Enphase Energy
+ENSG	# "The Ensign Group
+ENT	# Global Eagle Entertainment Inc.
+ENTA	# "Enanta Pharmaceuticals
+ENTG	# "Entegris
+ENTR	# "Entropic Communications
+ENVI	# "Envivio
+ENZN	# "Enzon Pharmaceuticals
+ENZY	# Enzymotec Ltd.
+EOPN	# "E2open
+EPAX	# "Ambassadors Group
+EPAY	# "Bottomline Technologies
+EPIQ	# "EPIQ Systems
+EPRS	# "EPIRUS Biopharmaceuticals
+EPZM	# "Epizyme
+EQIX	# "Equinix
+ERI	# "Eldorado Resorts
+ERIC	# Ericsson
+ERIE	# Erie Indemnity Company
+ERII	# "Energy Recovery
+EROC	# "Eagle Rock Energy Partners
+ERS	# "Empire Resources
+ERW	# VelocityShares Equal Risk Weighted Large Cap ETF
+ESBF	# ESB Financial Corporation
+ESBK	# Elmira Savings Bank NY (The)
+ESCA	# "Escalade
+ESCR	# Escalera Resources Co.
+ESCRP	# Escalera Resources Co.
+ESEA	# Euroseas Ltd.
+ESGR	# Enstar Group Limited
+ESIO	# "Electro Scientific Industries
+ESLT	# Elbit Systems Ltd.
+ESMC	# Escalon Medical Corp.
+ESPR	# "Esperion Therapeutics
+ESRX	# Express Scripts Holding Company
+ESSA	# "ESSA Bancorp
+ESSX	# Essex Rental Corporation
+ESXB	# Community Bankers Trust Corporation.
+ESYS	# Elecsys Corporation
+ETFC	# E*TRADE Financial Corporation
+ETRM	# EnteroMedics Inc.
+EUFN	# iShares MSCI Europe Financials Sector Index Fund
+EVAL	# iShares MSCI Emerging Markets Value Index Fund
+EVAR	# "Lombard Medical
+EVBS	# "Eastern Virginia Bankshares
+EVEP	# "EV Energy Partners
+EVK	# Ever
+EVLV	# EVINE Live Inc.
+EVOK	# "Evoke Pharma
+EVOL	# "Evolving Systems
+EVRY	# "EveryWare Global
+EWBC	# "East West Bancorp
+EXA	# Exa Corporation
+EXAC	# "Exactech
+EXAS	# Exact Sciences Corporation
+EXEL	# "Exelixis
+EXFO	# EXFO Inc
+EXLP	# "Exterran Partners
+EXLS	# "ExlService Holdings
+EXPD	# "Expeditors International of Washington
+EXPE	# "Expedia
+EXPO	# "Exponent
+EXTR	# "Extreme Networks
+EXXI	# Energy XXI Ltd.
+EYES	# "Second Sight Medical Products
+EZCH	# EZchip Semiconductor Limited
+EZPW	# "EZCORP
+FALC	# "FalconStor Software
+FANG	# "Diamondback Energy
+FARM	# Farmer Brothers Company
+FARO	# "FARO Technologies
+FAST	# Fastenal Company
+FATE	# "Fate Therapeutics
+FB	# "Facebook
+FBIZ	# "First Business Financial Services
+FBMS	# "The First Bancshares
+FBNC	# First Bancorp
+FBNK	# "First Connecticut Bancorp
+FBRC	# FBR & Co
+FBSS	# "Fauquier Bankshares
+FCAP	# "First Capital
+FCBC	# "First Community Bancshares
+FCCO	# First Community Corporation
+FCCY	# 1st Constitution Bancorp (NJ)
+FCEL	# "FuelCell Energy
+FCFS	# "First Cash Financial Services
+FCHI	# iShares FTSE China (HK Listed) Index Fund
+FCLF	# First Clover Leaf Financial Corp.
+FCNCA	# "First Citizens BancShares
+FCS	# "Fairchild Semiconductor International
+FCSC	# Fibrocell Science Inc
+FCTY	# "1st Century Bancshares
+FCVA	# "First Capital Bancorp
+FCZA	# First Citizens Banc Corp.
+FCZAP	# First Citizens Banc Corp.
+FDEF	# First Defiance Financial Corp.
+FDIV	# First Trust Strategic Income ETF
+FDML	# Federal
+FDUS	# Fidus Investment Corporation
+FEIC	# FEI Company
+FEIM	# "Frequency Electronics
+FELE	# "Franklin Electric Co.
+FEMB	# First Trust Emerging Markets Local Currency Bond ETF
+FES	# Forbes Energy Services Ltd
+FEUZ	# First Trust Eurozone AlphaDEX ETF
+FEYE	# "FireEye
+FFBC	# First Financial Bancorp.
+FFBCW	# First Financial Bancorp.
+FFHL	# "Fuwei Films (Holdings) Co.
+FFIC	# Flushing Financial Corporation
+FFIN	# "First Financial Bankshares
+FFIV	# "F5 Networks
+FFKT	# Farmers Capital Bank Corporation
+FFNM	# "First Federal of Northern Michigan Bancorp
+FFNW	# "First Financial Northwest
+FFWM	# First Foundation Inc.
+FGEN	# "FibroGen
+FHCO	# Female Health Company (The)
+FIBK	# "First Interstate BancSystem
+FINL	# "The Finish Line
+FISH	# "Marlin Midstream Partners
+FISI	# "Financial Institutions
+FISV	# "Fiserv
+FITB	# Fifth Third Bancorp
+FITBI	# Fifth Third Bancorp
+FIVE	# "Five Below
+FIVN	# "Five9
+FIZZ	# National Beverage Corp.
+FLAT	# Barclays PLC
+FLDM	# Fluidigm Corporation
+FLEX	# Flextronics International Ltd.
+FLIC	# The First of Long Island Corporation
+FLIR	# "FLIR Systems
+FLL	# "Full House Resorts
+FLML	# Flamel Technologies S.A.
+FLWS	# "1-800 FLOWERS.COM
+FLXN	# "Flexion Therapeutics
+FLXS	# "Flexsteel Industries
+FMB	# First Trust Managed Municipal ETF
+FMBH	# First Mid
+FMBI	# "First Midwest Bancorp
+FMER	# FirstMerit Corporation
+FMI	# "Foundation Medicine
+FMNB	# Farmers National Banc Corp.
+FNBC	# First NBC Bank Holding Company
+FNFG	# First Niagara Financial Group Inc.
+FNGN	# "Financial Engines
+FNHC	# Federated National Holding Company
+FNJN	# "Finjan Holdings
+FNLC	# "First Bancorp
+FNRG	# ForceField Energy Inc.
+FNSR	# Finisar Corporation
+FOLD	# "Amicus Therapeutics
+FOMX	# Foamix Pharmaceuticals Ltd.
+FONE	# First Trust NASDAQ CEA Smartphone Index Fund
+FONR	# Fonar Corporation
+FORD	# "Forward Industries
+FORM	# "FormFactor
+FORR	# "Forrester Research
+FORTY	# Formula Systems (1985) Ltd.
+FOSL	# "Fossil Group
+FOX	# Twenty
+FOXA	# Twenty
+FOXF	# Fox Factory Holding Corp.
+FPRX	# "Five Prime Therapeutics
+FPXI	# First Trust International IPO ETF
+FRAN	# Francesca's Holdings Corporation
+FRBA	# First Bank
+FRBK	# "Republic First Bancorp
+FRED	# "Fred's
+FREE	# FreeSeas Inc.
+FRGI	# "Fiesta Restaurant Group
+FRME	# First Merchants Corporation
+FRP	# "FairPoint Communications
+FRPH	# "FRP Holdings
+FRPHV	# "FRP Holdings
+FRPT	# "Freshpet
+FRSH	# "Papa Murphy's Holdings
+FSAM	# Fifth Street Asset Management Inc.
+FSBK	# First South Bancorp Inc
+FSBW	# "FS Bancorp
+FSC	# Fifth Street Finance Corp.
+FSCFL	# Fifth Street Finance Corp.
+FSFG	# "First Savings Financial Group
+FSFR	# Fifth Street Senior Floating Rate Corp.
+FSGI	# "First Security Group
+FSLR	# "First Solar
+FSNN	# "Fusion Telecommunications International
+FSRV	# FirstService Corporation
+FSTR	# L.B. Foster Company
+FSYS	# "Fuel Systems Solutions
+FTCS	# First Trust Capital Strength ETF
+FTD	# "FTD Companies
+FTEK	# "Fuel Tech
+FTGC	# First Trust Global Tactical Commodity Strategy Fund
+FTHI	# First Trust High Income ETF
+FTLB	# First Trust Low Beta Income ETF
+FTNT	# "Fortinet
+FTR	# Frontier Communications Corporation
+FTSL	# First Trust Senior Loan Fund ETF
+FTSM	# First Trust Enhanced Short Maturity ETF
+FUEL	# Rocket Fuel Inc.
+FULL	# Full Circle Capital Corporation
+FULLL	# Full Circle Capital Corporation
+FULT	# Fulton Financial Corporation
+FUNC	# First United Corporation
+FUND	# "Royce Focus Trust
+FV	# First Trust Dorsey Wright Focus 5 ETF
+FWM	# Fairway Group Holdings Corp.
+FWP	# Forward Pharma A/S
+FWRD	# Forward Air Corporation
+FXCB	# "Fox Chase Bancorp
+FXEN	# "FX Energy
+FXENP	# "FX Energy
+GABC	# "German American Bancorp
+GAI	# Global
+GAIA	# "Gaiam
+GAIN	# Gladstone Investment Corporation
+GAINO	# Gladstone Investment Corporation
+GAINP	# Gladstone Investment Corporation
+GALE	# "Galena Biopharma
+GALT	# Galectin Therapeutics Inc.
+GALTU	# Galectin Therapeutics Inc.
+GALTW	# Galectin Therapeutics Inc.
+GAME	# Shanda Games Limited
+GARS	# Garrison Capital Inc.
+GASS	# "StealthGas
+GBCI	# "Glacier Bancorp
+GBDC	# "Golub Capital BDC
+GBIM	# "GlobeImmune
+GBLI	# Global Indemnity plc
+GBNK	# Guaranty Bancorp
+GBSN	# "Great Basin Scientific
+GCBC	# "Greene County Bancorp
+GCVRZ	# Sanofi
+GDEF	# "Global Defense & National Security Systems
+GENC	# Gencor Industries Inc.
+GENE	# Genetic Technologies Ltd
+GEOS	# Geospace Technologies Corporation
+GERN	# Geron Corporation
+GEVA	# Synageva BioPharma Corp.
+GEVO	# "Gevo
+GFED	# "Guaranty Federal Bancshares
+GFN	# General Finance Corporation
+GFNCP	# General Finance Corporation
+GFNSL	# General Finance Corporation
+GGAC	# Garnero Group Acquisition Company
+GGACR	# Garnero Group Acquisition Company
+GGACU	# Garnero Group Acquisition Company
+GGACW	# Garnero Group Acquisition Company
+GGAL	# Grupo Financiero Galicia S.A.
+GHDX	# "Genomic Health
+GIFI	# "Gulf Island Fabrication
+GIGA	# Giga
+GIGM	# GigaMedia Limited
+GIII	# G
+GILD	# "Gilead Sciences
+GILT	# Gilat Satellite Networks Ltd.
+GK	# "G&K Services
+GKNT	# "Geeknet
+GLAD	# Gladstone Capital Corporation
+GLADO	# Gladstone Capital Corporation
+GLBS	# Globus Maritime Limited
+GLBZ	# Glen Burnie Bancorp
+GLDC	# "Golden Enterprises
+GLDD	# Great Lakes Dredge & Dock Corporation
+GLDI	# Credit Suisse AG
+GLMD	# Galmed Pharmaceuticals Ltd.
+GLNG	# Golar LNG Limited
+GLPI	# "Gaming and Leisure Properties
+GLRE	# "Greenlight Reinsurance
+GLRI	# Glori Energy Inc
+GLUU	# Glu Mobile Inc.
+GLYC	# "GlycoMimetics
+GMAN	# "Gordmans Stores
+GMCR	# "Keurig Green Mountain
+GMLP	# Golar LNG Partners LP
+GNBC	# "Green Bancorp
+GNCA	# "Genocea Biosciences
+GNCMA	# "General Communication
+GNMA	# iShares Core GNMA Bond ETF
+GNMK	# "GenMark Diagnostics
+GNTX	# Gentex Corporation
+GNVC	# "GenVec
+GOGO	# Gogo Inc.
+GOLD	# Randgold Resources Limited
+GOMO	# Sungy Mobile Limited
+GOOD	# Gladstone Commercial Corporation
+GOODN	# Gladstone Commercial Corporation
+GOODO	# Gladstone Commercial Corporation
+GOODP	# Gladstone Commercial Corporation
+GOOG	# Google Inc.
+GOOGL	# Google Inc.
+GPIC	# Gaming Partners International Corporation
+GPOR	# Gulfport Energy Corporation
+GPRE	# "Green Plains
+GPRO	# "GoPro
+GRBK	# "Green Brick Partners
+GRFS	# "Grifols
+GRID	# First Trust NASDAQ Clean Edge Smart Grid Infrastructure Index Fund
+GRIF	# "Griffin Land & Nurseries
+GRMN	# Garmin Ltd.
+GROW	# "U.S. Global Investors
+GRPN	# "Groupon
+GRVY	# "GRAVITY Co.
+GSBC	# "Great Southern Bancorp
+GSIG	# "GSI Group
+GSIT	# "GSI Technology
+GSM	# Globe Specialty Metals Inc.
+GSOL	# Global Sources Ltd.
+GSVC	# GSV Capital Corp
+GT	# The Goodyear Tire & Rubber Company
+GTIM	# Good Times Restaurants Inc.
+GTIV	# "Gentiva Health Services
+GTLS	# "Chart Industries
+GTWN	# "Georgetown Bancorp
+GTXI	# "GTx
+GUID	# "Guidance Software
+GULF	# WisdomTree Middle East Dividend Fund
+GULTU	# Gulf Coast Ultra Deep Royalty Trust
+GURE	# "Gulf Resources
+GWGH	# "GWG Holdings
+GWPH	# GW Pharmaceuticals Plc
+GYRO	# "Gyrodyne Company of America
+HA	# "Hawaiian Holdings
+HABT	# "The Habit Restaurants
+HAFC	# Hanmi Financial Corporation
+HAIN	# "The Hain Celestial Group
+HALL	# "Hallmark Financial Services
+HALO	# "Halozyme Therapeutics
+HART	# "Harvard Apparatus Regenerative Technology
+HAS	# "Hasbro
+HAWK	# "Blackhawk Network Holdings
+HAWKB	# "Blackhawk Network Holdings
+HAYN	# "Haynes International
+HBAN	# Huntington Bancshares Incorporated
+HBANP	# Huntington Bancshares Incorporated
+HBCP	# "Home Bancorp
+HBHC	# Hancock Holding Company
+HBIO	# "Harvard Bioscience
+HBK	# "Hamilton Bancorp
+HBMD	# "Howard Bancorp
+HBNC	# Horizon Bancorp (IN)
+HBNK	# "Hampden Bancorp
+HBOS	# Heritage Financial Group
+HBP	# "Huttig Building Products
+HCAC	# Hennessy Capital Acquisition Corp.
+HCACU	# Hennessy Capital Acquisition Corp.
+HCACW	# Hennessy Capital Acquisition Corp.
+HCAP	# Harvest Capital Credit Corporation
+HCBK	# "Hudson City Bancorp
+HCCI	# Heritage
+HCKT	# "The Hackett Group
+HCOM	# "Hawaiian Telcom Holdco
+HCSG	# "Healthcare Services Group
+HCT	# "American Realty Capital Healthcare Trust
+HDNG	# "Hardinge
+HDP	# "Hortonworks
+HDRA	# Hydra Industries Acquisition Corp.
+HDRAR	# Hydra Industries Acquisition Corp.
+HDRAU	# Hydra Industries Acquisition Corp.
+HDRAW	# Hydra Industries Acquisition Corp.
+HDS	# "HD Supply Holdings
+HDSN	# "Hudson Technologies
+HEAR	# Turtle Beach Corporation
+HEES	# "H&E Equipment Services
+HELE	# Helen of Troy Limited
+HEOP	# Heritage Oaks Bancorp
+HERO	# "Hercules Offshore
+HFBC	# "HopFed Bancorp
+HFBL	# "Home Federal Bancorp
+HFFC	# HF Financial Corp.
+HFWA	# Heritage Financial Corporation
+HGSH	# "China HGS Real Estate
+HIBB	# "Hibbett Sports
+HIFS	# Hingham Institution for Savings
+HIHO	# Highway Holdings Limited
+HIIQ	# "Health Insurance Innovations
+HILL	# Dot Hill Systems Corporation
+HIMX	# "Himax Technologies
+HKTV	# Hong Kong Television Network Limited
+HLIT	# Harmonic Inc.
+HLSS	# "Home Loan Servicing Solutions
+HMHC	# Houghton Mifflin Harcourt Company
+HMIN	# Homeinns Hotel Group
+HMNF	# "HMN Financial
+HMNY	# Helios and Matheson Analytics Inc
+HMPR	# Hampton Roads Bankshares Inc
+HMST	# "HomeStreet
+HMSY	# HMS Holdings Corp
+HMTV	# "Hemisphere Media Group
+HNH	# Handy & Harman Ltd.
+HNNA	# "Hennessy Advisors
+HNRG	# Hallador Energy Company
+HNSN	# "Hansen Medical
+HOFT	# Hooker Furniture Corporation
+HOLI	# "Hollysys Automation Technologies
+HOLX	# "Hologic
+HOMB	# "Home BancShares
+HOTR	# "Chanticleer Holdings
+HOTRW	# "Chanticleer Holdings
+HOVNP	# Hovnanian Enterprises Inc
+HPJ	# Highpower International Inc
+HPTX	# "Hyperion Therapeutics
+HQY	# "HealthEquity
+HRTX	# "Heron Therapeutics
+HRZN	# Horizon Technology Finance Corporation
+HSGX	# Histogenics Corporation
+HSIC	# "Henry Schein
+HSII	# "Heidrick & Struggles International
+HSKA	# Heska Corporation
+HSNI	# "HSN
+HSOL	# "Hanwha SolarOne Co.
+HSON	# "Hudson Global
+HSTM	# "HealthStream
+HTBI	# "HomeTrust Bancshares
+HTBK	# Heritage Commerce Corp
+HTBX	# "Heat Biologics
+HTCH	# Hutchinson Technology Incorporated
+HTHT	# "China Lodging Group
+HTLD	# "Heartland Express
+HTLF	# "Heartland Financial USA
+HTWO	# HF2 Financial Management Inc.
+HTWR	# "Heartware International
+HUBG	# "Hub Group
+HURC	# "Hurco Companies
+HURN	# Huron Consulting Group Inc.
+HWAY	# "Healthways
+HWBK	# "Hawthorn Bancshares
+HWCC	# Houston Wire & Cable Company
+HWKN	# "Hawkins
+HYGS	# Hydrogenics Corporation
+HYLS	# First Trust High Yield Long/Short ETF
+HYND	# WisdomTree BofA Merrill Lynch High Yield Bond Negative Duration Fund
+HYZD	# WisdomTree BofA Merrill Lynch High Yield Bond Zero Duration Fund
+HZNP	# Horizon Pharma plc
+IACI	# IAC/InterActiveCorp
+IART	# Integra LifeSciences Holdings Corporation
+IBB	# iShares Nasdaq Biotechnology Index Fund
+IBCA	# Intervest Bancshares Corp.
+IBCP	# Independent Bank Corporation
+IBKC	# IBERIABANK Corporation
+IBKR	# "Interactive Brokers Group
+IBOC	# International Bancshares Corporation
+IBTX	# "Independent Bank Group
+ICAD	# icad inc.
+ICCC	# ImmuCell Corporation
+ICEL	# "Cellular Dynamics International
+ICFI	# "ICF International
+ICLD	# "InterCloud Systems
+ICLDW	# "InterCloud Systems
+ICLN	# iShares S&P Global Clean Energy Index Fund
+ICLR	# ICON plc
+ICON	# "Iconix Brand Group
+ICPT	# "Intercept Pharmaceuticals
+ICUI	# "ICU Medical
+IDCC	# "InterDigital
+IDRA	# "Idera Pharmaceuticals
+IDSA	# "Industrial Services of America
+IDSY	# "I.D. Systems
+IDTI	# "Integrated Device Technology
+IDXX	# "IDEXX Laboratories
+IEP	# Icahn Enterprises L.P.
+IESC	# "Integrated Electrical Services
+IEUS	# iShares MSCI Europe Small
+IFAS	# iShares FTSE EPRA/NAREIT Asia Index Fund
+IFEU	# iShares FTSE EPRA/NAREIT Europe Index Fund
+IFGL	# iShares FTSE EPRA/NAREIT Global Real Estate ex
+IFNA	# iShares FTSE EPRA/NAREIT North America Index Fund
+IFON	# InfoSonics Corp
+IFV	# First Trust Dorsey Wright International Focus 5 ETF
+IGLD	# Internet Gold Golden Lines Ltd.
+IGOV	# iShares S&P/Citigroup International Treasury Bond Fund
+IGTE	# iGATE Corporation
+III	# "Information Services Group
+IIIN	# "Insteel Industries
+IIJI	# "Internet Initiative Japan
+IILG	# "Interval Leisure Group
+IIN	# IntriCon Corporation
+IIVI	# II
+IKAN	# "Ikanos Communications
+IKGH	# Iao Kun Group Holding Company Limited
+IKNX	# Ikonics Corporation
+ILMN	# "Illumina
+IMDZ	# Immune Design Corp.
+IMGN	# "ImmunoGen
+IMI	# "Intermolecular
+IMKTA	# "Ingles Markets
+IMMR	# Immersion Corporation
+IMMU	# "Immunomedics
+IMMY	# "Imprimis Pharmaceuticals
+IMNP	# Immune Pharmaceuticals Inc.
+IMOS	# ChipMOS TECHNOLOGIES (Bermuda) LTD.
+IMRS	# Imris Inc
+INAP	# Internap Corporation
+INBK	# First Internet Bancorp
+INCR	# "INC Research Holdings
+INCY	# Incyte Corporation
+INDB	# Independent Bank Corp.
+INDY	# iShares S&P India Nifty 50 Index Fund
+INFA	# Informatica Corporation
+INFI	# "Infinity Pharmaceuticals
+INFN	# Infinera Corporation
+INGN	# "Inogen
+ININ	# "Interactive Intelligence Group
+INNL	# Innocoll AG
+INO	# "Inovio Pharmaceuticals
+INOD	# Innodata Inc.
+INPH	# Interphase Corporation
+INSM	# "Insmed
+INSY	# "Insys Therapeutics
+INTC	# Intel Corporation
+INTG	# The Intergroup Corporation
+INTL	# INTL FCStone Inc.
+INTLL	# INTL FCStone Inc.
+INTU	# Intuit Inc.
+INTX	# "Intersections
+INVE	# "Identiv
+INVT	# "Inventergy Global
+INWK	# "InnerWorkings
+IOSP	# Innospec Inc.
+IPAR	# "Inter Parfums
+IPAS	# iPass Inc.
+IPCC	# Infinity Property and Casualty Corporation
+IPCI	# Intellipharmaceutics International Inc.
+IPCM	# "IPC Healthcare
+IPDN	# "Professional Diversity Network
+IPGP	# IPG Photonics Corporation
+IPHS	# "Innophos Holdings
+IPKW	# PowerShares International BuyBack Achievers Portfolio
+IPWR	# Ideal Power Inc.
+IPXL	# "Impax Laboratories
+IQNT	# "Inteliquent
+IRBT	# iRobot Corporation
+IRDM	# Iridium Communications Inc
+IRDMB	# Iridium Communications Inc
+IRDMZ	# Iridium Communications Inc
+IRG	# "Ignite Restaurant Group
+IRIX	# IRIDEX Corporation
+IRMD	# iRadimed Corporation
+IROQ	# "IF Bancorp
+IRWD	# "Ironwood Pharmaceuticals
+ISBC	# "Investors Bancorp
+ISCA	# International Speedway Corporation
+ISHG	# iShares S&P/Citigroup 1
+ISIG	# "Insignia Systems
+ISIL	# Intersil Corporation
+ISIS	# "Isis Pharmaceuticals
+ISLE	# "Isle of Capri Casinos
+ISM	# SLM Corporation
+ISNS	# "Image Sensing Systems
+ISRG	# "Intuitive Surgical
+ISRL	# "Isramco
+ISSC	# "Innovative Solutions and Support
+ISSI	# "Integrated Silicon Solution
+ISTR	# Investar Holding Corporation
+ITCI	# Intra
+ITIC	# Investors Title Company
+ITRI	# "Itron
+ITRN	# Ituran Location and Control Ltd.
+IVAC	# "Intevac
+IVAN	# "Ivanhoe Energy
+IXYS	# IXYS Corporation
+JACK	# Jack In The Box Inc.
+JACQ	# Collabrium Japan Acquisition Corporation
+JACQU	# Collabrium Japan Acquisition Corporation
+JACQW	# Collabrium Japan Acquisition Corporation
+JAKK	# "JAKKS Pacific
+JASN	# "Jason Industries
+JASNW	# "Jason Industries
+JASO	# "JA Solar Holdings
+JAXB	# "Jacksonville Bancorp
+JAZZ	# Jazz Pharmaceuticals plc
+JBHT	# "J.B. Hunt Transport Services
+JBLU	# JetBlue Airways Corporation
+JBSS	# "John B. Sanfilippo & Son
+JCOM	# "j2 Global
+JCS	# "Communications Systems
+JCTCF	# Jewett
+JD	# "JD.com
+JDSU	# JDS Uniphase Corporation
+JGBB	# WisdomTree Japan Interest Rate Strategy Fund
+JIVE	# "Jive Software
+JJSF	# J & J Snack Foods Corp.
+JKHY	# "Jack Henry & Associates
+JMBA	# "Jamba
+JOBS	# "51job
+JOEZ	# Joe's Jeans Inc.
+JOUT	# Johnson Outdoors Inc.
+JRJC	# China Finance Online Co. Limited
+JRVR	# "James River Group Holdings
+JSM	# SLM Corporation
+JST	# Jinpan International Limited
+JTPY	# JetPay Corporation
+JUNO	# "Juno Therapeutics
+JVA	# "Coffee Holding Co.
+JXSB	# Jacksonville Bancorp Inc.
+JYNT	# The Joint Corp.
+KALU	# Kaiser Aluminum Corporation
+KANG	# "iKang Healthcare Group
+KBAL	# "Kimball International
+KBIO	# "KaloBios Pharmaceuticals
+KBSF	# KBS Fashion Group Limited
+KCAP	# "KCAP Financial
+KCLI	# Kansas City Life Insurance Company
+KE	# "Kimball Electronics
+KELYA	# "Kelly Services
+KELYB	# "Kelly Services
+KEQU	# Kewaunee Scientific Corporation
+KERX	# "Keryx Biopharmaceuticals
+KEYW	# The KEYW Holding Corporation
+KFFB	# Kentucky First Federal Bancorp
+KFRC	# "Kforce
+KFX	# Kofax Limited
+KGJI	# Kingold Jewelry Inc.
+KIN	# "Kindred Biosciences
+KINS	# "Kingstone Companies
+KIRK	# "Kirkland's
+KITE	# "Kite Pharma
+KLAC	# KLA
+KLIC	# "Kulicke and Soffa Industries
+KLXI	# KLX Inc.
+KMDA	# Kamada Ltd.
+KNDI	# "Kandi Technologies Group
+KONA	# "Kona Grill
+KONE	# Kingtone Wirelessinfo Solution Holding Ltd
+KOOL	# Cesca Therapeutics Inc.
+KOPN	# Kopin Corporation
+KOSS	# Koss Corporation
+KPTI	# Karyopharm Therapeutics Inc.
+KRFT	# "Kraft Foods Group
+KRNY	# Kearny Financial
+KTCC	# Key Tronic Corporation
+KTEC	# "Key Technology
+KTOS	# "Kratos Defense & Security Solutions
+KTWO	# "K2M Group Holdings
+KUTV	# "Ku6 Media Co.
+KVHI	# "KVH Industries
+KWEB	# KraneShares CSI China Internet ETF
+KYTH	# "Kythera Biopharmaceuticals
+KZ	# KongZhong Corporation
+LABC	# "Louisiana Bancorp
+LABL	# Multi
+LACO	# "Lakes Entertainment
+LAKE	# "Lakeland Industries
+LALT	# PowerShares Actively Managed Exchange
+LAMR	# Lamar Advertising Company
+LANC	# Lancaster Colony Corporation
+LAND	# Gladstone Land Corporation
+LARK	# Landmark Bancorp Inc.
+LAWS	# "Lawson Products
+LAYN	# Layne Christensen Company
+LBAI	# "Lakeland Bancorp
+LBIX	# Leading Brands Inc
+LBRDA	# Liberty Broadband Corporation
+LBRDK	# Liberty Broadband Corporation
+LBRKR	# Liberty Broadband Corporation
+LBTYA	# Liberty Global plc
+LBTYB	# Liberty Global plc
+LBTYK	# Liberty Global plc
+LCNB	# LCNB Corporation
+LCUT	# "Lifetime Brands
+LDRH	# LDR Holding Corporation
+LDRI	# PowerShares LadderRite 0
+LE	# "Lands' End
+LECO	# "Lincoln Electric Holdings
+LEDS	# SemiLEDS Corporation
+LEVY	# Levy Acquisition Corp.
+LEVYU	# Levy Acquisition Corp.
+LEVYW	# Levy Acquisition Corp.
+LFUS	# "Littelfuse
+LFVN	# Lifevantage Corporation
+LGCY	# Legacy Reserves LP
+LGCYO	# Legacy Reserves LP
+LGCYP	# Legacy Reserves LP
+LGIH	# "LGI Homes
+LGND	# Ligand Pharmaceuticals Incorporated
+LHCG	# LHC Group
+LIME	# Lime Energy Co.
+LINC	# Lincoln Educational Services Corporation
+LINE	# "Linn Energy
+LION	# Fidelity Southern Corporation
+LIOX	# "Lionbridge Technologies
+LIQD	# "Liquid Holdings Group
+LIVE	# "LiveDeal
+LJPC	# La Jolla Pharmaceutical Company
+LKFN	# Lakeland Financial Corporation
+LKQ	# LKQ Corporation
+LLEX	# "Lilis Energy
+LLNW	# "Limelight Networks
+LLTC	# Linear Technology Corporation
+LMAT	# "LeMaitre Vascular
+LMBS	# First Trust Low Duration Mortgage Opportunities ETF
+LMCA	# Liberty Media Corporation
+LMCB	# Liberty Media Corporation
+LMCK	# Liberty Media Corporation
+LMIA	# "LMI Aerospace
+LMNR	# Limoneira Co
+LMNS	# Lumenis Ltd.
+LMNX	# Luminex Corporation
+LMOS	# Lumos Networks Corp.
+LMRK	# Landmark Infrastructure Partners LP
+LNBB	# "LNB Bancorp
+LNCE	# Snyder's
+LNCO	# "Linn Co
+LNDC	# Landec Corporation
+LOAN	# "Manhattan Bridge Capital
+LOCM	# Local Corporation
+LOCO	# "El Pollo Loco Holdings
+LOGI	# Logitech International S.A.
+LOGM	# "LogMein
+LOJN	# LoJack Corporation
+LONG	# "eLong
+LOOK	# "LookSmart
+LOPE	# "Grand Canyon Education
+LORL	# "Loral Space and Communications
+LOXO	# "Loxo Oncology
+LPCN	# Lipocine Inc.
+LPHI	# Life Partners Holdings Inc
+LPLA	# LPL Financial Holdings Inc.
+LPNT	# "LifePoint Hospitals
+LPSB	# "LaPorte Bancorp
+LPSN	# "LivePerson
+LPTH	# "LightPath Technologies
+LPTN	# "Lpath
+LQDT	# "Liquidity Services
+LRAD	# LRAD Corporation
+LRCX	# Lam Research Corporation
+LSBK	# "Lake Shore Bancorp
+LSCC	# Lattice Semiconductor Corporation
+LSTR	# "Landstar System
+LTBR	# Lightbridge Corporation
+LTRE	# "Learning Tree International
+LTRPA	# "Liberty TripAdvisor Holdings
+LTRPB	# "Liberty TripAdvisor Holdings
+LTRX	# "Lantronix
+LTXB	# "LegacyTexas Financial Group
+LULU	# lululemon athletica inc.
+LUNA	# Luna Innovations Incorporated
+LVNTA	# Liberty Interactive Corporation
+LVNTB	# Liberty Interactive Corporation
+LWAY	# "Lifeway Foods
+LXRX	# "Lexicon Pharmaceuticals
+LYTS	# LSI Industries Inc.
+MACK	# "Merrimack Pharmaceuticals
+MAG	# "Magnetek
+MAGS	# Magal Security Systems Ltd.
+MAMS	# "MAM Software Group
+MANH	# "Manhattan Associates
+MANT	# ManTech International Corporation
+MAR	# Marriott International
+MARA	# "Marathon Patent Group
+MARK	# "Remark Media
+MARPS	# Marine Petroleum Trust
+MASI	# Masimo Corporation
+MAT	# "Mattel
+MATR	# Mattersight Corporation
+MATW	# Matthews International Corporation
+MAYS	# "J. W. Mays
+MBCN	# Middlefield Banc Corp.
+MBFI	# MB Financial Inc.
+MBFIP	# MB Financial Inc.
+MBII	# "Marrone Bio Innovations
+MBLX	# "Metabolix
+MBRG	# Middleburg Financial Corporation
+MBSD	# FlexShares Disciplined Duration MBS Index Fund
+MBTF	# M B T Financial Corp
+MBUU	# "Malibu Boats
+MBVT	# "Merchants Bancshares
+MBWM	# Mercantile Bank Corporation
+MCBC	# Macatawa Bank Corporation
+MCBK	# "Madison County Financial
+MCEP	# Mid
+MCGC	# MCG Capital Corporation
+MCHP	# Microchip Technology Incorporated
+MCHX	# "Marchex
+MCOX	# Mecox Lane Limited
+MCRI	# "Monarch Casino & Resort
+MCRL	# "Micrel
+MCUR	# Macrocure Ltd.
+MDAS	# "MedAssets
+MDCA	# MDC Partners Inc.
+MDCO	# The Medicines Company
+MDIV	# First Trust Exchange
+MDLZ	# "Mondelez International
+MDM	# Mountain Province Diamonds Inc.
+MDRX	# "Allscripts Healthcare Solutions
+MDSO	# "Medidata Solutions
+MDSY	# "BluePhoenix Solutions
+MDVN	# "Medivation
+MDVXU	# Medovex Corp.
+MDWD	# MediWound Ltd.
+MDXG	# "MiMedx Group
+MEET	# "MeetMe
+MEIL	# Methes Energies International Ltd
+MEILW	# Methes Energies International Ltd
+MEILZ	# Methes Energies International Ltd
+MEIP	# "MEI Pharma
+MELA	# "MELA Sciences
+MELI	# "MercadoLibre
+MELR	# "Melrose Bancorp
+MEMP	# Memorial Production Partners LP
+MENT	# Mentor Graphics Corporation
+MEOH	# Methanex Corporation
+MERC	# Mercer International Inc.
+MERU	# "Meru Networks
+METR	# "Metro Bancorp
+MFI	# MicroFinancial Incorporated
+MFLX	# Multi
+MFNC	# Mackinac Financial Corporation
+MFRI	# "MFRI
+MFRM	# Mattress Firm Holding Corp.
+MFSF	# MutualFirst Financial Inc.
+MGCD	# MGC Diagnostics Corporation
+MGEE	# MGE Energy Inc.
+MGI	# "Moneygram International
+MGIC	# Magic Software Enterprises Ltd.
+MGLN	# "Magellan Health
+MGNX	# "MacroGenics
+MGPI	# "MGP Ingredients
+MGRC	# McGrath RentCorp
+MGYR	# "Magyar Bancorp
+MHGC	# Morgans Hotel Group Co.
+MHLD	# "Maiden Holdings
+MHLDO	# "Maiden Holdings
+MICT	# "Micronet Enertec Technologies
+MICTW	# "Micronet Enertec Technologies
+MIDD	# The Middleby Corporation
+MIFI	# "Novatel Wireless
+MIK	# "The Michaels Companies
+MIND	# "Mitcham Industries
+MINI	# "Mobile Mini
+MITK	# "Mitek Systems
+MITL	# Mitel Networks Corporation
+MKSI	# "MKS Instruments
+MKTO	# "Marketo
+MKTX	# "MarketAxess Holdings
+MLAB	# "Mesa Laboratories
+MLHR	# "Herman Miller
+MLNK	# "ModusLink Global Solutions
+MLNX	# "Mellanox Technologies
+MLVF	# "Malvern Bancorp
+MMAC	# "MMA Capital Management
+MMLP	# Martin Midstream Partners L.P.
+MMSI	# "Merit Medical Systems
+MMYT	# MakeMyTrip Limited
+MNDL	# "Mandalay Digital Group
+MNDO	# MIND C.T.I. Ltd.
+MNGA	# MagneGas Corporation
+MNKD	# MannKind Corporation
+MNOV	# "MediciNova
+MNRK	# "Monarch Financial Holdings
+MNRO	# "Monro Muffler Brake
+MNST	# Monster Beverage Corporation
+MNTA	# "Momenta Pharmaceuticals
+MNTX	# "Manitex International
+MOBI	# Sky
+MOBL	# "MobileIron
+MOCO	# "MOCON
+MOFG	# "MidWestOne Financial Group
+MOKO	# MOKO Social Media Ltd.
+MOLG	# "MOL Global
+MOMO	# Momo Inc.
+MORN	# "Morningstar
+MOSY	# "MoSys
+MPAA	# "Motorcar Parts of America
+MPB	# Mid Penn Bancorp
+MPEL	# Melco Crown Entertainment Limited
+MPET	# Magellan Petroleum Corporation
+MPWR	# "Monolithic Power Systems
+MRCC	# Monroe Capital Corporation
+MRCY	# Mercury Systems Inc
+MRD	# Memorial Resource Development Corp.
+MRGE	# Merge Healthcare Incorporated.
+MRKT	# Markit Ltd.
+MRLN	# Marlin Business Services Corp.
+MRNS	# "Marinus Pharmaceuticals
+MRTN	# "Marten Transport
+MRTX	# "Mirati Therapeutics
+MRVC	# "MRV Communications
+MRVL	# Marvell Technology Group Ltd.
+MSBF	# MSB Financial Corp.
+MSCC	# Microsemi Corporation
+MSEX	# Middlesex Water Company
+MSFG	# "MainSource Financial Group
+MSFT	# Microsoft Corporation
+MSG	# The Madison Square Garden Company
+MSLI	# Merus Labs International Inc.
+MSON	# "MISONIX
+MSTR	# MicroStrategy Incorporated
+MTBC	# "Medical Transcription Billing
+MTEX	# "Mannatech
+MTGE	# American Capital Mortgage Investment Corp.
+MTGEP	# American Capital Mortgage Investment Corp.
+MTLS	# Materialise NV
+MTRX	# Matrix Service Company
+MTSC	# MTS Systems Corporation
+MTSI	# M/A
+MTSL	# MER Telemanagement Solutions Ltd.
+MTSN	# "Mattson Technology
+MU	# "Micron Technology
+MULT	# AdvisorShares Sunrise Global Multi
+MVIS	# "Microvision
+MWIV	# "MWI Veterinary Supply
+MXIM	# "Maxim Integrated Products
+MXWL	# "Maxwell Technologies
+MYGN	# "Myriad Genetics
+MYL	# Mylan Inc.
+MYOS	# MYOS Corporation
+MYRG	# "MYR Group
+MZOR	# Mazor Robotics Ltd.
+NAII	# "Natural Alternatives International
+NAME	# "Rightside Group
+NANO	# Nanometrics Incorporated
+NATH	# "Nathan's Famous
+NATI	# National Instruments Corporation
+NATL	# National Interstate Corporation
+NATR	# "Nature's Sunshine Products
+NAUH	# "National American University Holdings
+NAVG	# "The Navigators Group
+NAVI	# Navient Corporation
+NBBC	# NewBridge Bancorp
+NBIX	# "Neurocrine Biosciences
+NBN	# Northeast Bancorp
+NBS	# "Neostem
+NBTB	# NBT Bancorp Inc.
+NBTF	# NB&T FINANCIAL GROUP INC
+NCIT	# "NCI
+NCLH	# Norwegian Cruise Line Holdings Ltd.
+NCMI	# "National CineMedia
+NCTY	# The9 Limited
+NDAQ	# "The NASDAQ OMX Group
+NDLS	# Noodles & Company
+NDRM	# NeuroDerm Ltd.
+NDSN	# Nordson Corporation
+NECB	# "Northeast Community Bancorp
+NEO	# "NeoGenomics
+NEOG	# Neogen Corporation
+NEON	# Neonode Inc.
+NEOT	# "Neothetics
+NEPT	# Neptune Technologies & Bioresources Inc
+NERV	# "Minerva Neurosciences
+NETE	# "Net Element
+NEWP	# Newport Corporation
+NEWS	# "NewStar Financial
+NEWT	# Newtek Business Services Corp.
+NFBK	# "Northfield Bancorp
+NFEC	# NF Energy Saving Corporation
+NFLX	# "Netflix
+NGHC	# National General Holdings Corp
+NGHCP	# National General Holdings Corp
+NHTB	# "New Hampshire Thrift Bancshares
+NICE	# NICE
+NICK	# "Nicholas Financial
+NILE	# "Blue Nile
+NKSH	# "National Bankshares
+NKTR	# Nektar Therapeutics
+NLNK	# NewLink Genetics Corporation
+NLST	# "Netlist
+NMIH	# NMI Holdings Inc
+NMRX	# Numerex Corp.
+NNBR	# "NN
+NPBC	# "National Penn Bancshares
+NPSP	# "NPS Pharmaceuticals
+NRCIA	# National Research Corporation
+NRCIB	# National Research Corporation
+NRIM	# Northrim BanCorp Inc
+NRX	# "NephroGenex
+NSEC	# "National Security Group
+NSIT	# "Insight Enterprises
+NSPH	# "Nanosphere
+NSSC	# "NAPCO Security Technologies
+NSTG	# "NanoString Technologies
+NSYS	# Nortech Systems Incorporated
+NTAP	# "NetApp
+NTCT	# "NetScout Systems
+NTES	# "NetEase
+NTGR	# "NETGEAR
+NTIC	# Northern Technologies International Corporation
+NTK	# Nortek Inc.
+NTLS	# NTELOS Holdings Corp.
+NTRI	# NutriSystem Inc
+NTRS	# Northern Trust Corporation
+NTRSP	# Northern Trust Corporation
+NTWK	# NetSol Technologies Inc.
+NUAN	# "Nuance Communications
+NURO	# "NeuroMetrix
+NUTR	# Nutraceutical International Corporation
+NUVA	# "NuVasive
+NVAX	# "Novavax
+NVCN	# Neovasc Inc.
+NVDA	# NVIDIA Corporation
+NVDQ	# Novadaq Technologies Inc
+NVEC	# NVE Corporation
+NVEE	# "NV5 Holdings
+NVEEW	# "NV5 Holdings
+NVFY	# "Nova Lifestyle
+NVGN	# Novogen Limited
+NVMI	# Nova Measuring Instruments Ltd.
+NVSL	# Naugatuck Valley Financial Corporation
+NWBI	# "Northwest Bancshares
+NWBO	# "Northwest Biotherapeutics
+NWBOW	# "Northwest Biotherapeutics
+NWFL	# Norwood Financial Corp.
+NWLI	# National Western Life Insurance Company
+NWPX	# Northwest Pipe Company
+NWS	# News Corporation
+NWSA	# News Corporation
+NXPI	# NXP Semiconductors N.V.
+NXST	# "Nexstar Broadcasting Group
+NXTD	# NXT
+NXTDW	# NXT
+NXTM	# "NxStage Medical
+NYMT	# "New York Mortgage Trust
+NYMTP	# "New York Mortgage Trust
+NYMX	# Nymox Pharmaceutical Corporation
+NYNY	# "Empire Resorts
+OBAS	# Optibase Ltd.
+OBCI	# Ocean Bio
+OCC	# Optical Cable Corporation
+OCFC	# OceanFirst Financial Corp.
+OCLR	# "Oclaro
+OCLS	# "Oculus Innovative Sciences
+OCRX	# "Ocera Therapeutics
+OCUL	# "Ocular Therapeutix
+ODFL	# "Old Dominion Freight Line
+ODP	# "Office Depot
+OFED	# Oconee Federal Financial Corp.
+OFIX	# Orthofix International N.V.
+OFLX	# "Omega Flex
+OFS	# OFS Capital Corporation
+OGXI	# OncoGenex Pharmaceuticals Inc.
+OHAI	# OHA Investment Corporation
+OHGI	# "One Horizon Group
+OHRP	# "Ohr Pharmaceuticals
+OIIM	# O2Micro International Limited
+OKSB	# "Southwest Bancorp
+OLBK	# "Old Line Bancshares
+OLED	# Universal Display Corporation
+OMAB	# Grupo Aeroportuario del Centro Norte S.A.B. de C.V.
+OMCL	# "Omnicell
+OMED	# "OncoMed Pharmaceuticals
+OMER	# Omeros Corporation
+OMEX	# "Odyssey Marine Exploration
+ONB	# Old National Bancorp
+ONCY	# "Oncolytics Biotech
+ONEQ	# Fidelity Nasdaq Composite Index Tracking Stock
+ONFC	# Oneida Financial Corp.
+ONNN	# ON Semiconductor Corporation
+ONTX	# "Onconova Therapeutics
+ONTY	# Oncothyreon Inc.
+ONVI	# "Onvia
+OPB	# Opus Bank
+OPHC	# "OptimumBank Holdings
+OPHT	# Ophthotech Corporation
+OPOF	# Old Point Financial Corporation
+OPTT	# "Ocean Power Technologies
+OPXA	# "Opexa Therapeutics
+ORBC	# ORBCOMM Inc.
+ORBK	# Orbotech Ltd.
+OREX	# "Orexigen Therapeutics
+ORIG	# Ocean Rig UDW Inc.
+ORIT	# Oritani Financial Corp.
+ORLY	# "O'Reilly Automotive
+ORMP	# Oramed Pharmaceuticals Inc.
+ORPN	# Bio Blast Pharma Ltd.
+ORRF	# Orrstown Financial Services Inc
+OSBC	# "Old Second Bancorp
+OSBCP	# "Old Second Bancorp
+OSHC	# Ocean Shore Holding Co.
+OSIR	# "Osiris Therapeutics
+OSIS	# "OSI Systems
+OSM	# SLM Corporation
+OSN	# "Ossen Innovation Co.
+OSTK	# "Overstock.com
+OSUR	# "OraSure Technologies
+OTEL	# Otelco Inc.
+OTEX	# Open Text Corporation
+OTIC	# "Otonomy
+OTIV	# On Track Innovations Ltd
+OTTR	# Otter Tail Corporation
+OUTR	# Outerwall Inc.
+OVAS	# OvaScience Inc.
+OVBC	# Ohio Valley Banc Corp.
+OVLY	# Oak Valley Bancorp (CA)
+OVTI	# "OmniVision Technologies
+OXBR	# Oxbridge Re Holdings Limited
+OXBRW	# Oxbridge Re Holdings Limited
+OXFD	# Oxford Immunotec Global PLC
+OXGN	# "OXiGENE
+OXLC	# Oxford Lane Capital Corp.
+OXLCN	# Oxford Lane Capital Corp.
+OXLCO	# Oxford Lane Capital Corp.
+OXLCP	# Oxford Lane Capital Corp.
+OZRK	# Bank of the Ozarks
+PAAS	# Pan American Silver Corp.
+PACB	# "Pacific Biosciences of California
+PACW	# PacWest Bancorp
+PAGG	# PowerShares Global Agriculture Portfolio
+PAHC	# Phibro Animal Health Corporation
+PANL	# Pangaea Logistics Solutions Ltd.
+PARN	# Parnell Pharmaceuticals Holdings Ltd
+PATIV	# "New Patriot Transportation Holding
+PATK	# "Patrick Industries
+PAYX	# "Paychex
+PBCP	# "Polonia Bancorp
+PBCT	# "People's United Financial
+PBHC	# "Pathfinder Bancorp
+PBIB	# "Porter Bancorp
+PBIP	# "Prudential Bancorp
+PBMD	# Prima BioMed Ltd
+PBPB	# Potbelly Corporation
+PBSK	# "Poage Bankshares
+PCAR	# PACCAR Inc.
+PCBK	# Pacific Continental Corporation (Ore)
+PCCC	# "PC Connection
+PCH	# Potlatch Corporation
+PCLN	# The Priceline Group Inc.
+PCMI	# "PCM
+PCO	# Pendrell Corporation
+PCOM	# "Points International
+PCRX	# "Pacira Pharmaceuticals
+PCTI	# PC
+PCTY	# Paylocity Holding Corporation
+PCYC	# "Pharmacyclics
+PCYG	# "Park City Group
+PCYO	# Pure Cycle Corporation
+PDBC	# PowerShares DB Optimum Yield Diversified Commodity Strategy Portfolio
+PDCE	# "PDC Energy
+PDCO	# "Patterson Companies
+PDEX	# Pro
+PDFS	# "PDF Solutions
+PDII	# "PDI
+PDLI	# "PDL BioPharma
+PEBK	# "Peoples Bancorp of North Carolina
+PEBO	# Peoples Bancorp Inc.
+PEGA	# Pegasystems Inc.
+PEGI	# Pattern Energy Group Inc.
+PEIX	# "Pacific Ethanol
+PENN	# "Penn National Gaming
+PENX	# Penford Corporation
+PEOP	# "Peoples Federal Bancshares
+PERF	# "Perfumania Holdings
+PERI	# Perion Network Ltd
+PERY	# Perry Ellis International Inc.
+PESI	# Perma
+PETM	# "PetSmart
+PETS	# "PetMed Express
+PETX	# "Aratana Therapeutics
+PFBC	# Preferred Bank
+PFBI	# "Premier Financial Bancorp
+PFBX	# Peoples Financial Corporation
+PFIE	# "Profire Energy
+PFIN	# "P & F Industries
+PFIS	# Peoples Financial Services Corp.
+PFLT	# PennantPark Floating Rate Capital Ltd.
+PFMT	# Performant Financial Corporation
+PFPT	# "Proofpoint
+PFSW	# "PFSweb
+PGC	# Peapack
+PGNX	# Progenics Pharmaceuticals Inc.
+PGTI	# "PGT
+PHII	# "PHI
+PHIIK	# "PHI
+PHMD	# "PhotoMedex
+PICO	# PICO Holdings Inc.
+PIH	# "1347 Property Insurance Holdings
+PINC	# "Premier
+PKBK	# "Parke Bancorp
+PKOH	# Park
+PKT	# "Procera Networks
+PLAB	# "Photronics
+PLAY	# "Dave & Buster's Entertainment
+PLBC	# Plumas Bancorp
+PLCE	# "Children's Place
+PLCM	# "Polycom
+PLKI	# "Popeyes Louisiana Kitchen
+PLMT	# "Palmetto Bancshares
+PLNR	# "Planar Systems
+PLPC	# Preformed Line Products Company
+PLPM	# "Planet Payment
+PLTM	# First Trust ISE Global Platinum Index Fund
+PLUG	# "Plug Power
+PLUS	# ePlus inc.
+PLXS	# Plexus Corp.
+PMBC	# Pacific Mercantile Bancorp
+PMCS	# PMC
+PMD	# Psychemedics Corporation
+PME	# Pingtan Marine Enterprise Ltd.
+PMFG	# "PMFG
+PNBK	# Patriot National Bancorp Inc.
+PNFP	# "Pinnacle Financial Partners
+PNNT	# PennantPark Investment Corporation
+PNQI	# PowerShares Nasdaq Internet Portfolio
+PNRA	# Panera Bread Company
+PNRG	# PrimeEnergy Corporation
+PNTR	# Pointer Telocation Ltd.
+PODD	# Insulet Corporation
+POOL	# Pool Corporation
+POPE	# Pope Resources
+POWI	# "Power Integrations
+POWL	# "Powell Industries
+POZN	# "Pozen
+PPBI	# Pacific Premier Bancorp Inc
+PPC	# Pilgrim's Pride Corporation
+PPHM	# Peregrine Pharmaceuticals Inc.
+PPHMP	# Peregrine Pharmaceuticals Inc.
+PPSI	# "Pioneer Power Solutions
+PRAA	# "PRA Group
+PRAH	# "PRA Health Sciences
+PRAN	# Prana Biotechnology Ltd
+PRCP	# "Perceptron
+PRFT	# "Perficient
+PRFZ	# PowerShares FTSE RAFI US 1500 Small
+PRGN	# Paragon Shipping Inc.
+PRGNL	# Paragon Shipping Inc.
+PRGS	# Progress Software Corporation
+PRGX	# "PRGX Global
+PRIM	# Primoris Services Corporation
+PRKR	# "ParkerVision
+PRLS	# Peerless Systems Corporation
+PRMW	# Primo Water Corporation
+PROV	# "Provident Financial Holdings
+PRPH	# "ProPhase Labs
+PRQR	# ProQR Therapeutics N.V.
+PRSC	# The Providence Service Corporation
+PRSS	# CafePress Inc.
+PRTA	# Prothena Corporation plc
+PRTK	# "Paratek Pharmaceuticals
+PRTO	# "Proteon Therapeutics
+PRTS	# "U.S. Auto Parts Network
+PRXI	# "Premier Exhibitions
+PRXL	# PAREXEL International Corporation
+PSAU	# PowerShares Global Gold & Precious Metals Portfolio
+PSBH	# "PSB Holdings
+PSCC	# PowerShares S&P SmallCap Consumer Staples Portfolio
+PSCD	# PowerShares S&P SmallCap Consumer Discretionary Portfolio
+PSCE	# PowerShares S&P SmallCap Energy Portfolio
+PSCF	# PowerShares S&P SmallCap Financials Portfolio
+PSCH	# PowerShares S&P SmallCap Health Care Portfolio
+PSCI	# PowerShares S&P SmallCap Industrials Portfolio
+PSCM	# PowerShares S&P SmallCap Materials Portfolio
+PSCT	# PowerShares S&P SmallCap Information Technology Portfolio
+PSCU	# PowerShares S&P SmallCap Utilities Portfolio
+PSDV	# pSivida Corp.
+PSEC	# Prospect Capital Corporation
+PSEM	# Pericom Semiconductor Corporation
+PSIX	# "Power Solutions International
+PSMT	# "PriceSmart
+PSTB	# Park Sterling Corporation
+PSTI	# "Pluristem Therapeutics
+PSTR	# PostRock Energy Corporation
+PSUN	# "Pacific Sunwear of California
+PTBI	# "PlasmaTech Biopharmaceuticals
+PTBIW	# "PlasmaTech Biopharmaceuticals
+PTC	# PTC Inc.
+PTCT	# "PTC Therapeutics
+PTEN	# Patterson
+PTIE	# Pain Therapeutics
+PTLA	# "Portola Pharmaceuticals
+PTNR	# Partner Communications Company Ltd.
+PTNT	# Internet Patents Corporation
+PTRY	# "The Pantry
+PTSI	# "P.A.M. Transportation Services
+PTX	# "Pernix Therapeutics Holdings
+PULB	# Pulaski Financial Corp.
+PVTB	# "PrivateBancorp
+PVTBP	# "PrivateBancorp
+PWOD	# "Penns Woods Bancorp
+PWRD	# "Perfect World Co.
+PWX	# Providence and Worcester Railroad Company
+PXLW	# "Pixelworks
+PZZA	# "Papa John'S International
+QABA	# First Trust NASDAQ ABA Community Bank Index Fund
+QADA	# QAD Inc.
+QADB	# QAD Inc.
+QAT	# iShares MSCI Qatar Capped ETF
+QBAK	# Qualstar Corporation
+QCCO	# "QC Holdings
+QCLN	# First Trust NASDAQ Clean Edge Green Energy Index Fund
+QCOM	# QUALCOMM Incorporated
+QCRH	# "QCR Holdings
+QDEL	# Quidel Corporation
+QGEN	# Qiagen N.V.
+QINC	# First Trust RBA Quality Income ETF
+QIWI	# QIWI plc
+QKLS	# "QKL Stores
+QLGC	# QLogic Corporation
+QLIK	# Qlik Technologies Inc.
+QLTI	# QLT Inc.
+QLTY	# "Quality Distribution
+QLYS	# "Qualys
+QNST	# "QuinStreet
+QQEW	# First Trust NASDAQ
+QQQ	# "PowerShares QQQ Trust
+QQQC	# Global X NASDAQ China Technology ETF
+QQQX	# Nuveen NASDAQ 100 Dynamic Overwrite Fund
+QQXT	# First Trust NASDAQ
+QRHC	# Quest Resource Holding Corporation.
+QRVO	# "Qorvo
+QSII	# "Quality Systems
+QTEC	# First Trust NASDAQ
+QTNT	# Quotient Limited
+QTNTW	# Quotient Limited
+QTWW	# "Quantum Fuel Systems Technologies Worldwide
+QUIK	# QuickLogic Corporation
+QUMU	# Qumu Corporation
+QUNR	# Qunar Cayman Islands Limited
+QURE	# uniQure N.V.
+QVCA	# Liberty Interactive Corporation
+QVCB	# Liberty Interactive Corporation
+QYLD	# Recon Capital NASDAQ
+RADA	# Rada Electronics Industries Limited
+RAIL	# "Freightcar America
+RAND	# Rand Capital Corporation
+RARE	# Ultragenyx Pharmaceutical Inc.
+RAVE	# "Rave Restaurant Group
+RAVN	# "Raven Industries
+RBCAA	# "Republic Bancorp
+RBCN	# "Rubicon Technology
+RBPAA	# "Royal Bancshares of Pennsylvania
+RCII	# Rent
+RCKY	# "Rocky Brands
+RCMT	# "RCM Technologies
+RCON	# "Recon Technology
+RCPI	# "Rock Creek Pharmaceuticals
+RCPT	# "Receptos
+RDCM	# Radcom Ltd.
+RDEN	# "Elizabeth Arden
+RDHL	# Redhill Biopharma Ltd.
+RDI	# Reading International Inc
+RDIB	# Reading International Inc
+RDNT	# "RadNet
+RDUS	# "Radius Health
+RDVY	# First Trust NASDAQ Rising Dividend Achievers ETF
+RDWR	# Radware Ltd.
+RECN	# "Resources Connection
+REDF	# Rediff.com India Limited
+REFR	# Research Frontiers Incorporated
+REGI	# "Renewable Energy Group
+REGN	# "Regeneron Pharmaceuticals
+REIS	# "Reis
+RELL	# "Richardson Electronics
+RELV	# "Reliv' International
+REMY	# "Remy International
+RENT	# Rentrak Corporation
+REPH	# "Recro Pharma
+RESN	# Resonant Inc.
+REXI	# "Resource America
+REXX	# Rex Energy Corporation
+RFIL	# "RF Industries
+RGCO	# RGC Resources Inc.
+RGDO	# "Regado BioSciences
+RGDX	# "Response Genetics
+RGEN	# Repligen Corporation
+RGLD	# "Royal Gold
+RGLS	# Regulus Therapeutics Inc.
+RGSE	# "Real Goods Solar
+RIBT	# RiceBran Technologies
+RIBTW	# RiceBran Technologies
+RICK	# "RCI Hospitality Holdings
+RIGL	# "Rigel Pharmaceuticals
+RITT	# RIT Technologies Ltd.
+RITTW	# RIT Technologies Ltd.
+RIVR	# River Valley Bancorp.
+RJET	# "Republic Airways Holdings
+RLJE	# "RLJ Entertainment
+RLOC	# "ReachLocal
+RLOG	# "Rand Logistics
+RLYP	# "Relypsa
+RMBS	# "Rambus
+RMCF	# "Rocky Mountain Chocolate Factory
+RMGN	# RMG Networks Holding Corporation
+RMTI	# "Rockwell Medical
+RNA	# Prosensa Holding N.V.
+RNET	# "RigNet
+RNST	# Renasant Corporation
+RNWK	# "RealNetworks
+ROBO	# Robo
+ROCK	# "Gibraltar Industries
+ROIA	# "Radio One
+ROIAK	# "Radio One
+ROIC	# Retail Opportunity Investments Corp.
+ROIQ	# ROI Acquisition Corp. II
+ROIQU	# ROI Acquisition Corp. II
+ROIQW	# ROI Acquisition Corp. II
+ROKA	# "Roka Bioscience
+ROLL	# RBC Bearings Incorporated
+ROSE	# Rosetta Resources Inc.
+ROSG	# Rosetta Genomics Ltd.
+ROST	# "Ross Stores
+ROVI	# Rovi Corporation
+ROYL	# "Royale Energy
+RP	# "RealPage
+RPRX	# Repros Therapeutics Inc.
+RPRXW	# Repros Therapeutics Inc.
+RPRXZ	# Repros Therapeutics Inc.
+RPTP	# Raptor Pharmaceutical Corp.
+RPXC	# RPX Corporation
+RRD	# R.R. Donnelley & Sons Company
+RRGB	# "Red Robin Gourmet Burgers
+RRST	# RRSat Global Communications Network Ltd.
+RSTI	# Rofin
+RSYS	# RadiSys Corporation
+RTGN	# "Ruthigen
+RTIX	# "RTI Surgical
+RTK	# "Rentech
+RTRX	# "Retrophin
+RUSHA	# "Rush Enterprises
+RUSHB	# "Rush Enterprises
+RUTH	# "Ruth's Hospitality Group
+RVBD	# "Riverbed Technology
+RVLT	# "Revolution Lighting Technologies
+RVNC	# "Revance Therapeutics
+RVSB	# Riverview Bancorp Inc
+RWLK	# ReWalk Robotics Ltd
+RXDX	# "Ignyta
+RXII	# RXi Pharmaceuticals Corporation
+RYAAY	# Ryanair Holdings plc
+SAAS	# "inContact
+SABR	# Sabre Corporation
+SAEX	# "SAExploration Holdings
+SAFM	# "Sanderson Farms
+SAFT	# "Safety Insurance Group
+SAGE	# "Sage Therapeutics
+SAIA	# "Saia
+SAJA	# "Sajan
+SAL	# "Salisbury Bancorp
+SALE	# "RetailMeNot
+SALM	# Salem Communications Corporation
+SAMG	# Silvercrest Asset Management Group Inc.
+SANM	# Sanmina Corporation
+SANW	# S&W Seed Company
+SANWZ	# S&W Seed Company
+SAPE	# Sapient Corporation
+SASR	# "Sandy Spring Bancorp
+SATS	# EchoStar Corporation
+SAVE	# "Spirit Airlines
+SBAC	# SBA Communications Corporation
+SBBX	# Sussex Bancorp
+SBCF	# Seacoast Banking Corporation of Florida
+SBCP	# "Sunshine Bancorp
+SBFG	# "SB Financial Group
+SBGI	# "Sinclair Broadcast Group
+SBLK	# Star Bulk Carriers Corp.
+SBLKL	# Star Bulk Carriers Corp.
+SBNY	# Signature Bank
+SBNYW	# Signature Bank
+SBRA	# "Sabra Healthcare REIT
+SBRAP	# "Sabra Healthcare REIT
+SBSA	# "Spanish Broadcasting System
+SBSI	# "Southside Bancshares
+SBUX	# Starbucks Corporation
+SCAI	# "Surgical Care Affiliates
+SCHL	# Scholastic Corporation
+SCHN	# "Schnitzer Steel Industries
+SCLN	# "SciClone Pharmaceuticals
+SCMP	# "Sucampo Pharmaceuticals
+SCOK	# "SinoCoking Coal and Coke Chemical Industries
+SCON	# Superconductor Technologies Inc.
+SCOR	# "comScore
+SCSC	# "ScanSource
+SCSS	# Select Comfort Corporation
+SCTY	# SolarCity Corporation
+SCVL	# "Shoe Carnival
+SCYX	# "SCYNEXIS
+SEAC	# "SeaChange International
+SEED	# Origin Agritech Limited
+SEIC	# SEI Investments Company
+SEMI	# SunEdison Semiconductor Limited
+SENEA	# Seneca Foods Corp.
+SENEB	# Seneca Foods Corp.
+SEV	# "Sevcon
+SFBC	# "Sound Financial Bancorp
+SFBS	# "ServisFirst Bancshares
+SFLY	# "Shutterfly
+SFM	# "Sprouts Farmers Market
+SFNC	# Simmons First National Corporation
+SFST	# "Southern First Bancshares
+SFXE	# "SFX Entertainment
+SGBK	# Stonegate Bank
+SGC	# "Superior Uniform Group
+SGEN	# "Seattle Genetics
+SGI	# Silicon Graphics International Corp
+SGMA	# "SigmaTron International
+SGMO	# "Sangamo BioSciences
+SGMS	# Scientific Games Corp
+SGNL	# "Signal Genetics
+SGNT	# "Sagent Pharmaceuticals
+SGOC	# "SGOCO Group
+SGRP	# "SPAR Group
+SGYP	# "Synergy Pharmaceuticals
+SGYPU	# "Synergy Pharmaceuticals
+SGYPW	# "Synergy Pharmaceuticals
+SHBI	# Shore Bancshares Inc
+SHEN	# Shenandoah Telecommunications Co
+SHIP	# Seanergy Maritime Holdings Corp
+SHLD	# Sears Holdings Corporation
+SHLDW	# Sears Holdings Corporation
+SHLM	# "A. Schulman
+SHLO	# "Shiloh Industries
+SHOO	# "Steven Madden
+SHOR	# "ShoreTel
+SHOS	# "Sears Hometown and Outlet Stores
+SHPG	# Shire plc
+SIAL	# Sigma
+SIBC	# "State Investors Bancorp
+SIEB	# Siebert Financial Corp.
+SIEN	# "Sientra
+SIFI	# "SI Financial Group
+SIFY	# Sify Technologies Limited
+SIGA	# SIGA Technologies Inc.
+SIGI	# "Selective Insurance Group
+SIGM	# "Sigma Designs
+SILC	# Silicom Ltd
+SIMG	# "Silicon Image
+SIMO	# Silicon Motion Technology Corporation
+SINA	# Sina Corporation
+SINO	# Sino
+SIRI	# Sirius XM Holdings Inc.
+SIRO	# "Sirona Dental Systems
+SIVB	# SVB Financial Group
+SIVBO	# SVB Financial Group
+SIXD	# "6D Global Technologies
+SKBI	# Skystar Bio
+SKIS	# "Peak Resorts
+SKOR	# FlexShares Credit
+SKUL	# "Skullcandy
+SKYS	# "Sky Solar Holdings
+SKYW	# "SkyWest
+SKYY	# First Trust ISE Cloud Computing Index Fund
+SLAB	# "Silicon Laboratories
+SLCT	# "Select Bancorp
+SLGN	# Silgan Holdings Inc.
+SLM	# SLM Corporation
+SLMAP	# SLM Corporation
+SLMBP	# SLM Corporation
+SLP	# "Simulations Plus
+SLRC	# Solar Capital Ltd.
+SLTC	# "Selectica
+SLVO	# Credit Suisse AG
+SLXP	# "Salix Pharmaceuticals
+SMAC	# Sino Mercury Acquisition Corp.
+SMACR	# Sino Mercury Acquisition Corp.
+SMACU	# Sino Mercury Acquisition Corp.
+SMBC	# "Southern Missouri Bancorp
+SMCI	# "Super Micro Computer
+SMED	# Sharps Compliance Corp
+SMIT	# "Schmitt Industries
+SMLR	# "Semler Scientific
+SMMF	# "Summit Financial Group
+SMPL	# Simplicity Bancorp Inc.
+SMRT	# "Stein Mart
+SMSI	# "Smith Micro Software
+SMT	# SMART Technologies Inc.
+SMTC	# Semtech Corporation
+SMTP	# "SMTP
+SMTX	# SMTC Corporation
+SNAK	# "Inventure Foods
+SNBC	# "Sun Bancorp
+SNC	# "State National Companies
+SNCR	# "Synchronoss Technologies
+SNDK	# SanDisk Corporation
+SNFCA	# Security National Financial Corporation
+SNHY	# Sun Hydraulics Corporation
+SNMX	# "Senomyx
+SNPS	# "Synopsys
+SNSS	# "Sunesis Pharmaceuticals
+SNTA	# Synta Pharmaceuticals Corp.
+SOCB	# Southcoast Financial Corporation
+SOCL	# Global X Social Media Index ETF
+SODA	# SodaStream International Ltd.
+SOFO	# "Sonic Foundry
+SOHO	# Sotherly Hotels Inc.
+SOHOL	# Sotherly Hotels LP
+SOHOM	# Sotherly Hotels LP
+SOHU	# Sohu.com Inc.
+SONA	# "Southern National Bancorp of Virginia
+SONC	# Sonic Corp.
+SONS	# "Sonus Networks
+SORL	# "SORL Auto Parts
+SOXX	# iShares PHLX SOX Semiconductor Sector Index Fund
+SP	# SP Plus Corporation
+SPAN	# Span
+SPAR	# "Spartan Motors
+SPCB	# "SuperCom
+SPDC	# "Speed Commerce
+SPEX	# Spherix Incorporated
+SPHS	# "Sophiris Bio
+SPIL	# "Siliconware Precision Industries Company
+SPKE	# "Spark Energy
+SPLK	# Splunk Inc.
+SPLS	# "Staples
+SPNC	# The Spectranetics Corporation
+SPNS	# Sapiens International Corporation N.V.
+SPOK	# "Spok Holdings
+SPPI	# "Spectrum Pharmaceuticals
+SPPR	# "Supertel Hospitality
+SPPRO	# "Supertel Hospitality
+SPPRP	# "Supertel Hospitality
+SPRO	# SmartPros Ltd.
+SPRT	# "support.com
+SPSC	# "SPS Commerce
+SPTN	# SpartanNash Company
+SPU	# "SkyPeople Fruit Juice
+SPWH	# "Sportsman's Warehouse Holdings
+SPWR	# SunPower Corporation
+SQBG	# "Sequential Brands Group
+SQBK	# "Square 1 Financial
+SQI	# "SciQuest
+SQNM	# "Sequenom
+SQQQ	# ProShares UltraPro Short QQQ
+SRCE	# 1st Source Corporation
+SRCL	# "Stericycle
+SRDX	# "SurModics
+SREV	# "ServiceSource International
+SRNE	# "Sorrento Therapeutics
+SRPT	# "Sarepta Therapeutics
+SRSC	# Sears Canada Inc.
+SSB	# South State Corporation
+SSBI	# Summit State Bank
+SSFN	# Stewardship Financial Corp
+SSH	# Sunshine Heart Inc
+SSNC	# "SS&C Technologies Holdings
+SSRG	# Symmetry Surgical Inc.
+SSRI	# Silver Standard Resources Inc.
+SSYS	# "Stratasys
+STAA	# STAAR Surgical Company
+STB	# Student Transportation Inc
+STBA	# "S&T Bancorp
+STBZ	# State Bank Financial Corporation.
+STCK	# "Stock Building Supply Holdings
+STEM	# "StemCells
+STFC	# State Auto Financial Corporation
+STKL	# "SunOpta
+STLD	# "Steel Dynamics
+STLY	# "Stanley Furniture Company
+STML	# "Stemline Therapeutics
+STMP	# Stamps.com Inc.
+STNR	# Steiner Leisure Limited
+STPP	# Barclays PLC
+STRA	# "Strayer Education
+STRL	# Sterling Construction Company Inc
+STRM	# "Streamline Health Solutions
+STRN	# Sutron Corporation
+STRS	# "Stratus Properties
+STRT	# Strattec Security Corporation
+STRZA	# Starz
+STRZB	# Starz
+STX	# Seagate Technology.
+STXS	# "Stereotaxis
+SUBK	# Suffolk Bancorp
+SUMR	# "Summer Infant
+SUNS	# Solar Senior Capital Ltd.
+SUPN	# "Supernus Pharmaceuticals
+SURG	# "Synergetics USA
+SUSQ	# "Susquehanna Bancshares
+SUTR	# Sutor Technology Group Limited
+SVA	# "Sinovac Biotech
+SVBI	# Severn Bancorp Inc
+SVVC	# "Firsthand Technology Value Fund
+SWHC	# Smith & Wesson Holding Corporation
+SWIR	# "Sierra Wireless
+SWKS	# "Skyworks Solutions
+SWSH	# "Swisher Hygiene
+SYBT	# "Stock Yards Bancorp
+SYKE	# "Sykes Enterprises
+SYMC	# Symantec Corporation
+SYMX	# "Synthesis Energy Systems
+SYNA	# Synaptics Incorporated
+SYNC	# "Synacor
+SYNL	# Synalloy Corporation
+SYNT	# "Syntel
+SYPR	# "Sypris Solutions
+SYRX	# Sysorex Global Holding Corp.
+SYUT	# "Synutra International
+SZMK	# Sizmek Inc.
+SZYM	# "Solazyme
+TACT	# TransAct Technologies Incorporated
+TAIT	# Taitron Components Incorporated
+TAPR	# Barclays PLC
+TASR	# "TASER International
+TAST	# "Carrols Restaurant Group
+TATT	# TAT Technologies Ltd.
+TAX	# "Liberty Tax
+TAXI	# Medallion Financial Corp.
+TAYD	# "Taylor Devices
+TBBK	# "The Bancorp
+TBIO	# "Transgenomic
+TBK	# "Triumph Bancorp
+TBNK	# Territorial Bancorp Inc.
+TBPH	# "Theravance Biopharma
+TCBI	# "Texas Capital Bancshares
+TCBIL	# "Texas Capital Bancshares
+TCBIP	# "Texas Capital Bancshares
+TCBIW	# "Texas Capital Bancshares
+TCBK	# TriCo Bancshares
+TCCO	# Technical Communications Corporation
+TCFC	# The Community Financial Corporation
+TCPC	# TCP Capital Corp.
+TCRD	# "THL Credit
+TCX	# Tucows Inc.
+TDIV	# First Trust Exchange
+TEAR	# TearLab Corporation
+TECD	# Tech Data Corporation
+TECH	# Bio
+TECU	# Tecumseh Products Company
+TEDU	# "Tarena International
+TENX	# "Tenax Therapeutics
+TERP	# "TerraForm Power
+TESO	# Tesco Corporation
+TESS	# TESSCO Technologies Incorporated
+TFM	# "The Fresh Market
+TFSC	# 1347 Capital Corp.
+TFSCR	# 1347 Capital Corp.
+TFSCU	# 1347 Capital Corp.
+TFSCW	# 1347 Capital Corp.
+TFSL	# TFS Financial Corporation
+TGA	# Transglobe Energy Corp
+TGE	# "TGC Industries
+TGEN	# Tecogen Inc.
+TGLS	# Tecnoglass Inc.
+TGTX	# "TG Therapeutics
+THFF	# First Financial Corporation Indiana
+THLD	# "Threshold Pharmaceuticals
+THOR	# Thoratec Corporation
+THRM	# Gentherm Inc
+THRX	# "Theravance
+THST	# Truett
+THTI	# "THT Heat Transfer Technology
+TICC	# TICC Capital Corp.
+TIGR	# TigerLogic Corporation
+TILE	# "Interface
+TINY	# "Harris & Harris Group
+TIPT	# Tiptree Financial Inc.
+TISA	# "Top Image Systems
+TITN	# Titan Machinery Inc.
+TIVO	# TiVo Inc.
+TKAI	# "Tokai Pharmaceuticals
+TKMR	# Tekmira Pharmaceuticals Corp
+TLF	# "Tandy Leather Factory
+TLMR	# "Talmer Bancorp
+TLOG	# TetraLogic Pharmaceuticals Corporation
+TNAV	# "Telenav
+TNDM	# "Tandem Diabetes Care
+TNGO	# "Tangoe
+TNXP	# Tonix Pharmaceuticals Holding Corp.
+TOPS	# TOP Ships Inc.
+TORM	# TOR Minerals International Inc
+TOUR	# Tuniu Corporation
+TOWN	# Towne Bank
+TQQQ	# ProShares UltraPro QQQ
+TRAK	# "Dealertrack Technologies
+TRCB	# Two River Bancorp
+TRCH	# "Torchlight Energy Resources
+TREE	# "LendingTree
+TRGT	# "Targacept
+TRIB	# Trinity Biotech plc
+TRIL	# Trillium Therapeutics Inc.
+TRIP	# "TripAdvisor
+TRIV	# "TriVascular Technologies
+TRMB	# Trimble Navigation Limited
+TRMK	# Trustmark Corporation
+TRNS	# "Transcat
+TRNX	# Tornier N.V.
+TROV	# "TrovaGene
+TROVU	# "TrovaGene
+TROVW	# "TrovaGene
+TROW	# "T. Rowe Price Group
+TRS	# TriMas Corporation
+TRST	# TrustCo Bank Corp NY
+TRTL	# Terrapin 3 Acquisition Corporation
+TRTLU	# Terrapin 3 Acquisition Corporation
+TRTLW	# Terrapin 3 Acquisition Corporation
+TRUE	# "TrueCar
+TRVN	# "Trevena
+TSBK	# "Timberland Bancorp
+TSC	# "TriState Capital Holdings
+TSCO	# Tractor Supply Company
+TSEM	# Tower Semiconductor Ltd.
+TSLA	# "Tesla Motors
+TSRA	# "Tessera Technologies
+TSRE	# "Trade Street Residential
+TSRI	# "TSR
+TSRO	# "TESARO
+TST	# "TheStreet
+TSYS	# "TeleCommunication Systems
+TTEC	# "TeleTech Holdings
+TTEK	# "Tetra Tech
+TTGT	# "TechTarget
+TTHI	# "Transition Therapeutics
+TTMI	# "TTM Technologies
+TTOO	# "T2 Biosystems
+TTPH	# "Tetraphase Pharmaceuticals
+TTS	# "Tile Shop Hldgs
+TTWO	# Take
+TUBE	# "TubeMogul
+TUES	# Tuesday Morning Corp.
+TUSA	# First Trust Total US Market AlphaDEX ETF
+TVIX	# Credit Suisse AG
+TVIZ	# Credit Suisse AG
+TWER	# Towerstream Corporation
+TWIN	# "Twin Disc
+TWMC	# Trans World Entertainment Corp.
+TWOU	# "2U
+TXN	# Texas Instruments Incorporated
+TXRH	# "Texas Roadhouse
+TYPE	# Monotype Imaging Holdings Inc.
+TZOO	# Travelzoo Inc.
+UACL	# "Universal Truckload Services
+UAE	# iShares MSCI UAE Capped ETF
+UBCP	# "United Bancorp
+UBFO	# United Security Bancshares
+UBIC	# "UBIC
+UBNK	# "United Financial Bancorp
+UBNT	# "Ubiquiti Networks
+UBOH	# "United Bancshares
+UBSH	# Union Bankshares Corporation
+UBSI	# "United Bankshares
+UCBA	# United Community Bancorp
+UCBI	# "United Community Banks
+UCFC	# United Community Financial Corp.
+UCTT	# "Ultra Clean Holdings
+UDF	# United Development Funding IV
+UEIC	# Universal Electronics Inc.
+UEPS	# "Net 1 UEPS Technologies
+UFCS	# "United Fire Group
+UFPI	# "Universal Forest Products
+UFPT	# "UFP Technologies
+UG	# United
+UGLD	# Credit Suisse AG
+UHAL	# Amerco
+UIHC	# United Insurance Holdings Corp.
+ULBI	# Ultralife Corporation
+ULTA	# "Ulta Salon
+ULTI	# "The Ultimate Software Group
+ULTR	# Ultrapetrol (Bahamas) Limited
+UMBF	# UMB Financial Corporation
+UMPQ	# Umpqua Holdings Corporation
+UNAM	# Unico American Corporation
+UNB	# "Union Bankshares
+UNFI	# "United Natural Foods
+UNIS	# Unilife Corporation
+UNTD	# "United Online
+UNTY	# "Unity Bancorp
+UNXL	# Uni
+UPI	# "Uroplasty
+UPIP	# "Unwired Planet
+UPLD	# "Upland Software
+URBN	# "Urban Outfitters
+URRE	# "Uranium Resources
+USAK	# "USA Truck
+USAP	# "Universal Stainless & Alloy Products
+USAT	# "USA Technologies
+USATP	# "USA Technologies
+USBI	# "United Security Bancshares
+USCR	# "U S Concrete
+USEG	# U.S. Energy Corp.
+USLM	# "United States Lime & Minerals
+USLV	# Credit Suisse AG
+USMD	# "USMD Holdings
+USTR	# United Stationers Inc.
+UTEK	# "Ultratech
+UTHR	# United Therapeutics Corporation
+UTIW	# UTi Worldwide Inc.
+UTMD	# "Utah Medical Products
+UTSI	# UTStarcom Holdings Corp
+UVSP	# Univest Corporation of Pennsylvania
+VA	# Virgin America Inc.
+VALU	# "Value Line
+VALX	# Validea Market Legends ETF
+VASC	# "Vascular Solutions
+VBFC	# Village Bank and Trust Financial Corp.
+VBIV	# VBI Vaccines Inc.
+VBLT	# Vascular Biogenics Ltd.
+VBND	# Vident Core U.S. Bond Strategy Fund
+VBTX	# "Veritex Holdings
+VCEL	# Vericel Corporation
+VCIT	# Vanguard Intermediate
+VCLT	# Vanguard Long
+VCSH	# Vanguard Short
+VCYT	# "Veracyte
+VDSI	# "VASCO Data Security International
+VECO	# Veeco Instruments Inc.
+VGGL	# Viggle Inc.
+VGIT	# Vanguard Intermediate
+VGLT	# Vanguard Long
+VGSH	# Vanguard Short
+VIA	# Viacom Inc.
+VIAB	# Viacom Inc.
+VIAS	# "Viasystems Group
+VICL	# Vical Incorporated
+VICR	# Vicor Corporation
+VIDE	# Video Display Corporation
+VIDI	# Vident International Equity Fund
+VIEW	# "Viewtran Group
+VIIX	# Credit Suisse AG
+VIIZ	# Credit Suisse AG
+VIMC	# Vimicro International Corporation
+VIP	# VimpelCom Ltd.
+VIRC	# Virco Manufacturing Corporation
+VISN	# "VisionChina Media
+VIVO	# Meridian Bioscience Inc.
+VLCCF	# Knightsbridge Shipping Limited
+VLGEA	# "Village Super Market
+VLTC	# Voltari Corporation
+VLYWW	# Valley National Bancorp
+VMBS	# Vanguard Mortgage
+VNDA	# Vanda Pharmaceuticals Inc.
+VNET	# "21Vianet Group
+VNOM	# Viper Energy Partners LP
+VNQI	# Vanguard Global ex
+VNR	# Vanguard Natural Resources LLC
+VNRAP	# Vanguard Natural Resources LLC
+VNRBP	# Vanguard Natural Resources LLC
+VNRCP	# Vanguard Natural Resources LLC
+VOD	# Vodafone Group Plc
+VOLC	# Volcano Corporation
+VONE	# Vanguard Russell 1000 ETF
+VONG	# Vanguard Russell 1000 Growth ETF
+VONV	# Vanguard Russell 1000 Value ETF
+VOXX	# VOXX International Corporation
+VPCO	# Vapor Corp.
+VRA	# "Vera Bradley
+VRML	# "Vermillion
+VRNG	# "Vringo
+VRNGW	# "Vringo
+VRNS	# "Varonis Systems
+VRNT	# Verint Systems Inc.
+VRSK	# "Verisk Analytics
+VRSN	# "VeriSign
+VRTA	# "Vestin Realty Mortgage I
+VRTB	# "Vestin Realty Mortgage II
+VRTS	# "Virtus Investment Partners
+VRTU	# Virtusa Corporation
+VRTX	# Vertex Pharmaceuticals Incorporated
+VSAR	# "Versartis
+VSAT	# "ViaSat
+VSCI	# Vision
+VSCP	# "VirtualScopics
+VSEC	# VSE Corporation
+VSTM	# "Verastem
+VTAE	# "Vitae Pharmaceuticals
+VTHR	# Vanguard Russell 3000 ETF
+VTIP	# Vanguard Short
+VTL	# "Vital Therapies
+VTNR	# "Vertex Energy
+VTSS	# Vitesse Semiconductor Corporation
+VTWG	# Vanguard Russell 2000 Growth ETF
+VTWO	# Vanguard Russell 2000 ETF
+VTWV	# Vanguard Russell 2000 Value ETF
+VUSE	# Vident Core US Equity ETF
+VVUS	# "VIVUS
+VWOB	# Vanguard Emerging Markets Government Bond ETF
+VWR	# VWR Corporation
+VXUS	# Vanguard Total International Stock ETF
+VYFC	# Valley Financial Corporation
+WABC	# Westamerica Bancorporation
+WAFD	# "Washington Federal
+WAFDW	# "Washington Federal
+WASH	# "Washington Trust Bancorp
+WATT	# Energous Corporation
+WAVX	# Wave Systems Corp.
+WAYN	# Wayne Savings Bancshares Inc.
+WB	# Weibo Corporation
+WBA	# "Walgreens Boots Alliance
+WBB	# "Westbury Bancorp
+WBKC	# "Wolverine Bancorp
+WBMD	# WebMD Health Corp
+WDC	# Western Digital Corporation
+WDFC	# WD
+WEBK	# "Wellesley Bancorp
+WEN	# Wendy's Company (The)
+WERN	# "Werner Enterprises
+WETF	# "WisdomTree Investments
+WEYS	# "Weyco Group
+WFBI	# WashingtonFirst Bankshares Inc
+WFD	# "Westfield Financial
+WFM	# "Whole Foods Market
+WGBS	# WaferGen Bio
+WHF	# "WhiteHorse Finance
+WHFBL	# "WhiteHorse Finance
+WHLM	# "Wilhelmina International
+WHLR	# "Wheeler Real Estate Investment Trust
+WHLRP	# "Wheeler Real Estate Investment Trust
+WHLRW	# "Wheeler Real Estate Investment Trust
+WIBC	# "Wilshire Bancorp
+WIFI	# "Boingo Wireless
+WILC	# G. Willi
+WILN	# Wi
+WIN	# "Windstream Holdings
+WINA	# Winmark Corporation
+WIRE	# Encore Wire Corporation
+WIX	# Wix.com Ltd.
+WLB	# Westmoreland Coal Company
+WLBPZ	# Westmoreland Coal Company
+WLDN	# "Willdan Group
+WLFC	# Willis Lease Finance Corporation
+WLRH	# WL Ross Holding Corp.
+WLRHU	# WL Ross Holding Corp.
+WLRHW	# WL Ross Holding Corp.
+WMAR	# "West Marine
+WMGI	# "Wright Medical Group
+WMGIZ	# "Wright Medical Group
+WOOD	# iShares S&P Global Timber & Forestry Index Fund
+WOOF	# VCA Inc.
+WPCS	# WPCS International Incorporated
+WPPGY	# WPP plc
+WPRT	# Westport Innovations Inc
+WRES	# "Warren Resources
+WRLD	# World Acceptance Corporation
+WSBC	# "WesBanco
+WSBF	# "Waterstone Financial
+WSCI	# WSI Industries Inc.
+WSFS	# WSFS Financial Corporation
+WSFSL	# WSFS Financial Corporation
+WSTC	# West Corporation
+WSTG	# "Wayside Technology Group
+WSTL	# "Westell Technologies
+WTBA	# West Bancorporation
+WTFC	# Wintrust Financial Corporation
+WTFCW	# Wintrust Financial Corporation
+WTSL	# "The Wet Seal
+WVFC	# WVS Financial Corp.
+WVVI	# "Willamette Valley Vineyards
+WWD	# "Woodward
+WWWW	# "Web.com Group
+WYNN	# "Wynn Resorts
+XBKS	# "Xenith Bankshares
+XCRA	# Xcerra Corporation
+XENE	# Xenon Pharmaceuticals Inc.
+XENT	# "Intersect ENT
+XGTI	# "XG Technology
+XGTIW	# "XG Technology
+XIV	# Credit Suisse AG
+XLNX	# "Xilinx
+XLRN	# Acceleron Pharma Inc.
+XNCR	# "Xencor
+XNET	# Xunlei Limited
+XNPT	# "XenoPort
+XOMA	# XOMA Corporation
+XONE	# The ExOne Company
+XOOM	# Xoom Corporation
+XPLR	# Xplore Technologies Corp
+XRAY	# DENTSPLY International Inc.
+XTLB	# XTL Biopharmaceuticals Ltd.
+XXIA	# Ixia
+YDIV	# First Trust International Multi
+YDLE	# "Yodlee
+YHOO	# Yahoo! Inc.
+YNDX	# Yandex N.V.
+YOD	# "You On Demand Holdings
+YORW	# The York Water Company
+YPRO	# AdvisorShares YieldPro ETF
+YRCW	# "YRC Worldwide
+YY	# YY Inc.
+Z	# "Zillow
+ZAGG	# ZAGG Inc
+ZAZA	# ZaZa Energy Corporation
+ZBRA	# Zebra Technologies Corporation
+ZEUS	# "Olympic Steel
+ZFGN	# "Zafgen
+ZGNX	# "Zogenix
+ZHNE	# "Zhone Technologies
+ZINC	# Horsehead Holding Corp.
+ZION	# Zions Bancorporation
+ZIONW	# Zions Bancorporation
+ZIONZ	# Zions Bancorporation
+ZIOP	# ZIOPHARM Oncology Inc
+ZIV	# Credit Suisse AG
+ZIXI	# Zix Corporation
+ZLTQ	# "ZELTIQ Aesthetics
+ZN	# Zion Oil & Gas Inc
+ZNGA	# Zynga Inc.
+ZSPH	# "ZS Pharma
+ZU	# "zulily
+ZUMZ	# Zumiez Inc.

@@ -19,9 +19,9 @@ class Function(FunctionBase):
         return len(self.defaults)
 
     def invoke(self, interpreter, args=None):
-        scope = Scope(other=self, parent_scope=self)
+        scope = Scope(other=self)
         scope.update_members(args)
-        Environment.enter(scope)
+        restore = Environment.enter(scope)
         interpreter.visit(self.code)
-        Environment.leave()
+        Environment.leave(restore)
         return interpreter.stack.pop()

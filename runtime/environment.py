@@ -22,7 +22,7 @@ class Environment:
     def __init__(self, keywords=None, source=None):
         Environment.current = self
         self.keywords = keywords if keywords is not None else Keywords()
-        self.globals = Scope(name='global', parent_scope=self.keywords, hidden=True)
+        self.globals = Scope(name='global', parent_scope=self.keywords, hidden=True)  # need global scope when initializing intrinsices
         self.scope = self.globals
         self.trees = []
         self.source = source
@@ -62,8 +62,9 @@ class Environment:
             scope = Scope(Environment.current.scope)
         if scope.parent_scope is None:
             scope.parent_scope = Environment.current.scope
+        current = Environment.current.scope
         Environment.current.scope = scope
-        return scope
+        return current
 
     def get_line(self, line):
         if line < len(self.lines):
@@ -71,13 +72,16 @@ class Environment:
         return ''
 
     @staticmethod
-    def leave():
+    def leave(restore=None):
         scope = Environment.current.scope
-        parent = scope.parent_scope
-        if parent is None:
-            parent = Environment.current.globals
-        Environment.current.scope = parent
-        return scope
+        if restore is None:
+            if scope is not None:
+                parent = scope.parent_scope
+                if parent is None:
+                    parent = Environment.current.globals
+                Environment.current.scope = parent
+        else:
+            Environment.current.scope = restore
 
     def set_source(self, source):
         self.source = source

@@ -1,0 +1,152 @@
+# Indices
+^NYA    # NYSE Composite
+^DJI    # DJ Industrials
+^GSPC   # S&P 500
+^IXIC   # Nasdaq
+^NDX    # Nasdaq-100
+^RUT    # Russel 2000
+^FTSE   # FTSE 100
+^N225   # Nikkei 225
+^HSI    # Hang Seng
+DGT	    # SPDR Global Dow Index ETF
+^IRX    # 13 week T-Bill
+^FVX    # 5yr T-Bill
+^TNX    # 10-yr T-Bond
+^VIX    # Volatility
+BTC-USD # Bitcoin
+EURUSD=X # Euro USD
+GBPUSD=X # GBP / US cross
+JPY=X    # USD/JPY cross
+# Futures
+ES=F    # SP500 Futures
+NQ=F    # Nasdaq Futures
+YM=F    # Mini Dow Futures
+# Short ETFs
+DUST	# 2x Gold Bear
+EUFX	# ProShares Euro Short
+PSQ     # ProShares Short QQQ
+SDS	    # ProShares 2x Short S&P
+SH      # ProShares Short S&P500
+SPDN	# Direction S&P 1x Bearish
+SPXS	# Direction S&P 3x Bearish
+SPXU    # ProShares Ultra S&P 500 Short (3x)
+SQQQ    # ProShares 3x Short Nasdaq
+TZA	    # Direxion Daily Sm Cap 3x Bearish (R2K)
+# Broad Market Index ETFs
+FCNTX   # Fideility Contra Fund
+FSMAX   # Fidelity Extended Stock Mkt
+QQQ     # Invesco QQQ Trust (Nasdaq)
+SPY     # SPDR S$P 500 ETF
+VTI     # Vanguard Total Market
+VTSMX	# Vanguard Total Stock Market - Tracks CRSP US Total Market Index
+# Leveraged ETFs
+NUGT	# Gold Miners 3x Bullish
+SCO	    # 2x Short Crude
+SPXL    # Direxion Daily S&P 3x Bullish
+TNA	    # Direxion Daily Sm Cap 3x Bullish (R2K)
+TECL    # Direction 3x Tech Bullish ETF
+TQQQ    # ProShares 3x Bullish QQQ
+UCO     # ProShares Ultra Bloomberg Crude (2x)
+UGL	    # ProShare Ultra Gold
+UPRO    # ProShares S&P 3x Bullish
+# Broad Market Focus ETFs
+FXAIX   # Fideility 500 Index Fund (+20% diversification)
+SWPPX   # Schwab S&P 500 Index Fund
+SWTSX	# Schwab Total Stock Market- DJ Total Stock Mkt Index
+IWM	    # iShres Russell 2000 ETF
+IWV	    # iShares Russell 3000 ETF
+IUSG    # iShares Core S&P 500
+IVV	    # iShores Core S&P 500
+SPLV	# Invesco Low Volatility S&P500
+RSP	    # Gugenheim Equal Weight S&P500
+VFINX	# Vanguard 500 Index Fund (0.14% fees)
+VOO     # Vanguard S&P 500 ETF
+VTWO	# Vanguard Russell 2000 ETF
+WFIVX	# Whilshire 5000 Index ETF
+# International Focused ETFs
+EFA	    # iShares MSCI EAFE Index ETF
+FDIVX   # Fidelity Diversified International (MSCI EAFE)
+FEZ	    # SPDR Euro Stox
+FSPSX   # Fidelity International Index Fund
+IEFA    # iShares Core MSCI EAFE ETF
+SPEU	# Global DJ 50
+VTSNX   # Vanguard Total International Stock Market, Institutional Shares
+VEU     # Vanguard FTSE All-world, Ex US
+VXUS	# Vanguard Ex-US All-world Stock ETF
+# Sector ETFs
+IGV	    # North America S/W
+IHE	    # Invesco Pharma
+IYH	    # iShares Healthcare
+VHT	    # Vanguard Health
+XLV	    # SPDR Healthcare
+XPH	    # SPDR Pharma
+XOP	    # Oil & Gas Exploration
+# Treasury / Bond ETFs
+BOND    # Pimco Bond ETF
+FBND    # Fidelity Total Bond ETF
+TLT     # iShares 20+ year Treasury ETF
+VBIRX   # Vanguard Short-term Managed Bond Fund
+VBTIX   # Vanguard Short-term Managed Bond, Investor Shares
+# Gold & Commodities
+GDX	    # Gold Miner ETF
+GLD     # SPDR Gold Shares
+IAU     # iShares Gold Trust
+JNUG	# Gold Mining Shares (Jr)
+RING	# Global MSCI Gold Miners
+UNG	    # US Natural Gas Fund
+# Currency Hedge ETFs
+DXJ	    # Japan Hedge
+EROTF	# iPath Euro / USD
+EWJ	    # iShare Japan
+FXE	    # Foreign Currency Trust
+HEDJ	# Europe Hedge
+TAIL    # Cambria Tail Hedge ETF
+UDN	    # Invesco Dollar Bearish
+UUP     # Invesco Dollar Bullish
+# US Stocks
+AAPL
+AMGN
+AMZN
+AXP
+AZN     # Astra Zenica (pharma)
+BA      # Boeing
+BABA    # Alibaba
+BRK-B	# Berkshire Hathaway B-shares
+COST	# Costco
+FB
+FDX     # FedEx
+FISV	# FiServ
+GE
+GOOGL   # Alphabet Holdings
+GS
+GSK     # GlaxoSmithKline
+JNJ     # Johnson & Johnson
+JPM
+KHC     # Kraft / Heinz Co
+KO      # Coca-Cola
+LLY     # Eli Lilly
+MNK     # Mallingkrodt (pharma, generics)
+MRK     # Merk
+MSFT
+NFLX
+NKE	    # Nike
+PCRFY   # Panasonic
+PCRFF   # Panasonic (?)
+PDRDF   # Pernod / Ricard SA
+PFE     # Pfizer
+PG	    # Proctor Gamble
+PYPL    # PayPal
+SNE     # Sony
+SNY     # Sanofi (pharma)
+SPGI    # S&P Global (Company)
+SQ	    # Square
+STZ     # Constellation Brands
+TSLA
+UPS     # United Parcel Service
+V       # Visa
+WMT
+# Airlines / Travel
+ALK	    # Alaska AG
+DAL	    # Delta Airlines
+LUV	    # Southwest Airlines
+UAL	    # United

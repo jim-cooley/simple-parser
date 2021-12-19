@@ -1,0 +1,51 @@
+# benchmarks
+^NYA    # NYSE Composite
+^TNX    # *10-yr T-Bill* risk-free rate
+^VIX    # Volatility
+QQQ
+SPY
+# us-equities
+AAPL
+AMGN
+AMZN
+AXP
+AZN     # Astra Zenica (pharma)
+BA      # Boeing
+BABA    # Alibaba
+BRK-B	# Berkshire Hathaway B-shares
+COST	# Costco
+FB
+FDX     # FedEx
+FISV	# FiServ
+GE
+GOOGL   # Alphabet Holdings
+GS
+GSK     # GlaxoSmithKline
+JNJ     # Johnson & Johnson
+JPM
+KO      # Coca-Cola
+LLY     # Eli Lilly
+MNK     # Mallingkrodt (pharma, generics)
+MRK     # Merk
+MSFT
+NFLX
+NKE	    # Nike
+PCRFY   # Panasonic
+PCRFF   # Panasonic (?)
+PDRDF   # Pernod / Ricard SA
+PFE     # Pfizer
+PG	    # Proctor Gamble
+PYPL    # PayPal
+SNE     # Sony
+SNY     # Sanofi (pharma)
+SQ	    # Square
+STZ     # Constellation Brands
+TSLA
+UPS     # United Parcel Service
+V       # Visa
+WMT
+# Airlines
+ALK	# Alaska AG
+DAL	# Delta Airlines
+LUV	# Southwest Airlines
+UAL	# United

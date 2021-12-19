@@ -1,0 +1,146 @@
+# indices
+^DJI    # DJ Industrials
+^FTSE   # FTSE 100
+^FVX    # 5yr T-Bill
+^GSPC   # S&P 500
+^N225   # Nikkei 225
+^NYA    # NYSE Composite
+^HSI    # Hang Seng
+^IRX    # 13 week T-Bill
+^IXIC   # Nasdaq
+^RUT    # Russel 2000
+^TNX    # *10-yr T-Bill* risk-free rate
+^VIX    # Volatility
+# futures-indices
+CD=F	# Dollar June
+CL=F    # Crude Oil (June)
+GC=F	# Gold Aug
+YM=F    # DJ Future
+# currency-indicies
+BTC-USD # Bitcoin
+EURUSD=X # Euro USD
+# broad-etfs
+BIL     # SPDR 1-3mo T-Bill ETF
+DGT	    # SPDR Global Dow Index ETF
+FCNTX   # Fideility Contra Fund
+FEZ	    # SPDR Euro Stox
+FSMAX   # Fidelity Extended Stock Mkt
+FXAIX   # Fideility 500 Index Fundn (+20% diversification)
+IUSG    # iShares Core S&P 500
+IWM	    # iShres Russell 2000 ETF
+IWV	    # iShares Russell 3000 ETF
+IVV	    # iShores Core S&P 500
+PSQ     # ProShares Short QQQ
+QQQ     # Invesco QQQ Trust (Nasdaq)
+RSP	    # Gugenheim Equal Weight S&P500
+SH      # ProShares Short S&P500
+SPGI    # S&P Global (Company)
+SPLV	# Invesco Low Volatility S&P500
+SPY     # SPDR S$P 500 ETF
+SWPPX   # Schwab S&P 500 Index Fund
+SWTSX	# Schwab Total Stock Market- DJ Total Stock Mkt Index
+VFINX	# Vanguard 500 Index Fund (0.14% fees)
+VOO     # Vanguard S&P 500 ETF
+VTI     # Vanguard Total Market
+VTSMX	# Vanguard Total Stock Market - Tracks CRSP US Total Market Index
+VTWO	# Vanguard Russell 2000 ETF
+WFIVX	# Whilshire 5000 Index ETF
+# leveraged-etfs
+SDS	    # ProShares 2x Short S&P
+SPXL    # Direxion Daily S&P 3x Bullish
+SPXS	# Direction S&P 3x Bearish
+SPXU    # ProShares Ultra S&P 500 Short (3x)
+SQQQ    # ProShares 3x Short Nasdaq
+TECL    # Direction 3x Tech Bullish ETF
+TNA	    # Direxion Daily Sm Cap 3x Bullish (R2K)
+TZA	    # Direxion Daily Sm Cap 3x Bearish (R2K)
+TQQQ    # ProShares 3x Bullish QQQ
+UPRO    # ProShares S&P 3x Bullish
+DUST	# 2x Gold Bear
+NUGT	# Gold Miners 3x Bullish
+SCO	    # 2x Short Crude
+UGL	    # ProShare Ultra Gold
+UCO     # ProShares Ultra Bloomberg Crude (2x)
+# sector-etf
+IGV	    # North America S/W
+IHE	    # Invesco Pharma
+IYH	    # iShares Healthcare
+VHT	    # Vanguard Health
+XLV	    # SPDR Healthcare
+XOP	    # Oil & Gas Exploration
+XPH	    # SPDR Pharma
+# international
+EFA	    # iShares MSCI EAFE Index ETF
+FDIVX   # Fidelity Diversified International (MSCI EAFE)
+FSPSX   # Fidelity International Index Fund
+IEFA    # iShares Core MSCI EAFE ETF
+SPEU	# Global DJ 50
+VTSNX   # Vanguard Total International Stock Market, Institutional Shares
+VEU     # Vanguard FTSE All-world, Ex US
+VXUS	# Vanguard Ex-US All-world Stock ETF
+# bonds
+BOND    # Pimco Bond ETF
+FBND    # Fidelity Total Bond ETF
+TLT     # iShares 20+ year Treasury ETF
+VBIRX   # Vanguard Short-term Managed Bond Fund
+# commodities
+GBTC	# Bitcoin Trust (ETF)
+GDX	    # Gold Miner ETF
+GLD     # SPDR Gold Shares
+IAU     # iShares Gold Trust
+JNUG	# Gold Mining Shares (Jr)
+RING	# Global MSCI Gold Miners
+UNG	    # US Natural Gas Fund
+# currency-hedge-etfs
+DXJ	    # Japan Hedge
+EROTF	# iPath Euro / USD
+EUFX	# ProShares Euro Short
+EWJ	    # iShare Japan
+FXE	    # Foreign Currency Trust
+HEDJ	# Europe Hedge
+UDN	    # Invesco Dollar Bearish
+UUP     # Invesco Dollar Bullish
+# us-equities
+AAPL
+AMGN
+AMZN
+AXP
+AZN     # Astra Zenica (pharma)
+BA      # Boeing
+BABA    # Alibaba
+BRK-B	# Berkshire Hathaway B-shares
+COST	# Costco
+FB
+FDX     # FedEx
+FISV	# FiServ
+GE
+GOOGL   # Alphabet Holdings
+GS
+GSK     # GlaxoSmithKline
+JNJ     # Johnson & Johnson
+JPM
+KO      # Coca-Cola
+LLY     # Eli Lilly
+MNK     # Mallingkrodt (pharma, generics)
+MRK     # Merk
+MSFT
+NFLX
+NKE	    # Nike
+PCRFY   # Panasonic
+PDRDF   # Pernod / Ricard SA
+PFE     # Pfizer
+PG	    # Proctor Gamble
+PYPL    # PayPal
+SNE     # Sony
+SNY     # Sanofi (pharma)
+SQ	    # Square
+STZ     # Constellation Brands
+TSLA
+UPS     # United Parcel Service
+V       # Visa
+WMT
+# Airlines
+ALK	# Alaska AG
+DAL	# Delta Airlines
+LUV	# Southwest Airlines
+UAL	# United

@@ -124,16 +124,39 @@ def df_head(df, args):
     return df.head(args[0])
 
 
-def df_index(df=None):
+def df_index(df, values=None):
+    if values:
+        if isinstance(values, IndexedDict):
+            values = values.values()
+        return df.index[values]
     return df.index.values
+
+
+def df_set_index(a, values):
+    if values:
+        a.index.names = values
+
+
+def df_set_idx_names(a, index, value):
+    if value:
+        a.index.names[index] = value
 
 
 def df_info(df=None):
     return df.info
 
 
+def df_query(df, args):
+    expr = args[0]
+    return df.query(expr)
+
+
 def df_shape(df=None):
     return df.shape
+
+
+def df_transpose(df=None):
+    return df.transpose()
 
 
 def df_values(df=None):
@@ -418,7 +441,12 @@ def pdi_head(a, count):
 
 
 def pd_index(args=None):
-    return df_index(args[0])
+    df = args[0]
+    values = args[1]
+    if not isinstance(values, list):
+        values = [values]
+    df.index.names = values
+    return df
 
 
 def pd_info(args=None):
@@ -434,6 +462,66 @@ def pdi_irr(a):
     return a.aggregate(npf.irr)
 
 
+def pdi_max(df):
+    return df.max()
+
+
+def pdi_mean(df):
+    return df.mean()
+
+
+def pdi_median(df):
+    return df.median()
+
+
+def pd_min(args=None):
+    df = args[0]
+    return pdi_min(df)
+
+
+def pdi_min(df):
+    return df.min()
+
+
+def pd_query(args=None):
+    df = args[0]
+    expr = args[1]
+    return df.query(expr)
+
+
+def pd_rename_columns(args=None):
+    df = args[0]
+    columns = args[1]
+    values = args[2]
+    if not isinstance(columns, list):
+        columns = [columns]
+    if isinstance(columns[0], int):
+        columns = [df.columns[x] for x in columns]
+    if not isinstance(values, list):
+        values = [values]
+    return df.rename(columns=dict(zip(columns, values)))
+
+
+def pd_replace(args=None):
+    df = args[0]
+    cond = args[1]
+    if hasattr(args, 'regex'):
+        regex = args.regex
+        args.delete('regex')
+        if isinstance(regex, dict):
+            return df.replace(regex=regex)
+        else:
+            return df.replace(regex=regex, value=args[2])
+    if isinstance(cond, dict):
+        return df.replace(cond)
+    elif isinstance(cond, list):
+        values = args[2]
+        return df.replace(cond, values)
+    else:
+        values = args[2]
+        return df.mask(cond, values)
+
+
 def pd_ret(args=None):
     a = args[0]
     return pdi_ret(a)
@@ -444,7 +532,7 @@ def pdi_ret(a):
 
 
 def s_calcret(s):
-    first = last = None
+    first = last = _min = _max = None
     for ele in s:
         if ele is None:
             continue
@@ -454,9 +542,18 @@ def s_calcret(s):
             continue
         if first is None:
             first = ele
+        if _min is None:
+            _min = ele
+        if _max is None:
+            _max = ele
+        if ele < _min:
+            _min = ele
+        if ele > _max:
+            _max = ele
         last = ele
     if first is not None:
-        return (last - first) / np.abs(first)
+        afirst = np.abs(first)
+        return (last - first) / afirst
     return None
 
 
@@ -531,6 +628,11 @@ def pd_tail(args=None):
 
 def pdi_tail(a, count):
     return a.tail(count)
+
+
+def pd_transpose(args=None):
+    df = args[0]
+    return df_transpose(df)
 
 
 def pd_trim(args=None):

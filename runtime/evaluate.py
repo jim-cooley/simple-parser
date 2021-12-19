@@ -109,13 +109,13 @@ def evaluate_set(node, visitor=None):
     if values is None:
         return None
     scope = Environment.enter(node)
-    node.value = scope
+    node.value = node
     for idx in range(0, len(values)):
         n = values[idx]
         if n is None:
             continue
         visitor.visit(n)
-    Environment.leave()
+    Environment.leave(scope)
     return node
 
 

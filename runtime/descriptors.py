@@ -1,7 +1,8 @@
 from enum import unique, IntEnum
 
 from runtime.pandas import df_index, df_columns, df_axes, df_empty, df_info, df_set_flags, df_shape, df_values, \
-    df_set_columns, df_head, df_set_idx_columns, df_set_at, pd_trim, df_clip
+    df_set_columns, df_head, df_set_idx_columns, df_set_at, pd_trim, df_clip, df_transpose, df_query, df_set_index, \
+    df_set_idx_names
 from runtime.scope import Object
 
 # instead of using distinct types for each native type, we use a generic 'object' as a container
@@ -134,9 +135,11 @@ _descriptors = {
                   'empty': (df_empty, None, None, None, None),
                   'flags': (df_set_flags, None, None, None, None),
                   'head': (df_head, None, None, None, None),
-                  'index': (df_index, None, None, None, None),
+                  'index': (df_index, df_index, df_set_index, None, df_set_idx_names),
                   'info': (df_info, None, None, None, None),
+                  'query': (df_query, None, None, None, None),
                   'shape': (df_shape, None, None, None, None),
+                  'transpose': (df_transpose, None, None, None, None),
                   'trim': (pd_trim, None,  None, None, None),
                   'values': (df_values, None, None, None, None),
                   },

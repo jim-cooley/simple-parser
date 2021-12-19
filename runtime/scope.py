@@ -264,6 +264,7 @@ class FunctionBase(Block):
                 defaults = other.defaults
         super().__init__(name=name, members=members, loc=loc)
         self.arity = arity or 0
+        self.parent_scope = closure
         self.closure = closure
         self.opt = opt or 0
         self.set_token(tid=tid or TK.IDENT, tcl=TCL.FUNCTION, loc=loc, lex=name)

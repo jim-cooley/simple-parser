@@ -26,6 +26,7 @@ _tk2pfx = {
     TK.ANON: '_',
     TK.ANY: 'any',  # any:
     TK.APPLY: 'apply>',  # >>
+    TK.ARRAY: 'array',  # ndarray
     TK.ASSIGN: 'assign',  # =
     TK.BLOCK: 'block',
     TK.BOOL: 'b',
@@ -103,6 +104,7 @@ _tk2pfx = {
 }
 
 _tk2grp = {
+    TK.ARRAY: ['[', ', ', ']', '[]'],
     TK.CHAIN: ['{', ' | ', '}', '{}'],
     TK.DATAFRAME: ['{', ', ',  '}', '{}'],
     TK.DICT: ['{', ', ',  '}', '{}'],

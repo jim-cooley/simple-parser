@@ -29,7 +29,7 @@ class Keywords(Scope):
             self._add_symbol(tkid=tkid, tcl=typ, lex=val)
 
     def load_intrinsics(self):
-        intrinsics = load_intrinsics()
+        intrinsics = load_intrinsics(parent=self)
         for fname, fn in intrinsics.items():
             self._add_name(fname, fn)
 

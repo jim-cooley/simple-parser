@@ -193,9 +193,10 @@ class Interpreter(TreeFilter):
     def process_block(self, node, label=None):
         self._print_node(node)
         block = Block(loc=node.token.location)
-        Environment.enter(block)
+        scope = Scope(other=block)
+        restore = Environment.enter(scope)
         value = self._process_sequence(node)    # UNDONE: likely don't want to evaluate the block, just push it.
-        Environment.leave()
+        Environment.leave(restore)
         if value is not None:
             self.stack.push(value[-1])
         else:
@@ -271,9 +272,9 @@ class Interpreter(TreeFilter):
                 block = reduce_ref(ref=left, value=result, update=True)
                 for ref in block.value:
                     if isinstance(ref, Define):
-                        Environment.enter(block)
+                        restore = Environment.enter(block)
                         self.visit(ref)
-                        Environment.leave()
+                        Environment.leave(restore)
                         ref = self.stack.pop()
                 self.stack.push(block)
         self.dedent()
@@ -392,9 +393,9 @@ class Interpreter(TreeFilter):
                 desc.setAt(left, node.right.name, index, value)
             return
         # invalid?
-        Environment.enter(left)
+        restore = Environment.enter(left)
         self.visit(node.right)
-        Environment.leave()
+        Environment.leave(restore)
 
     # encountered if 'tree' is actually a 'forest'
     def process_native_list(self, list, label=None):
@@ -444,9 +445,9 @@ class Interpreter(TreeFilter):
                     result = desc.get(left, node.right.name)
                     self.stack.push(result)
         else:
-            Environment.enter(left)
+            restore = Environment.enter(left)
             self.visit(node.right)
-            Environment.leave()
+            Environment.leave(restore)
         self.dedent()
 
     # PropSet
@@ -458,9 +459,9 @@ class Interpreter(TreeFilter):
         self.visit(node.value)
         value = self.stack.pop()
         if isinstance(left, Object):
-            Environment.enter(left)
+            restore = Environment.enter(left)
             self.visit(node.right)
-            Environment.leave()
+            Environment.leave(restore)
             prop = self.stack.pop()
             prop.value = value
         else:
@@ -528,7 +529,7 @@ class Interpreter(TreeFilter):
         _fields = []
         _defaults = {}
         if scope is not None:
-            Environment.enter(scope)
+            restore = Environment.enter(scope)
         if fn is None:
             fn = scope
         if hasattr(fn, 'defaults'):
@@ -570,7 +571,7 @@ class Interpreter(TreeFilter):
                 val = self.stack.pop()
                 self._resolve(idx, None, c_unbox(val), _fields, _values)
         if scope is not None:
-            Environment.leave()
+            Environment.leave(restore)
         return IndexedDict(fields=_fields, values=_values)
 
     def _resolve(self, idx, name, value, fields, values):

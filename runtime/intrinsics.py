@@ -14,7 +14,8 @@ from runtime.numpy import np_identity, np_ones, np_zeros, np_reshape, np_flatten
     np_integers, np_fill, npi_trim
 from runtime.pandas import create_dataset, create_series, pd_sma, pd_columns, pd_shift, pd_delta, do_signal, pd_head, \
     pd_tail, pd_boxplot, pd_values, pd_index, pd_info, pd_axes, pd_sum, pd_cumsum, pd_describe, pdi_trim, pd_clip, \
-    pd_clipbefore, pd_combine, pd_count, pdi_irr, pdi_ret
+    pd_clipbefore, pd_combine, pd_count, pdi_irr, pdi_ret, pdi_min, pdi_median, pdi_mean, pdi_max, pd_transpose, \
+    pd_query, pd_rename_columns, pd_replace
 from runtime.print import do_print
 from runtime.scope import FunctionBase
 from runtime.time import do_now
@@ -94,25 +95,25 @@ def invoke_intrinsic_internal(name, args, locator=None):
         raise ValueError(f"Unknown function: {name}")
 
 
-def load_intrinsics(intrinsics=None):
+def load_intrinsics(intrinsics=None, parent=None):
     fndesc = {}
     intrinsics = intrinsics or _intrinsic_fundesc
     for fname, desc in intrinsics.items():
-        fn = init_intrinsic(fname)
+        fn = init_intrinsic(fname, parent=parent)
         fndesc[fname] = fn
     return fndesc
 
 
-def load_intrinsics_not_impl(not_impl=None):
+def load_intrinsics_not_impl(not_impl=None, parent=None):
     fndesc = {}
     not_impl = not_impl or _intrinsic_not_impl
     for fname, desc in not_impl.items():
-        fn = IntrinsicNotImplemented(name=fname, arity=desc[SLOT.ARITY], tid=TK.IDENT)
+        fn = IntrinsicNotImplemented(name=fname, arity=desc[SLOT.ARITY], tid=TK.IDENT, closure=parent)
         fndesc[fname] = fn
     return fndesc
 
 
-def init_intrinsic(name):
+def init_intrinsic(name, parent=None):
     if name.lower() in _intrinsic_fundesc:
         desc = _intrinsic_fundesc[name]
         invoke_fn = desc[SLOT.INVOKE]
@@ -124,10 +125,11 @@ def init_intrinsic(name):
                 defaults = {k: None for k in init_fn}
             else:
                 defaults = init_fn(name)
-            return IntrinsicFunction(name=name, invoke=invoke_fn,
+            return IntrinsicFunction(name=name, invoke=invoke_fn, closure=parent,
                                      arity=desc[SLOT.ARITY], opt=desc[SLOT.MAX], defaults=defaults)
         else:
-            return IntrinsicFunction(name=name, invoke=invoke_fn, arity=desc[SLOT.ARITY], opt=desc[SLOT.MAX])
+            return IntrinsicFunction(name=name, invoke=invoke_fn, closure=parent,
+                                     arity=desc[SLOT.ARITY], opt=desc[SLOT.MAX])
 
 
 # -----------------------------------
@@ -166,6 +168,38 @@ def to_json(args=None):
             with open(fname, 'w') as file:
                 file.write(json)
     return json
+
+
+def do_max(args=None):
+    a = args[0]
+    tid = c_type(a)
+    if tid in [TK.DATAFRAME, TK.SERIES]:
+        return pdi_max(a)
+    return np.max(a)
+
+
+def do_mean(args=None):
+    a = args[0]
+    tid = c_type(a)
+    if tid in [TK.DATAFRAME, TK.SERIES]:
+        return pdi_mean(a)
+    return np.mean(a)
+
+
+def do_median(args=None):
+    a = args[0]
+    tid = c_type(a)
+    if tid in [TK.DATAFRAME, TK.SERIES]:
+        return pdi_median(a)
+    return np.median(a)
+
+
+def do_min(args=None):
+    a = args[0]
+    tid = c_type(a)
+    if tid in [TK.DATAFRAME, TK.SERIES]:
+        return pdi_min(a)
+    return np.min(a)
 
 
 def do_mul(args=None):
@@ -318,6 +352,7 @@ _intrinsic_fundesc = {
     'delay': (pd_shift, 2, 2, None),    # alias for pandas 'shift'
     'delta': (pd_delta, 1, 2, None),    # focal
     'describe': (pd_describe, 1, 3, None),
+    'diff': (pd_delta, 1, 2, None),
     'len': (do_len, 1, 1, None),
     'json': (to_json, 1, 2, None),   # obj [, filename]
     'mul': (do_mul, 2, 2, None),
@@ -341,11 +376,14 @@ _intrinsic_fundesc = {
     'identity': (np_identity, 1, 1, None),
     'integers': (np_integers, 0, 4, None),
     'irr': (do_irr, 1, 1, None),
+    'max': (do_max, 1, 1, None),
+    'mean': (do_mean, 1, 1, None),
+    'median': (do_median, 1, 1, None),
+    'min': (do_min, 1, 1, None),
     'ones': (np_ones, 1, 3, None),
     'random': (np_random, 1, 4, None),
     'reshape': (np_reshape, 2, 3, None),
     'shape': (do_shape, 1, 1, None),
-    'transpose': (np_transpose, 1, 1, None),
     'zeros': (np_zeros, 1, 3, None),
 
     # pandas:
@@ -357,11 +395,16 @@ _intrinsic_fundesc = {
     'cumsum': (pd_cumsum, 1, 2, None),
     'head': (pd_head, 1, 2, None),
     'info': (pd_info, 1, 1, None),
-    'index': (pd_index, 1, 1, None),
+    'index': (pd_index, 2, 2, None),
+    'query': (pd_query, 2, 2, None),
+    'rename': (pd_rename_columns, 2, 2, None),
+    'replace': (pd_replace, 2, 3, None),
+    'select': (pd_query, 2, 2, None),
     'shift': (pd_shift, 2, 2, None),
     'sma': (pd_sma, 2, 2, None),
     'sum': (pd_sum, 1, 2, None),
     'tail': (pd_tail, 1, 2, None),
+    'transpose': (pd_transpose, 1, 1, None),
     'values': (pd_values, 1, 2, None),
     'union': (pd_combine, 1, 2, None),
     # timedelta_range
@@ -376,7 +419,6 @@ _intrinsic_aliases = {
 _intrinsic_not_impl = {
     # functions (intrinsics)
     "ema": (None, 1, 1, None),
-    'select': (None, 0, 1, None),
 
     # NumPy
     'arrange': (None, 0, 1, None),     # create array of evenly spaced values
@@ -386,10 +428,6 @@ _intrinsic_not_impl = {
     'exp': (None, 0, 1, None),
     'log': (None, 0, 1, None),
     'linspace': (None, 0, 1, None),    # create array of evenly spaced values (number of samples)
-    'max': (None, 0, 1, None),
-    'mean': (None, 0, 1, None),
-    'median': (None, 0, 1, None),
-    'min': (None, 0, 1, None),
     'rand': (None, 0, 1, None),        # generate a random number (single sample)
     'std': (None, 0, 1, None),         # standard deviation
     'sqrt': (None, 0, 1, None),

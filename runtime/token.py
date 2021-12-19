@@ -106,7 +106,6 @@ class Token:
     def format_tt(tt):
         return f'TT.{tt.name}' if hasattr(tt, "name") else f'TT({tt})'
 
-
     # --------------------------
     # Token constructors
     # --------------------------
@@ -119,20 +118,8 @@ class Token:
     # more fields), then generate this as well as any required mapping tables.  Also, would be good to get the
     # notation printer's data connected to this somehow as well.
     @staticmethod
-    def ANON(loc=None, lex=None):
-        return Token(tid=TK.ANON, tcl=TCL.IDENTIFIER, lex=lex or '_', loc=loc)
-
-    @staticmethod
-    def APPLY(loc=None, lex=None):
-        return Token(tid=TK.APPLY, tcl=TCL.UNARY, lex=lex or '>>', loc=loc)
-
-    @staticmethod
-    def ASSIGN(loc=None):
-        return Token(tid=TK.ASSIGN, tcl=TCL.FUNCTION, lex='=', val=None, loc=loc)
-
-    @staticmethod
     def ADD(loc=None, value=None):
-        return Token(tid=TK.ADD, tcl=TCL.BINOP, lex='+', val=value or False, loc=loc)
+        return Token(tid=TK.ADD, tcl=TCL.BINOP, lex='+', val=value, loc=loc)
 
     @staticmethod
     def ALL(loc=None, value=None):
@@ -143,8 +130,24 @@ class Token:
         return Token(tid=TK.AND, tcl=TCL.BINOP, lex='and', val=value or False, loc=loc)
 
     @staticmethod
+    def ANON(loc=None, lex=None):
+        return Token(tid=TK.ANON, tcl=TCL.IDENTIFIER, lex=lex or '_', loc=loc)
+
+    @staticmethod
     def ANY(loc=None, value=None):
         return Token(tid=TK.ANY, tcl=TCL.UNARY, lex='any:', val=value or False, loc=loc)
+
+    @staticmethod
+    def APPLY(loc=None, lex=None):
+        return Token(tid=TK.APPLY, tcl=TCL.UNARY, lex=lex or '>>', loc=loc)
+
+    @staticmethod
+    def ARRAY(loc=None, value=None):
+        return Token(tid=TK.ARRAY, tcl=TCL.LITERAL, lex='array', val=value, loc=loc)
+
+    @staticmethod
+    def ASSIGN(loc=None):
+        return Token(tid=TK.ASSIGN, tcl=TCL.FUNCTION, lex='=', val=None, loc=loc)
 
     @staticmethod
     def BOOL(loc=None, value=None):

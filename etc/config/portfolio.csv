@@ -1,5 +1,39 @@
 symbol,group,description
-AAPL,us-equities,
-QQQ,indices,
-SPY,indices,
-TSLA,us-equities,
+^GSPC,index,SP500
+^IXIC,index,NASDAQ
+^NYA,index,NYSE
+^RUT,index,RUSSEL2k
+^VIX,index,volatility
+AAPL,us-equities,apple
+AMD,us-equities,
+AMZN,us-equities,amazon
+BA,us-equities,boeing
+FB,us-equities,"facebook"
+GOOG,us-equities,
+GOOGL,us-equities,
+MRK,us-equities,"merk"
+MSFT,us-equities,"microsoft"
+NFLX,us-equities,"netflix"
+NKE,us-equities,"nike"
+NVDA,us-equities,"nVidia"
+PFE,us-equities,"pfizer"
+PYPL,us-equities,"paypal"
+QQQ,etf,"Nasdaq ETF"
+SPY,etf,"S&P ETF"
+TSLA,us-equities,"tesla"
+DGT,global,"global DOW"
+EFA,global,MSCI
+FCNTX,etf,"contrafund"
+FDIVX,etf,"diversified international"
+FSMAX,etf,"extended market"
+FSPSX,etf,"international EAFE"
+FXAIX,etf,"SP500+"
+GLD,commodity,"gold"
+IAU,commodity,"gold"
+IAFE,etf,"ishares EAFE"
+IEF,treasury,"7-10yr T-Bill ETF"
+UDN,currency,"USD Bearish"
+UUP,currency,"USD Bullish"
+VBIRX,bond,"managed bond"
+VEU,etf,"FTSE, all-world"
+VTI,etf,"vanguage total market"
