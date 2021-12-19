@@ -297,7 +297,7 @@ class Interpreter(TreeFilter):
                 fn.from_block(right, copy=False)
             else:
                 fn.code = right
-            fn.defaults = fn.parameters = self.reduce_parameters(scope=fn, args=args)
+            fn.defaults = fn.parameters = self.reduce_parameters(scope=fn, args=args, define=True)
             fn.arity = len(fn.defaults)
             update_ref(name=fn.name, value=fn)
         self.stack.push(fn)
@@ -524,7 +524,7 @@ class Interpreter(TreeFilter):
         result = fnode.invoke(self, args)
         self.stack.push(result)
 
-    def reduce_parameters(self, scope=None, fn=None, args=None):
+    def reduce_parameters(self, scope=None, fn=None, args=None, define=False):
         _values = []
         _fields = []
         _defaults = {}
@@ -563,7 +563,7 @@ class Interpreter(TreeFilter):
                         if isinstance(ref, Ref):
                             if ref.tid == TK.ANON:
                                 val = self.stack.pop()
-                            else:
+                            if define:  # only take object's name when defining functions
                                 name = ref.name
                         self._resolve(idx, name, c_unbox(val), _fields, _values)
         else:
