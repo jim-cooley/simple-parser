@@ -136,16 +136,22 @@ def generate_dataframe(args=None):
         columns = deepcopy(c_unbox(args.columns))
     args.remove([NAME_PROPERTY, INDEX_PROPERTY, COLUMNS_PROPERTY])
     values = args.values()
-    if isinstance(values, list):
-        if len(values) == 1:
-            values = values[0]
+    # if isinstance(values, list):
+    #     if len(values) == 1:
+    #         values = values[0]
     keys = args.keys()
     if None not in keys:
         if columns is None:
             if len(keys) == len(values):
                 values = args.dict()
     gen = DataframeGenerator(name=name, values=values, columns=columns, index=index)
-    dframe = gen.getall()
+    try:
+        dframe = gen.getall()
+    except Exception as e:
+        # return a dict if it cannot make a dataframe
+        if isinstance(values, dict):
+            return values
+        return dict(zip(keys, values))
     return dframe
 
 

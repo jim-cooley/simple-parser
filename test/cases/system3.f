@@ -20,28 +20,26 @@ analyze(rules) := {
     trades | cumsum >> results
     results | ret >> returns
 
-    print("max draw down (per share, $)")
+    print("\nmax draw down (per share, $)")
     results | min | print
 
-    print("num trades")
+    print("\nnum trades")
     results > 0 | signal | count(_, axis='c') | x
     x[-1] >> ntrades | transpose | print
 
-    print("avg per trade")
+    print("\navg % return per trade")
     returns / ntrades | transpose | print
 
-    print("rating")
-    rules[-1] | transpose | rename(_, 0, 'rating') | replace({true: 'buy', false:'sell'}) | print
-
-    print("trade sheet")
-    signals[-1] | transpose | print
-
+    print("\ncurrent rating")
+    rules[-1] | transpose | rename(_, 0, 'rating') | replace(_, {true: 'buy', false:'sell'}) | print
     signals[-1] | transpose | rename(_, 0, 'signal') | y
-    print("sells:")
-    select(y, "signal < 0") | print
+    # y | replace(_, {-1:'sell', 1:'buy'}) | print
 
-    print("buys:")
-    select(y, "signal > 0") | print
+    print("\nsells:")
+    select(y, "signal < 0") | replace(_, {-1: 'sell',}) | print
+
+    print("\nbuys:")
+    select(y, "signal > 0") | replace(_, {1: 'buy',}) | print
 
     return returns
 }
@@ -51,19 +49,19 @@ rules = any:{
     close > close.sma20,
 }
 
-print("close_sma10_cross")
+print("\n\nclose_sma10_cross")
 df["close_sma10_cross"] = analyze(rules=close_sma10_cross)
 
-print("close_sma20_cross")
+print("\n\nclose_sma20_cross")
 #df["close_sma20_cross"] = analyze(rules=close_sma20_cross)
 
-print("close_sma_10_20_cross")
+print("\n\nclose_sma_10_20_cross")
 #df["close_sma_10_20_cross"] = analyze(rules=close_sma_10_20_cross)
 
-print("test rules:")
+print("\n\ntarget rules:")
 #df["rules"] = analyze(rules=rules)
 
-print("comparison %")
+print("\n\ncomparison %")
 print(df)
 
 

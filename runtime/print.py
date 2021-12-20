@@ -47,6 +47,8 @@ def _print_item(o, options):
         else:
             text = ', '.join(line)
         return f'[{text}]'
+    elif isinstance(o, str):
+        line.append(o.replace("\\n", "\n"))
     elif isinstance(o, Dataset) or isinstance(o, pd.DataFrame):
         print_dataframe(o, options=options)
     elif isinstance(o, datetime):

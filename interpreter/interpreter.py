@@ -542,7 +542,15 @@ class Interpreter(TreeFilter):
                 args = args.values()
             for idx in range(0, len(args)):
                 ref = args[idx]
-                if isinstance(ref, Assign):
+                if isinstance(ref, Define):
+                    self.visit(ref.right)
+                    value = self.stack.pop()
+                    self.visit(ref.left)
+                    key = self.stack.pop()
+                    if isinstance(key, Object):
+                        key = key.name
+                    self._resolve(idx, key, c_unbox(value), _fields, _values)
+                elif isinstance(ref, Assign):
                     self.visit(ref.right)
                     value = self.stack.pop()
                     sym = reduce_ref(scope=scope, ref=ref.left)
