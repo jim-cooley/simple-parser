@@ -55,10 +55,10 @@ The following are all valid forms of the declaration of an anonymous production 
 Example | Discussion
 --- | ---
 `x: x + 1` | formal notation
-`x => x + 1` | product notation
-`_ => _ + 1` | anonymous product notation
+`x => x + 1` | production notation
+`_ => _ + 1` | anonymous production notation
 `f(x): x + 1` | function notation
-`f(x) => x + 1` | product function notation
+`f(x) => x + 1` | production function notation
 `f(_) => _ + 1` | anonymous product fuction notation
 `f(x) = x + 1` | function assignment notation (non mutating?)
 `f(x) := x + 1` | function definition notation (mutating, inline function)
@@ -68,11 +68,11 @@ Additionally, these may appear with or without block / set notation `{`..`}` or 
 Example | Discussion
 --- | ---
 `{ x: x + 1 }` | formal notation
-`( x => x + 1 )` | product notation
+`( x => x + 1 )` | production notation
 `( _ => _ + 1 )` | anonymous product notation
 `f(x): { x + 1 }` | function notation
-`f(x) => ( x + 1 )` | product function notation
-`f(_) => { _ + 1 }` | anonymous product fuction notation
+`f(x) => ( x + 1 )` | production function notation
+`f(_) => { _ + 1 }` | anonymous production fuction notation
 `f(x) = { x + 1 }` | function assignment notation (non mutating?)
 `f(x) := ( x + 1 )` | function definition notation (mutating, inline function)
 

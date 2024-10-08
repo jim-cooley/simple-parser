@@ -1,10 +1,9 @@
 from dataclasses import dataclass
-from enum import Enum, unique, IntEnum, auto
+from enum import Enum
 
 from runtime.exceptions import runtime_error
 from runtime.literals import Literal
 from runtime.scope import Block
-from runtime.series import Series
 from runtime.token import Token
 from runtime.token_ids import TK
 from runtime.tree import Generate
